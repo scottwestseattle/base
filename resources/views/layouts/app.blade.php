@@ -23,6 +23,7 @@
 		<!-- Styles -->
 		<link href="{{ asset('css/app.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
+		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
 		
     </head>
     <body class="antialiased">
@@ -30,10 +31,11 @@
 
 			@component('layouts.menu-main')@endcomponent
 
-			<main class="py-4">
-				@yield('content')
-			</main>
-
+			<div class="container page-normal">
+				<main class="py-4">
+					@yield('content')
+				</main>
+			</div>
         </div>
     </body>
 </html>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TranslationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,25 +24,14 @@ Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 
-Route::group(['prefix' => 'home'], function () {
-	
+// Translations
+Route::group(['prefix' => 'translations'], function () {
 	// index
-	Route::get('/view/{tag}', 'HomeController@view');
+	Route::get('/', [TranslationController::class, 'index'])->name('translations')->middleware('auth');
+	Route::get('/view/{filename}', [TranslationController::class, 'view']);
 
-	// add/create
-	Route::get('/add','HomeController@add');
-	Route::post('/create','HomeController@create');
-	Route::get('/add-user-favorite-list','HomeController@addUserFavoriteList');
-	Route::post('/create-user-favorite-list','HomeController@createUserFavoriteList');
-
-	// edit/update
-	Route::get('/edit/{tag}','HomeController@edit');
-	Route::post('/update/{tag}','HomeController@update');
-	Route::get('/edit-user-favorite-list/{tag}','HomeController@editUserFavoriteList');
-
-	// delete / confirm delete
-	Route::get('/confirmdelete/{tag}','HomeController@confirmdelete');
-	Route::get('/confirm-user-favorite-list-delete/{tag}','HomeController@confirmUserFavoriteListDelete');
-	Route::post('/delete/{tag}','HomeController@delete');
-	
+	// edit
+	Route::get('/edit/{filename}',[TranslationController::class, 'edit']);
+	Route::post('/update/{filename}',[TranslationController::class, 'update']);
 });
+

@@ -29,4 +29,9 @@ class Controller extends BaseController
 		*/
 	}	
 	
+	public function getViewData($vd)
+	{
+		return $vd;
+	}
+	
 }
