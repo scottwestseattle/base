@@ -28,6 +28,18 @@ class LoginController extends Controller
     {
 		return view('auth.register');		
 	}
+
+	public function resetPassword(Request $request)
+    {
+		$token = '';
+		
+		return view('auth.passwords.reset', ['token' => $token]);		
+	}
+
+	public function updatePassword(Request $request)
+    {
+		return redirect('/');		
+	}
 	
     /**
      * Handle an authentication attempt.

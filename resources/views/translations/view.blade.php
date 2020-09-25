@@ -6,7 +6,7 @@
 
 	@component('translations.menu-submenu', ['prefix' => 'Translations'])@endcomponent
 
-	<h1>@LANG('content.Translations')</h1>
+	<h1>@LANG('ui.Translations')</h1>
 				
 	<?php $cnt = 0; $recs = $records['en']; ?>		
 		

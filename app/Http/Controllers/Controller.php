@@ -33,5 +33,4 @@ class Controller extends BaseController
 	{
 		return $vd;
 	}
-	
 }

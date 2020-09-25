@@ -20,10 +20,18 @@
             }
         </style>
 		
+		<!-- Scripts -->
+		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+		<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+		
 		<!-- Styles -->
+		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('css/app.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
+
+		<!-- Javascript -->
+		<link href="{{ asset('css/app.css') }}" rel="stylesheet" />
 		
     </head>
     <body class="antialiased">

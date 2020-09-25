@@ -167,16 +167,13 @@ class TranslationController extends Controller
     public function update(Request $request, $filename)
     {
 		$lines = [];
-		$i = 0;
-
 		$array = [];
-		for ($j = 0; $j < 100; $j++) // each language
+		
+		for ($j = 0; $j < 100; $j++) // foreach each language
 		{
 			if (isset($request->records[$j]))
 			{
-				$done = false;
-				$i = 0;
-				while (!$done) // each translation in the language
+				for ($i = 0; $i < 1000; $i++) // each key in the language
 				{
 					if (isset($request->records[$j][$i])) // if language key set
 					{
@@ -196,12 +193,10 @@ class TranslationController extends Controller
 					}
 					else
 					{
-						$done = true;
-						break;
 					}
-
-					$i++;
 				}
+				
+				//dd($array);
 			}
 			else
 			{

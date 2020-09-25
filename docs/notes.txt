@@ -1,0 +1,15 @@
+=====================================================================
+How to add a Helper provider
+- php artisan make:provider HelperServiceProvider
+- in app\Provides, edit HelperServiceProvider.php
+- remove boot()
+- change register to:
+public function register()
+{
+    foreach (glob(app_path('Helpers') . '/*.php') as $file) {
+        require_once $file;
+    }
+}
+- put helper php files in app\Helpers
+- functions will be available globally
+=====================================================================
