@@ -20,11 +20,11 @@ class UserController extends Controller
 	{
 		$records = db_collection();
 		
-		//$records = User::select()
-			//->where('site_id', SITE_ID)
-			//->where('user_type', '<=', USER_SITE_ADMIN)
-			//->orderByRaw('id DESC')
-		//	->get();
+		$records = User::select()
+		//	->where('site_id', SITE_ID)
+		//	->where('user_type', '<=', USER_SITE_ADMIN)
+			->orderByRaw('id DESC')
+			->get();
 		//dd($records);
 		
 		return view('users.index', [
