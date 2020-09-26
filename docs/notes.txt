@@ -1,15 +1,19 @@
 =====================================================================
-How to add a Helper provider
-- php artisan make:provider HelperServiceProvider
-- in app\Provides, edit HelperServiceProvider.php
-- remove boot()
-- change register to:
-public function register()
-{
-    foreach (glob(app_path('Helpers') . '/*.php') as $file) {
-        require_once $file;
-    }
-}
-- put helper php files in app\Helpers
-- functions will be available globally
+How to add a Helper file
+- create helper.php in app\Helpers
+- use if (!function_exists('ip_address')) { function() };
+- add it to composer.json in root folder as:
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+			"app/Helpers/helpers.php"
+        ]
+	},
+- regenerate the autoloaders: composer dump-autoload
+- updload /vendor/composer to server
+- now functions will be available globally
 =====================================================================

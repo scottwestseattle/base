@@ -2,9 +2,7 @@
 
 @section('content')
 
-@component('components.menu-submenu', ['data' => $data])
-	@component('users.menu-submenu')@endcomponent
-@endcomponent
+@component('users.menu-submenu', ['record' => $user])@endcomponent
 
 <div class="container page-normal">
 

@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Database\Eloquent\Collection;
-
+if (!function_exists('obj_count')) {
 function obj_count($obj)
 {
 	if (isset($obj))
@@ -9,8 +8,29 @@ function obj_count($obj)
 	else
 		return 0;
 }
+}
 
-function db_collection()
+if (!function_exists('ip_address')) {
+function ip_address()
 {
-	return new Collection();
+	$ip_address = null;
+	
+	// normal
+	if (!empty($_SERVER['HTTP_CLIENT_IP']))   
+	{
+		$ip_address = $_SERVER['HTTP_CLIENT_IP'];
+	}
+	// proxy
+	elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))  
+	{
+		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	// remote address
+	else
+	{
+		$ip_address = $_SERVER['REMOTE_ADDR'];
+	}
+
+	return $ip_address;
+}
 }

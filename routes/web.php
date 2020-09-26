@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,29 +20,32 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// Front Page
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
+Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+
+// Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
-Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 
 // Users
 Route::group(['prefix' => 'users'], function () {
 	Route::get('/', [UserController::class, 'index']);
-	Route::get('/view', [UserController::class, 'view']);
+	Route::get('/index', [UserController::class, 'index']);
+	Route::get('/view/{user}', [UserController::class, 'view']);
 
 	// add
-	Route::get('/add', [UserController::class, 'add']);
-	Route::post('/create', [UserController::class, 'create']);
+	Route::get('/register', [RegisterController::class, 'register'])->name('register');
+	Route::post('/create', [RegisterController::class, 'create']);
 	
 	// edit
-	Route::get('/edit', [UserController::class, 'edit']);
-	Route::post('/update', [UserController::class, 'update']);
+	Route::get('/edit/{user}', [UserController::class, 'edit']);
+	Route::post('/update/{user}', [UserController::class, 'update']);
 
 	// delete
-	Route::get('/confirmdelete', [UserController::class, 'confirmDelete']);
-	Route::post('/delete', [UserController::class, 'delete']);
+	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete']);
+	Route::post('/delete/{user}', [UserController::class, 'delete']);
 });
 
 // Translations

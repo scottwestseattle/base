@@ -169,17 +169,12 @@ return [
         /*
          * Application Service Providers...
          */
+        //sbw: App\Providers\HelperServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
-		/*
-		 * My Project Service Providers...
-		 */
-        App\Providers\HelperServiceProvider::class,
-		 
     ],
 
     /*

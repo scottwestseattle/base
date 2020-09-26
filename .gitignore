@@ -1,10 +1,11 @@
+/vendor/*
+!/vendor/composer
 /bootstrap
 /node_modules
 /public/hot
 /public/storage
 /storage
 /storage/*.key
-/vendor
 /tests
 .env*
 .phpunit.result.cache
