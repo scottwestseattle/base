@@ -14,7 +14,7 @@ class UserController extends Controller
 	
 	public function __construct ()
 	{
-        $this->middleware('auth')->except([
+        $this->middleware('admin')->except([
 			'',
 		]);
 			
@@ -24,11 +24,8 @@ class UserController extends Controller
 	public function index(Request $request)
 	{		
 		$records = User::select()
-		//	->where('site_id', SITE_ID)
-		//	->where('user_type', '<=', USER_SITE_ADMIN)
 			->orderByRaw('id DESC')
 			->get();
-		//dd($records);
 		
 		return view('users.index', [
 			'records' => $records,

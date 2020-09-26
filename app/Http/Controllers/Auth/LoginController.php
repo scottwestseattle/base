@@ -15,6 +15,8 @@ class LoginController extends Controller
 	
 	public function login(Request $request)
     {
+		Auth::logout();
+		
 		return view('auth.login');		
 	}
 

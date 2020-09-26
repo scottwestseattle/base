@@ -17,3 +17,4 @@ How to add a Helper file
 - updload /vendor/composer to server
 - now functions will be available globally
 =====================================================================
+return 404, page not found: abort(404);

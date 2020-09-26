@@ -10,7 +10,6 @@
 			<li>Exception Handling</li>
 			<li>Event Log</li>
 			<li>Password Reset Email</li>
-			<li>No Session Timeout</li>
 			<li>Common View Data</li>
 			<li>Form Field Validation</li>			
 		</ul>

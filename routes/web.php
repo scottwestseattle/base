@@ -23,6 +23,7 @@ use App\Http\Controllers\Auth\RegisterController;
 // Front Page
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/about', function() { return view('home.about'); });
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -61,7 +62,9 @@ Route::group(['prefix' => 'translations'], function () {
 
 // Password
 Route::group(['prefix' => 'password'], function () {
-	Route::get('/request', [LoginController::class, 'resetPassword'])->name('password.request');
-	Route::post('/update', [LoginController::class, 'updatePassword'])->name('password.update');
+	Route::get('/reset', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
+	
+	Route::get('/edit', [LoginController::class, 'edit'])->name('password.edit');
+	Route::post('/update', [LoginController::class, 'update'])->name('password.update');
 });
 

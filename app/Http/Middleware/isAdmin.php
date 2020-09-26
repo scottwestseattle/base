@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\User;
+use App\Models\User;
 
 class isAdmin
 {
@@ -20,6 +20,6 @@ class isAdmin
 			return $next($request);
 		}
 
-        return redirect('/login');
+		abort(404);
     }
 }

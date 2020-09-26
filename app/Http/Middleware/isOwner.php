@@ -38,7 +38,7 @@ class isOwner
 			}
 			
 			// user logged in but he's not the owner			
-			return redirect('/404/' . $request->route()->uri() . ' - not owner');  
+			abort(404);
 		}
 
 		return redirect('/login'); // not logged in
