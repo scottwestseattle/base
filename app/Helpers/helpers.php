@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\User;
 
 if (!function_exists('obj_count')) {
 function obj_count($obj)
@@ -40,6 +40,6 @@ function ip_address()
 if (!function_exists('is_admin')) {
 function is_admin()
 {
-	return \App\Models\User::isAdmin();
+	return User::isAdmin();
 }
 }

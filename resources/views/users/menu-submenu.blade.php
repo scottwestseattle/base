@@ -1,3 +1,4 @@
+@if (is_admin())
 <div class="submenu-view">
 	<table>
 		<tr>
@@ -10,4 +11,4 @@
 		</tr>
 	</table>
 </div>		
-
+@endif

@@ -16,6 +16,7 @@
 			<input type="text" name="email" class="form-control" value="{{$user->email }}"></input>
 		</div>
 					
+		@if (is_admin())
 			<div class="form-group">
 				<select name="user_type" id="user_type">
 					@foreach ($user->getUserTypes() as $key => $value)
@@ -31,6 +32,7 @@
 			<input type="checkbox" name="blocked_flag" id="blocked_flag" class="" value="{{$user->blocked_flag }}" {{ ($user->blocked_flag) ? 'checked' : '' }} />
 			<label for="blocked_flag" class="checkbox-big-label">@LANG('ui.Blocked')</label>
 		</div>
+		@endif
 
 		<div class="form-group">
 			<button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>

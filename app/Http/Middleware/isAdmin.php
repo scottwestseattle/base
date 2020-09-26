@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\User;
+use App\User;
 
 class isAdmin
 {
@@ -20,6 +20,6 @@ class isAdmin
 			return $next($request);
 		}
 
-		abort(404);
+		abort(401);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\User;
+use App\User;
 
 class RegisterController extends Controller
 {

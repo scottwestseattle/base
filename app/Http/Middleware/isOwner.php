@@ -38,7 +38,7 @@ class isOwner
 			}
 			
 			// user logged in but he's not the owner			
-			abort(404);
+			abort(401);
 		}
 
 		return redirect('/login'); // not logged in

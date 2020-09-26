@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 // my models
-use App\Models\User;
+use App\User;
 
 class UserController extends Controller
 {
@@ -15,7 +15,7 @@ class UserController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-			'',
+			'edit', 'update',
 		]);
 			
 		parent::__construct();

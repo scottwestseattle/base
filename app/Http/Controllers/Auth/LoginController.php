@@ -10,6 +10,12 @@ class LoginController extends Controller
 {
 	public function __construct ()
 	{			
+        $this->middleware('auth')->except([
+			'login',
+			'logout',
+			'authenticate',
+		]);		
+	
 		parent::__construct();
 	}	
 	
@@ -32,6 +38,13 @@ class LoginController extends Controller
 		$token = '';
 		
 		return view('auth.passwords.reset', ['token' => $token]);		
+	}
+
+	public function editPassword(Request $request)
+    {
+		$token = '';
+		
+		return view('auth.passwords.edit', ['token' => $token]);		
 	}
 
 	public function updatePassword(Request $request)

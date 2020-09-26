@@ -61,10 +61,8 @@ Route::group(['prefix' => 'translations'], function () {
 });
 
 // Password
-Route::group(['prefix' => 'password'], function () {
-	Route::get('/reset', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
-	
-	Route::get('/edit', [LoginController::class, 'edit'])->name('password.edit');
-	Route::post('/update', [LoginController::class, 'update'])->name('password.update');
+Route::group(['prefix' => 'passwords'], function () {
+	Route::get('/reset', [LoginController::class, 'resetPassword']);
+	Route::get('/edit', [LoginController::class, 'editPassword']);
+	Route::post('/update', [LoginController::class, 'updatePassword']);
 });
-
