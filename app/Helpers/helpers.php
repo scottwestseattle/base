@@ -43,3 +43,11 @@ function is_admin()
 	return User::isAdmin();
 }
 }
+
+if (!function_exists('flash')) {
+	function flash($level, $content)
+	{
+		request()->session()->flash('message.level', $level);
+		request()->session()->flash('message.content', $content);
+    }
+}

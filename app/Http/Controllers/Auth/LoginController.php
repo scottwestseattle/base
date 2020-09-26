@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
+use Log;
+
+use App\User;
+
 class LoginController extends Controller
 {
 	public function __construct ()
@@ -61,14 +65,25 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'blocked_flag' => 0])) 
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) 
 		{
-            // Authentication passed...
-            return redirect()->intended('dashboard');
+			if (User::isBlocked())
+			{
+				flash('warning', 'User is Blocked');
+				Log::warning('Blocked user login attempt: ' . $request->email);
+			}
+			else
+			{
+				// Authentication passed...
+				return redirect()->intended('dashboard');
+			}			
         }
 		else
 		{
-			dump('invalid credentials');
+			flash('warning', 'Invalid credentials');
+			Log::warning('invalid login credentials: ' . $request->email);
 		}
+		
+		return redirect('/login');
     }
 }

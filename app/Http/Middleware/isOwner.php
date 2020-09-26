@@ -30,7 +30,13 @@ class isOwner
 			{
 				foreach($p as $record)
 				{
-					if (isset($record->user_id) && $record->user_id == Auth::id())
+					if (is_a($record, 'App\User'))
+					{
+						//dd($record);
+						if ($record->id == Auth::id())
+							return $next($request);
+					}
+					else if (isset($record->user_id) && $record->user_id == Auth::id())
 					{
 						return $next($request);
 					}

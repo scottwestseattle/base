@@ -59,6 +59,18 @@ class User extends Authenticatable
 		USER_SITE_ADMIN => 'Admin',
 		USER_SUPER_ADMIN => 'Super Admin',
 	];
+
+	static public function isBlocked()
+	{
+		$rc = false;
+		
+		if (Auth::check())
+		{
+			$rc = (Auth::user()->blocked_flag == 1);
+		}
+			
+		return $rc;
+	}
 	
 	public function getBlocked()
 	{

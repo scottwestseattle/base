@@ -66,3 +66,9 @@ Route::group(['prefix' => 'passwords'], function () {
 	Route::get('/edit', [LoginController::class, 'editPassword']);
 	Route::post('/update', [LoginController::class, 'updatePassword']);
 });
+
+// Password
+Route::group(['prefix' => 'home'], function () {
+	Route::get('/events', [HomeController::class, 'events'])->middleware('admin');
+});
+

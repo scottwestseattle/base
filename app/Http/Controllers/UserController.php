@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-// my models
+use Log;
+
 use App\User;
 
 class UserController extends Controller
@@ -15,6 +16,10 @@ class UserController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
+			'edit', 'update',
+		]);
+
+        $this->middleware('owner')->only([
 			'edit', 'update',
 		]);
 			
@@ -46,13 +51,18 @@ class UserController extends Controller
     {	
 		$user->name = trim($request->name);
 		$user->email = trim($request->email);
-		$user->user_type = intval($request->user_type);
-		$user->password = $request->password;
-		$user->blocked_flag = isset($request->blocked_flag) ? 1 : 0;
+		
+		if (User::isAdmin())
+		{
+			$user->user_type = intval($request->user_type);
+			$user->password = $request->password;
+			$user->blocked_flag = isset($request->blocked_flag) ? 1 : 0;
+		}
 
 		$user->save();
+		Log::info('User updated', ['id' => $user->id]);		
 		
-		return redirect($this->redirect); 
+		return redirect(User::isAdmin() ? '/users' : '/dashboard'); 
     }
 
     public function confirmdelete(User $user)
@@ -63,8 +73,8 @@ class UserController extends Controller
     public function delete(User $user)
     {	
 		$user->deleteSafe();
-		Log::info('User deleted.', ['id' => $user->id]);
-    	return redirect($this->redirect); 
+		Log::info('User deleted', ['id' => $user->id]);
+		return redirect(User::isAdmin() ? '/users' : '/dashboard'); 
     }	
 		
 }

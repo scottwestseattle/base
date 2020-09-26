@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Home;
+
 class HomeController extends Controller
 {
 	public function __construct ()
@@ -23,5 +25,12 @@ class HomeController extends Controller
 	public function dashboard(Request $request)
 	{
 		return view('home.dashboard');
+	}
+	
+	public function events(Request $request)
+	{
+		$records = Home::getEvents();
+		
+		return view('home.events', ['records' => $records]);
 	}
 }
