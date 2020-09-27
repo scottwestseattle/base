@@ -1,48 +1,70 @@
+@php
+	$recs = $records['en'];
+@endphp
 @extends('layouts.app')
-
+@section('title', 'View Translations - ' . $filename)
+@section('menu-submenu')@component('translations.menu-submenu', ['record' => $filename]) @endcomponent @endsection
 @section('content')
 
-<div class="container page-normal">
+<h1>@LANG('ui.Translations')</h1>
 
-	@component('translations.menu-submenu', ['prefix' => 'Translations'])@endcomponent
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<li class="nav-item" role="presentation">
+		<a class="nav-link active" id="english-tab" data-toggle="tab" href="#english" role="tab" aria-controls="english" aria-selected="true">@LANG('ui.English')</a>
+	</li>
+	<li class="nav-item" role="presentation">
+		<a class="nav-link" id="spanish-tab" data-toggle="tab" href="#spanish" role="tab" aria-controls="spanish" aria-selected="false">@LANG('ui.Spanish')</a>
+	</li>
+	<li class="nav-item" role="presentation">
+		<a class="nav-link" id="chinese-tab" data-toggle="tab" href="#chinese" role="tab" aria-controls="chinese" aria-selected="false">@LANG('ui.Chinese')</a>
+	</li>
+</ul>
 
-	<h1>@LANG('ui.Translations')</h1>
-				
-	<?php $cnt = 0; $recs = $records['en']; ?>		
-		
-	<div class="table-responsive">
-		
-		<table style="min-width: 800px;">
-			<tr><th></th><th>@LANG('ui.Key')</th><th>
-			
-			
-	<ul class="nav nav-tabs">
-		<li class="nav-item">
-			<a class="nav-link active" href="#">@LANG('ui.English')</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#">@LANG('ui.Spanish')</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#">@LANG('ui.Chinese')</a>
-		</li>
-	</ul>		
-			
-			
-			
-			</th></tr>
+<div class="tab-content" id="myTabContent">
+	<div class="tab-pane fade show active" id="english" role="tabpanel" aria-labelledby="english-tab">
+		<div class="table-responsive width100">
+		<table>
+			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
 			@foreach($recs as $key => $value)
 			<tr>
-				<td>{{++$cnt}}.&nbsp;</td>
+				<td>{{$loop->iteration}}.&nbsp;</td>
 				<td>{{$key}}</td>
 				<td>{{$records['en'][$key]}}</td>
-				<!-- td>{{$records['es'][$key]}}</td>
-				<td>{{$records['zh'][$key]}}</td -->
 			<tr>
 			@endforeach
 		</table>
-		
+		</div>
 	</div>
-</div>
+	
+	<div class="tab-pane fade" id="spanish" role="tabpanel" aria-labelledby="spanish-tab">
+		<div class="table-responsive width100">
+		<table>
+			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
+			@foreach($recs as $key => $value)
+			<tr>
+				<td>{{$loop->iteration}}.&nbsp;</td>
+				<td>{{$key}}</td>
+				<td>{{$records['es'][$key]}}</td>
+			<tr>
+			@endforeach
+		</table>
+		</div>
+	</div>
+	
+	<div class="tab-pane fade" id="chinese" role="tabpanel" aria-labelledby="chinese-tab">
+		<div class="table-responsive width100">
+		<table>
+			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
+			@foreach($recs as $key => $value)
+			<tr>
+				<td>{{$loop->iteration}}.&nbsp;</td>
+				<td>{{$key}}</td>
+				<td>{{$records['zh'][$key]}}</td>
+			<tr>
+			@endforeach
+		</table>
+		</div>
+	</div>
+</div>	
 
-@stop
+@endsection

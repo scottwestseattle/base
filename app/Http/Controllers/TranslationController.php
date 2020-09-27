@@ -162,12 +162,15 @@ class TranslationController extends Controller
 		]);
 
 		return view('translations.edit', $vdata);
+		// return view('translations.editTabs', $vdata); // NOT DONE YET
     }
 
     public function update(Request $request, $filename)
     {
 		$lines = [];
 		$array = [];
+		
+		dd($request->records);
 		
 		for ($j = 0; $j < 100; $j++) // foreach each language
 		{

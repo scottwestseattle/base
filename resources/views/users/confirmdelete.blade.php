@@ -1,10 +1,8 @@
 @extends('layouts.app')
-
+@section('title', 'Delete User')
+@section('menu-submenu')@component('users.menu-submenu', ['record' => $record]) @endcomponent @endsection
 @section('content')
-
-@component('users.menu-submenu', ['record' => $record])@endcomponent
-
-<div class="container">
+<div>
 	<h1>Delete</h1>
 
 	<form method="POST" action="/users/delete/{{$record->id}}">

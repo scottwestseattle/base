@@ -27,9 +27,11 @@ class HomeController extends Controller
 		return view('home.dashboard');
 	}
 	
-	public function events(Request $request)
+	public function events(Request $request, $filter = null)
 	{
-		$records = Home::getEvents();
+		$filter = alpha($filter);
+		
+		$records = Home::getEvents($filter);
 		
 		return view('home.events', ['records' => $records]);
 	}

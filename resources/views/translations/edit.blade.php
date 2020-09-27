@@ -1,21 +1,20 @@
+@php
+	$cnt = 0;
+	$recs = $records['en'];
+@endphp
 @extends('layouts.app')
-
+@section('title', 'Edit Translations - ' . $filename)
+@section('menu-submenu')@component('translations.menu-submenu', ['record' => $filename])@endcomponent @endsection
 @section('content')
 
 <div>
 
-	@component('translations.menu-submenu', ['prefix' => 'Translations'])@endcomponent
-
-	<h1>@LANG('ui.Translations')</h1>
+	<h1>@LANG('ui.Edit') @LANG('ui.Translations')</h1>
 
 	<form method="POST" action="/translations/update/{{$filename}}">
 					
 		<div class="form-group">		
-
-		<?php $cnt = 0; $recs = $records['en']; ?>
-				
-		<h3>@LANG('ui.Edit')</h3>
-		
+						
 		<table>
 			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.English')</th><th>@LANG('ui.Spanish')</th><th>@LANG('ui.Chinese')</th></tr>
 		@foreach($recs as $key => $value)

@@ -31,6 +31,7 @@ class isOwner
 			{
 				foreach($p as $record)
 				{
+					//dd($record);
 					// if it's the user model, then check 'id'
 					if (is_a($record, 'App\User')) 
 					{

@@ -1,11 +1,8 @@
 @extends('layouts.app')
-
+@section('title', 'Edit User')
+@section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
 @section('content')
-
-@component('users.menu-submenu', ['record' => $user])@endcomponent
-
-<div class="container page-normal">
-
+<div>
 	<form method="POST" action="/users/update/{{ $user->id }}">
 
 		<div class="form-group">
@@ -39,7 +36,6 @@
 		</div>
 	{{ csrf_field() }}
 	</form>
-
 </div>
 
 @stop

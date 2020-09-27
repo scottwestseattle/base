@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+@section('title', 'Translations')
+@section('menu-submenu')@component('translations.menu-submenu')@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">
@@ -16,16 +17,13 @@
 	<h1>@LANG('ui.Translations') ({{ count($records) }})</h1>
 
 	<div class="table-responsive">
-	
-	<table class="table table-striped">
+	<table class="table table-striped table-translations">
 		<tbody>
 		@foreach($records as $record)
 			<tr>
-				<td class="glyphicon-width"><a href='/translations/edit/{{$record}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
+				<td><a href='/translations/edit/{{$record}}'>@component('components.icon-edit')@endcomponent</a></td>
 				<td><a href="/translations/view/{{$record}}">{{$record}}</a></td>
-@if (false)				
-				<td class="glyphicon-width"><a href='/translations/confirmdelete/{{$record}}'><span class="glyphCustom-sm glyphicon glyphicon-delete"></span></a></td>
-@endif
+				<td><a href='/translations/delete/{{$record}}'>@component('components.icon-delete')@endcomponent</a></td>
 			</tr>
 		@endforeach
 		</tbody>

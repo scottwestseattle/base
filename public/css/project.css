@@ -10,6 +10,13 @@ Super Light Green: #eff7f0
 
 ************************************************************/
 
+body {
+	/* need the padding for the static nav bar */
+	padding-top: 47px;
+}
+
+/* colors */
+
 .app-color-primary {
 	background-color: #fe5b4c; /* mars-sky */
 	color: white;
@@ -78,12 +85,32 @@ Super Light Green: #eff7f0
 	color:#989898;
 }
 
+.gray {
+	color:gray;
+}
+
 .danger {
 	color:red;
 }
 
-.event-table table tr td {
+table.table-events {
+	width:100%;
+}
+
+.table-events tr td {
 	vertical-align: top;
+}
+
+.table-events tr td:first-child {
+	width: 24px;
+}
+
+.width100, .width100 table {
+	width: 100%;
+}
+
+.table-translations tbody tr td:first-child, .table-translations tbody tr td:last-child {
+	width: 10px;
 }
 
 .middle {

@@ -32,6 +32,12 @@ Log::debug($message);
 =====================================================================
 blade directives:
 
+@auth / @endauth
+@guest / @endguest
+@isset($record) / @endisset
+@empty($records) / @endempty
+@php / @endphp
+
 use @error for validation errors
 <label for="title">Post Title</label>
 <input id="title" type="text" class="@error('title') is-invalid @enderror">
@@ -41,8 +47,5 @@ use @error for validation errors
 
 {{-- This comment will not be present in the rendered HTML --}}
 
-@php
-    // add php code here
-@endphp
 
 =====================================================================

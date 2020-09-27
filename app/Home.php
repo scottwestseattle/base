@@ -9,7 +9,7 @@ class Home extends Model
 {
     use HasFactory;
 	
-	static public function getEvents()
+	static public function getEvents($filter)
 	{
 		$records = [];
 		
@@ -18,18 +18,23 @@ class Home extends Model
 		$file = file_get_contents($path);
 		if ($file !== false)
 		{
+			$all = (!isset($filter));
+			$info = ($all || $filter == 'info');
+			$errors = ($all || $filter == 'errors');
+			$warnings = ($all || $filter == 'warnings');
+			
 			$lines = explode("\n", $file);
 			foreach($lines as $line)
 			{
-				if (strpos($line, 'local.ERROR') !== false)
-				{					
-					$records[] = ['icon' => 'exclamation-octagon', 'color' => 'danger', 'text' => $line];
+				if ($errors && strpos($line, 'local.ERROR') !== false)
+				{				
+					$records[] = ['icon' => 'exclamation-diamond', 'color' => 'danger', 'text' => $line];
 				}
-				else if (strpos($line, 'local.INFO') !== false)
+				else if ($info && strpos($line, 'local.INFO') !== false)
 				{					
 					$records[] = ['icon' => 'info-circle', 'color' => 'success', 'text' => $line];
 				}
-				else if (strpos($line, 'local.WARNING') !== false)
+				else if ($warnings && strpos($line, 'local.WARNING') !== false)
 				{					
 					$records[] = ['icon' => 'exclamation-triangle', 'color' => 'warning', 'text' => $line];
 				}

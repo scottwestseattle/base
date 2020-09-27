@@ -1,8 +1,8 @@
 @extends('layouts.app')
-
+@section('title', 'User List')
+@section('menu-submenu')@component('users.menu-submenu')@endcomponent @endsection
 @section('content')
-
-<div class="container page-normal">
+<div class="">
 	<h1>@LANG('ui.Users') ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">

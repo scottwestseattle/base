@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Base CMS</title>
+		<title>Base CMS - @yield('title')</title>		
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,13 +21,13 @@
         </style>
 
 		<!-- Styles -->
-		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
 		
 		<!-- Javascript -->
 		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-		<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 
     </head>
     <body class="antialiased">

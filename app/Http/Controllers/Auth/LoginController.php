@@ -19,6 +19,10 @@ class LoginController extends Controller
 			'logout',
 			'authenticate',
 		]);		
+
+        $this->middleware('owner')->only([
+			'resetPassword', 'editPassword', 'updatePassword',
+		]);
 	
 		parent::__construct();
 	}	
@@ -37,21 +41,21 @@ class LoginController extends Controller
 		return redirect('/');
 	}
 	
-	public function resetPassword(Request $request)
+	public function resetPassword(Request $request, User $user)
     {
 		$token = '';
 		
 		return view('auth.passwords.reset', ['token' => $token]);		
 	}
 
-	public function editPassword(Request $request)
+	public function editPassword(Request $request, User $user)
     {
 		$token = '';
 		
 		return view('auth.passwords.edit', ['token' => $token]);		
 	}
 
-	public function updatePassword(Request $request)
+	public function updatePassword(Request $request, User $user)
     {
 		return redirect('/');		
 	}

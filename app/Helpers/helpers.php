@@ -68,3 +68,19 @@ function referrer()
 	return $rc;
 }
 }
+
+if (!function_exists('alpha')) {
+	function alpha($text)
+	{
+		if (isset($text))
+		{			
+			$_accents = 'áÁéÉíÍóÓúÚüÜñÑ'; 
+			$text = preg_replace("/\s+/", ' ', $text); // change all whitespace to one space
+			$base = "a-zA-Z ";			
+			$match = $base . $_accents;
+			$text = preg_replace("/[^" . $match . "]+/", "", trim($text));
+		}
+
+		return $text;
+	}
+}

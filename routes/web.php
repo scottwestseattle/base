@@ -82,13 +82,13 @@ Route::group(['prefix' => 'translations'], function () {
 
 // Password
 Route::group(['prefix' => 'passwords'], function () {
-	Route::get('/reset', [LoginController::class, 'resetPassword']);
-	Route::get('/edit', [LoginController::class, 'editPassword']);
-	Route::post('/update', [LoginController::class, 'updatePassword']);
+	Route::get('/reset/{user}', [LoginController::class, 'resetPassword']);
+	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);
+	Route::post('/update/{user}', [LoginController::class, 'updatePassword']);
 });
 
 // Password
 Route::group(['prefix' => 'home'], function () {
-	Route::get('/events', [HomeController::class, 'events'])->middleware('admin');
+	Route::get('/events/{filter?}', [HomeController::class, 'events'])->middleware('admin');
 });
 
