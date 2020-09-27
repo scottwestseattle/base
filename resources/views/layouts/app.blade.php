@@ -31,7 +31,6 @@
 		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
 
 		<!-- Javascript -->
-		<link href="{{ asset('css/app.css') }}" rel="stylesheet" />
 		
     </head>
     <body class="antialiased">
@@ -47,8 +46,7 @@
 							{{session('message.content')}}
 						</div>
 					@endif
-				
-				
+
 					@yield('content')
 				</main>
 			</div>

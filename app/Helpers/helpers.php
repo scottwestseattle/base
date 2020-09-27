@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\HtmlString;
 use App\User;
 
 if (!function_exists('obj_count')) {
@@ -45,9 +46,25 @@ function is_admin()
 }
 
 if (!function_exists('flash')) {
-	function flash($level, $content)
+function flash($level, $content)
+{
+	request()->session()->flash('message.level', $level);
+	request()->session()->flash('message.content', $content);
+}
+}
+
+if (!function_exists('referrer')) {
+function referrer()
+{
+	$rc['input'] = '';
+	$rc['url'] = '';
+	
+	if (isset($_SERVER["HTTP_REFERER"]))
 	{
-		request()->session()->flash('message.level', $level);
-		request()->session()->flash('message.content', $content);
-    }
+		$rc['url'] = $_SERVER["HTTP_REFERER"];
+		$rc['input'] = new HtmlString("<input name='referrer' type='hidden' value='" . $rc['url'] . "' />");
+	}
+	
+	return $rc;
+}
 }

@@ -22,6 +22,7 @@ class isOwner
 		//
 		if (Auth::check())
 		{
+			// admin can change anything
 			if (User::isAdmin())
 				return $next($request);
 			
@@ -30,14 +31,19 @@ class isOwner
 			{
 				foreach($p as $record)
 				{
-					if (is_a($record, 'App\User'))
+					// if it's the user model, then check 'id'
+					if (is_a($record, 'App\User')) 
 					{
-						//dd($record);
 						if ($record->id == Auth::id())
+						{
+							// id's match
 							return $next($request);
+						}
 					}
+					// other models check 'user_id'
 					else if (isset($record->user_id) && $record->user_id == Auth::id())
 					{
+						// id's match
 						return $next($request);
 					}
 				}

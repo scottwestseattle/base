@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SampleController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 
@@ -29,6 +30,25 @@ Route::get('/about', function() { return view('home.about'); });
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
+// Samples
+Route::group(['prefix' => 'samples'], function () {
+	Route::get('/', [SampleController::class, 'index']);
+	Route::get('/index', [SampleController::class, 'index']);
+	Route::get('/view/{sample}', [SampleController::class, 'view']);
+
+	// add
+	Route::get('/add', [RegisterController::class, 'register']);
+	Route::post('/create', [RegisterController::class, 'create']);
+	
+	// edit
+	Route::get('/edit/{sample}', [SampleController::class, 'edit']);
+	Route::post('/update/{sample}', [SampleController::class, 'update']);
+
+	// delete
+	Route::get('/confirmdelete/{sample}', [SampleController::class, 'confirmDelete']);
+	Route::post('/delete/{sample}', [SampleController::class, 'delete']);
+});
 
 // Users
 Route::group(['prefix' => 'users'], function () {
