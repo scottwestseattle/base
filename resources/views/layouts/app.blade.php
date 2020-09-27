@@ -20,23 +20,21 @@
             }
         </style>
 		
-		<!-- Scripts -->
+		<!-- Styles -->
+		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
+		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
+		
+		<!-- Javascript -->
 		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 		<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 		
-		<!-- Styles -->
-		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-		<link href="{{ asset('css/app.css') }}" rel="stylesheet" />
-		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
-		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
-
-		<!-- Javascript -->
-		
     </head>
     <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
 
-			@component('layouts.menu-main')@endcomponent
+		@component('layouts.menu-main')@endcomponent
+	
+        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
 
 			<div class="container page-normal">
 				<main class="py-4">

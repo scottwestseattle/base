@@ -21,10 +21,17 @@ class Home extends Model
 			$lines = explode("\n", $file);
 			foreach($lines as $line)
 			{
-				if (strpos($line, 'local.') !== false)
-				{
-					//dd($line);
-					$records[] = $line;
+				if (strpos($line, 'local.ERROR') !== false)
+				{					
+					$records[] = ['icon' => 'exclamation-octagon', 'color' => 'danger', 'text' => $line];
+				}
+				else if (strpos($line, 'local.INFO') !== false)
+				{					
+					$records[] = ['icon' => 'info-circle', 'color' => 'success', 'text' => $line];
+				}
+				else if (strpos($line, 'local.WARNING') !== false)
+				{					
+					$records[] = ['icon' => 'exclamation-triangle', 'color' => 'warning', 'text' => $line];
 				}
 			}
 			

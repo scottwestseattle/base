@@ -16,11 +16,11 @@ class UserController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-			'edit', 'update',
+			'edit', 'update', 'view'
 		]);
 
         $this->middleware('owner')->only([
-			'edit', 'update',
+			'edit', 'update', 'view',
 		]);
 			
 		parent::__construct();
