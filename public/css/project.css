@@ -105,10 +105,6 @@ table.table-events {
 	width: 24px;
 }
 
-.width100, .width100 table {
-	width: 100%;
-}
-
 .table-translations tbody tr td:first-child, .table-translations tbody tr td:last-child {
 	width: 10px;
 }
@@ -116,4 +112,26 @@ table.table-events {
 .middle {
 	display:inline-block;
 	vertical-align:middle;
+}
+
+.form-card-row {
+	margin-top:15px;
+}
+
+.navbar-icon-shortcuts a {
+	color: white;
+	margin: auto 10px;	
+}
+
+.navbar-icon-shortcuts a:hover {
+	text-decoration: none;
+}
+
+.navbar-icon-shortcuts a div {
+	vertical-align: middle;
+	display:inline-block;
+}
+
+.navbar-icon-shortcuts a div svg {
+	margin-top: 5px;
 }

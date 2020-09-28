@@ -43,22 +43,67 @@ class LoginController extends Controller
 	
 	public function resetPassword(Request $request, User $user)
     {
-		$token = '';
-		
-		return view('auth.passwords.reset', ['token' => $token]);		
+		$token = 'token';
+		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
 	}
 
 	public function editPassword(Request $request, User $user)
-    {
-		$token = '';
-		
-		return view('auth.passwords.edit', ['token' => $token]);		
+    {		
+		$token = 'token';
+		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
 	}
 
-	public function updatePassword(Request $request, User $user)
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
     {
-		return redirect('/');		
-	}
+		dd('here');
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {		
+		if ($request->password != $request->password_confirmation)
+		{
+			// don't match
+			Log::warning('Password Reset - Password does not match confirmation', ['id' => $user->id]);
+			flash('warning', 'New password and password confirmation do not match');
+			return back();
+		}
+        else if (Auth::attempt(['email' => $user->email, 'password' => $request->current_password])) 
+		{
+			if (User::isBlocked())
+			{
+				flash('warning', 'User is Blocked');
+				Log::warning('Blocked user change password attempt: ' . $request->email);
+				return back();
+			}
+			else
+			{
+				// Authentication passed...
+				$user->password = Hash::make($request->password);
+				$user->save();
+				Log::info('User password updated', ['id' => $user->id]);
+				flash('success', 'Password updated');
+			}			
+        }
+		else
+		{
+			flash('warning', 'Current password invalid');
+			Log::warning('Password reset: current password invalid' . $request->email, ['id' => $user->id]);
+			return back();
+		}
+			
+		return redirect('/users/view/{{$user->id}}'); 
+    }
 	
     /**
      * Handle an authentication attempt.

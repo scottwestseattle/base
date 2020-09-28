@@ -60,7 +60,8 @@ class UserController extends Controller
 		}
 
 		$user->save();
-		Log::info('User updated', ['id' => $user->id]);		
+		Log::info('User updated', ['id' => $user->id]);
+		flash('success', 'User updated');
 		
 		return redirect(User::isAdmin() ? '/users' : '/dashboard'); 
     }

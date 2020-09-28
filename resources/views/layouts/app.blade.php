@@ -38,17 +38,17 @@
 		<!-- Show the admin submenu -->
         @section('menu-submenu')@show
 		
+		<!-- Show the flash method if any -->
+		@if(session()->has('message.level'))
+			<div style="" class="alert alert-{{ session('message.level') }}">
+				{{session('message.content')}}
+			</div>
+		@endif
+		
         <div class="">
 			<div class="container page-normal">
 				<main class="py-4">
 				
-					<!-- Show the flash method if any -->
-					@if(session()->has('message.level'))
-						<div style="" class="alert alert-{{ session('message.level') }}">
-							{{session('message.content')}}
-						</div>
-					@endif
-
 					<!-- Show the current page -->
 					@yield('content')
 				</main>

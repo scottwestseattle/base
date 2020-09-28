@@ -49,3 +49,5 @@ use @error for validation errors
 
 
 =====================================================================
+CSS Shortcut Classes
+w100

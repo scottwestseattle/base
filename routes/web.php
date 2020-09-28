@@ -38,8 +38,8 @@ Route::group(['prefix' => 'samples'], function () {
 	Route::get('/view/{sample}', [SampleController::class, 'view']);
 
 	// add
-	Route::get('/add', [RegisterController::class, 'register']);
-	Route::post('/create', [RegisterController::class, 'create']);
+	Route::get('/add', [SampleController::class, 'add']);
+	Route::post('/create', [SampleController::class, 'create']);
 	
 	// edit
 	Route::get('/edit/{sample}', [SampleController::class, 'edit']);
@@ -82,8 +82,8 @@ Route::group(['prefix' => 'translations'], function () {
 
 // Password
 Route::group(['prefix' => 'passwords'], function () {
-	Route::get('/reset/{user}', [LoginController::class, 'resetPassword']);
 	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);
+	Route::get('/reset/{user}', [LoginController::class, 'editPassword']);
 	Route::post('/update/{user}', [LoginController::class, 'updatePassword']);
 });
 

@@ -29,4 +29,6 @@ return [
 'Error sending email' => 'Error al enviar email',
 'Error getting word of the day' => 'Error al accesar la palabra del día',
 'New list has been added' => 'Se ha agregado la nueva lista',
+'User updated' => 'Usuario actualizado',
+'Translations updated' => 'Traducciones actualizadas',
 ];

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'View User')
+@section('title', 'View User Profile')
 @section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
 @section('content')
 <div>               

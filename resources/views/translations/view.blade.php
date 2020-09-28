@@ -22,7 +22,7 @@
 
 <div class="tab-content" id="myTabContent">
 	<div class="tab-pane fade show active" id="english" role="tabpanel" aria-labelledby="english-tab">
-		<div class="table-responsive width100">
+		<div class="table-responsive w100">
 		<table>
 			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
 			@foreach($recs as $key => $value)
@@ -37,7 +37,7 @@
 	</div>
 	
 	<div class="tab-pane fade" id="spanish" role="tabpanel" aria-labelledby="spanish-tab">
-		<div class="table-responsive width100">
+		<div class="table-responsive w100">
 		<table>
 			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
 			@foreach($recs as $key => $value)
@@ -52,7 +52,7 @@
 	</div>
 	
 	<div class="tab-pane fade" id="chinese" role="tabpanel" aria-labelledby="chinese-tab">
-		<div class="table-responsive width100">
+		<div class="table-responsive w100">
 		<table>
 			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
 			@foreach($recs as $key => $value)

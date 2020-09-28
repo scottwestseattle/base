@@ -29,4 +29,6 @@ return [
 'Error sending email' => '发送邮件时出错',
 'Error getting word of the day' => '获取当天的消息时出错',
 'New list has been added' => '已添加新列表',
+'User updated' => '用户已更新',
+'Translations updated' => '翻译已更新',
 ];

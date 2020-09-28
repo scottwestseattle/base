@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Log;
 use App;
-use App\Entry;
-use App\Translation;
-use App\Event;
+use Auth;
 use Lang;
+
+use App\Event;
+use App\Entry;
 use App\Tools;
+use App\Translation;
 
 define('TRANSLATIONS_FOLDER', '../resources/lang/');
 
@@ -169,9 +173,7 @@ class TranslationController extends Controller
     {
 		$lines = [];
 		$array = [];
-		
-		dd($request->records);
-		
+				
 		for ($j = 0; $j < 100; $j++) // foreach each language
 		{
 			if (isset($request->records[$j]))
@@ -211,6 +213,9 @@ class TranslationController extends Controller
 		$this->save('es', $filename, $array[1]);
 		$this->save('zh', $filename, $array[2]);
 
+		Log::info('Translations updated', ['id' => Auth::id()]);
+		flash('success', 'Translation updated');
+		
 		return redirect('/translations');
     }
 

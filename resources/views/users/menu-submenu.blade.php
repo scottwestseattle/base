@@ -7,7 +7,7 @@
 			<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
 		</a></li>		
 		
-		<li class="nav-item"><a class="nav-link" href="/users/add">			
+		<li class="nav-item"><a class="nav-link" href="/users/register">			
 			<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
 		</a></li>		
 		
