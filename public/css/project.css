@@ -12,7 +12,11 @@ Super Light Green: #eff7f0
 
 body {
 	/* need the padding for the static nav bar */
-	padding-top: 47px;
+	padding-top: 63px;
+}
+
+h1, h2 {
+	margin-bottom: 20px;
 }
 
 /* colors */
@@ -134,4 +138,9 @@ table.table-events {
 
 .navbar-icon-shortcuts a div svg {
 	margin-top: 5px;
+}
+
+.navbar-submenu {
+	padding-top: 0;
+	padding-bottom: 0;
 }

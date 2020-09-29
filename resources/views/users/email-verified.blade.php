@@ -5,7 +5,7 @@
 <div>               
 	<h1>Thank you for verifying your email address!</h1>
 
-	<h2 class="mt-3">You can now use {{$user->email}} to recover your password.</h3>
+	<h2 class="mt-3">You now have full access to the web site and you can use {{$user->email}} for password recovery.</h3>
 </div>
 
 @endsection

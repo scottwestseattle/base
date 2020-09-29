@@ -1,5 +1,5 @@
 @if (is_admin())
-<nav class="navbar navbar-light mt-3 pb-0 pt-0" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
     <ul class="nav">	
 		<li class="nav-item"><a class="nav-link" href="/home/events">

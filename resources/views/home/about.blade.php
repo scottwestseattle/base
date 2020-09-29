@@ -16,6 +16,10 @@
 				<p>Admin</p>
 			@endif
 		@endif
+		
+			<p>Info: {{\Config::get('constants.email_address.info')}}</p>
+			<p>Support: {{\Config::get('constants.email_address.support')}}</p>		
+		
 		</div>
 		
 	</div>

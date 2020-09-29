@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Log;
+
 use App\Home;
 
 class HomeController extends Controller
@@ -31,8 +33,11 @@ class HomeController extends Controller
 	{
 		$filter = alpha($filter);
 		
-		$records = Home::getEvents($filter);
+		$rc = Home::getEvents($filter);
 		
-		return view('home.events', ['records' => $records]);
+		if ($rc['emergency'])
+			flash('danger', 'Emergency log entries found');
+		
+		return view('home.events', ['records' => $rc['records']]);
 	}
 }

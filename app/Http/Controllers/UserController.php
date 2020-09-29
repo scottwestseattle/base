@@ -38,7 +38,7 @@ class UserController extends Controller
 	}
 	
     public function view(User $user)
-    {
+    {		
 		return view('users.view', ['user' => $user, 'data' => null]);			
     }
 	
