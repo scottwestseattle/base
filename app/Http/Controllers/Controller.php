@@ -35,4 +35,11 @@ class Controller extends BaseController
 	{
 		return $vd;
 	}
+	
+	static function getToken()
+    {
+		$token = md5(uniqid());
+		
+		return $token;
+	}	
 }

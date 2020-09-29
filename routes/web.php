@@ -6,9 +6,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SampleController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,11 @@ Route::get('/about', function() { return view('home.about'); });
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
+// Email
+Route::group(['prefix' => 'email'], function () {
+	Route::get('/send', [EmailController::class, 'send']);
+});
 
 // Samples
 Route::group(['prefix' => 'samples'], function () {
@@ -67,6 +74,10 @@ Route::group(['prefix' => 'users'], function () {
 	// delete
 	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete']);
 	Route::post('/delete/{user}', [UserController::class, 'delete']);
+	
+	// email verification
+	Route::get('/verify-email/{user}/{token}', [VerificationController::class, 'verifyEmail']);
+	
 });
 
 // Translations

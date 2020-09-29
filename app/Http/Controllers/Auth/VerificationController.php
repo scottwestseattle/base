@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\VerifiesEmails;
+
+use Auth;
+use Config;
+use Log;
+
+use App\User;
 
 class VerificationController extends Controller
 {
@@ -17,8 +23,6 @@ class VerificationController extends Controller
     | be re-sent if the user didn't receive the original email message.
     |
     */
-
-    use VerifiesEmails;
 
     /**
      * Where to redirect users after verification.
@@ -34,8 +38,31 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        //$this->middleware('auth');
+        //$this->middleware('signed')->only('verify');
+        //$this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+	
+    public function sendVerificationEmail(Request $request, User $user)
+    {
+
+    }
+
+    public function verifyEmail(Request $request, User $user, $token)
+    {
+		if ($user->email_verification_token == $token)
+		{
+			$user->user_type = Config::get('constants.user_type.confirmed');
+			$user->save();
+			
+			logInfo('user email verified: ' . $user->email, 'email address verified, please log-in');
+		}
+		else
+		{			
+			logWarning('verifyEmail: tokens do not match: ' . $request->email, 'Email not verified - invalid link');
+		}
+		
+		redirect('/login');
+    }
+	
 }

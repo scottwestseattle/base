@@ -43,13 +43,13 @@ class LoginController extends Controller
 	
 	public function resetPassword(Request $request, User $user)
     {
-		$token = 'token';
+		$token = self::getToken();
 		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
 	}
 
 	public function editPassword(Request $request, User $user)
     {		
-		$token = 'token';
+		$token = self::getToken();
 		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
 	}
 
@@ -97,8 +97,7 @@ class LoginController extends Controller
         }
 		else
 		{
-			flash('warning', 'Current password invalid');
-			Log::warning('Password reset: current password invalid' . $request->email, ['id' => $user->id]);
+			logWarning('Password reset: current password invalid: ' . $request->email, 'Current password invalid');
 			return back();
 		}
 			

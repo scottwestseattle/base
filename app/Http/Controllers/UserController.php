@@ -51,6 +51,7 @@ class UserController extends Controller
     {	
 		$user->name = trim($request->name);
 		$user->email = trim($request->email);
+		$user->email_verification_token = self::getToken();
 		
 		if (User::isAdmin())
 		{

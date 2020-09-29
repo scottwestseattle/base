@@ -10,7 +10,7 @@
                     <form method="POST" action="/passwords/update/{{$record->id}}">
                         @csrf
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+                        <input type="hidden" name="token" value="{{$token}}">
 
                         <div class="form-group row">
                             <label for="current_password" class="col-md-4 col-form-label text-md-right">{{ __('Current Password') }}</label>

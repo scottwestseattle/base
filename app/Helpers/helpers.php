@@ -84,3 +84,51 @@ if (!function_exists('alpha')) {
 		return $text;
 	}
 }
+
+if (!function_exists('logWarning')) {
+	
+	function logWarning($msg, $flash = null)
+	{
+		logFlash('warning', $msg, $flash);
+	}
+	
+	function logError($msg, $flash = null)
+	{
+		logFlash('error', $msg, $flash);
+	}
+	
+	function logInfo($msg, $flash = null)
+	{
+		logFlash('info', $msg, $flash);
+	}
+	
+	function logFlash($type, $msg, $flash = null)
+	{
+		$info = ['user id' => Auth::id(), 'ip' => ip_address()];
+		
+		switch($type)
+		{
+			case 'warning':
+				$flashType = $type;
+				Log::warning($msg, $info);
+				break;
+			case 'info':
+				$flashType = 'success';
+				Log::info($msg, $info);
+				break;
+			case 'error':
+				$flashType = 'danger';
+				Log::error($msg, $info);
+				break;
+			default:
+				$flashType = 'danger';
+				Log::error($msg, $info);
+				break;
+		}
+			
+		if (isset($flash))
+			flash($flashType, $flash);
+	}	
+}
+
+

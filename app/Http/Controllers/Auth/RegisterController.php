@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
 use App\Http\Controllers\Controller;
+
+use Config;
+use Log;
 
 use App\User;
 
@@ -84,13 +86,16 @@ class RegisterController extends Controller
 		
 		$record->name = $credentials['name'];
 		$record->email = $credentials['email'];
+		$record->email_verification_token = self::getToken();
 		$record->password = Hash::make($credentials['password']);
 		$record->site_id = SITE_ID;
 		$record->ip_register = ip_address();
 		$record->blocked_flag = 0;
+		$record->user_type = Config::get('constants.user_type.unconfirmed');
 
 		$record->save();
 	   
+		logInfo('new user registered: ' . $record->email, 'new user added, please log-in');	   
 		return redirect('/login');
 	}
 
