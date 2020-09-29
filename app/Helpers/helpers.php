@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
+
 use App\User;
 
 if (!function_exists('obj_count')) {
@@ -131,4 +133,21 @@ if (!function_exists('logWarning')) {
 	}	
 }
 
+if (!function_exists('domainName')) {
+	function domainName()
+	{
+		$v = null;
+
+		if (array_key_exists("SERVER_NAME", $_SERVER))
+		{
+			$v = strtolower($_SERVER["SERVER_NAME"]);
+
+			// trim the duba duba duba
+			if (Str::startsWith($v, 'www.'))
+				$v = substr($v, 4);
+		}
+
+		return $v;
+	}
+}
 

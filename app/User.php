@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use Auth;
+use Config;
 
 // user types
 define('USER_UNCONFIRMED', 0);		// user account email unconfirmed
@@ -67,6 +68,18 @@ class User extends Authenticatable
 		if (Auth::check())
 		{
 			$rc = (Auth::user()->blocked_flag == 1);
+		}
+			
+		return $rc;
+	}
+
+	static public function isConfirmed()
+	{
+		$rc = false;
+		
+		if (Auth::check())
+		{
+			$rc = (Auth::user()->user_type >= Config::get('constants.user_type.confirmed'));
 		}
 			
 		return $rc;

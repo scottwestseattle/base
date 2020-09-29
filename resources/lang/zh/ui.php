@@ -111,4 +111,6 @@ return [
 'List' => '清单',
 'Restart' => '重新开始',
 'Translation' => '翻译',
+'Email Verification' => '电子邮件验证',
+'Please click here to verify your email address' => '请单击此处验证您的电子邮件地址',
 ];

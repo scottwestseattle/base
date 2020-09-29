@@ -35,7 +35,7 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 
 // Email
 Route::group(['prefix' => 'email'], function () {
-	Route::get('/send', [EmailController::class, 'send']);
+	Route::get('/send/{user}', [EmailController::class, 'send']);
 });
 
 // Samples

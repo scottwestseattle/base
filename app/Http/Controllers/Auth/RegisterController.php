@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Http\Controllers\Controller;
 
 use Config;
 use Log;
 
+use App\Email;
 use App\User;
 
 class RegisterController extends Controller
@@ -26,8 +26,6 @@ class RegisterController extends Controller
     |
     */
 
-    //use RegistersUsers;
-
     /**
      * Where to redirect users after registration.
      *
@@ -42,25 +40,10 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        //todo: $this->middleware('guest');
+        $this->middleware('guest');
         //$this->middleware('auth'); // don't let people register until Admin and Super Admin are set up
 
 		parent::__construct();
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
     }
 
     /**
@@ -80,6 +63,12 @@ class RegisterController extends Controller
 	
     protected function create(Request $request)
     {
+		$request->validate([
+			'name' => 'required|string|max:25',
+			'email' => 'required|email|unique:users',
+			'password' => 'required|string|min:8|max:25|confirmed',		
+		]);
+		
 		$record = new User();
 		
 		$credentials = $request->only('name', 'email', 'password');
@@ -93,9 +82,19 @@ class RegisterController extends Controller
 		$record->blocked_flag = 0;
 		$record->user_type = Config::get('constants.user_type.unconfirmed');
 
-		$record->save();
-	   
-		logInfo('new user registered: ' . $record->email, 'new user added, please log-in');	   
+		try 
+		{
+			$record->save();
+			Email::sendVerification($record);		   
+			logInfo('new user registered: ' . $record->email, 'new user added, please log-in');	   
+		}
+		catch(\Exception $e)
+		{
+			$flash = 'new user not added';
+			logError($flash . ': ' . $record->email, $flash);
+			return back();
+		}
+		
 		return redirect('/login');
 	}
 

@@ -111,4 +111,6 @@ return [
 'List' => 'List',
 'Restart' => 'Restart',
 'Translation' => 'Translation',
+'Email Verification' => 'Email Verification',
+'Please click here to verify your email address' => 'Please click here to verify your email address',
 ];

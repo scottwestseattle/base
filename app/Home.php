@@ -38,6 +38,10 @@ class Home extends Model
 				{					
 					$records[] = ['icon' => 'exclamation-triangle', 'color' => 'warning', 'text' => $line];
 				}
+				else if ($all && strpos($line, 'local.') !== false)
+				{
+					$records[] = ['icon' => 'exclamation-octagon', 'color' => 'danger', 'text' => $line];
+				}
 			}
 			
 			$records = array_reverse($records);

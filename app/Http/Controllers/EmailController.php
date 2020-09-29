@@ -11,52 +11,43 @@ use Auth;
 use Lang;
 use Log;
 
+use App\Email;
 use App\User;
 
 class EmailController extends Controller
 {	
 	public function __construct ()
 	{
+        $this->middleware('auth')->except([
+		]);
+		
 		parent::__construct();
 	}
 
-	public function send(Request $request)
+	public function send(Request $request, User $user)
 	{
-		$user = Auth::user();
-		
-		$name = $user->name;
-		$addressTo = $user->email;
-		$addressFrom = env('MAIL_FROM_ADDRESS', '63f42e54a4-f10d4b@inbox.mailtrap.io');
-		$to = Lang::get('content.To');
-		$from = Lang::get('content.From');
-		$debug = false;
-
-		//
-		// send the email
-		//
-		// From: from@mail.com, To: to@mail.com
-		$msg = $from . ': ' . $addressFrom . ', ' . $to . ': ' . $addressTo . ', email verification link';
 		try
 		{
-			$email = new SendMailable($name);
+			if (blank($user->email_verification_token))
+			{
+				$user->email_verification_token = self::getToken();
+				$user->save();
+			}
 
-			$email->subject = Lang::get('content.Email Verification');
-
-			//$d = 'https://' . domainName();
-			$d = 'localhost';
-			$email->link = $d . '/verify-email/{{$user->email}}/token-goes-here';
-
-			if (!$debug)
-				Mail::to($addressTo)->send($email);
-
-			$msg = Lang::get('flash.Email has been sent') . ': ' . $msg;
-			logInfo($msg, $msg);
+			if (!Email::sendVerification($user))
+				throw new \Exception("error sending email");
+			
+			return view('email.verification-email-sent', [
+				'user' => $user,
+			]);
 		}
-		catch (\Exception $e)
+		catch(\Exception $e)
 		{
-			$flash = Lang::get('flash.Error sending email'); 
-			$msg = $flash . ': ' . $e->getMessage();
-			logError($msg, $flash);
+			Log::emergency('manual send email error - ' . $e->getMessage());
+			return view('email.verification-email-not-sent', [
+				'user' => $user,
+			]);			
 		}
+
 	}
 }
