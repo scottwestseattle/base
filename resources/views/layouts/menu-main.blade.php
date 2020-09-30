@@ -49,7 +49,7 @@
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 			@if (is_admin())			
-				<a class="dropdown-item" href="/home/events">
+				<a class="dropdown-item" href="/events">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 							<use xlink:href="/img/bootstrap-icons.svg#exclamation-diamond" />

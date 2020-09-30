@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Events')
-@section('menu-submenu')@component('home.menu-submenu-events')@endcomponent @endsection
+@section('menu-submenu')@component('events.menu-submenu')@endcomponent @endsection
 @section('content')
 
 <div class="">

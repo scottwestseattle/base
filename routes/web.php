@@ -2,15 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VerificationController;
+
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SampleController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\EmailController;
-
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +100,12 @@ Route::group(['prefix' => 'passwords'], function () {
 });
 
 // Password
-Route::group(['prefix' => 'home'], function () {
-	Route::get('/events/{filter?}', [HomeController::class, 'events'])->middleware('admin');
+Route::group(['prefix' => 'events'], function () {
+	Route::get('/', [EventController::class, 'index'])->middleware('admin');
+	Route::get('/confirmdelete', [EventController::class, 'confirmdelete'])->middleware('admin');
+	Route::get('/delete/{filter?}', [EventController::class, 'delete'])->middleware('admin');
+
+	// has to go last
+	Route::get('/index/{filter?}', [EventController::class, 'index'])->middleware('admin');
 });
 

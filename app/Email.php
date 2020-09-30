@@ -34,7 +34,6 @@ class Email extends Model
 		try
 		{
 			$email = new SendMailable($name);
-
 			$email->subject = Lang::get('ui.Email Verification');
 
 			$d = 'https://' . domainName();
