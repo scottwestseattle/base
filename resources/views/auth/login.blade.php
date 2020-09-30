@@ -56,11 +56,9 @@
 								@LANG('ui.Login')
 							</button>
 
-							@if (Route::has('password.request'))
-								<a class="btn btn-link" href="{{ route('password.request') }}">
-									@LANG('ui.Forgot Your Password')
-								</a>
-							@endif
+							<a class="btn btn-link" href="/password/reset">
+								@LANG('ui.Forgot Your Password')
+							</a>
 						</div>
 					</div>
 				</form>

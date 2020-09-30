@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 
 use App\Http\Controllers\EmailController;
@@ -28,11 +29,13 @@ use App\Http\Controllers\UserController;
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/about', function() { return view('home.about'); });
+Route::get('/sitemap', function() { return view('home.sitemap'); });
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
 
 // Email
 Route::group(['prefix' => 'email'], function () {
@@ -93,13 +96,19 @@ Route::group(['prefix' => 'translations'], function () {
 });
 
 // Password
-Route::group(['prefix' => 'passwords'], function () {
+Route::group(['prefix' => 'password'], function () {
+	
+	// reset via email
+	Route::get('/request-password-reset', [ResetPasswordController::class, 'reset']);
+	Route::get('/send-password-reset', [ResetPasswordController::class, 'sendPasswordReset']);
+	Route::get('/reset/{token?}', [ResetPasswordController::class, 'reset']);
+	
+	// edit
 	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);
-	Route::get('/reset/{user}', [LoginController::class, 'editPassword']);
 	Route::post('/update/{user}', [LoginController::class, 'updatePassword']);
 });
 
-// Password
+// Events
 Route::group(['prefix' => 'events'], function () {
 	Route::get('/', [EventController::class, 'index'])->middleware('admin');
 	Route::get('/confirmdelete', [EventController::class, 'confirmdelete'])->middleware('admin');

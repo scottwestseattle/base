@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+
+use DateTime;
 
 class ResetPasswordController extends Controller
 {
@@ -18,14 +20,12 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
-
     /**
      * Where to redirect users after resetting their password.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -38,4 +38,41 @@ class ResetPasswordController extends Controller
 		
 		parent::__construct();
     }
+	
+    public function reset(Request $request, $token = null)
+    {
+		if (isset($token))
+		{
+			// clicked on password reset email link
+			
+		}
+		else
+		{
+			// form where user enters the email address
+			return view('auth.passwords.request-password-reset');
+		}			
+		
+		return redirect($this->$redirectTo);
+    }	
+	
+    public function sendPasswordReset(Request $request)
+    {
+		// look up user by email address
+		$user = User::getByEmail($request->email);
+		
+		if (isset($user))
+		{
+			// save the password reset token with the user
+			$token = uniqueToken();
+			$user->password_reset_token = $token;
+			$user->password_reset_token_expiration = DateTime::getTimeStamp();
+			$user->save();
+			
+			// send the token in an email
+			Email::sendPasswordReset($user);
+		}
+				
+		return view('auth.passwords.reset-email-sent', ['email' => $request->email]);
+    }	
+	
 }

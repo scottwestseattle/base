@@ -20,6 +20,6 @@
     RewriteRule ^ index.php [L]
 	
 	#Base: Send everything to https
-	RewriteCond %{SERVER_PORT} 80
-	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]	
+	#RewriteCond %{SERVER_PORT} 80
+	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]	
 </IfModule>

@@ -15,8 +15,41 @@ body {
 	padding-top: 63px;
 }
 
-h1, h2 {
-	margin-bottom: 20px;
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+	h1, h2 {
+		margin-top:0px;
+		font-size: 24px;
+		margin-bottom: 15px;
+	}
+	.form-card-row {
+		margin-top:0;
+	}
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+	h1, h2 {
+		font-size: 32px;
+		margin-bottom: 20px;
+	}
+  
+	.form-card-row {
+		margin-top:15px;
+	}
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	
 }
 
 /* colors */
@@ -116,10 +149,6 @@ table.table-events {
 .middle {
 	display:inline-block;
 	vertical-align:middle;
-}
-
-.form-card-row {
-	margin-top:15px;
 }
 
 .navbar-icon-shortcuts a {

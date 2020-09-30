@@ -16,8 +16,18 @@ use App\User;
 class Email extends Model
 {
     use HasFactory;
-	
+
+    static public function sendPasswordReset(User $user)
+    {
+		return self::send($user);
+	}
+
     static public function sendVerification(User $user)
+    {
+		return self::send($user);
+	}
+	
+    static public function send(User $user)
     {
 		$name = $user->name;
 		$addressTo = $user->email;

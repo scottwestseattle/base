@@ -7,7 +7,7 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/passwords/update/{{$record->id}}">
+                    <form method="POST" action="/password/update/{{$record->id}}">
                         @csrf
 
                         <input type="hidden" name="token" value="{{$token}}">

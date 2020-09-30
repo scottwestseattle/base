@@ -13,10 +13,9 @@
 	
 	<div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 		<ul>
-			<li>Exception Handling</li>
-			<li>Password Update Email</li>
+			<li>Email Update Verification</li>
+			<li>Email Verification Expiration</li>
 			<li>Password Reset Email</li>
-			<li>Common View Data</li>
 			<li>Form Field Validation</li>			
 		</ul>
 	</div>

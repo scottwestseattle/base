@@ -9,7 +9,7 @@ return [
         'admin' => 1000,
         'super_admin' => 10000,
     ],
-    'email_address' => [
+    'email' => [
         'support' => 'support@' . domainName(),
         'info' => 'info@' . domainName(),
     ],	
