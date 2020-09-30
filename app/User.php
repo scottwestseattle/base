@@ -61,7 +61,12 @@ class User extends Authenticatable
 		USER_SUPER_ADMIN => 'Super Admin',
 	];
 
-	static public function isBlocked()
+	public function isBlocked()
+	{
+		return($this->blocked_flag == 1);
+	}
+	
+	static public function isUserBlocked()
 	{
 		$rc = false;
 		
@@ -145,4 +150,24 @@ class User extends Authenticatable
 	{
 		return ($this->user_type >= USER_SUPER_ADMIN);
 	}	
+	
+	static public function getByEmail($email)
+	{
+		$email = alphanum($email);
+		$record = null;
+		
+		try
+		{
+			$record = User::select()
+				->where('email', $email)
+				->first();
+		}
+		catch(\Exception $e)
+		{
+			$msg = 'get user by email address - ' . $e->getMessage();
+			logError($msg);
+		}
+			
+		return $record;
+	}
 }

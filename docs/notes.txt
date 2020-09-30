@@ -1,6 +1,8 @@
 - DB Changes
 
 Today
+ALTER TABLE `users` ADD `password_reset_token` VARCHAR(100) NOT NULL DEFAULT '\'\'' AFTER `email_verification_expiration`, ADD `password_reset_expiration` TIMESTAMP NULL AFTER `password_reset_token`; 
+ALTER TABLE `users` ADD `email_verification_expiration` TIMESTAMP NULL AFTER `email_verification_token`; 
 ALTER TABLE `users` ADD `email_verification_token` VARCHAR(100) NOT NULL AFTER `email`; 
 
 =====================================================================

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Verification Email Sent')
-@section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
 @section('content')
 <div>               
 	<h1>Verification email has been sent</h1>

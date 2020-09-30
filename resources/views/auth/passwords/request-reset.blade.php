@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Request Password Reset Email')
-@section('menu-submenu')@component('users.menu-submenu') @endcomponent @endsection
 @section('content')
 <div class="row justify-content-center form-card-row">
 	<div class="col-md-8">
@@ -8,7 +7,7 @@
 			<div class="card-header">@LANG('ui.Reset Password')</div>
 
 			<div class="card-body">
-				<form method="POST" action="/password/reset/">
+				<form method="POST" action="/password/send-password-reset">
 					@csrf
 
 					<div class="form-group row">

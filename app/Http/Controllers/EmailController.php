@@ -30,11 +30,13 @@ class EmailController extends Controller
 		{
 			if (blank($user->email_verification_token))
 			{
-				$user->email_verification_token = self::getToken();
+				$user->email_verification_token = uniqueToken();
 				$user->save();
 			}
 
-			if (!Email::sendVerification($user))
+			if (Email::sendVerification($user))
+				logInfo($msg, 'Email successfully sent');
+			else
 				throw new \Exception("error sending email");
 			
 			return view('email.verification-email-sent', [

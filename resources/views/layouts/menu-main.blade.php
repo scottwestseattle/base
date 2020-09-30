@@ -81,7 +81,7 @@
 					</svg>
 					<div class="middle ml-1">Profile</div>
 				</a>
-				<a class="dropdown-item" href="/password/update/{{Auth::id()}}">
+				<a class="dropdown-item" href="/password/edit/{{Auth::id()}}">
 					<svg class="float-left bi mt-1" width="20" height="20" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#pencil-square" />
 					</svg>

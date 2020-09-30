@@ -71,22 +71,6 @@ function referrer()
 }
 }
 
-if (!function_exists('alpha')) {
-	function alpha($text)
-	{
-		if (isset($text))
-		{			
-			$_accents = 'áÁéÉíÍóÓúÚüÜñÑ'; 
-			$text = preg_replace("/\s+/", ' ', $text); // change all whitespace to one space
-			$base = "a-zA-Z ";			
-			$match = $base . $_accents;
-			$text = preg_replace("/[^" . $match . "]+/", "", trim($text));
-		}
-
-		return $text;
-	}
-}
-
 if (!function_exists('logWarning')) {
 	
 	function logWarning($msg, $flash = null)
@@ -151,3 +135,65 @@ if (!function_exists('domainName')) {
 	}
 }
 
+if (!function_exists('uniqueToken')) {
+	function uniqueToken()
+	{
+		return md5(uniqid());
+	}
+}
+
+if (!function_exists('getTimestampFuture')) {
+	function getTimestampFuture($minutes)
+	{
+		$timestamp = date("Y-m-d H:i:s", strtotime('+' . intval($minutes) . ' minutes'));		
+		return $timestamp;
+	}
+}
+
+if (!function_exists('alpha')) {
+	function alpha($text)
+	{
+		if (isset($text))
+		{			
+			$text = preg_replace("/\s+/", ' ', $text); // change all whitespace to one space
+			
+			$base = Config::get('constants.regex.alpha');
+			$accents = Config::get('constants.characters.accents');
+			$match = $base . $accents;
+			
+			$text = preg_replace("/[^" . $match . "]+/", "", trim($text));
+		}
+
+		return $text;
+	}
+}
+
+if (!function_exists('alphanum')) {
+	function alphanum($text, $strict = false)
+	{
+		if (isset($text))
+		{			
+			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
+			$base = Config::get('constants.regex.alphanum');
+			$accents = Config::get('constants.characters.accents');
+			
+			$match = $base . $accents;
+			if (!$strict)
+			{
+				$punct =  Config::get('constants.characters.safe_punctuation');
+				$match .= $punct;
+			}
+			
+			$text = preg_replace("/[^" . $match . "]+/", "", trim($text));
+		}
+
+		return $text;
+	}	
+}
+
+if (!function_exists('alphanumpunct')) {
+	function alphanumpunct($text)
+	{
+		return alphanum($text);
+	}
+}

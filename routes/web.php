@@ -99,9 +99,9 @@ Route::group(['prefix' => 'translations'], function () {
 Route::group(['prefix' => 'password'], function () {
 	
 	// reset via email
-	Route::get('/request-password-reset', [ResetPasswordController::class, 'reset']);
-	Route::get('/send-password-reset', [ResetPasswordController::class, 'sendPasswordReset']);
-	Route::get('/reset/{token?}', [ResetPasswordController::class, 'reset']);
+	Route::get('/request-reset', [ResetPasswordController::class, 'requestReset']);
+	Route::post('/send-password-reset', [ResetPasswordController::class, 'sendPasswordReset']);
+	Route::get('/reset/{user}/{token}', [ResetPasswordController::class, 'resetPassword']);
 	
 	// edit
 	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);

@@ -34,12 +34,5 @@ class Controller extends BaseController
 	public function getViewData($vd)
 	{
 		return $vd;
-	}
-	
-	static function getToken()
-    {
-		$token = md5(uniqid());
-		
-		return $token;
 	}	
 }

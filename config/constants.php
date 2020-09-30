@@ -13,4 +13,13 @@ return [
         'support' => 'support@' . domainName(),
         'info' => 'info@' . domainName(),
     ],	
+    'characters' => [
+		'accents' => 'áÁéÉíÍóÓúÚüÜñÑ',
+		'safe_punctuation' => '!@.,()-+=?!_',
+    ],	
+    'regex' => [
+		'alpha' => 'a-zA-Z ',
+		'alphanum' => 'a-zA-Z0-9 \r\n',
+    ],	
+
 ];

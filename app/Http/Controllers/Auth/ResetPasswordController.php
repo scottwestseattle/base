@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use DateTime;
+use App\Email;
+use App\User;
 
 class ResetPasswordController extends Controller
 {
@@ -34,45 +35,66 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //$this->middleware('guest');
 		
 		parent::__construct();
     }
 	
-    public function reset(Request $request, $token = null)
+    public function requestReset(Request $request)
     {
+		return view('auth.passwords.request-reset');
+    }	
+
+    public function resetPassword(Request $request, User $user, $token)
+    {
+		$token = alphanum($token);
 		if (isset($token))
 		{
 			// clicked on password reset email link
 			
 		}
-		else
-		{
-			// form where user enters the email address
-			return view('auth.passwords.request-password-reset');
-		}			
-		
+	
 		return redirect($this->$redirectTo);
     }	
 	
     public function sendPasswordReset(Request $request)
     {
+		$email = alphanumpunct($request->email);
+		if ($email != $request->email)
+		{
+			// abort
+			logWarning('password reset email request - email address has funky characters: ' . $request->email);
+			return view('auth.passwords.reset-email-not-sent');
+		}
+		
 		// look up user by email address
-		$user = User::getByEmail($request->email);
+		$user = User::getByEmail($email);
 		
 		if (isset($user))
 		{
-			// save the password reset token with the user
-			$token = uniqueToken();
-			$user->password_reset_token = $token;
-			$user->password_reset_token_expiration = DateTime::getTimeStamp();
-			$user->save();
-			
-			// send the token in an email
-			Email::sendPasswordReset($user);
+			if ($user->isBlocked())
+			{
+				logWarning('password reset email request - user is blocked');
+			}
+			else
+			{
+				dd('not blocked');
+				// save the password reset token with the user
+				$token = uniqueToken();
+				$user->password_reset_token = $token;				
+				$user->password_reset_expiration = getTimestampFuture(/* minutes = */ 30);
+				$user->save();
+				
+				// send the token in an email
+				Email::sendPasswordReset($user);
+			}
+		}
+		else
+		{
+			logWarning('password reset email request - email not found: ' . $email);
 		}
 				
-		return view('auth.passwords.reset-email-sent', ['email' => $request->email]);
+		return view('auth.passwords.reset-email-sent', ['email' => $email]);
     }	
 	
 }

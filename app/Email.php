@@ -19,15 +19,19 @@ class Email extends Model
 
     static public function sendPasswordReset(User $user)
     {
-		return self::send($user);
+		$parms['subject'] = Lang::get('ui.Reset Password');
+		$parms['link'] = 'https://' . domainName() . '/password/reset/' . $user->id . '/' . $user->password_reset_token;
+		return self::send($user, $parms);
 	}
 
     static public function sendVerification(User $user)
     {
-		return self::send($user);
+		$parms['subject'] = Lang::get('ui.Email Verification');
+		$parms['link'] = 'https://' . domainName() . '/users/verify-email/' . $user->id . '/' . $user->email_verification_token;
+		return self::send($user, $parms);
 	}
 	
-    static public function send(User $user)
+    static public function send(User $user, $parms)
     {
 		$name = $user->name;
 		$addressTo = $user->email;
@@ -44,15 +48,12 @@ class Email extends Model
 		try
 		{
 			$email = new SendMailable($name);
-			$email->subject = Lang::get('ui.Email Verification');
-
-			$d = 'https://' . domainName();
-			$email->link = $d . '/users/verify-email/' . $user->id . '/' . $user->email_verification_token;
+			$email->subject = $parms['subject'];
+			$email->link = $parms['link'];
 
 			Mail::to($addressTo)->send($email);
 
 			$msg = Lang::get('flash.Email has been sent') . ': ' . $msg;
-			logInfo($msg, 'Email successfully sent');
 			$rc = true;
 		}
 		catch (\Exception $e)

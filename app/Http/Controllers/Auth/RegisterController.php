@@ -75,7 +75,7 @@ class RegisterController extends Controller
 		
 		$record->name = $credentials['name'];
 		$record->email = $credentials['email'];
-		$record->email_verification_token = self::getToken();
+		$record->email_verification_token = uniqueToken();
 		$record->password = Hash::make($credentials['password']);
 		$record->site_id = SITE_ID;
 		$record->ip_register = ip_address();
@@ -85,7 +85,10 @@ class RegisterController extends Controller
 		try 
 		{
 			$record->save();
-			Email::sendVerification($record);		   
+			
+			if (Email::sendVerification($record))
+				logInfo($msg, 'Email successfully sent');
+
 			logInfo('new user registered: ' . $record->email, 'new user added, please log-in');	   
 		}
 		catch(\Exception $e)

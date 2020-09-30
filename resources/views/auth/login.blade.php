@@ -56,7 +56,7 @@
 								@LANG('ui.Login')
 							</button>
 
-							<a class="btn btn-link" href="/password/reset">
+							<a class="btn btn-link" href="/password/request-reset">
 								@LANG('ui.Forgot Your Password')
 							</a>
 						</div>

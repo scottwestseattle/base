@@ -43,13 +43,13 @@ class LoginController extends Controller
 	
 	public function resetPassword(Request $request, User $user)
     {
-		$token = self::getToken();
+		$token = uniqueToken();
 		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
 	}
 
 	public function editPassword(Request $request, User $user)
     {		
-		$token = self::getToken();
+		$token = uniqueToken();
 		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
 	}
 
@@ -115,7 +115,7 @@ class LoginController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) 
 		{
-			if (User::isBlocked())
+			if (User::isUserBlocked())
 			{
 				flash('warning', 'User is Blocked');
 				Log::warning('Blocked user login attempt: ' . $request->email);

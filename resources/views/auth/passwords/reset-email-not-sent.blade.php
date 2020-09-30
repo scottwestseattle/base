@@ -1,9 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Verification Email Not Sent')
-@section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
+@section('title', 'Password Reset Email Not Sent')
 @section('content')
 <div>               
-	<h1 class="mb-4">Unable to send verification email</h1>
+	<h1 class="mb-4">Unable to send email</h1>
 
 	<h2 class="mb-4">Our support team has been notified</h2>
 	

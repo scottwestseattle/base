@@ -20,11 +20,24 @@ body {
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) { 
-	h1, h2 {
-		margin-top:0px;
+
+	h1 {
 		font-size: 24px;
+	}
+	
+	h2 {
+		font-size: 20px;
+	}
+
+	h2 {
+		font-size: 18px;
+	}
+
+	h1, h2, h3 {
+		margin-top:0px;
 		margin-bottom: 15px;
 	}
+	
 	.form-card-row {
 		margin-top:0;
 	}
@@ -32,10 +45,24 @@ body {
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
-	h1, h2 {
+
+	h1 {
 		font-size: 32px;
-		margin-bottom: 20px;
 	}
+	
+	h2 {
+		font-size: 28px;
+	}
+
+	h2 {
+		font-size: 24px;
+	}
+
+	h1, h2, h3 {
+		margin-top:0px;
+		margin-bottom: 15px;
+	}
+	
   
 	.form-card-row {
 		margin-top:15px;
