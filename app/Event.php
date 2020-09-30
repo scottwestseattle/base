@@ -8,6 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     use HasFactory;
+		
+	static public function hasEmergency()
+	{
+		$rc = false;
+		$path = storage_path('logs/laravel.log');
+		$handle = fopen($path, "r");
+		if ($handle) 
+		{
+			while (($line = fgets($handle)) !== false) 
+			{
+				// process the line read.
+				if (stripos($line, 'local.emergency') !== false)
+				{
+					$rc = true;
+					break;
+				}
+			}
+
+			fclose($handle);
+		} 
+		else 
+		{
+			logError('hasEmergency - error opening log file');
+		} 
+
+		return $rc;
+	}
 	
 	static public function get($filter = null)
 	{

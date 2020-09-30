@@ -13,7 +13,7 @@
 			<input type="text" name="email" class="form-control" value="{{$user->email }}"></input>
 		</div>
 					
-		@if (is_admin())
+		@if (isAdmin())
 			<div class="form-group">
 				<select name="user_type" id="user_type">
 					@foreach ($user->getUserTypes() as $key => $value)

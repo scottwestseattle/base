@@ -19,7 +19,7 @@
 	<p><strong>Name</strong>: {{Auth::user()->name}}</p>
 	<p><strong>Email</strong>: {{Auth::user()->email}}</p>
 	
-	@if (is_admin())
+	@if (isAdmin())
 		<p><strong>User Type</strong>: Admin</p>
 		<hr />
 		<h3>System</h3>

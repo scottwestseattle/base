@@ -40,8 +40,8 @@ function ipAddress()
 }
 }
 
-if (!function_exists('is_admin')) {
-function is_admin()
+if (!function_exists('isAdmin')) {
+function isAdmin()
 {
 	return User::isAdmin();
 }

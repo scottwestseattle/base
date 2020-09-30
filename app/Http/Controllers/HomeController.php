@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Log;
 
+use App\Event;
 use App\Home;
 
 class HomeController extends Controller
@@ -26,6 +27,12 @@ class HomeController extends Controller
 	
 	public function dashboard(Request $request)
 	{
+		if (isAdmin())
+		{
+			if (Event::hasEmergency())
+				flash('danger', 'Emergency <a href="/events">events</a> found');
+		}
+		
 		return view('home.dashboard');
 	}
 	

@@ -11,7 +11,7 @@
 @auth
 		<a class="navbar-item" href="{{route('dashboard')}}">
 			<div>
-				<svg class="" width="24" height="24" fill="currentColor" style="{{is_admin() ? 'color:gold;' : ''}}" >
+				<svg class="" width="24" height="24" fill="currentColor" style="{{isAdmin() ? 'color:gold;' : ''}}" >
 					<use xlink:href="/img/bootstrap-icons.svg#person-circle" />
 				</svg>
 			</div>
@@ -48,7 +48,7 @@
 			{{Auth::user()->name}}
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			@if (is_admin())			
+			@if (isAdmin())			
 				<a class="dropdown-item" href="/events">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >

@@ -21,7 +21,7 @@
 	<p><a href="/password/edit/{{Auth::id()}}">Update Password</a></p>
 	<p><a href="/logout">Log-out</a></p>
 	
-	@if (is_admin())
+	@if (isAdmin())
 		<hr/>
 		<h4>Admin</h4>
 		<p><a href="/events/confirmdelete">Delete Events</a></p>
