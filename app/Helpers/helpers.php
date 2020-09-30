@@ -15,8 +15,8 @@ function obj_count($obj)
 }
 }
 
-if (!function_exists('ip_address')) {
-function ip_address()
+if (!function_exists('ipAddress')) {
+function ipAddress()
 {
 	$ip_address = null;
 	
@@ -90,7 +90,7 @@ if (!function_exists('logWarning')) {
 	
 	function logFlash($type, $msg, $flash = null)
 	{
-		$info = ['user id' => Auth::id(), 'ip' => ip_address()];
+		$info = ['user id' => Auth::id(), 'ip' => ipAddress()];
 		
 		switch($type)
 		{
@@ -147,6 +147,13 @@ if (!function_exists('getTimestampFuture')) {
 	{
 		$timestamp = date("Y-m-d H:i:s", strtotime('+' . intval($minutes) . ' minutes'));		
 		return $timestamp;
+	}
+}
+
+if (!function_exists('timestamp')) {
+	function timestamp()
+	{
+		return date("Y-m-d H:i:s");
 	}
 }
 

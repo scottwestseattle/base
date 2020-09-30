@@ -78,7 +78,7 @@ class RegisterController extends Controller
 		$record->email_verification_token = uniqueToken();
 		$record->password = Hash::make($credentials['password']);
 		$record->site_id = SITE_ID;
-		$record->ip_register = ip_address();
+		$record->ip_register = ipAddress();
 		$record->blocked_flag = 0;
 		$record->user_type = Config::get('constants.user_type.unconfirmed');
 

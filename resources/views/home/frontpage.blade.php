@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }}<span class="ml-4">{{ip_address()}}</span>
+                        Laravel v{{ Illuminate\Foundation\Application::VERSION }}<span class="ml-4">{{ipAddress()}}</span>
                     </div>
 					
                 </div>
