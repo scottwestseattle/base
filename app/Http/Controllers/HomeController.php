@@ -35,28 +35,4 @@ class HomeController extends Controller
 		
 		return view('home.dashboard');
 	}
-	
-	public function events(Request $request, $filter = null)
-	{
-		$filter = alpha($filter);
-		
-		$rc = Home::getEvents($filter);
-		
-		if ($rc['emergency'])
-			flash('danger', 'Emergency log entries found');
-		
-		return view('home.events', ['records' => $rc['records']]);
-	}
-	
-	public function confirmdelete(Request $request)
-	{
-		$filter = alpha($filter);
-		
-		$rc = Home::getEvents($filter);
-		
-		if ($rc['emergency'])
-			flash('danger', 'Emergency log entries found');
-		
-		return view('home.confirmdelete', ['records' => $rc['records']]);
-	}
 }

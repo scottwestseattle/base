@@ -35,9 +35,14 @@ class EmailController extends Controller
 			}
 
 			if (Email::sendVerification($user))
-				logInfo($msg, 'Email successfully sent');
+			{
+				$flash = 'Email successfully sent';
+				logInfo('Email::send - ' . $flash, $flash);
+			}
 			else
+			{
 				throw new \Exception("error sending email");
+			}
 			
 			return view('email.verification-email-sent', [
 				'user' => $user,

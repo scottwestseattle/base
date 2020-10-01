@@ -29,6 +29,8 @@
 		<p><strong>Database</strong>: {{env('DB_DATABASE')}}</p>
 		<p><strong>Mail Host</strong>: {{env('MAIL_HOST')}}</p>
 		<p><strong>Sample Token</strong>: {{uniqueToken()}}</p>
+		<p><strong>Singular</strong>: {{trans_choice('ui.tags', 1)}}</p>
+		<p><strong>Plural</strong>: {{trans_choice('ui.tags', 2)}}</p>
 	@endif
 @endif
 

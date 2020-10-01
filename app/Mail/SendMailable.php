@@ -13,6 +13,7 @@ class SendMailable extends Mailable
 	public $name;
 	public $title;
 	public $link;
+	public $linkText;
 
 /*
 	$from		The person the message is from.	
@@ -44,6 +45,6 @@ class SendMailable extends Mailable
 		
         return $this
 			->from(env('MAIL_FROM_ADDRESS', '63f42e54a4-f10d4b@inbox.mailtrap.io'))
-			->view('email.verify-email');
+			->view('email.email-format');
     }
 }

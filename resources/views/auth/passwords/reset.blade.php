@@ -7,11 +7,10 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/password/update/{{$record->id}}">
+                    <form method="POST" action="/password/update/{{$user->id}}">
                         @csrf
 
-                        <input type="hidden" name="token" value="{{$token}}">
-
+						@auth
                         <div class="form-group row">
                             <label for="current_password" class="col-md-4 col-form-label text-md-right">{{ __('Current Password') }}</label>
 
@@ -25,6 +24,7 @@
                                 @enderror
                             </div>
                         </div>
+						@endauth
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('New Password') }}</label>

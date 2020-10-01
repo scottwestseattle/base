@@ -87,6 +87,11 @@ if (!function_exists('logWarning')) {
 	{
 		logFlash('info', $msg, $flash);
 	}
+
+	function logEmergency($msg, $flash = null)
+	{
+		logFlash('emergency', $msg, $flash);
+	}
 	
 	function logFlash($type, $msg, $flash = null)
 	{
@@ -105,6 +110,10 @@ if (!function_exists('logWarning')) {
 			case 'error':
 				$flashType = 'danger';
 				Log::error($msg, $info);
+				break;
+			case 'emergency':
+				$flashType = 'danger';
+				Log::emergency($msg, $info);
 				break;
 			default:
 				$flashType = 'danger';
@@ -202,5 +211,28 @@ if (!function_exists('alphanumpunct')) {
 	function alphanumpunct($text)
 	{
 		return alphanum($text);
+	}
+}
+
+if (!function_exists('isExpired')) {
+	function isExpired($sDate)
+	{
+		$rc = false;
+		
+		if (isset($sDate))
+		{
+			try
+			{
+				$expiration = new DateTime($sDate);
+				$now = new DateTime('NOW');
+				$rc = ($now <= $expiration);
+			}
+			catch(\Exception $e)
+			{
+				logEmergency('isExpired - date error: ' . $e->getMessage());
+			}			
+		}
+		
+		return !$rc;
 	}
 }

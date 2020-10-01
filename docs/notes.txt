@@ -53,8 +53,14 @@ use @error for validation errors
 @enderror
 
 {{-- This comment will not be present in the rendered HTML --}}
-
-
+=====================================================================
+Translation shortcuts:
+{{ __('messages.welcome') }}
+Paceholder:
+set: 'welcome' => 'Welcome, :name'
+use: __('messages.welcome', ['name' => 'Bob'])
+plural: 'apples' => 'There is one apple|There are many apples',
+plural call: trans_choice('ui.apples', 1); // returns 'apple'
 =====================================================================
 CSS Shortcut Classes
 w100
