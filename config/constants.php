@@ -21,5 +21,8 @@ return [
 		'alpha' => 'a-zA-Z ',
 		'alphanum' => 'a-zA-Z0-9 \r\n',
     ],	
+    'time' => [
+		'link_expiration_minutes' => 30,
+    ],	
 
 ];

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dashboard')
+@section('title', __('base.Dashboard'))
 @section('content')
 
 	<h1>{{Auth::user()->name}} Dashboard</h1>
@@ -13,7 +13,6 @@
 	
 	<div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 		<ul>
-			<li>Email Update Verification</li>
 			<li>Email Verification Expiration</li>
 			<li>Password Reset Email</li>
 			<li>Form Field Validation</li>			

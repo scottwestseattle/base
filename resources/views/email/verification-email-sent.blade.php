@@ -1,18 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Verification Email Sent')
+@section('title', __('base.Verification Email Sent'))
 @section('content')
 <div>               
 	<h1>Verification email has been sent</h1>
 	
-	<h2>Check for it at {{$user->email}}</h2>
+	<h2>{{__('base.Check for it at', ['email' => $user->email])}}</h2>
 	
-	<h5 class="mt-5">Note: If you do not receive the email in few minutes:</h5>
-	<ul class="text-lg">
-		<li>check your spam folder</li>
-		<li>verify that your email address is correct</li>
-		<li>if you can't resolve the issue, please contact support@domain.com</li>
-	</ul>
-	
+	<h4><i>{{ __('base.link will expire', ['mins' => getConstant("time.link_expiration_minutes")]) }}</i></h4>
+
+	@component('components.check-email-steps') @endcomponent	
 </div>
 
 @endsection

@@ -21,7 +21,7 @@ class Email extends Model
     {
 		$parms['subject'] = Lang::get('base.Reset Password');
 		$parms['link'] = 'https://' . domainName() . '/password/reset/' . $user->id . '/' . $user->password_reset_token;
-		$parms['linkText'] = Lang::get('base.Please click here to reset your password');
+		$parms['linkText'] = 'Please click here to reset your password';
 		return self::send($user, $parms);
 	}
 
@@ -29,7 +29,7 @@ class Email extends Model
     {
 		$parms['subject'] = Lang::get('base.Email Verification');
 		$parms['link'] = 'https://' . domainName() . '/users/verify-email/' . $user->id . '/' . $user->email_verification_token;
-		$parms['linkText'] = Lang::get('base.Please click here to verify your email address');
+		$parms['linkText'] = 'Please click here to verify your email address';
 		return self::send($user, $parms);
 	}
 	
@@ -53,7 +53,6 @@ class Email extends Model
 			$email->subject = $parms['subject'];
 			$email->link = $parms['link'];
 			$email->linkText = $parms['linkText'];
-
 
 			Mail::to($addressTo)->send($email);
 

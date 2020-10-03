@@ -73,29 +73,35 @@ function referrer()
 
 if (!function_exists('logWarning')) {
 	
-	function logWarning($msg, $flash = null)
+	function logWarning($msg, $flash = null, $parms = null)
 	{
-		logFlash('warning', $msg, $flash);
+		logFlash('warning', $msg, $flash, $parms);
 	}
 	
-	function logError($msg, $flash = null)
+	function logError($msg, $flash = null, $parms = null)
 	{
-		logFlash('error', $msg, $flash);
+		logFlash('error', $msg, $flash, $parms);
 	}
 	
-	function logInfo($msg, $flash = null)
+	function logInfo($msg, $flash = null, $parms = null)
 	{
-		logFlash('info', $msg, $flash);
+		logFlash('info', $msg, $flash, $parms);
 	}
 
-	function logEmergency($msg, $flash = null)
+	function logEmergency($msg, $flash = null, $parms = null)
 	{
-		logFlash('emergency', $msg, $flash);
+		logFlash('emergency', $msg, $flash, $parms);
 	}
 	
-	function logFlash($type, $msg, $flash = null)
+	function logFlash($type, $msg, $flash, $parms)
 	{
 		$info = ['user id' => Auth::id(), 'ip' => ipAddress()];
+		
+		if (isset($parms))
+			$info = array_merge($info, $parms);
+		
+		if (isset($flash))
+			$msg .= ' - ' . $flash;
 		
 		switch($type)
 		{
@@ -234,5 +240,12 @@ if (!function_exists('isExpired')) {
 		}
 		
 		return !$rc;
+	}
+}
+
+if (!function_exists('getConstant')) {
+	function getConstant($name)
+	{
+		return(Config::get('constants.' . $name));
 	}
 }

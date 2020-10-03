@@ -79,14 +79,12 @@ class ResetPasswordController extends Controller
 			}
 			else
 			{
-				$msg = 'Password reset link has already been used';
-				logWarning($msg, $msg);
+				logWarning(__FUNCTION__, 'Password reset link has already been used');
 			}
 		}
 		else
 		{
-			$msg = 'Password reset link is invalid';
-			logWarning($msg, $msg);
+			logWarning(__FUNCTION__, 'Password reset link is invalid');
 		}
 	
 		return redirect($this->redirectTo);
@@ -94,12 +92,11 @@ class ResetPasswordController extends Controller
 	
     public function sendPasswordReset(Request $request)
     {
-		$function = 'password reset email request';
 		$email = alphanumpunct($request->email);
 		if ($email != $request->email)
 		{
 			// abort
-			logWarning($function . ' - email address has funky characters: ' . $request->email);
+			logWarning(__FUNCTION__ . ' - email address has funky characters: ' . $request->email);
 			return view('auth.passwords.reset-email-not-sent');
 		}
 		
@@ -110,7 +107,7 @@ class ResetPasswordController extends Controller
 		{
 			if ($user->isBlocked())
 			{
-				logWarning($function . ' - user is blocked');
+				logWarning(__FUNCTION__ . ' - user is blocked');
 			}
 			else
 			{
@@ -125,22 +122,22 @@ class ResetPasswordController extends Controller
 					// send the token in an email
 					if (Email::sendPasswordReset($user))
 					{
-						logInfo($function . ' - email sent');
+						logInfo(__FUNCTION__ . ' - email sent');
 					}
 					else
 					{
-						logError($function . ' - error sending email: ' . $email);
+						logError(__FUNCTION__ . ' - error sending email: ' . $email);
 					}
 				}
 				catch(\Exception $e)
 				{
-					logError($function . ' - error saving password request token or sending email: ' . $email);
+					logError(__FUNCTION__ . ' - error saving password request token or sending email: ' . $email);
 				}
 			}
 		}
 		else
 		{
-			logWarning($function . ' - email not found: ' . $email);
+			logWarning(__FUNCTION__ . ' - email not found: ' . $email);
 		}
 				
 		return view('auth.passwords.reset-email-sent', ['email' => $email]);

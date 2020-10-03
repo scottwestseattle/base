@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
+use Hash;
 use Log;
 
 use App\User;
@@ -41,67 +42,41 @@ class LoginController extends Controller
 		return redirect('/');
 	}
 	
-	public function resetPassword(Request $request, User $user)
-    {
-		$token = uniqueToken();
-		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
-	}
-
 	public function editPassword(Request $request, User $user)
     {		
 		$token = uniqueToken();
-		return view('auth.passwords.reset', ['record' => $user, 'token' => $token]);
+		return view('auth.passwords.reset', ['user' => $user, 'token' => $token]);
 	}
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-		dd('here');
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
-
     public function updatePassword(Request $request, User $user)
-    {		
-		if ($request->password != $request->password_confirmation)
+    {
+		$data = $request->validate([
+			'current_password' => 'required|string|min:8|max:25',		
+			'password' => 'required|string|min:8|max:25|confirmed',		
+		]);	
+	
+		if (Auth::attempt(['email' => $user->email, 'password' => $data['current_password']])) 
 		{
-			// don't match
-			Log::warning('Password Reset - Password does not match confirmation', ['id' => $user->id]);
-			flash('warning', 'New password and password confirmation do not match');
-			return back();
-		}
-        else if (Auth::attempt(['email' => $user->email, 'password' => $request->current_password])) 
-		{
-			if (User::isBlocked())
+			if ($user->isBlocked())
 			{
-				flash('warning', 'User is Blocked');
-				Log::warning('Blocked user change password attempt: ' . $request->email);
+				logWarning(__FUNCTION__, 'User is blocked', ['email' => $user->email]);
 				return back();
 			}
 			else
 			{
 				// Authentication passed...
-				$user->password = Hash::make($request->password);
+				$user->password = Hash::make($data['password']);
 				$user->save();
-				Log::info('User password updated', ['id' => $user->id]);
-				flash('success', 'Password updated');
+				logInfo(__FUNCTION__, 'Password updated', ['email' => $user->email]);
 			}			
         }
 		else
 		{
-			logWarning('Password reset: current password invalid: ' . $request->email, 'Current password invalid');
+			logWarning(__FUNCTION__, 'Current password invalid');
 			return back();
 		}
 			
-		return redirect('/users/view/{{$user->id}}'); 
+		return redirect("/users/view/$user->id"); 
     }
 	
     /**
@@ -113,12 +88,16 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) 
+		$data = $request->validate([
+			'email' => 'required|email',		
+			'password' => 'required|string',		
+		]);
+		
+        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) 
 		{
 			if (User::isUserBlocked())
 			{
-				flash('warning', 'User is Blocked');
-				Log::warning('Blocked user login attempt: ' . $request->email);
+				logWarning(__FUNCTION__, 'User is Blocked', ['email' => $data['email']]);
 			}
 			else
 			{
@@ -128,8 +107,7 @@ class LoginController extends Controller
         }
 		else
 		{
-			flash('warning', 'Invalid credentials');
-			Log::warning('invalid login credentials: ' . $request->email);
+			logWarning(__FUNCTION__, 'Invalid credentials', ['email' => $data['email']]);
 		}
 		
 		return redirect('/login');
