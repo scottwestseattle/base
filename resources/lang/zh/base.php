@@ -24,4 +24,8 @@ return [
 'Email Verified' => 'Email Verified',
 'Thank you for verifying your email address!' => 'Thank you for verifying your email address!',
 'Unable to verify email address' => 'Unable to verify email address',
+'Unable to verify email' => 'Unable to verify email',
+'About' => '关于',
+'Site Map' => '网站地图',
+'Forgot Password' => '忘记密码',
 ];

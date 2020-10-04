@@ -34,6 +34,18 @@
 				</svg>
 			</div>
 		</a>	
+		
+		<!-- Language Selector Dropdown -->
+		<div class="mt-1 middle dropdown">
+			<a href="#" class="navbar-item" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+				<img width="25" src="/img/language-{{App::getLocale()}}.png" />
+			</a>
+			<ul style="float: left; background-color:transparent; border:0;"  class="dropdown-menu">
+				<li><a href="/language/en"><img src="/img/language-en.png" /></a></li>
+				<li><a href="/language/es"><img src="/img/language-es.png" /></a></li>
+				<li><a href="/language/zh"><img src="/img/language-zh.png" /></a></li>
+			</ul>
+		</div>		
 	</div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -6,6 +6,11 @@ ALTER TABLE `users` ADD `email_verification_expiration` TIMESTAMP NULL AFTER `em
 ALTER TABLE `users` ADD `email_verification_token` VARCHAR(100) NOT NULL AFTER `email`; 
 
 =====================================================================
+===== New Laravel tricks =====
+return back()->withInput();
+return 404, page not found: abort(404);
+return 401, permission denied: abort(401);
+=====================================================================
 How to add a Helper file
 - create helper.php in app\Helpers
 - use if (!function_exists('ip_address')) { function() };
@@ -21,11 +26,9 @@ How to add a Helper file
         ]
 	},
 - regenerate the autoloaders: composer dump-autoload
-- updload /vendor/composer to server
+- upload /vendor/composer to server
 - now functions will be available globally
 =====================================================================
-return 404, page not found: abort(404);
-return 401, permission denied: abort(401);
 =====================================================================
 Logging Levels:
 Log::emergency($message); 	// system down
@@ -64,3 +67,8 @@ plural call: trans_choice('ui.apples', 1); // returns 'apple'
 =====================================================================
 CSS Shortcut Classes
 w100
+=====================================================================
+Artisan Commands: run from "\dev\[project root]"
+- php artisan make:middleware setLocale
+
+

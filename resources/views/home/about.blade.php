@@ -1,16 +1,17 @@
 @extends('layouts.app')
-@section('title', 'About')
+@section('title', __('base.About'))
 @section('content')
 
-<h1>About</h1>
+<h1>{{__('base.About')}}</h1>
 
 <div class="">
 	<p>PHP v{{phpversion()}}</p>
 	<p>Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
 	<p>{{ipAddress()}}</p>
 	<p>{{domainName()}}</p>
-	<p><strong>Info</strong>: {{\Config::get('constants.email.info')}}</p>
-	<p><strong>Support</strong>: {{\Config::get('constants.email.support')}}</p>		
+	<p><strong>Info</strong>: {{Config::get('constants.email.info')}}</p>
+	<p><strong>Support</strong>: {{Config::get('constants.email.support')}}</p>		
+	<p><strong>Locale</strong>: {{App::getLocale()}}</p>		
 	<p><a href="/sitemap">Site Map</a></p>		
 
 @auth

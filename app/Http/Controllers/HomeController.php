@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App;
 use Log;
 
 use App\Event;
@@ -15,14 +16,26 @@ class HomeController extends Controller
 	{
         $this->middleware('auth')->except([
 			'frontpage',
+			'about',
+			'sitemap',
 		]);
-			
+						
 		parent::__construct();
 	}	
 
 	public function frontpage(Request $request)
 	{
 		return view('home.frontpage');
+	}
+
+	public function about(Request $request)
+	{		
+		return view('home.about');
+	}
+
+	public function sitemap(Request $request)
+	{
+		return view('home.sitemap');
 	}
 	
 	public function dashboard(Request $request)

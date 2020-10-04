@@ -25,4 +25,7 @@ return [
 'Thank you for verifying your email address!' => 'Thank you for verifying your email address!',
 'Unable to verify email address' => 'Unable to verify email address',
 'Unable to verify email' => 'Unable to verify email',
+'About' => 'Sobre',
+'Site Map' => 'Mapa del sitio',
+'Forgot Password' => 'Recuperar contraseña',
 ];

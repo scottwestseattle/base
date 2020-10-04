@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
@@ -25,11 +26,18 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// Handle the available languages with prefixed url's
+// the locale gets set to the session in the Controller and then they get redirected to the regular URL
+Route::get('/en/{one?}/{two?}/{three?}/{four?}', [Controller::class, 'en'])->name('en');
+Route::get('/es/{one?}/{two?}/{three?}/{four?}', [Controller::class, 'es'])->name('es');
+Route::get('/zh/{one?}/{two?}/{three?}/{four?}', [Controller::class, 'zh'])->name('zh');
+
 // Front Page
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
-Route::get('/about', function() { return view('home.about'); });
-Route::get('/sitemap', function() { return view('home.sitemap'); });
+Route::get('/sitemap', [HomeController::class, 'sitemap'])->name('sitemap');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/language/{locale}', [Controller::class, 'language']);
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -116,4 +124,5 @@ Route::group(['prefix' => 'events'], function () {
 	// has to go last
 	Route::get('/index/{filter?}', [EventController::class, 'index'])->middleware('admin');
 });
+
 
