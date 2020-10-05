@@ -10,6 +10,7 @@ ALTER TABLE `users` ADD `email_verification_token` VARCHAR(100) NOT NULL AFTER `
 return back()->withInput();
 return 404, page not found: abort(404);
 return 401, permission denied: abort(401);
+in a foreach you can use: $loop->iteration
 =====================================================================
 How to add a Helper file
 - create helper.php in app\Helpers

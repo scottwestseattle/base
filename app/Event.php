@@ -39,7 +39,8 @@ class Event extends Model
 	static public function get($filter = null)
 	{
 		$records = [];
-		$rc['emergency'] = false;
+		$rc['emergency'] = 0;
+		$rc['errors'] = 0;
 		$rc['records'] = $records;
 		
 		$path = storage_path('logs/laravel.log');
@@ -57,11 +58,12 @@ class Event extends Model
 			{
 				if (strpos($line, 'local.EMERGENCY') !== false)
 				{					
-					$rc['emergency'] = true;
+					$rc['emergency']++;
 				}
 				
 				if ($errors && strpos($line, 'local.ERROR') !== false)
 				{				
+					$rc['errors']++;
 					$records[] = ['icon' => 'exclamation-diamond', 'color' => 'danger', 'bgColor' => 'default', 'text' => $line];
 				}
 				else if ($info && strpos($line, 'local.INFO') !== false)
@@ -96,7 +98,8 @@ class Event extends Model
 		if (isset($filter))
 		{
 			$emergency = ($filter == 'emergency');
-			if ($emergency)
+			$errors = ($filter == 'errors');
+			if ($emergency || $errors)
 			{
 				$file = file_get_contents($path);
 				if ($file !== false)
@@ -106,15 +109,40 @@ class Event extends Model
 					$cnt = 0;
 					foreach($lines as $line)
 					{
-						// we're deleting emergency lines so only save the ones that don't match
-						if ($emergency && strpos($line, 'local.EMERGENCY') !== false)
+						if ($emergency)
 						{
-							// skip these since we're removing them
-							$cnt++;
+							if (strpos($line, 'local.EMERGENCY') !== false)
+							{
+								// skip and count
+								$cnt++;
+							}
+							else
+							{					
+								// save everything else
+								$records[] = $line;
+							}
 						}
-						else
-						{					
-							$records[] = $line;
+						else if ($errors)
+						{
+							if (
+								strpos($line, 'local.INFO') !== false 
+							 || strpos($line, 'local.WARNING') !== false
+							 || strpos($line, 'local.EMERGENCY') !== false
+							)
+							{
+								// save these
+								$records[] = $line;
+							}
+							// we're only deleting ERROR lines so skip them
+							else if (strpos($line, 'local.ERROR') !== false)
+							{
+								// skip and count
+								$cnt++;
+							}
+							else
+							{					
+								// skip all of the stack trace detail lines of an ERROR message
+							}
 						}
 					}
 					
@@ -128,7 +156,13 @@ class Event extends Model
 						}
 						fclose($file);
 						
-						$msg = '' . $cnt . ' emergency events deleted';
+						if ($emergency)
+							$msg = trans_choice('base.emergency events deleted', $cnt, ['count' => $cnt]);
+						else if ($errors)
+							$msg = trans_choice('base.error events deleted', $cnt, ['count' => $cnt]);
+						else
+							$msg = __('base.events deleted');
+						
 						logInfo($msg, $msg);
 					}
 					catch(\Exception $e)
@@ -158,8 +192,8 @@ class Event extends Model
 				$file = fopen($path, "w");
 				fclose($file);
 
-				$msg = 'All events deleted';
-				flash('success', $msg);				
+				$msg = __('base.All events deleted');
+				logInfo($msg, $msg);
 			}
 			catch(\Exception $e)
 			{

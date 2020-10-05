@@ -77,6 +77,12 @@ if (!function_exists('logWarning')) {
 	{
 		logFlash('warning', $msg, $flash, $parms);
 	}
+
+	function logException($msg, $exception, $flash = null, $parms = null)
+	{
+		$msg .= ', ' . $exception;
+		logFlash('error', $msg, $flash, $parms);
+	}
 	
 	function logError($msg, $flash = null, $parms = null)
 	{

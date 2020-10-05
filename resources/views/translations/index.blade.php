@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Translations')
+@section('title', trans_choice('base.Translation', 2))
 @section('menu-submenu')@component('translations.menu-submenu')@endcomponent @endsection
 @section('content')
 

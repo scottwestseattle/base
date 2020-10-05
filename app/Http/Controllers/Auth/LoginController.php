@@ -19,10 +19,11 @@ class LoginController extends Controller
 			'login',
 			'logout',
 			'authenticate',
+			'updatePassword',
 		]);		
 
         $this->middleware('owner')->only([
-			'resetPassword', 'editPassword', 'updatePassword',
+			'resetPassword', 'editPassword',
 		]);
 	
 		parent::__construct();
@@ -45,7 +46,7 @@ class LoginController extends Controller
 	public function editPassword(Request $request, User $user)
     {		
 		$token = uniqueToken();
-		return view('auth.passwords.reset', ['user' => $user, 'token' => $token]);
+		return view('auth.passwords.edit', ['user' => $user, 'token' => $token]);
 	}
 
     public function updatePassword(Request $request, User $user)
@@ -57,26 +58,45 @@ class LoginController extends Controller
 	
 		if (Auth::attempt(['email' => $user->email, 'password' => $data['current_password']])) 
 		{
+			// remove the password reset token
+			try
+			{
+				$user->password_reset_token = null;
+				$user->password_reset_expiration = null;
+				$user->save();
+			}
+			catch(\Exception $e)
+			{
+				logException(__('Error removing password reset token'), $e->getMessage());
+			}
+			
 			if ($user->isBlocked())
 			{
-				logWarning(__FUNCTION__, 'User is blocked', ['email' => $user->email]);
+				logWarning(__FUNCTION__, __('base.User is blocked'), ['email' => $user->email]);
 				return back();
 			}
 			else
 			{
-				// Authentication passed...
-				$user->password = Hash::make($data['password']);
-				$user->save();
-				logInfo(__FUNCTION__, 'Password updated', ['email' => $user->email]);
+				try
+				{
+					// Authentication passed, save the new password
+					$user->password = Hash::make($data['password']);
+					$user->save();
+					logInfo(__FUNCTION__, __('base.Password updated'), ['email' => $user->email]);
+				}
+				catch(\Exception $e)
+				{
+					logException(__FUNCTION__, $e->getMessage(), __('Error saving new password'));
+				}
 			}			
         }
 		else
 		{
-			logWarning(__FUNCTION__, 'Current password invalid');
+			logWarning(__FUNCTION__, __('base.Current password invalid'));
 			return back();
 		}
 			
-		return redirect("/users/view/$user->id"); 
+		return redirect('/login'); 
     }
 	
     /**

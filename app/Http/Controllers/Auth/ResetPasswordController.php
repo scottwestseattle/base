@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use DateTime;
+use Hash;
 use Log;
 
 use App\Email;
@@ -58,20 +59,18 @@ class ResetPasswordController extends Controller
 			{				
 				if (isExpired($user->password_reset_expiration))
 				{
-					$msg = 'Password reset link has expired, please try again';
+					$msg = __('base.Password reset link has expired, please try again');
 					Log::warning($msg, ['expiration' => $user->password_reset_expiration, 'now' => new DateTime('NOW')]);
 					flash('warning', $msg);
 					
 					$user->password_reset_token = null;
 					$user->password_reset_expiration = null;
-					$user->save();					
+					$user->save();
+
+					return redirect('/password/request-reset');
 				}
 				else
-				{
-					$user->password_reset_token = null;
-					$user->password_reset_expiration = null;
-					$user->save();
-					
+				{					
 					// go to reset password form
 					return view('auth.passwords.reset', ['user' => $user]);
 				}
@@ -79,12 +78,12 @@ class ResetPasswordController extends Controller
 			}
 			else
 			{
-				logWarning(__FUNCTION__, 'Password reset link has already been used');
+				logWarning(__FUNCTION__, __('base.Password reset link has already been used'));
 			}
 		}
 		else
 		{
-			logWarning(__FUNCTION__, 'Password reset link is invalid');
+			logWarning(__FUNCTION__, __('base.Password reset link is invalid'));
 		}
 	
 		return redirect($this->redirectTo);
@@ -118,6 +117,7 @@ class ResetPasswordController extends Controller
 					$user->password_reset_token = $token;				
 					$user->password_reset_expiration = getTimestampFuture(/* minutes = */ 30);
 					$user->save();
+					logInfo(__FUNCTION__ . ' - token saved to user record');
 					
 					// send the token in an email
 					if (Email::sendPasswordReset($user))
@@ -131,7 +131,7 @@ class ResetPasswordController extends Controller
 				}
 				catch(\Exception $e)
 				{
-					logError(__FUNCTION__ . ' - error saving password request token or sending email: ' . $email);
+					logError(__FUNCTION__ . ', exception, email: ' . $email . ', ' . $e->getMessage());
 				}
 			}
 		}
@@ -141,6 +141,38 @@ class ResetPasswordController extends Controller
 		}
 				
 		return view('auth.passwords.reset-email-sent', ['email' => $email]);
-    }	
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+		$data = $request->validate([
+			'password' => 'required|string|min:8|max:25|confirmed',		
+		]);	
+
+		if ($user->isBlocked())
+		{
+			logWarning(__FUNCTION__, __('base.User is blocked'), ['email' => $user->email]);
+			return back();
+		}
+		else
+		{
+			try
+			{
+				// Authentication passed, save the new password
+				$user->password_reset_token = null;
+				$user->password_reset_expiration = null;
+				$user->password = Hash::make($data['password']);
+				$user->save();
+				logInfo(__FUNCTION__, __('base.Password has been reset, please log-in'), ['email' => $user->email]);
+			}
+			catch(\Exception $e)
+			{
+				logException(__FUNCTION__, $e->getMessage(), __('Error saving new password'));
+				return back();
+			}
+		}
+			
+		return redirect('/login'); 
+    }		
 	
 }

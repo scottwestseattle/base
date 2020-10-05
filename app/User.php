@@ -151,6 +151,24 @@ class User extends Authenticatable
 		return ($this->user_type >= USER_SUPER_ADMIN);
 	}	
 	
+	static public function get()
+	{
+		$records = User::select()
+			->orderByRaw('id DESC')
+			->get();
+			
+		return $records;
+	}
+
+	static public function count()
+	{
+		$count = User::select()
+			->orderByRaw('id DESC')
+			->count();
+			
+		return $count;
+	}
+	
 	static public function getByEmail($email)
 	{
 		$email = alphanum($email);

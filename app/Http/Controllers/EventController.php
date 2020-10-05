@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Exception;
 use Log;
 
 use App\Event;
@@ -23,8 +24,11 @@ class EventController extends Controller
 		
 		$rc = Event::get($filter);
 		
-		if ($rc['emergency'])
-			flash('danger', 'Emergency log entries found');
+		//logEmergency('test');
+		//logError('error');
+		//throw new Exception('test exception');
+		if ($rc['emergency'] > 0)
+			flash('danger', trans_choice('base.emergency events found', $rc['emergency'], ['count' => $rc['emergency']]));
 		
 		return view('events.index', ['records' => $rc['records']]);
 	}
@@ -33,6 +37,7 @@ class EventController extends Controller
 	{
 		$rc = Event::get();
 		
+		//logEmergency('system down');
 		return view('events.confirmdelete', ['records' => $rc['records'], 'hasEmergencyEvents' => $rc['emergency']]);
 	}
 	

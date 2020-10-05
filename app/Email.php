@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 
+use App;
 use Auth;
 use Lang;
 use Log;
@@ -19,9 +20,11 @@ class Email extends Model
 
     static public function sendPasswordReset(User $user)
     {
+		$locale = App::getLocale();
 		$parms['subject'] = Lang::get('base.Reset Password');
-		$parms['link'] = 'https://' . domainName() . '/password/reset/' . $user->id . '/' . $user->password_reset_token;
+		$parms['link'] = 'https://' . domainName() . '/' . $locale . '/password/reset/' . $user->id . '/' . $user->password_reset_token;
 		$parms['linkText'] = 'Please click here to reset your password';
+		
 		return self::send($user, $parms);
 	}
 

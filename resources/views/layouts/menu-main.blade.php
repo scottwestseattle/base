@@ -67,7 +67,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#exclamation-diamond" />
 						</svg>
 					</div>
-					<div class="middle ml-1">Events</div>
+					<div class="middle ml-1">{{trans_choice('base.Event', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{route('translations')}}">
 					<div class="middle">
@@ -75,7 +75,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#chat-right-text" />
 						</svg>
 					</div>
-					<div class="middle ml-1">Translations</div>
+					<div class="middle ml-1">{{trans_choice('base.Translation', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="/users">
 					<div class="middle">
@@ -83,7 +83,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#people" />
 						</svg>
 					</div>
-					<div class="middle ml-1">Users</div>
+					<div class="middle ml-1">{{trans_choice('base.User', 2)}}</div>
 				</a>
 				<div class="dropdown-divider"></div>
 			@endif
@@ -91,13 +91,13 @@
 					<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#person" />
 					</svg>
-					<div class="middle ml-1">Profile</div>
+					<div class="middle ml-1">{{__('base.Profile')}}</div>
 				</a>
 				<a class="dropdown-item" href="/password/edit/{{Auth::id()}}">
 					<svg class="float-left bi mt-1" width="20" height="20" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#pencil-square" />
 					</svg>
-					<div class="middle ml-2">Password</div>
+					<div class="middle ml-2">{{__('base.Password')}}</div>
 				</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item red" href="{{ route('logout') }}">
@@ -106,19 +106,19 @@
 							<use xlink:href="/img/bootstrap-icons.svg#box-arrow-right" />
 						</svg>
 					</div>
-					<div class="middle ml-1">Logout</div>
+					<div class="middle ml-1">{{__('base.Log-out')}}</div>
 				</a>
 			</div>
 		</li>		
 	@else
-		<li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>	  
-		<li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>	  
+		<li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{__('base.Log-in')}}</a></li>	  
+		<li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{__('base.Register')}}</a></li>
 	@endif
-		<li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+		<li class="nav-item"><a class="nav-link" href="/about">{{__('base.About')}}</a></li>
     </ul>
     <form class="form-inline my-2 my-lg-0 d-none d-lg-block"><!-- only for large so it doesn't clutter the dropdown -->
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn my-2 my-sm-0 white" type="submit">Search</button>
+      <input class="form-control mr-sm-2" type="search" placeholder="{{__('base.Search')}}" aria-label="Search">
+      <button class="btn my-2 my-sm-0 white" type="submit">{{__('base.Search')}}</button>
     </form>
   </div>
 </nav>

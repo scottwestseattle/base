@@ -28,9 +28,9 @@ use App\Http\Controllers\UserController;
 
 // Handle the available languages with prefixed url's
 // the locale gets set to the session in the Controller and then they get redirected to the regular URL
-Route::get('/en/{one?}/{two?}/{three?}/{four?}', [Controller::class, 'en'])->name('en');
-Route::get('/es/{one?}/{two?}/{three?}/{four?}', [Controller::class, 'es'])->name('es');
-Route::get('/zh/{one?}/{two?}/{three?}/{four?}', [Controller::class, 'zh'])->name('zh');
+Route::get('/en/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'en'])->name('en');
+Route::get('/es/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'es'])->name('es');
+Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'zh'])->name('zh');
 
 // Front Page
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
@@ -109,6 +109,7 @@ Route::group(['prefix' => 'password'], function () {
 	Route::get('/request-reset', [ResetPasswordController::class, 'requestReset']);
 	Route::post('/send-password-reset', [ResetPasswordController::class, 'sendPasswordReset']);
 	Route::get('/reset/{user}/{token}', [ResetPasswordController::class, 'resetPassword']);
+	Route::post('/reset-update/{user}', [ResetPasswordController::class, 'updatePassword']);
 	
 	// edit
 	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);

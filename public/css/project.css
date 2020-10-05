@@ -79,11 +79,56 @@ body {
 	
 }
 
-/* colors */
+/***************************************************
+ Footer
+***************************************************/
+
+.footer-links {
+	color: blue; /* this is for the bullets only */
+	color: #fe5b4c;
+}
+
+.footer-links a {
+	margin-right:6px;
+	color: #fe5b4c;
+}
+
+.footer-links a:hover {
+	text-decoration: none;
+}
+
+.footer-heading {
+	font-weight: 300;
+	line-height: 1;
+	letter-spacing: -.05rem;
+	margin-top: 1rem;
+}
+
+
+@media (min-width: 48em) { /* medium devices and up */
+  .footer-heading {
+		font-size: 50px;
+		xmargin-top: 2rem;
+  }
+}
+
+@media (min-width: 62em) { /* large devices and up */
+  .footer-heading {
+    xmargin-top: 3rem;
+  }
+}
+
+/***************************************************
+ Colors
+***************************************************/
 
 .app-color-primary {
 	background-color: #fe5b4c; /* mars-sky */
 	color: white;
+}
+
+.app-color-primary-reverse {
+	color: #fe5b4c; /* mars-sky */
 }
 
 .grassy-green {
@@ -108,6 +153,10 @@ body {
 .mars-sky {
 	background-color: #fe5b4c;
 	color: white;
+}
+
+.mars-sky-text {
+	color: #fe5b4c;
 }
 
 .oolong-orange {
@@ -200,3 +249,4 @@ table.table-events {
 	padding-top: 0;
 	padding-bottom: 0;
 }
+

@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Events')
+@section('title', trans_choice('base.Event', 2))
 @section('menu-submenu')@component('events.menu-submenu')@endcomponent @endsection
 @section('content')
 
 <div class="">
-	<h1>Events ({{count($records)}})</h1>
+	<h1>{{trans_choice('base.Event', 2)}} ({{count($records)}})</h1>
 	<div class="table-responsive text-md sm:ml-0">
 		<table class="table table-borderless table-striped table-events">
 		@foreach($records as $record)

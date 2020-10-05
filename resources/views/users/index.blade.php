@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'User List')
+@section('title', __('base.User List'))
 @section('menu-submenu')@component('users.menu-submenu')@endcomponent @endsection
 @section('content')
 <div class="">

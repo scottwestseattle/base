@@ -9,6 +9,7 @@ use Log;
 
 use App\Event;
 use App\Home;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -40,12 +41,18 @@ class HomeController extends Controller
 	
 	public function dashboard(Request $request)
 	{
+		$events = null;
+		$users = null;
+		
 		if (isAdmin())
 		{
-			if (Event::hasEmergency())
-				flash('danger', 'Emergency <a href="/events">events</a> found');
+			$users = User::count();
+			
+			$events = Event::get();
+			if ($events['emergency'] > 0)
+				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));
 		}
 		
-		return view('home.dashboard');
+		return view('home.dashboard', ['events' => $events, 'users' => $users]);
 	}
 }

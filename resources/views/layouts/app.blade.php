@@ -54,5 +54,9 @@
 				</main>
 			</div>
         </div>
+		
+		<!-- Load the footer -->
+		@component('layouts.footer')@endcomponent		
+		
     </body>
 </html>

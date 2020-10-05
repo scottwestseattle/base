@@ -11,23 +11,47 @@
 	<p><a href="/">{{__('base.Front Page')}}</a></p>
 	<p><a href="/login">{{__('base.Log-in')}}</a></p>
 	<p><a href="/users/register">{{__('base.Register')}}</a></p>
+
+	<hr/>
+	<h4>English</h4>
+	<p><a href="/en/about">About</a></p>
+	<p><a href="/en/password/request-reset">Forgot Password</a></p>
+	<p><a href="/en/">Front Page</a></p>
+	<p><a href="/en/login">Log-in</a></p>
+	<p><a href="/en/users/register">Register</a></p>
+
+	<hr/>
+	<h4>Español</h4>
+	<p><a href="/es/about">Sobre</a></p>
+	<p><a href="/es/password/request-reset">Recuperar contraseña</a></p>
+	<p><a href="/es/">Página de inicio</a></p>
+	<p><a href="/es/login">Iniciar sesión</a></p>
+	<p><a href="/es/users/register">Registrarse</a></p>
+
+	<hr/>
+	<h4>中文</h4>
+	<p><a href="/zh/about">关于</a></p>
+	<p><a href="/zh/password/request-reset">忘记密码</a></p>
+	<p><a href="/zh/">首页</a></p>
+	<p><a href="/zh/login">登录</a></p>
+	<p><a href="/zh/users/register">寄存器</a></p>
 	
 	@auth
 	<hr/>
-	<h4>User</h4>
-	<p><a href="/dashboard">Dashboard</a></p>		
-	<p><a href="/users/edit/{{Auth::id()}}">Edit Profile</a></p>
-	<p><a href="/users/view/{{Auth::id()}}">Profile</a></p>
-	<p><a href="/password/edit/{{Auth::id()}}">Update Password</a></p>
-	<p><a href="/logout">Log-out</a></p>
+	<h4>{{trans_choice('base.User', 1)}}</h4>
+	<p><a href="/dashboard">{{__('base.Dashboard')}}</a></p>		
+	<p><a href="/users/edit/{{Auth::id()}}">{{__('base.Edit Profile')}}</a></p>
+	<p><a href="/users/view/{{Auth::id()}}">{{__('base.Profile')}}</a></p>
+	<p><a href="/password/edit/{{Auth::id()}}">{{__('base.Update Password')}}</a></p>
+	<p><a href="/logout">{{__('base.Log-out')}}</a></p>
 	
 	@if (isAdmin())
 		<hr/>
-		<h4>Admin</h4>
-		<p><a href="/events/confirmdelete">Delete Events</a></p>
-		<p><a href="/events">Events</a></p>
-		<p><a href="/translations">Translations</a></p>		
-		<p><a href="/users">Users</a></p>		
+		<h4>{{__('base.Admin')}}</h4>
+		<p><a href="/events/confirmdelete">{{__('base.Delete Events')}}</a></p>
+		<p><a href="/events">{{trans_choice('base.Event', 2)}}</a></p>
+		<p><a href="/translations">{{trans_choice('base.Translation', 2)}}</a></p>		
+		<p><a href="/users">{{trans_choice('base.User', 2)}}</a></p>		
 	@endif
 	
 	@endauth
