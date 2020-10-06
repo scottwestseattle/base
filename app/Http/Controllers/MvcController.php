@@ -52,19 +52,20 @@ class MvcController extends Controller
 			return redirect($this->redirectTo);
 		}
 
-		$modelFile = app_path() . '/' . $model . '.php';
-		$controllerFile = app_path() . '/Http/Controllers/' . $model . 'Controller.php';
-
 		// generate the Model
-		$tpl = file_get_contents('./files/Model.php');
+		$modelFileTpl = app_path() . '/Template.php';
+		$modelFileOut = app_path() . '/' . $model . '.php';
+		$tpl = file_get_contents($modelFileTpl);
 		$tpl = str_replace('Template', $model, $tpl);
-		file_put_contents($modelFile, $tpl);
+		file_put_contents($modelFileOut, $tpl);
 		
 		// generate the Controller
-		$tpl = file_get_contents('./files/Controller.php');
+		$controllerFileTpl = app_path() . '/Http/Controllers/TemplateController.php';
+		$controllerFileOut = app_path() . '/Http/Controllers/' . $model . 'Controller.php';		
+		$tpl = file_get_contents($controllerFileTpl);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', strtolower($model), $tpl);
-		file_put_contents($controllerFile, $tpl);
+		file_put_contents($controllerFileOut, $tpl);
 		
 		// generate the views
 		self::genView($model, 'add');
@@ -79,15 +80,20 @@ class MvcController extends Controller
 	
 	static private function genView($model, $view)
 	{
-		$viewFile = $view . '.blade.php';
-		$path = resource_path() . '/views/' . strtolower($model) . 's/';
-		if (!is_dir($path))
-			mkdir($path, 0777);
+		$root = resource_path() . '/views/';
+		$pathTpl = $root . 'templates/';
+		$pathOut = $root . strtolower($model) . 's/';
+		if (!is_dir($pathOut))
+			mkdir($pathOut, 0777);
 		
-		$tpl = file_get_contents('./files/' . $viewFile);
+		$viewFile = $view . '.blade.php'; 	 // ex: 'index.blade.php'
+		$viewFileTpl = $pathTpl . $viewFile; //     '/resources/views/templates'
+		$viewFileOut = $pathOut . $viewFile; // ex: '/resources/views/visitors'
+		
+		$tpl = file_get_contents($viewFileTpl);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', strtolower($model), $tpl);
-		file_put_contents($path . $viewFile, $tpl);		
+		file_put_contents($pathOut . $viewFileOut, $tpl);		
 	}
 	
 }

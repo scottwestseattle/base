@@ -1,18 +1,22 @@
-@if ($isAdmin)
-<div class="submenu-view">
-	<table><tr>
-		<td><a href="#" onclick="window.history.back()"><span class="glyphCustom glyphicon glyphicon-back"></span></a></td>
-		<td><a href='/{{$prefix}}/'><span class="glyphCustom glyphicon glyphicon-index"></span></a></td>
-			<td><a href='/{{$prefix}}/admin'><span class="glyphCustom glyphicon glyphicon-admin"></span></a></td>
-			<td><a href='/{{$prefix}}/add/'><span class="glyphCustom glyphicon glyphicon-add"></span></a></td>
-			@if (isset($record->id))
-				<td><a href='/{{$prefix}}/view/{{$record->id}}'><span class="glyphCustom glyphicon glyphicon-view"></span></a></td>
-				<td><a href='/{{$prefix}}/edit/{{$record->id}}'><span class="glyphCustom glyphicon glyphicon-edit"></span></a></td>
-				<td><a href='/{{$prefix}}/confirmdelete/{{$record->id}}'><span class="glyphCustom glyphicon glyphicon-delete"></span></a></td>
-				<td><a href='/{{$prefix}}/publish/{{$record->id}}'><span class="glyphCustom glyphicon glyphicon-publish"></span></a></td>
-			@else
-				<td><a href='/{{$prefix}}/undelete/'><span class="glyphCustom glyphicon glyphicon-undelete"></span></a></td>			
-			@endif
-	</tr></table>
-</div>
+@if (isAdmin())
+<nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
+  <div class="">
+    <ul class="nav">	
+		<li class="nav-item"><a class="nav-link" href="/templates">			
+			<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
+		</a></li>				
+		@isset($record)
+			<li class="nav-item"><a class="nav-link" href="/templates/view/{{$record->id}}">			
+				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
+			</a></li>		
+			<li class="nav-item"><a class="nav-link" href="/templates/edit/{{$record->id}}">			
+				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#pencil-square" /></svg>
+			</a></li>		
+			<li class="nav-item"><a class="nav-link" href="/templates/confirmdelete/{{$record->id}}">			
+				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
+			</a></li>		
+		@endisset
+    </ul>
+  </div>
+</nav>	
 @endif
