@@ -66,16 +66,15 @@ class Controller extends BaseController
 	static private function getUrl(Request $request, $locale)
 	{
 		$url = '';
-		$skipped = false;
 		$segments = $request->segments();
+		$i = 0;
+		
+		// remove the locale prefix from the url
+		// for example, change '/es/about' to '/about'
 		foreach($segments as $segment)
 		{
-			if (!$skipped && $segment == $locale)
-			{
-				// skip the first locale
-				$skipped = true;
-			}
-			else
+			// skip the first segment which is the locale prefix
+			if ($i++ >= 1)
 			{
 				$url .= '/' . $segment;
 			}

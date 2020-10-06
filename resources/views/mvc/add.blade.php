@@ -7,9 +7,16 @@
                
 <form method="POST" action="/mvc/create">
 
-    <div class="form-group">
-        <input type="text" name="model" class="form-control" placeholder="Model"></input>
-    </div>
+	<div class="form-group col-md-6">
+		<label for="model">Enter Model Name (singular, capitalized)</label>
+		<input id="model" class="form-control @error('model') is-invalid @enderror" name="model" placeholder="" required autofocus>
+
+		@error('model')
+			<span class="invalid-feedback" role="alert">
+				<strong>{{ $message }}</strong>
+			</span>
+		@enderror
+	</div>
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Add</button>

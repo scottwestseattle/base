@@ -86,4 +86,8 @@ return [
 'Event Logging' => 'El registro de eventos',
 'Localization' => 'Localización',
 'Administration' => 'Administración',
+'MVC' => 'MVC',
+'Title' => 'Título',
+'Description' => 'Descripción',
+'Add' => 'Agregar',
 ];

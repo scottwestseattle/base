@@ -17,7 +17,7 @@ class MvcController extends Controller
 	
 	public function __construct ()
 	{
-        $this->middleware('auth')->except([
+        $this->middleware('admin')->except([
 			'add',
 			'create',
 			'index',
@@ -41,7 +41,11 @@ class MvcController extends Controller
 
 	public function create(Request $request)
 	{
-		$model = trimNull($request->model);
+		$data = $request->validate([
+			'model' => 'required|string|min:3|max:20',		
+		]);	
+		
+		$model = alpha(trimNull($request->model));
 		if (!isset($model))
 		{
 			logError(__CLASS__, 'model not set');

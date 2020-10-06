@@ -24,8 +24,6 @@ class TemplateController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except(['index', 'view', 'permalink']);
-		
-		$this->prefix = PREFIX;
 	
 		parent::__construct();
 	}
@@ -36,12 +34,7 @@ class TemplateController extends Controller
 		
 		try
 		{
-			//$siteId = SITE_ID;
-			$release_flag = Config::get('constants.release_flag.public');
-
 			$records = Template::select()
-				//->where('site_id', '', SITE_ID)
-				->where('published_flag', '>=', $release_flag)
 				->get();
 		}
 		catch (\Exception $e) 
@@ -55,28 +48,6 @@ class TemplateController extends Controller
 		]);
     }	
 
-    public function admin(Request $request)
-    {
-		$records = []; // make this countable so view will always work
-		
-		try
-		{
-			$records = Template::select()
-//				->where('site_id', SITE_ID)
-//				->where('published_flag', '>=', Config::get('constants.release_flag.public'))
-//				->where('approved_flag', 1)
-				->get();
-		}
-		catch (\Exception $e) 
-		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error getting admin templates list');			
-		}	
-			
-		return view(PREFIX . '.admin', [
-			'records' => $records,
-		]);
-    }	
-	
     public function add()
     {		 
 		return view(PREFIX . '.add', [
@@ -103,7 +74,7 @@ class TemplateController extends Controller
 			return back(); 
 		}	
 			
-		return redirect($this->redirectTo);
+		return redirect('/' . PREFIX . '/view/' . $record->id);		
     }
 
     public function permalink(Request $request, $permalink)
@@ -239,9 +210,8 @@ class TemplateController extends Controller
     {	
 		$record = $template; 
 		
-		$record->published_flag = isset($request->published_flag) ? 1 : 0;
-		$record->approved_flag = isset($request->approved_flag) ? 1 : 0;
-		$record->finished_flag = isset($request->finished_flag) ? 1 : 0;		
+		$record->wip_flag = $request->wip_flag);
+		$record->release_flag = $request->release_flag);
 		
 		try
 		{

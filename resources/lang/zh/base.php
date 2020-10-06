@@ -86,4 +86,8 @@ return [
 'Event Logging' => '事件记录',
 'Localization' => '本土化',
 'Administration' => '行政',
+'MVC' => 'MVC',
+'Title' => '标题',
+'Description' => '描述',
+'Add' => '添加记录',
 ];

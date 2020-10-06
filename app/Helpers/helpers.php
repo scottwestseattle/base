@@ -241,7 +241,8 @@ if (!function_exists('isExpired')) {
 			}
 			catch(\Exception $e)
 			{
-				logEmergency('isExpired - date error: ' . $e->getMessage());
+				logException(__FUNCTION__, $e->getMessage(), 'Error checking expired date', ['date' => $sDate]);
+				logEmergency(__FUNCTION__, 'Error checking expired date');
 			}			
 		}
 		
@@ -329,7 +330,7 @@ if (!function_exists('createPermalink')) {
 		$v = preg_replace('/[^\da-z ]/i', ' ', $v); // replace all non-alphanums with spaces
 		$v = str_replace(" ", "-", $v);				// replace spaces with dashes
 		$v = strtolower($v);						// make all lc
-		$v = trimNull($v);					// trim it or null it
+		$v = trimNull($v);							// trim it or null it
 
 		return $v;
 	}

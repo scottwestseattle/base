@@ -11,33 +11,18 @@ class Template extends Model
     	return $this->belongsTo(User::class);
     }
 
-    public function isUnfinished()
+    public function isFinished()
     {
-    	return (!$this->finished_flag || !$this->approved_flag || !$this->published_flag);
+		return ($this->wip_flag >= getConstant('wip_flag.finished');
+    }
+
+    public function isPublic()
+    {
+		return ($this->release_flag >= getConstant('release_flag.public');
     }
 
     public function getStatus()
     {
-		$text = '';
-		$color = '';
-		$done = true;
-		$btn = '';
-		
-		if (!$this->approved_flag)
-		{
-			$text = 'Approve';
-			$color = 'yellow';
-			$btn = 'btn-warning';
-			$done = false;
-		}
-		else if (!$this->published_flag)
-		{
-			$text = 'Publish';
-			$color = 'green';
-			$btn = 'btn-success';
-			$done = false;
-		}
-		
-    	return ['text' => $text, 'color' => $color, 'btn' => $btn, 'done' => $done];
+		return ($this->release_flag);
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('view.Visitor List'))
-@section('menu-submenu')@component('users.menu-submenu')@endcomponent @endsection
+@section('menu-submenu')@component('visitors.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
 	<h1>{{__('view.Visitors')}} ({{count($records)}})</h1>

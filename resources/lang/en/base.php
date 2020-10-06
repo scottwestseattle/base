@@ -86,4 +86,8 @@ return [
 'Event Logging' => 'Event Logging',
 'Localization' => 'Localization',
 'Administration' => 'Administration',
+'MVC' => 'MVC',
+'Title' => 'Title',
+'Description' => 'Description',
+'Add' => 'Add',
 ];
