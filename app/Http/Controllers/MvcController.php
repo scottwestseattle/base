@@ -93,7 +93,7 @@ class MvcController extends Controller
 		$tpl = file_get_contents($viewFileTpl);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', strtolower($model), $tpl);
-		file_put_contents($pathOut . $viewFileOut, $tpl);		
+		file_put_contents($viewFileOut, $tpl);		
 	}
 	
 }

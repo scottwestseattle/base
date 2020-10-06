@@ -35,7 +35,7 @@ class TemplateController extends Controller
 		try
 		{
 			$records = Template::select()
-				->get();
+				->get(5);
 		}
 		catch (\Exception $e) 
 		{
@@ -44,7 +44,7 @@ class TemplateController extends Controller
 			
 		return view(PREFIX . '.index', [
 			'records' => $records,
-			'prefix' => $this->prefix,
+			'prefix' => PREFIX,
 		]);
     }	
 
@@ -210,8 +210,8 @@ class TemplateController extends Controller
     {	
 		$record = $template; 
 		
-		$record->wip_flag = $request->wip_flag);
-		$record->release_flag = $request->release_flag);
+		$record->wip_flag = $request->wip_flag;
+		$record->release_flag = $request->release_flag;
 		
 		try
 		{

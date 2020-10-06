@@ -13,12 +13,12 @@ class Template extends Model
 
     public function isFinished()
     {
-		return ($this->wip_flag >= getConstant('wip_flag.finished');
+		return ($this->wip_flag >= getConstant('wip_flag.finished'));
     }
 
     public function isPublic()
     {
-		return ($this->release_flag >= getConstant('release_flag.public');
+		return ($this->release_flag >= getConstant('release_flag.public'));
     }
 
     public function getStatus()
