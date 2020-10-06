@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sample extends Base
+class Template extends Model
 {
     public function user()
     {

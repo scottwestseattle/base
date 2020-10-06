@@ -19,6 +19,7 @@ class HomeController extends Controller
 			'frontpage',
 			'about',
 			'sitemap',
+			'mvc',
 		]);
 						
 		parent::__construct();
@@ -54,5 +55,6 @@ class HomeController extends Controller
 		}
 		
 		return view('home.dashboard', ['events' => $events, 'users' => $users]);
-	}
+	}	
+
 }

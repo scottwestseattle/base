@@ -80,7 +80,7 @@ if (!function_exists('logWarning')) {
 
 	function logException($msg, $exception, $flash = null, $parms = null)
 	{
-		$msg .= ', ' . $exception;
+		$msg = $exception . ', ' . $msg;
 		logFlash('error', $msg, $flash, $parms);
 	}
 	
@@ -255,3 +255,83 @@ if (!function_exists('getConstant')) {
 		return(Config::get('constants.' . $name));
 	}
 }
+
+if (!function_exists('trimNull')) {
+	// if string has non-whitespace chars, then it gets trimmed, otherwise gets set to null
+	function trimNull($text, $alphanum = false)
+	{
+		if (isset($text))
+		{
+			$text = trim($text);
+
+			if ($alphanum)
+				$text = alphanum($text);
+
+			if (strlen($text) === 0)
+				$text = null;
+		}
+
+		return $text;
+	}
+}
+
+
+if (!function_exists('copyDirty')) {
+    function copyDirty($to, $from, &$isDirty, &$updates = null, $alphanum = false)
+    {
+		$from = trimNull($from, $alphanum);
+		$to = trimNull($to, $alphanum);
+
+		if ($from != $to)
+		{
+			$isDirty = true;
+
+			if (!isset($updates) || strlen($updates) == 0)
+				$updates = '';
+
+			$updates .= '|';
+
+			if (strlen($to) == 0)
+				$updates .= '(empty)';
+			else
+				$updates .= $to;
+
+			$updates .= '|';
+
+			if (strlen($from) == 0)
+				$updates .= '(empty)';
+			else
+				$updates .= $from;
+
+			$updates .= '|  ';
+		}
+
+		return $from;
+	}
+}
+
+
+if (!function_exists('createPermalink')) {
+    function createPermalink($title, $date = null)
+    {
+		$v = null;
+
+		if (isset($title))
+		{
+			$v = $title;
+		}
+
+		if (isset($date))
+		{
+			$v .= '-' . $date;
+		}
+
+		$v = preg_replace('/[^\da-z ]/i', ' ', $v); // replace all non-alphanums with spaces
+		$v = str_replace(" ", "-", $v);				// replace spaces with dashes
+		$v = strtolower($v);						// make all lc
+		$v = trimNull($v);					// trim it or null it
+
+		return $v;
+	}
+}
+

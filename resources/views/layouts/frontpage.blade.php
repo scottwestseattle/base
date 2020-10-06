@@ -34,10 +34,13 @@
 
 		@component('layouts.menu-main')@endcomponent 
 
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+        <div class="relative items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
 			<main class="py-4">
 				@yield('content')
 			</main>
         </div>
+		
+		@component('layouts.footer')@endcomponent 		
+		
     </body>
 </html>

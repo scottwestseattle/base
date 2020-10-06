@@ -11,9 +11,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SampleController;
+use App\Http\Controllers\MvcController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisitorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,28 +46,42 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 
+// MVC
+Route::group(['prefix' => 'mvc'], function () {
+	Route::get('/', [MvcController::class, 'index']);
+	Route::get('/add/', [MvcController::class, 'add']);
+	Route::post('/create/', [MvcController::class, 'create']);
+});
+
+// Visitors
+Route::group(['prefix' => 'visitors'], function () {
+	Route::get('/', [VisitorController::class, 'index']);
+	Route::get('/add', [VisitorController::class, 'add']);
+	Route::post('/create', [VisitorController::class, 'create']);
+});
+
 // Email
 Route::group(['prefix' => 'email'], function () {
 	Route::get('/send/{user}', [EmailController::class, 'send']);
 });
 
-// Samples
-Route::group(['prefix' => 'samples'], function () {
-	Route::get('/', [SampleController::class, 'index']);
-	Route::get('/index', [SampleController::class, 'index']);
-	Route::get('/view/{sample}', [SampleController::class, 'view']);
+// Templates
+Route::group(['prefix' => 'templates'], function () {
+	Route::get('/', [TemplateController::class, 'index']);
+	Route::get('/index', [TemplateController::class, 'index']);
+	Route::get('/view/{template}', [TemplateController::class, 'view']);
 
 	// add
-	Route::get('/add', [SampleController::class, 'add']);
-	Route::post('/create', [SampleController::class, 'create']);
+	Route::get('/add', [TemplateController::class, 'add']);
+	Route::post('/create', [TemplateController::class, 'create']);
 	
 	// edit
-	Route::get('/edit/{sample}', [SampleController::class, 'edit']);
-	Route::post('/update/{sample}', [SampleController::class, 'update']);
+	Route::get('/edit/{template}', [TemplateController::class, 'edit']);
+	Route::post('/update/{template}', [TemplateController::class, 'update']);
 
 	// delete
-	Route::get('/confirmdelete/{sample}', [SampleController::class, 'confirmDelete']);
-	Route::post('/delete/{sample}', [SampleController::class, 'delete']);
+	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
+	Route::post('/delete/{template}', [TemplateController::class, 'delete']);
 });
 
 // Users

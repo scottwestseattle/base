@@ -1,18 +1,13 @@
 @extends('layouts.app')
-
+@section('title', __('base.Template List'))
+@section('menu-submenu')@component('users.menu-submenu')@endcomponent @endsection
 @section('content')
-
-<div class="container page-normal">
-
-	<h1>@LANG('content.' . $titlePlural) ({{count($records)}})
-	@if ($isAdmin)
-		<span style="font-size:.6em;"><a href="/{{$prefix}}/admin"><span class="glyphCustom glyphicon glyphicon-admin"></span></a></span>
-	@endif	
-	</h1>
+<div>
+	<h1>{{__('base.Templates')}} ({{count($records)}})</h1>
 	
-	<div class="row" style="margin-bottom:10px;">		
+	<div class="row mb-2">
 		@foreach($records as $record)			
-		<div style="xmax-width: 400px; padding:10px;" class="col-sm-4"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+		<div class="col-sm-4"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
 
 			<div class="drop-box" style="height:200px;  background-color: #4993FD; color:white;" ><!-- inner col div -->
 	
@@ -26,12 +21,11 @@
 					</a>
 				@endif
 					
-			</div><!-- inner col div -->			
+			</div>		
 			
-		</div><!-- outer col div -->
+		</div>
 		@endforeach		
-	</div><!-- row -->														
-
+	</div>
 </div>
 
 @endsection
