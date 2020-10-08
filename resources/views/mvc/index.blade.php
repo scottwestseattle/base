@@ -10,10 +10,10 @@
 		<p><a href="/mvc/add">Add MVC</a></p>
 	@endguest
 	
-	<h3>Views</h3>
+	<h3>Generated MVC</h3>
 	<ul>
 	@foreach($files as $file)
-		@if (strlen($file) > 2)
+		@if (strlen($file) > 2 && $file != 'templates')
 			<li><a href="/{{$file}}">{{$file}}</a></li>
 		@endif
 	@endforeach

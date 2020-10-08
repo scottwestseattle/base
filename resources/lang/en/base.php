@@ -92,4 +92,11 @@ return [
 'Add' => 'Add',
 'Add Routes to' => 'Add Routes to',
 'List' => 'List',
+'View' => 'View',
+'Generated' => 'Generated',
+'Table Schema' => 'Table Schema',
+'Routes appended to' => 'Routes appended to',
+'Add table to database and then these links will work' => 'Add table to database and then these links will work',
+'Model' => 'Model',
+'Controller' => 'Controller',
 ];

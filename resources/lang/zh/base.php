@@ -92,4 +92,11 @@ return [
 'Add' => '添加记录',
 'Add Routes to' => '将路线添加到',
 'List' => '清单',
+'View' => '视图',
+'Generated' => '产生的',
+'Table Schema' => '表格架构',
+'Routes appended to' => '附加到的路线',
+'Add table to database and then these links will work' => '将表添加到数据库，然后这些链接将起作用',
+'Model' => '模型',
+'Controller' => '控制者',
 ];

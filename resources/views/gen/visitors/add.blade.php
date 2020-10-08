@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('base.Add') . ' ' . __('view.Visitor'))
-@section('menu-submenu')@component('visitors.menu-submenu', ['prefix' => 'visitors'])@endcomponent @endsection
+@section('menu-submenu')@component('gen.visitors.menu-submenu', ['prefix' => 'visitors'])@endcomponent @endsection
 @section('content')
 <div class="">
 	<h1>{{__('base.Add')}} {{__('view.Visitor')}}</h1> 

@@ -25,7 +25,7 @@ class MvcController extends Controller
 
 	public function index(Request $request)
 	{
-		$path = resource_path() . '/views';
+		$path = resource_path() . '/views/gen';
 		$files = scandir($path);
 		//dd($files);
 		return view('mvc.index', ['files' => $files]);
@@ -78,19 +78,21 @@ class MvcController extends Controller
 		}
 
 		// generate the MySql db table schema
-		$schemaMysql = self::genSchemaMysql($views);
+		$schemaMysql = self::genSchemaMysql($views, $paths);
 		
 		return redirect('/mvc/view/' . strtolower($model) . '/' . $views);
 	}
 
 	public function view(Request $request, $model, $views)
 	{
-		$schemaMysql = self::genSchemaMysql($views);
+		$paths = self::genPaths($model, $views);
+		$schemaMysql = self::genSchemaMysql($views, $paths);
 		
 		return view('mvc.view', [
 			'model' => $model,
 			'views' => $views,
 			'schemaMysql' => $schemaMysql,
+			'paths' => $paths,
 		]);
 	}
 	
@@ -98,23 +100,26 @@ class MvcController extends Controller
 	{				
 		// views
 		$rc['viewsOutPath'] = null;
-		$root = resource_path() . '/views/';
-		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/templates/'		
+		$root = resource_path() . '/views/gen/';
+		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/gen/templates/'		
 		
 		if (isset($views))
 			$rc['viewsOutPath'] = $root . $views . '/'; //ex: '/resources/views/visitors/'
 
 		// model
 		$rc['modelOut'] = null;
-		$rc['modelTpl'] = app_path() . '/Template.php';
+		$rc['modelTpl'] = app_path() . '/Gen/Template.php';
 		if (isset($model))
-			$rc['modelOut'] = app_path() . '/' . $model . '.php';
+			$rc['modelOut'] = app_path() . '/Gen/' . $model . '.php';
 		
 		// controller
 		$rc['controllerOut'] = null;
-		$rc['controllerTpl'] = app_path() . '/Http/Controllers/TemplateController.php';
+		$rc['controllerTpl'] = app_path() . '/Http/Controllers/Gen/TemplateController.php';
 		if (isset($model))
-			$rc['controllerOut'] = app_path() . '/Http/Controllers/' . $model . 'Controller.php';		
+			$rc['controllerOut'] = app_path() . '/Http/Controllers/Gen/' . $model . 'Controller.php';		
+
+		// mySQL table schema
+		$rc['mysqlSchemaOut'] = app_path() . '/Gen/' . $views . '.sql'; // ex: /app/Gen/visitors.sql
 		
 		return $rc;
 	}	
@@ -137,7 +142,7 @@ class MvcController extends Controller
 	static private $routesTemplate = "
 
 // GENERATED for Template model
-use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\Gen\TemplateController;
 	
 // Templates
 Route::group(['prefix' => 'templates'], function () {
@@ -204,12 +209,11 @@ ALTER TABLE `templates`
 COMMIT;
 ";
 
-	static private function genSchemaMysql($table)
-	{						
-		$schemaOut = app_path() . '/' . $table . '.sql'; // ex: /app/visitors.sql
+	static private function genSchemaMysql($table, $paths)
+	{		
 		$tpl = self::$schemaMysql;
 		$tpl = str_replace('templates', $table, $tpl);
-		file_put_contents($schemaOut, $tpl);
+		file_put_contents($paths['mysqlSchemaOut'], $tpl);
 		return $tpl;
 	}
 	

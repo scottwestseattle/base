@@ -92,4 +92,11 @@ return [
 'Add' => 'Agregar',
 'Add Routes to' => 'Agregar rutas a',
 'List' => 'Lista',
+'View' => 'Vista',
+'Generated' => 'Generado',
+'Table Schema' => 'Esquema de tabla',
+'Routes appended to' => 'Rutas agregadas a',
+'Add table to database and then these links will work' => 'Agregue la tabla a la base de datos y luego estos enlaces funcionarán',
+'Model' => 'Modelo',
+'Controller' => 'Controlador',
 ];

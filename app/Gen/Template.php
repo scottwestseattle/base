@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Gen;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Visitor extends Model
+class Template extends Model
 {
     public function user()
     {

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('view.Template') . ' ' . __('base.List'))
-@section('menu-submenu')@component('templates.menu-submenu')@endcomponent @endsection
+@section('menu-submenu')@component('gen.templates.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
 	<h1>{{__('view.Templates')}} ({{count($records)}})</h1>

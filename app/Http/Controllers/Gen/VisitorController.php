@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Gen;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -9,11 +10,12 @@ use Auth;
 use Config;
 use Log;
 
-use App\Visitor;
+use App\Gen\Visitor;
 use App\Tools;
 use App\User;
 
-define('PREFIX', 'visitors');
+define('PREFIX', 'gen/visitors');
+define('VIEWS', 'gen.visitors');
 define('LOG_CLASS', 'VisitorController');
 
 class VisitorController extends Controller
@@ -42,7 +44,7 @@ class VisitorController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), 'Error selecting list');
 		}	
 			
-		return view(PREFIX . '.index', [
+		return view(VIEWS . '.index', [
 			'records' => $records,
 			'prefix' => PREFIX,
 		]);
@@ -50,7 +52,7 @@ class VisitorController extends Controller
 
     public function add()
     {		 
-		return view(PREFIX . '.add', [
+		return view(VIEWS . '.add', [
 			]);
 	}
 		
@@ -74,7 +76,7 @@ class VisitorController extends Controller
 			return back(); 
 		}	
 			
-		return redirect('/' . PREFIX . '/view/' . $record->id);		
+		return redirect(self::$redirectTo . '/view/' . $record->id);		
     }
 
     public function permalink(Request $request, $permalink)
@@ -97,7 +99,7 @@ class VisitorController extends Controller
 			return back();					
 		}	
 
-		return view(PREFIX . '.view', [
+		return view(VIEWS . '.view', [
 			'record' => $record, 
 			]);
 	}
@@ -106,7 +108,7 @@ class VisitorController extends Controller
     {		
 		$record = $visitor;
 		
-		return view(PREFIX . '.view', [
+		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
     }
@@ -115,7 +117,7 @@ class VisitorController extends Controller
     {		 
 		$record = $visitor;
 		
-		return view(PREFIX . '.edit', [
+		return view(VIEWS . '.edit', [
 			'record' => $record,
 			]);
     }
@@ -154,7 +156,7 @@ class VisitorController extends Controller
     {	
 		$record = $visitor; 
 			 
-		return view(PREFIX . '.confirmdelete', [
+		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,		
 		]);
     }
@@ -192,7 +194,7 @@ class VisitorController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), 'Error getting undelete records');
 		}	
 			
-		return view(PREFIX . '.undelete', [
+		return view(VIEWS . '.undelete', [
 			'records' => $records,
 		]);		
     }
@@ -201,7 +203,7 @@ class VisitorController extends Controller
     {			
 		$record = $visitor; 
 	
-		return view(PREFIX . '.publish', [
+		return view(VIEWS . '.publish', [
 			'record' => $record,
 		]);
     }

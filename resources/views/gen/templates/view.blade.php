@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('view.View Template'))
-@section('menu-submenu')@component('templates.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="">
 	<h1>{{__('view.View Template')}}</h1>

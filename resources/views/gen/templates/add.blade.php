@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('base.Add') . ' ' . __('view.Template'))
-@section('menu-submenu')@component('templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
+@section('menu-submenu')@component('gen.templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
 @section('content')
 <div class="">
 	<h1>{{__('base.Add')}} {{__('view.Template')}}</h1> 

@@ -12,9 +12,10 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MvcController;
-use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\Gen\TemplateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,9 +141,8 @@ Route::group(['prefix' => 'events'], function () {
 // Move permanent routes above this section
 // =================================================================
 
-
 // GENERATED for Visitor model
-use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\Gen\VisitorController;
 	
 // Visitors
 Route::group(['prefix' => 'visitors'], function () {
