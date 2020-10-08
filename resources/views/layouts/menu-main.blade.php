@@ -114,8 +114,11 @@
 		<li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{__('base.Log-in')}}</a></li>	  
 		<li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{__('base.Register')}}</a></li>
 	@endif
-		<li class="nav-item"><a class="nav-link" href="/about">{{__('base.About')}}</a></li>
+	
+	@if (isAdmin())
 		<li class="nav-item"><a class="nav-link" href="/mvc">{{__('base.MVC')}}</a></li>
+	@endif
+		<li class="nav-item"><a class="nav-link" href="/about">{{__('base.About')}}</a></li>
     </ul>
     <form class="form-inline my-2 my-lg-0 d-none d-lg-block"><!-- only for large so it doesn't clutter the dropdown -->
       <input class="form-control mr-sm-2" type="search" placeholder="{{__('base.Search')}}" aria-label="Search">

@@ -7,6 +7,10 @@
                
 <form method="POST" action="/mvc/create">
 
+	<p>Model Template: {{$paths['modelTpl']}}</p>
+	<p>Controller Template: {{$paths['controllerTpl']}}</p>
+	<p>Views Templates: {{$paths['viewsTplPath']}}</p>
+
 	<div class="form-group col-md-6">	
 		<label for="model">Enter Model Name (singular, capitalized)</label>
 		<input id="model" class="form-control @error('model') is-invalid @enderror" name="model" onblur="$('#plural').val($(this).val().toLowerCase() + 's');" required autofocus>
@@ -31,7 +35,7 @@
 	
 	<div class="form-group">
 		<input type="checkbox" name="add_routes" id="add_routes" class="ml-3" />
-		<label for="add_routes" class="checkbox-big-label control-label">@LANG('base.Add Routes to') web.php</label>
+		<label for="add_routes" class="checkbox-label control-label">@LANG('base.Add Routes to') web.php</label>
 	</div>
 	
     <div class="form-group">
@@ -43,12 +47,3 @@
 </div>
 @endsection
 
-<script>
-
-function plural(model, pluralInputId)
-{
-	alert(pluralInputId);
-}
-
-
-</script>

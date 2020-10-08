@@ -18,9 +18,6 @@ class MvcController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-			//'add',
-			//'create',
-			'index',
 		]);
 						
 		parent::__construct();
@@ -36,7 +33,11 @@ class MvcController extends Controller
 
 	public function add(Request $request)
 	{
-		return view('mvc.add');
+		$paths = self::genPaths();
+		
+		return view('mvc.add', [
+			'paths' => $paths,
+		]);
 	}
 
 	public function create(Request $request)
@@ -49,28 +50,26 @@ class MvcController extends Controller
 		$model = $data['model'];
 		$views = $data['plural'];
 
+		$paths = self::genPaths($model, $views);
+
 		// generate the Model
-		$modelFileTpl = app_path() . '/Template.php';
-		$modelFileOut = app_path() . '/' . $model . '.php';
-		$tpl = file_get_contents($modelFileTpl);
+		$tpl = file_get_contents($paths['modelTpl']);
 		$tpl = str_replace('Template', $model, $tpl);
-		file_put_contents($modelFileOut, $tpl);
+		file_put_contents($paths['modelOut'], $tpl);
 		
 		// generate the Controller
-		$controllerFileTpl = app_path() . '/Http/Controllers/TemplateController.php';
-		$controllerFileOut = app_path() . '/Http/Controllers/' . $model . 'Controller.php';		
-		$tpl = file_get_contents($controllerFileTpl);
+		$tpl = file_get_contents($paths['controllerTpl']);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', strtolower($model), $tpl);
-		file_put_contents($controllerFileOut, $tpl);
+		file_put_contents($paths['controllerOut'], $tpl);
 		
 		// generate the views
-		self::genView($model, $views, 'add');
-		self::genView($model, $views, 'confirmdelete');
-		self::genView($model, $views, 'edit');
-		self::genView($model, $views, 'index');
-		self::genView($model, $views, 'menu-submenu');
-		self::genView($model, $views, 'view');
+		self::genView($model, $views, $paths, 'add');
+		self::genView($model, $views, $paths, 'confirmdelete');
+		self::genView($model, $views, $paths, 'edit');
+		self::genView($model, $views, $paths, 'index');
+		self::genView($model, $views, $paths, 'menu-submenu');
+		self::genView($model, $views, $paths, 'view');
 
 		if (isset($request->add_routes))
 		{
@@ -95,17 +94,39 @@ class MvcController extends Controller
 		]);
 	}
 	
-	static private function genView($model, $views, $view)
-	{
+	static private function genPaths($model = null, $views = null)
+	{				
+		// views
+		$rc['viewsOutPath'] = null;
 		$root = resource_path() . '/views/';
-		$pathTpl = $root . 'templates/'; //ex: '/resources/views/templates/'
-		$pathOut = $root . $views . '/'; //ex: '/resources/views/visitors/'
-		if (!is_dir($pathOut))
-			mkdir($pathOut, 0777);
+		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/templates/'		
+		
+		if (isset($views))
+			$rc['viewsOutPath'] = $root . $views . '/'; //ex: '/resources/views/visitors/'
+
+		// model
+		$rc['modelOut'] = null;
+		$rc['modelTpl'] = app_path() . '/Template.php';
+		if (isset($model))
+			$rc['modelOut'] = app_path() . '/' . $model . '.php';
+		
+		// controller
+		$rc['controllerOut'] = null;
+		$rc['controllerTpl'] = app_path() . '/Http/Controllers/TemplateController.php';
+		if (isset($model))
+			$rc['controllerOut'] = app_path() . '/Http/Controllers/' . $model . 'Controller.php';		
+		
+		return $rc;
+	}	
+	
+	static private function genView($model, $views, $paths, $view)
+	{
+		if (!is_dir($paths['viewsOutPath']))
+			mkdir($paths['viewsOutPath'], 0777);
 		
 		$viewFile = $view . '.blade.php'; 	 // ex: 'index.blade.php'
-		$viewFileTpl = $pathTpl . $viewFile; // ex:  '/resources/views/templates/index.blade.php'
-		$viewFileOut = $pathOut . $viewFile; // ex: '/resources/views/visitors/index.blade.php'
+		$viewFileTpl = $paths['viewsTplPath'] . $viewFile; // ex:  '/resources/views/templates/index.blade.php'
+		$viewFileOut = $paths['viewsOutPath'] . $viewFile; // ex: '/resources/views/visitors/index.blade.php'
 		
 		$tpl = file_get_contents($viewFileTpl);
 		$tpl = str_replace('Template', $model, $tpl);

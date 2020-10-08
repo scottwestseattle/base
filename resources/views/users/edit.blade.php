@@ -27,7 +27,7 @@
 			</div>
 		<div class="form-group">
 			<input type="checkbox" name="blocked_flag" id="blocked_flag" class="" value="{{$user->blocked_flag }}" {{ ($user->blocked_flag) ? 'checked' : '' }} />
-			<label for="blocked_flag" class="checkbox-big-label">@LANG('ui.Blocked')</label>
+			<label for="blocked_flag" class="checkbox-label">@LANG('ui.Blocked')</label>
 		</div>
 		@endif
 
