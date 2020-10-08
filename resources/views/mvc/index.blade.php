@@ -4,7 +4,11 @@
 @section('content')
 <div class="">
 	<h1>@LANG('base.MVC')</h1>
-	<p><a href="/mvc/add">Add MVC</a></p>
+	
+	@guest
+	@else
+		<p><a href="/mvc/add">Add MVC</a></p>
+	@endguest
 	
 	<h3>Views</h3>
 	<ul>

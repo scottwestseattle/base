@@ -90,4 +90,6 @@ return [
 'Title' => 'Título',
 'Description' => 'Descripción',
 'Add' => 'Agregar',
+'Add Routes to' => 'Agregar rutas a',
+'List' => 'Lista',
 ];

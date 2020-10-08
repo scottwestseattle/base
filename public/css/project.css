@@ -15,6 +15,10 @@ body {
 	padding-top: 63px;
 }
 
+.project-page {
+	min-height:30em;
+}
+
 /* Extra small devices (portrait phones, less than 576px) */
 /* No media query for `xs` since this is the default in Bootstrap */
 
@@ -248,3 +252,9 @@ table.table-events {
 	padding-bottom: 0;
 }
 
+.checkbox-big-label
+{
+	font-size: 1.2em;
+	padding: 5px 5px 5px 0px;
+	margin: 0px 0px 10px 0px;
+}

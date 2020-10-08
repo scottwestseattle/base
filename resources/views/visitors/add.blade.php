@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('base.Add') . ' ' . __('view.Template'))
-@section('menu-submenu')@component('templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
+@section('title', __('base.Add') . ' ' . __('view.Visitor'))
+@section('menu-submenu')@component('visitors.menu-submenu', ['prefix' => 'visitors'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('base.Add')}} {{__('view.Template')}}</h1> 
-	<form method="POST" action="/templates/create">
+	<h1>{{__('base.Add')}} {{__('view.Visitor')}}</h1> 
+	<form method="POST" action="/visitors/create">
 							
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

@@ -46,9 +46,8 @@
 		@endif
 		
         <div class="">
-			<div class="container page-normal">
+			<div class="container project-page">
 				<main class="py-4">
-				
 					<!-- Show the current page -->
 					@yield('content')
 				</main>

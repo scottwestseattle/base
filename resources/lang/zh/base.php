@@ -90,4 +90,6 @@ return [
 'Title' => '标题',
 'Description' => '描述',
 'Add' => '添加记录',
+'Add Routes to' => '将路线添加到',
+'List' => '清单',
 ];

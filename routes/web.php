@@ -15,7 +15,6 @@ use App\Http\Controllers\MvcController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VisitorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,13 +50,7 @@ Route::group(['prefix' => 'mvc'], function () {
 	Route::get('/', [MvcController::class, 'index']);
 	Route::get('/add/', [MvcController::class, 'add']);
 	Route::post('/create/', [MvcController::class, 'create']);
-});
-
-// Visitors
-Route::group(['prefix' => 'visitors'], function () {
-	Route::get('/', [VisitorController::class, 'index']);
-	Route::get('/add', [VisitorController::class, 'add']);
-	Route::post('/create', [VisitorController::class, 'create']);
+	Route::get('/view/{model}/{views}', [MvcController::class, 'view']);
 });
 
 // Email
@@ -142,4 +135,30 @@ Route::group(['prefix' => 'events'], function () {
 	Route::get('/index/{filter?}', [EventController::class, 'index'])->middleware('admin');
 });
 
+// =================================================================
+// The following groups and routes are generated
+// Move permanent routes above this section
+// =================================================================
 
+
+// GENERATED for Visitor model
+use App\Http\Controllers\VisitorController;
+	
+// Visitors
+Route::group(['prefix' => 'visitors'], function () {
+	Route::get('/', [VisitorController::class, 'index']);
+	Route::get('/index', [VisitorController::class, 'index']);
+	Route::get('/view/{visitor}', [VisitorController::class, 'view']);
+
+	// add
+	Route::get('/add', [VisitorController::class, 'add']);
+	Route::post('/create', [VisitorController::class, 'create']);
+	
+	// edit
+	Route::get('/edit/{visitor}', [VisitorController::class, 'edit']);
+	Route::post('/update/{visitor}', [VisitorController::class, 'update']);
+
+	// delete
+	Route::get('/confirmdelete/{visitor}', [VisitorController::class, 'confirmDelete']);
+	Route::post('/delete/{visitor}', [VisitorController::class, 'delete']);
+});
