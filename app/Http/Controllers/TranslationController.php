@@ -35,7 +35,7 @@ class TranslationController extends Controller
     {
 		$records = [];
 		$files = [];
-		$folder = TRANSLATIONS_FOLDER . App::getLocale();
+		$folder = TRANSLATIONS_FOLDER . 'en'; //App::getLocale();
 
 		try
 		{
@@ -95,6 +95,8 @@ class TranslationController extends Controller
 
     public function view(Request $request, $filename)
     {
+		$filename = alpha($filename);
+		
 		$locale = App::getLocale();
 
 		App::setLocale('en');
@@ -146,27 +148,28 @@ class TranslationController extends Controller
 
 		if (array_key_exists('en', $records))
 		{
-			foreach($records['en'] as $key => $value)
+			$keys = $records['en'];
+			if (is_array($keys)) // && count($keys) > 0)
 			{
-				if (!array_key_exists($key, $records['es']))
+				foreach($keys as $key => $value)
 				{
-					$records['es'][$key] = null;
-				}
-				if (!array_key_exists($key, $records['zh']))
-				{
-					$records['zh'][$key] = null;
+					if (!array_key_exists($key, $records['es']))
+					{
+						$records['es'][$key] = null;
+					}
+					if (!array_key_exists($key, $records['zh']))
+					{
+						$records['zh'][$key] = null;
+					}
 				}
 			}
 		}
 
-		$vdata = $this->getViewData([
+		return view('translations.edit', [
 			'prefix' => 'translations',
 			'filename' => $filename,
 			'records' => $records,
 		]);
-
-		return view('translations.edit', $vdata);
-		// return view('translations.editTabs', $vdata); // NOT DONE YET
     }
 
     public function update(Request $request, $filename)

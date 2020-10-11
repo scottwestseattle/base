@@ -11,6 +11,8 @@ use App\Event;
 use App\Home;
 use App\User;
 
+define('LOG_CLASS', 'MvcController');
+
 class MvcController extends Controller
 {
 	private $redirectTo = '/mvc';
@@ -95,6 +97,66 @@ class MvcController extends Controller
 			'paths' => $paths,
 		]);
 	}
+
+	public function confirmDelete(Request $request, $views)
+	{
+		$model = ucfirst(substr($views, 0, strlen($views) - 1));
+		$paths = self::genPaths($model, $views);
+		//dd($paths);
+		return view('mvc.confirmdelete', [
+			'views' => $views,
+			'paths' => $paths,
+		]);
+	}
+
+	public function delete(Request $request)
+	{
+		$data = $request->validate([
+			'views' => 'required|alpha|min:3|max:20',		
+		]);	
+		
+		$views = $data['views'];
+		
+		if ($views == 'templates')
+		{
+			logError(LOG_CLASS, 'Error deleting MVC - cannot delete the template');
+			return redirect($this->redirectTo);
+		}
+		
+		$model = ucfirst(substr($views, 0, strlen($views) - 1));
+		$paths = self::genPaths($model, $views);
+		
+		try
+		{
+			if (is_file($paths['modelOut']))
+				unlink($paths['modelOut']);
+			
+			if (is_file($paths['controllerOut']))
+				unlink($paths['controllerOut']);
+
+			// remove view files and then view directory
+			if (is_dir($paths['viewsOutPath']))
+			{
+				$files = glob($paths['viewsOutPathWildcard']);
+				
+				foreach($files as $file)
+				{
+					if (is_file($file))
+						unlink($file);
+				}
+				
+				rmdir($paths['viewsOutPath']);
+			}
+			
+			logInfo(LOG_CLASS, 'MVC has been deleted', ['model' => $model, 'views' => $views]);
+		}
+		catch(Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), 'Error deleting MFC file');			
+		}
+		
+		return redirect($this->redirectTo);
+	}
 	
 	static private function genPaths($model = null, $views = null)
 	{				
@@ -104,7 +166,10 @@ class MvcController extends Controller
 		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/gen/templates/'		
 		
 		if (isset($views))
+		{
 			$rc['viewsOutPath'] = $root . $views . '/'; //ex: '/resources/views/visitors/'
+			$rc['viewsOutPathWildcard'] = $root . $views . '/*'; //ex: '/resources/views/visitors/*'
+		}
 
 		// model
 		$rc['modelOut'] = null;

@@ -14,19 +14,21 @@
 	<form method="POST" action="/translations/update/{{$filename}}">
 					
 		<div class="form-group">		
-						
+			
+		@if (is_array($recs))
 		<table>
 			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.English')</th><th>@LANG('ui.Spanish')</th><th>@LANG('ui.Chinese')</th></tr>
-		@foreach($recs as $key => $value)
-			<tr>
-			<td>{{$cnt + 1}}.</td>
-			<td style=""><input type="text" name="records[0][{{$cnt}}]" class="form-control" value="{{$key}}"></input></td>
-			<td style=""><input type="text" name="records[1][{{$cnt}}]" class="form-control" value="{{$records['en'][$key]}}"></input></td>
-			<td style=""><input type="text" name="records[2][{{$cnt}}]" class="form-control" value="{{$records['es'][$key]}}"></input></td>
-			<td style=""><input type="text" name="records[3][{{$cnt++}}]" class="form-control" value="{{$records['zh'][$key]}}"></input></td>
-			<tr>
-		@endforeach
-		</table>		
+			@foreach($recs as $key => $value)
+				<tr>
+				<td>{{$cnt + 1}}.</td>
+				<td style=""><input type="text" name="records[0][{{$cnt}}]" class="form-control" value="{{$key}}"></input></td>
+				<td style=""><input type="text" name="records[1][{{$cnt}}]" class="form-control" value="{{$records['en'][$key]}}"></input></td>
+				<td style=""><input type="text" name="records[2][{{$cnt}}]" class="form-control" value="{{$records['es'][$key]}}"></input></td>
+				<td style=""><input type="text" name="records[3][{{$cnt++}}]" class="form-control" value="{{$records['zh'][$key]}}"></input></td>
+				<tr>
+			@endforeach
+		</table>
+		@endif
 		
 		<h3>@LANG('ui.Add')</h3>
 		

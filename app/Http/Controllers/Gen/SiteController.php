@@ -10,15 +10,15 @@ use Auth;
 use Config;
 use Log;
 
-use App\Gen\Template;
+use App\Gen\Site;
 use App\Tools;
 use App\User;
 
-define('PREFIX', 'gen/templates');
-define('VIEWS', 'gen.templates');
-define('LOG_CLASS', 'TemplateController');
+define('PREFIX', 'gen/sites');
+define('VIEWS', 'gen.sites');
+define('LOG_CLASS', 'SiteController');
 
-class TemplateController extends Controller
+class SiteController extends Controller
 {
 	use SoftDeletes;
 	private $redirectTo = '/' . PREFIX;
@@ -36,7 +36,7 @@ class TemplateController extends Controller
 		
 		try
 		{
-			$records = Template::select()
+			$records = Site::select()
 				->get(5);
 		}
 		catch (\Exception $e) 
@@ -57,7 +57,7 @@ class TemplateController extends Controller
 		
     public function create(Request $request)
     {					
-		$record = new Template();
+		$record = new Site();
 		
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
@@ -71,7 +71,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error adding new template');			
+			logException(LOG_CLASS, $e->getMessage(), 'Error adding new site');			
 			return back(); 
 		}	
 			
@@ -86,7 +86,7 @@ class TemplateController extends Controller
 			
 		try
 		{
-			$record = Template::select()
+			$record = Site::select()
 				->where('site_id', SITE_ID)
 				->where('published_flag', 1)
 				->where('permalink', $permalink)
@@ -103,27 +103,27 @@ class TemplateController extends Controller
 			]);
 	}
 	
-	public function view(Template $template)
+	public function view(Site $site)
     {		
-		$record = $template;
+		$record = $site;
 		
 		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
     }
 	
-	public function edit(Template $template)
+	public function edit(Site $site)
     {		 
-		$record = $template;
+		$record = $site;
 		
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			]);
     }
 	
-    public function update(Request $request, Template $template)
+    public function update(Request $request, Site $site)
     {
-		$record = $template; 
+		$record = $site; 
 		 
 		$isDirty = false;
 		$changes = '';
@@ -151,18 +151,18 @@ class TemplateController extends Controller
 		return redirect('/' . PREFIX . '/view/' . $record->id);
 	}
 	
-    public function confirmdelete(Template $template)
+    public function confirmdelete(Site $site)
     {	
-		$record = $template; 
+		$record = $site; 
 			 
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,		
 		]);
     }
 	
-    public function delete(Request $request, Template $template)
+    public function delete(Request $request, Site $site)
     {	
-		$record = $template; 
+		$record = $site; 
 				
 		try 
 		{
@@ -184,7 +184,7 @@ class TemplateController extends Controller
 		
 		try
 		{
-			$records = Template::select()
+			$records = Site::select()
 				->whereNotNull('deleted_at')
 				->get();
 		}
@@ -198,18 +198,18 @@ class TemplateController extends Controller
 		]);		
     }
 
-    public function publish(Request $request, Template $template)
+    public function publish(Request $request, Site $site)
     {			
-		$record = $template; 
+		$record = $site; 
 	
 		return view(VIEWS . '.publish', [
 			'record' => $record,
 		]);
     }
 	
-    public function publishupdate(Request $request, Template $template)
+    public function publishupdate(Request $request, Site $site)
     {	
-		$record = $template; 
+		$record = $site; 
 		
 		$record->wip_flag = $request->wip_flag;
 		$record->release_flag = $request->release_flag;

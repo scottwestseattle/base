@@ -11,12 +11,19 @@
 	@endguest
 	
 	<h3>Generated MVC</h3>
-	<ul>
-	@foreach($files as $file)
-		@if (strlen($file) > 2 && $file != 'templates')
-			<li><a href="/{{$file}}">{{$file}}</a></li>
-		@endif
-	@endforeach
-	</ul>
+	<div  class="table-responsive">
+	<table class="table">
+		<tbody>
+		@foreach($files as $file)
+			@if (strlen($file) > 2 && $file != 'templates')
+			<tr>
+				<td><a href="/mvc/view/{{$file}}">{{$file}}</a></td>
+				<td class="glyphicon-width"><a href='/mvc/confirmdelete/{{$file}}'><span class="glyphCustom-sm glyphicon glyphicon-trash"></span></a></td>
+			</tr>
+			@endif
+		@endforeach
+		</tbody>
+	</table>
+	</div>
 </div>
 @endsection

@@ -52,6 +52,8 @@ Route::group(['prefix' => 'mvc'], function () {
 	Route::get('/add/', [MvcController::class, 'add']);
 	Route::post('/create/', [MvcController::class, 'create']);
 	Route::get('/view/{model}/{views}', [MvcController::class, 'view']);
+	Route::get('/confirmdelete/{views}', [MvcController::class, 'confirmDelete']);
+	Route::post('/delete', [MvcController::class, 'delete']);
 });
 
 // Email
@@ -161,4 +163,50 @@ Route::group(['prefix' => 'visitors'], function () {
 	// delete
 	Route::get('/confirmdelete/{visitor}', [VisitorController::class, 'confirmDelete']);
 	Route::post('/delete/{visitor}', [VisitorController::class, 'delete']);
+});
+
+
+// GENERATED for Definition model
+use App\Http\Controllers\Gen\DefinitionController;
+	
+// Definitions
+Route::group(['prefix' => 'definitions'], function () {
+	Route::get('/', [DefinitionController::class, 'index']);
+	Route::get('/index', [DefinitionController::class, 'index']);
+	Route::get('/view/{definition}', [DefinitionController::class, 'view']);
+
+	// add
+	Route::get('/add', [DefinitionController::class, 'add']);
+	Route::post('/create', [DefinitionController::class, 'create']);
+	
+	// edit
+	Route::get('/edit/{definition}', [DefinitionController::class, 'edit']);
+	Route::post('/update/{definition}', [DefinitionController::class, 'update']);
+
+	// delete
+	Route::get('/confirmdelete/{definition}', [DefinitionController::class, 'confirmDelete']);
+	Route::post('/delete/{definition}', [DefinitionController::class, 'delete']);
+});
+
+
+// GENERATED for Site model
+use App\Http\Controllers\Gen\SiteController;
+	
+// Sites
+Route::group(['prefix' => 'sites'], function () {
+	Route::get('/', [SiteController::class, 'index']);
+	Route::get('/index', [SiteController::class, 'index']);
+	Route::get('/view/{site}', [SiteController::class, 'view']);
+
+	// add
+	Route::get('/add', [SiteController::class, 'add']);
+	Route::post('/create', [SiteController::class, 'create']);
+	
+	// edit
+	Route::get('/edit/{site}', [SiteController::class, 'edit']);
+	Route::post('/update/{site}', [SiteController::class, 'update']);
+
+	// delete
+	Route::get('/confirmdelete/{site}', [SiteController::class, 'confirmDelete']);
+	Route::post('/delete/{site}', [SiteController::class, 'delete']);
 });
