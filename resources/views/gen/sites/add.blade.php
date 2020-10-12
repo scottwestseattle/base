@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('base.Add') . ' ' . __('view.Site'))
+@section('title', __('view.Add Site'))
 @section('menu-submenu')@component('gen.sites.menu-submenu', ['prefix' => 'sites'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('base.Add')}} {{__('view.Site')}}</h1> 
+	<h1>{{__('view.Add Site')}}</h1> 
 	<form method="POST" action="/sites/create">
 							
 		<div class="form-group">
@@ -13,7 +13,7 @@
 				<span class="invalid-feedback" role="alert">
 					<strong>{{ $message }}</strong>
 				</span>
-			@enderror			
+			@enderror
 		</div>
 		
 		<div class="form-group">

@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', __('view.Site') . ' ' . __('base.List'))
+@section('title', trans_choice('view.Site', 2))
 @section('menu-submenu')@component('gen.sites.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('view.Sites')}} ({{count($records)}})</h1>
+	<h1>{{trans_choice('view.Site', 2)}} ({{count($records)}})</h1>
 	
-	<a href="/sites/add">{{__('base.Add')}} {{__('view.Site')}}</a>
+	<a href="/sites/add">{{__('base.Add')}} {{trans_choice('view.Site', 1)}}</a>
 	
 	<div class="">
 		@foreach($records as $record)			

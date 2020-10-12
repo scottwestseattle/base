@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('base.Add') . ' ' . __('view.Template'))
+@section('title', __('view.Add Template'))
 @section('menu-submenu')@component('gen.templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('base.Add')}} {{__('view.Template')}}</h1> 
+	<h1>{{__('view.Add Template')}}</h1> 
 	<form method="POST" action="/templates/create">
 							
 		<div class="form-group">
@@ -13,7 +13,7 @@
 				<span class="invalid-feedback" role="alert">
 					<strong>{{ $message }}</strong>
 				</span>
-			@enderror			
+			@enderror
 		</div>
 		
 		<div class="form-group">

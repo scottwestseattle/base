@@ -62,7 +62,6 @@ class SiteController extends Controller
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);
-		$record->permalink		= createPermalink($request->title);
 
 		try
 		{

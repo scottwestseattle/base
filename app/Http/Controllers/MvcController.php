@@ -29,7 +29,7 @@ class MvcController extends Controller
 	{
 		$path = resource_path() . '/views/gen';
 		$files = scandir($path);
-		//dd($files);
+
 		return view('mvc.index', ['files' => $files]);
 	}
 

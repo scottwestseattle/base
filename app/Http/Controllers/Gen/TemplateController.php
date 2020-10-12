@@ -41,7 +41,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error selecting list');
+			logException(LOG_CLASS, $e->getMessage(), __('flash.Error getting record list'));
 		}	
 			
 		return view(VIEWS . '.index', [
@@ -62,7 +62,6 @@ class TemplateController extends Controller
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);
-		$record->permalink		= createPermalink($request->title);
 
 		try
 		{
@@ -71,7 +70,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error adding new template');			
+			logException(LOG_CLASS, $e->getMessage(), __('flash.Error adding new template'));
 			return back(); 
 		}	
 			
@@ -94,7 +93,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Record not found', ['permalink' => $permalink]);			
+			logException(LOG_CLASS, $e->getMessage(), __('flash.Record not found'), ['permalink' => $permalink]);			
 			return back();					
 		}	
 
@@ -140,7 +139,7 @@ class TemplateController extends Controller
 			}
 			catch (\Exception $e) 
 			{
-				logException(LOG_CLASS, $e->getMessage(), 'Error updating record', ['record_id' => $record->id]);
+				logException(LOG_CLASS, $e->getMessage(), __('flash.Error updating record'), ['record_id' => $record->id]);
 			}				
 		}
 		else
@@ -171,7 +170,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error deleting record', ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('flash.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}	
 			
@@ -190,7 +189,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error getting undelete records');
+			logException(LOG_CLASS, $e->getMessage(), __('flash.Error getting undelete records'));
 		}	
 			
 		return view(VIEWS . '.undelete', [
@@ -221,7 +220,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error updating record status', ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('flash.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}				
 		

@@ -17,7 +17,7 @@
 		@foreach($files as $file)
 			@if (strlen($file) > 2 && $file != 'templates')
 			<tr>
-				<td><a href="/mvc/view/{{$file}}">{{$file}}</a></td>
+				<td><a href="/{{$file}}">{{$file}}</a></td>
 				<td class="glyphicon-width"><a href='/mvc/confirmdelete/{{$file}}'><span class="glyphCustom-sm glyphicon glyphicon-trash"></span></a></td>
 			</tr>
 			@endif
