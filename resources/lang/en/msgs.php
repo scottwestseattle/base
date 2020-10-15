@@ -1,7 +1,7 @@
 <?php
 return [
 'Login Error: User is Blocked' => 'Login Error: User is Blocked',
-'Error adding new template' => 'Error adding new template',
+'Error adding new record' => 'Error adding new record',
 'No changes were made' => 'No changes were made',
 'Error updating record' => 'Error updating record',
 'New record has been added' => 'New record has been added',
@@ -11,5 +11,10 @@ return [
 'Email has been sent' => 'Email has been sent',
 'Error sending email' => 'Error sending email',
 'User updated' => 'User updated',
-'Translations updated' => 'Translations updated',
+'Record updated' => 'Record updated',
+'Record status has been updated' => 'Record status has been updated',
+'Error updating record status' => 'Error updating record status',
+'Translation file has been updated' => 'Translation file has been updated',
+'Error getting deleted records' => 'Error getting deleted records',
+'Record has been undeleted' => 'Record has been undeleted',
 ];

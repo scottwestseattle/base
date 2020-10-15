@@ -14,14 +14,14 @@ use App\Gen\Site;
 use App\Tools;
 use App\User;
 
-define('PREFIX', 'gen/sites');
+define('PREFIX', 'sites');
 define('VIEWS', 'gen.sites');
 define('LOG_CLASS', 'SiteController');
 
 class SiteController extends Controller
 {
 	use SoftDeletes;
-	private $redirectTo = '/' . PREFIX;
+	private $redirectTo = PREFIX;
 	
 	public function __construct ()
 	{
@@ -41,7 +41,7 @@ class SiteController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error selecting list');
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
 		}	
 			
 		return view(VIEWS . '.index', [
@@ -66,15 +66,15 @@ class SiteController extends Controller
 		try
 		{
 			$record->save();	
-			logInfo(LOG_CLASS, 'New record has been added', ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error adding new site');			
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
 			return back(); 
 		}	
 			
-		return redirect(self::$redirectTo . '/view/' . $record->id);		
+		return redirect($this->redirectTo . '/view/' . $record->id);		
     }
 
     public function permalink(Request $request, $permalink)
@@ -93,7 +93,7 @@ class SiteController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Record not found', ['permalink' => $permalink]);			
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Record not found'), ['permalink' => $permalink]);			
 			return back();					
 		}	
 
@@ -105,7 +105,7 @@ class SiteController extends Controller
 	public function view(Site $site)
     {		
 		$record = $site;
-		
+
 		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
@@ -135,16 +135,16 @@ class SiteController extends Controller
 			try
 			{
 				$record->save();
-				logInfo(LOG_CLASS, 'Record has been updated', ['record_id' => $record->id, 'changes' => $changes]);
+				logInfo(LOG_CLASS, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e) 
 			{
-				logException(LOG_CLASS, $e->getMessage(), 'Error updating record', ['record_id' => $record->id]);
+				logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
 			}				
 		}
 		else
 		{
-			logInfo(LOG_CLASS, 'No changes made to record', ['record_id' => $record->id]);						
+			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);						
 		}
 
 		return redirect('/' . PREFIX . '/view/' . $record->id);
@@ -166,11 +166,11 @@ class SiteController extends Controller
 		try 
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, 'Record has been deleted', ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error deleting record', ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}	
 			
@@ -189,7 +189,7 @@ class SiteController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error getting undelete records');
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting undelete records'));
 		}	
 			
 		return view(VIEWS . '.undelete', [
@@ -216,11 +216,11 @@ class SiteController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, 'Record status has been updated', ['record_id' => $record->id]);			
+			logInfo(LOG_CLASS, __('msgs.Record status has been updated'), ['record_id' => $record->id]);			
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error updating record status', ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}				
 		

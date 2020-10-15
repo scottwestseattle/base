@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Gen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
 use Config;
@@ -14,14 +13,13 @@ use App\Gen\Template;
 use App\Tools;
 use App\User;
 
-define('PREFIX', 'gen/templates');
+define('PREFIX', 'templates');
 define('VIEWS', 'gen.templates');
 define('LOG_CLASS', 'TemplateController');
 
 class TemplateController extends Controller
 {
-	use SoftDeletes;
-	private $redirectTo = '/' . PREFIX;
+	private $redirectTo = PREFIX;
 	
 	public function __construct ()
 	{
@@ -41,7 +39,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('flash.Error getting record list'));
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
 		}	
 			
 		return view(VIEWS . '.index', [
@@ -66,15 +64,15 @@ class TemplateController extends Controller
 		try
 		{
 			$record->save();	
-			logInfo(LOG_CLASS, 'New record has been added', ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('flash.Error adding new template'));
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
 			return back(); 
 		}	
 			
-		return redirect(self::$redirectTo . '/view/' . $record->id);		
+		return redirect($this->redirectTo . '/view/' . $record->id);		
     }
 
     public function permalink(Request $request, $permalink)
@@ -93,7 +91,7 @@ class TemplateController extends Controller
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('flash.Record not found'), ['permalink' => $permalink]);			
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Record not found'), ['permalink' => $permalink]);			
 			return back();					
 		}	
 
@@ -105,7 +103,7 @@ class TemplateController extends Controller
 	public function view(Template $template)
     {		
 		$record = $template;
-		
+
 		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
@@ -135,22 +133,22 @@ class TemplateController extends Controller
 			try
 			{
 				$record->save();
-				logInfo(LOG_CLASS, 'Record has been updated', ['record_id' => $record->id, 'changes' => $changes]);
+				logInfo(LOG_CLASS, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e) 
 			{
-				logException(LOG_CLASS, $e->getMessage(), __('flash.Error updating record'), ['record_id' => $record->id]);
+				logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
 			}				
 		}
 		else
 		{
-			logInfo(LOG_CLASS, 'No changes made to record', ['record_id' => $record->id]);						
+			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);						
 		}
 
 		return redirect('/' . PREFIX . '/view/' . $record->id);
 	}
 	
-    public function confirmdelete(Template $template)
+    public function confirmDelete(Template $template)
     {	
 		$record = $template; 
 			 
@@ -166,33 +164,55 @@ class TemplateController extends Controller
 		try 
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, 'Record has been deleted', ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('flash.Error deleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
+			return back();
+		}	
+			
+		return redirect($this->redirectTo);
+    }	
+
+    public function undelete(Request $request, $id)
+    {	
+		$id = intval($id);
+						
+		try 
+		{
+			$record = Template::withTrashed()
+				->where('id', $id)
+				->first();			
+			
+			$record->restore();
+			logInfo(LOG_CLASS, __('msgs.Record has been undeleted'), ['record_id' => $record->id]);
+		}
+		catch (\Exception $e) 
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error undeleting record'), ['record_id' => $record->id]);
 			return back();
 		}	
 			
 		return redirect($this->redirectTo);
     }	
 	
-    public function undelete()
+    public function deleted()
     {	
 		$records = []; // make this countable so view will always work
 		
 		try
 		{
-			$records = Template::select()
+			$records = Template::withTrashed()
 				->whereNotNull('deleted_at')
-				->get();
+				->get();	
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('flash.Error getting undelete records'));
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting deleted records'));
 		}	
 			
-		return view(VIEWS . '.undelete', [
+		return view(VIEWS . '.deleted', [
 			'records' => $records,
 		]);		
     }
@@ -216,11 +236,11 @@ class TemplateController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, 'Record status has been updated', ['record_id' => $record->id]);			
+			logInfo(LOG_CLASS, __('msgs.Record status has been updated'), ['record_id' => $record->id]);			
 		}
 		catch (\Exception $e) 
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('flash.Error updating record status'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}				
 		

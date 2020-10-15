@@ -3,9 +3,12 @@
 namespace App\Gen;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Template extends Model
 {
+	use SoftDeletes;
+	
     public function user()
     {
     	return $this->belongsTo(User::class);

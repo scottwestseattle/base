@@ -16,7 +16,7 @@
 		<tbody>
 		@foreach($records as $record)
 			<tr>
-				<td class="glyphicon-width"><a href='/users/edit/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
+				<td class="icon"><a href='/users/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
 				<td><a href="/users/view/{{ $record->id }}">{{$record->name}} ({{$record->id}})</a></td>
 				<td>{{$record->email}}</td>
 				<td>@LANG('ui.' . $record->getUserType())</td>

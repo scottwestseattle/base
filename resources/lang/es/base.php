@@ -99,4 +99,9 @@ return [
 'Add table to database and then these links will work' => 'Agregue la tabla a la base de datos y luego estos enlaces funcionarán',
 'Model' => 'Modelo',
 'Controller' => 'Controlador',
+'Edit Translations' => 'Editar traducciones',
+'Key' => 'Clave',
+'English' => 'Inglés',
+'Spanish' => 'Español',
+'Chinese' => 'Chino',
 ];

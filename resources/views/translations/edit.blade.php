@@ -3,13 +3,12 @@
 	$recs = $records['en'];
 @endphp
 @extends('layouts.app')
-@section('title', 'Edit Translations - ' . $filename)
+@section('title', __('base.Edit Translations') . ' - ' . $filename)
 @section('menu-submenu')@component('translations.menu-submenu', ['record' => $filename])@endcomponent @endsection
 @section('content')
-
 <div>
 
-	<h1>@LANG('ui.Edit') @LANG('ui.Translations')</h1>
+	<h1>@LANG('base.Edit Translations')</h1>
 
 	<form method="POST" action="/translations/update/{{$filename}}">
 					
@@ -17,7 +16,7 @@
 			
 		@if (is_array($recs))
 		<table>
-			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.English')</th><th>@LANG('ui.Spanish')</th><th>@LANG('ui.Chinese')</th></tr>
+			<tr><th></th><th>@LANG('base.Key')</th><th>@LANG('base.English')</th><th>@LANG('base.Spanish')</th><th>@LANG('base.Chinese')</th></tr>
 			@foreach($recs as $key => $value)
 				<tr>
 				<td>{{$cnt + 1}}.</td>
@@ -30,10 +29,10 @@
 		</table>
 		@endif
 		
-		<h3>@LANG('ui.Add')</h3>
+		<h3>@LANG('base.Add')</h3>
 		
 		<table>
-			<tr><th>@LANG('ui.Key')</th><th>@LANG('ui.English')</th><th>@LANG('ui.Spanish')</th><th>@LANG('ui.Chinese')</th></tr>
+			<tr><th>@LANG('base.Key')</th><th>@LANG('base.English')</th><th>@LANG('base.Spanish')</th><th>@LANG('base.Chinese')</th></tr>
 		@for($i = $cnt; $i < ($cnt + 5); $i++)
 			<tr>
 			<td style=""><input type="text" name="records[0][{{$i}}]" class="form-control"></input></td>
@@ -55,5 +54,4 @@
 	</form>
 
 </div>
-
 @stop

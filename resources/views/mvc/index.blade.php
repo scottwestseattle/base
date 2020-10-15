@@ -8,6 +8,7 @@
 	@guest
 	@else
 		<p><a href="/mvc/add">Add MVC</a></p>
+		<p><a href="/templates">Templates</a></p>
 	@endguest
 	
 	<h3>Generated MVC</h3>
@@ -15,10 +16,11 @@
 	<table class="table">
 		<tbody>
 		@foreach($files as $file)
+			<!-- skip the . and the .. -->
 			@if (strlen($file) > 2 && $file != 'templates')
 			<tr>
 				<td><a href="/{{$file}}">{{$file}}</a></td>
-				<td class="glyphicon-width"><a href='/mvc/confirmdelete/{{$file}}'><span class="glyphCustom-sm glyphicon glyphicon-trash"></span></a></td>
+				<td class="icon"><a href='/mvc/confirmdelete/{{$file}}'>@component('components.icon-delete')@endcomponent</a></td>
 			</tr>
 			@endif
 		@endforeach

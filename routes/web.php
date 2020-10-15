@@ -78,6 +78,8 @@ Route::group(['prefix' => 'templates'], function () {
 	// delete
 	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
 	Route::post('/delete/{template}', [TemplateController::class, 'delete']);
+	Route::get('/deleted', [TemplateController::class, 'deleted']);
+	Route::get('/undelete/{id}', [TemplateController::class, 'undelete']);
 });
 
 // Users

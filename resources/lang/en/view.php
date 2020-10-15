@@ -4,4 +4,8 @@ return [
 'Site' => 'Site|Sites',
 'Add Site' => 'Add Site',
 'Add Template' => 'Add Template',
+'Edit Template' => 'Edit Template',
+'Delete Template' => 'Delete Template',
+'View Template' => 'View Template',
+'Deleted Templates' => 'Deleted Templates',
 ];

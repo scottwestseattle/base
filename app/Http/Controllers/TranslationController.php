@@ -217,7 +217,7 @@ class TranslationController extends Controller
 		$this->save('zh', $filename, $array[2]);
 
 		Log::info('Translations updated', ['id' => Auth::id()]);
-		flash('success', 'Translation updated');
+		flash('success', __('msgs.Translation file has been updated'));
 		
 		return redirect('/translations');
     }

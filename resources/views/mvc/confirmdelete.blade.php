@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Delete User')
+@section('title', __('ui.Delete') . ' ' . __('base.MVC'))
 @section('menu-submenu')@component('mvc.menu-submenu', []) @endcomponent @endsection
 @section('content')
 <div>
-	<h1>Delete</h1>
+	<h1>@LANG('ui.Delete') @LANG('base.MVC')</h1>
 
 	<form method="POST" action="/mvc/delete">
 

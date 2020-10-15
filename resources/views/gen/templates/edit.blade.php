@@ -1,20 +1,22 @@
 @extends('layouts.app')
-
+@section('title', __('view.Edit Template'))
+@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
-
 <div class="container page-normal">
 
-	@component($prefix . '.menu-submenu', ['record' => $record, 'prefix' => $prefix, 'isAdmin' => $isAdmin])@endcomponent
+	<h1>@LANG('view.Edit Template')</h1>
 
-	<h1>@LANG('ui.Edit') @LANG('content.' . $title)</h1>
+	<form method="POST" id="form-edit" action="/templates/update/{{$record->id}}">
 
-	<form method="POST" id="form-edit" action="/{{$prefix}}/update/{{$record->id}}">
-
-		<label for="title" class="control-label">@LANG('gen.Title'):</label>
-		<input type="text" name="title" class="form-control" value="{{$record->title}}"></input>	
+		<div class="form-group">
+			<label for="title" class="control-label">@LANG('base.Title'):</label>
+			<input type="text" name="title" class="form-control" value="{{$record->title}}"></input>	
+		</div>
 		
-		<label for="description" class="control-label">@LANG('gen.Description'):</label>
-		<textarea name="description" class="form-control">{{$record->description}}</textarea>
+		<div class="form-group">
+			<label for="description" class="control-label">@LANG('base.Description'):</label>
+			<textarea name="description" class="form-control">{{$record->description}}</textarea>
+		</div>
 
 		<div class="submit-button">
 			<button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
@@ -25,6 +27,5 @@
 	</form>
 	
 </div>
-
 @endsection
 

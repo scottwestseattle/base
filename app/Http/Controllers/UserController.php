@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Log;
 
 use App\User;
 
 class UserController extends Controller
-{
-    use SoftDeletes; 
-	
+{	
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
@@ -74,7 +71,7 @@ class UserController extends Controller
 	
     public function delete(User $user)
     {	
-		$user->deleteSafe();
+		$user->delete();
 		Log::info('User deleted', ['id' => $user->id]);
 		return redirect(User::isAdmin() ? '/users' : '/dashboard'); 
     }	
