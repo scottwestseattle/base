@@ -75,6 +75,10 @@ Route::group(['prefix' => 'templates'], function () {
 	Route::get('/edit/{template}', [TemplateController::class, 'edit']);
 	Route::post('/update/{template}', [TemplateController::class, 'update']);
 
+	// publish
+	Route::get('/publish/{template}', [TemplateController::class, 'publish']);
+	Route::post('/publishupdate/{template}', [TemplateController::class, 'updatePublish']);
+
 	// delete
 	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
 	Route::post('/delete/{template}', [TemplateController::class, 'delete']);

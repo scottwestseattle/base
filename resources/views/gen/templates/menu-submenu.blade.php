@@ -12,8 +12,14 @@
 			<li class="nav-item"><a class="nav-link" href="/templates/view/{{$record->id}}">			
 				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
 			</a></li>		
+			<li class="nav-item"><a class="nav-link" href="/templates/publish/{{$record->id}}">			
+				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
+			</a></li>		
 			<li class="nav-item"><a class="nav-link" href="/templates/edit/{{$record->id}}">			
 				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#pencil-square" /></svg>
+			</a></li>		
+			<li class="nav-item"><a class="nav-link" href="/templates/publish/{{$record->id}}">			
+				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#lightning" /></svg>
 			</a></li>		
 			<li class="nav-item"><a class="nav-link" href="/templates/confirmdelete/{{$record->id}}">			
 				<svg class="bi mt-1 gray" width="24" height="24" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>

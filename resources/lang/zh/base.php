@@ -104,4 +104,6 @@ return [
 'English' => '英语',
 'Spanish' => '西班牙文',
 'Chinese' => '中文',
+'Work Status' => '发展状况',
+'Release Status' => '发行状态',
 ];

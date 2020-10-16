@@ -8,4 +8,5 @@ return [
 'Delete Template' => '删除范本',
 'View Template' => '查看模板',
 'Deleted Templates' => '删除的模板',
+'Publish Template' => '发布模板',
 ];

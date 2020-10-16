@@ -8,4 +8,5 @@ return [
 'Delete Template' => 'Eliminar Plantilla',
 'View Template' => 'Visualizar Plantilla',
 'Deleted Templates' => 'Plantillas eliminadas',
+'Publish Template' => 'Publicar Plantilla',
 ];

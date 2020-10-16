@@ -8,13 +8,14 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th></th><th>@LANG('ui.ID')</th><th>@LANG('base.Title')</th><th>@LANG('base.Description')</th><th>@LANG('ui.Created')</th><th></th>
+				<th></th><th></th><th>@LANG('ui.ID')</th><th>@LANG('base.Title')</th><th>@LANG('base.Description')</th><th>@LANG('ui.Created')</th><th></th>
 			</tr>
 		</thead>
 		<tbody>
 		@foreach($records as $record)
 			<tr>
 				<td class="icon"><a href='/templates/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
+				<td class="icon"><a href='/templates/publish/{{$record->id}}'>@component('components.icon', ['svg' => 'lightning'])@endcomponent</a></td>
 				<td>{{$record->id}}</td>
 				<td><a href="/templates/view/{{ $record->id }}">{{$record->title}}</a></td>
 				<td>{{$record->description}}</td>

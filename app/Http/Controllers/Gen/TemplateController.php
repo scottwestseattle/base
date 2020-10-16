@@ -10,6 +10,7 @@ use Config;
 use Log;
 
 use App\Gen\Template;
+use App\Status;
 use App\Tools;
 use App\User;
 
@@ -221,12 +222,15 @@ class TemplateController extends Controller
     {			
 		$record = $template; 
 	
+	
 		return view(VIEWS . '.publish', [
 			'record' => $record,
+			'release_flags' => Status::getReleaseFlags(),
+			'wip_flags' => Status::getWipFlags(),
 		]);
     }
 	
-    public function publishupdate(Request $request, Template $template)
+    public function updatePublish(Request $request, Template $template)
     {	
 		$record = $template; 
 		

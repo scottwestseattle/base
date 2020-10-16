@@ -8,4 +8,5 @@ return [
 'Delete Template' => 'Delete Template',
 'View Template' => 'View Template',
 'Deleted Templates' => 'Deleted Templates',
+'Publish Template' => 'Publish Template',
 ];
