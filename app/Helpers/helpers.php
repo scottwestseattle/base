@@ -156,6 +156,27 @@ if (!function_exists('domainName')) {
 	}
 }
 
+if (!function_exists('appName')) {
+	function appName()
+	{
+		//$key = 'APP_NAME_' . domainName();
+		//$v = env($key, 'App Name');
+		$v = ucfirst(domainName());
+
+		return $v;
+	}
+}
+
+if (!function_exists('appNamePretty')) {
+	function appNamePretty()
+	{
+		$key = 'APP_NAME_' . domainName();
+		$v = env($key, 'App Name');
+
+		return $v;
+	}
+}
+
 if (!function_exists('uniqueToken')) {
 	function uniqueToken()
 	{

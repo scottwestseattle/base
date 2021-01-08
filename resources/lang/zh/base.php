@@ -4,7 +4,7 @@ return [
 'If the email address you entered was correct, an email will be sent to:' => '如果您输入的电子邮件地址正确，则会将电子邮件发送到：',
 'Check your email and click on the link to reset your password.' => '检查您的电子邮件，然后单击链接以重置密码。',
 'link will expire' => '链接将在:mins分钟后过期。',
-'Note: If you do not receive the email in few minutes:' => '注意：如果几分钟后仍未收到电子邮件，请执行以下操作：',
+'If you do not receive the email in few minutes:' => '如果几分钟后仍未收到电子邮件，请执行以下操作：',
 'check your spam folder' => '检查您的垃圾邮件文件夹',
 'verify that the email address you entered was correct' => '确认您输入的电子邮件地址正确无误',
 'if you cannot resolve the issue, please contact' => '如果您无法解决问题，请联系:email',
@@ -106,4 +106,6 @@ return [
 'Chinese' => '中文',
 'Work Status' => '发展状况',
 'Release Status' => '发行状态',
+'Document Root' => '文档根文件夹',
+'App Debug' => '应用调试',
 ];

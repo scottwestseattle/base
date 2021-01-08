@@ -131,6 +131,9 @@ class MvcController extends Controller
 			if (is_file($paths['modelOut']))
 				unlink($paths['modelOut']);
 			
+			if (is_file($paths['mysqlSchemaOut']))
+				unlink($paths['mysqlSchemaOut']);
+
 			if (is_file($paths['controllerOut']))
 				unlink($paths['controllerOut']);
 

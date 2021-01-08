@@ -2,7 +2,7 @@
 return [
 'Login Error: User is Blocked' => 'Login Error: el usuario está bloqueado',
 'Error adding new record' => 'Error al agregar un nuevo registro',
-'No changes were made' => 'No se han realizado cambios',
+'No changes made' => 'No se han realizado cambios',
 'Error updating record' => 'Error al actualizar el registro',
 'New record has been added' => 'Se agregó nuevo registro',
 'Record has been updated' => 'El registro ha sido actualizado',
@@ -17,4 +17,5 @@ return [
 'Translation file has been updated' => 'Archivo de traducción se ha actualizado',
 'Error getting deleted records' => 'Error al obtener registros eliminados',
 'Record has been undeleted' => 'Se ha recuperado el registro',
+'Error getting record list' => 'Error al obtener la lista de registros',
 ];

@@ -10,6 +10,7 @@
 		<input name="views" type="hidden" value="{{$views}}" />
 
 		<p>Model Template: {{$paths['modelOut']}}</p>
+		<p>MySQL Table Schema: {{$paths['mysqlSchemaOut']}}</p>
 		<p>Controller Template: {{$paths['controllerOut']}}</p>
 		<p>Views Templates: {{$paths['viewsOutPathWildcard']}}</p>
 		

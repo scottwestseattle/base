@@ -26,7 +26,8 @@
 		<h3>{{__('base.System')}}</h3>
 		<p>{{env('APP_NAME')}}</p>
 		<p><strong>{{__('base.Server Time')}}</strong>: {{timestamp()}}</p>
-		<p><strong>App Debug</strong>: {{env('APP_DEBUG')}}</p>
+		<p><strong>{{__('base.Document Root')}}</strong>: {{base_path()}}</p>
+		<p><strong>@LANG('base.App Debug')</strong>: {{env('APP_DEBUG')}}</p>
 		<p><strong>{{__('base.Database')}}</strong>: {{env('DB_DATABASE')}}</p>
 		<p><strong>{{__('base.Mail Host')}}</strong>: {{env('MAIL_HOST')}}</p>
 		<p><strong>{{__('base.Sample Token')}}</strong>: {{uniqueToken()}}</p>

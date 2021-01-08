@@ -4,7 +4,7 @@ return [
 'If the email address you entered was correct, an email will be sent to:' => 'Si la dirección de correo electrónico que ingresó era correcta, se enviará un correo electrónico a:',
 'Check your email and click on the link to reset your password.' => 'Revise su correo electrónico y haga clic en el enlace para restablecer su contraseña.',
 'link will expire' => 'El enlace caducará en :mins minutos.',
-'Note: If you do not receive the email in few minutes:' => 'Nota: Si no recibe el correo electrónico en unos minutos:',
+'If you do not receive the email in few minutes:' => 'Si no recibe el correo electrónico en unos minutos:',
 'check your spam folder' => 'revisar su carpeta de spam',
 'verify that the email address you entered was correct' => 'verificar que la dirección de correo electrónico que ingresó sea correcta',
 'if you cannot resolve the issue, please contact' => 'si no puede resolver el problema, comuníquese con :email',
@@ -106,4 +106,6 @@ return [
 'Chinese' => 'Chino',
 'Work Status' => 'Estado del desarrollo',
 'Release Status' => 'Estado de lanzamiento',
+'Document Root' => 'Carpeta raíz',
+'App Debug' => 'Depuración de aplicaciones',
 ];

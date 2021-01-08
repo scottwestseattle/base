@@ -4,7 +4,7 @@ return [
 'If the email address you entered was correct, an email will be sent to:' => 'If the email address you entered was correct, an email will be sent to:',
 'Check your email and click on the link to reset your password.' => 'Check your email and click on the link to reset your password.',
 'link will expire' => 'The link will expire in :mins minutes.',
-'Note: If you do not receive the email in few minutes:' => 'Note: If you do not receive the email in few minutes:',
+'If you do not receive the email in few minutes:' => 'If you do not receive the email in few minutes:',
 'check your spam folder' => 'check your spam folder',
 'verify that the email address you entered was correct' => 'verify that the email address you entered was correct',
 'if you cannot resolve the issue, please contact' => 'if you cannot resolve the issue, please contact :email',
@@ -106,4 +106,6 @@ return [
 'Chinese' => 'Chinese',
 'Work Status' => 'Work Status',
 'Release Status' => 'Release Status',
+'Document Root' => 'Document Root',
+'App Debug' => 'App Debug',
 ];

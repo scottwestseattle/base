@@ -2,7 +2,7 @@
 return [
 'Login Error: User is Blocked' => '登录错误：用户被阻止',
 'Error adding new record' => '添加新记录时出错',
-'No changes were made' => '没有做出任何改变',
+'No changes made' => '没有做出任何改变',
 'Error updating record' => '更新记录时出错',
 'New record has been added' => '新记录已添加',
 'Record has been updated' => '记录已更新',
@@ -17,4 +17,5 @@ return [
 'Translation file has been updated' => '翻译文件已更新',
 'Error getting deleted records' => '获取删除的记录时出错',
 'Record has been undeleted' => '记录已被删除',
+'Error getting record list' => '获取记录列表时出错',
 ];

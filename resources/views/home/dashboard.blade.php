@@ -13,8 +13,29 @@
 	
 	<div class="">
 		<ul>
-			<li>Form Field Validation</li>
-			<li>What else?</li>
+			<li>Blog</li>
+			<li>Blog Entry</li>
+			<li>Comments</li>
+			<li>Contact Form</li>
+			<li>Domain-aware (multiple sites)</li>
+			<li>Error Handling</li>
+			<li>EU GDPR Compliance Notice</li>
+			<li><strong><i>Event Logging</i></strong></li>
+			<li>Form Validation</li>
+			<li>Forum</li>
+			<li>Geo-enabled</li>
+			<li><strong><i>Https Certificate</i></strong></li>
+			<li><strong><i>Hosting</strong></i></li>
+			<li>Icon</li>
+			<li><strong><i>Localization</i></strong></li>
+			<li>Privacy Policy</li>
+			<li>Site Map</li>
+			<li><strong><i>Soft Deletes</i></strong></li>
+			<li><strong><i>Templates</i></strong></li>
+			<li><strong><i>User Management</i></strong></li>
+			<li>Terms of Use</li>
+			<li>User Access Levels</li>
+			<li>Visitor Tracking</li>
 		</ul>
 	</div>
 	
