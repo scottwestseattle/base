@@ -27,8 +27,8 @@ sitemap-*.txt
 /docs/install
 *.zip
 *.psd
-public/appeventlog.txt
+/public/appeventlog.txt
 /public/files
-/resources/views/gen
-/app/gen
-/app/Http/Controllers/gen
+#/resources/views/gen
+#/app/gen
+#/app/Http/Controllers/gen
