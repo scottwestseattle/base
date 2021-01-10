@@ -8,18 +8,18 @@
 	<p>PHP v{{phpversion()}}</p>
 	<p>Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
 	<p>{{ipAddress()}}</p>
-	<p>{{domainName()}}</p>
+	<p>{{domainName()}} @LANG('base.Version') 0.0</p>
 	<p><strong>{{__('base.Info')}}</strong>: {{Config::get('constants.email.info')}}</p>
-	<p><strong>{{__('base.Support')}}</strong>: {{Config::get('constants.email.support')}}</p>		
-	<p><strong>{{__('base.Locale')}}</strong>: {{App::getLocale()}}</p>		
-	<p><a href="/sitemap">{{__('base.Site Map')}}</a></p>		
+	<p><strong>{{__('base.Support')}}</strong>: {{Config::get('constants.email.support')}}</p>
+	<p><strong>{{__('base.Locale')}}</strong>: {{App::getLocale()}}</p>
+	<p><a href="/{{app()->getLocale()}}/sitemap">{{__('base.Site Map')}}</a></p>
 
 @auth
 	<hr />
 	<h3>{{trans_choice('base.User', 1)}}</h3>
 	<p><strong>{{__('base.Name')}}</strong>: {{Auth::user()->name}}</p>
 	<p><strong>{{__('base.Email')}}</strong>: {{Auth::user()->email}}</p>
-	
+
 	@if (isAdmin())
 		<p><strong>{{__('base.User Type')}}</strong>: Admin</p>
 		<hr />
@@ -37,5 +37,5 @@
 @endif
 
 </div>
-	
+
 @endsection
