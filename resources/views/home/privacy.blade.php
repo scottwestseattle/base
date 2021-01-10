@@ -10,7 +10,7 @@
 
 	<h1>@LANG('ui.Privacy Policy')</h1>
 
-	<p>@LANG('fp.privacy-p1') <a href="/{{app()->getLocale()}}/terms">@LANG('ui.Terms of Use')</a>.</p>
+	<p>@LANG('fp.privacy-p1') <a href="{{lurl('terms')}}">@LANG('ui.Terms of Use')</a>.</p>
 
 	<p>@LANG('fp.privacy-p2')</p>
 
@@ -34,7 +34,7 @@
 
 	<h3>@LANG('fp.privacy-h4')</h3>
 
-	<p>@LANG('fp.privacy-p9') <a href="/{{app()->getLocale()}}/contact">@LANG('ui.by clicking here')</a>.</p>
+	<p>@LANG('fp.privacy-p9') <a href="{{lurl('contact')}}">@LANG('ui.by clicking here')</a>.</p>
 
 </div>
 

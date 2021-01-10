@@ -28,18 +28,29 @@ use App\Http\Controllers\Gen\TemplateController;
 |
 */
 
-// Handle the available languages with prefixed url's
-// the locale gets set to the session in the Controller and then they get redirected to the regular URL
-Route::get('/en/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'en'])->name('en');
-Route::get('/es/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'es'])->name('es');
-Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'zh'])->name('zh');
+/*****************************************************************************
+ How locale urls are handled
+ 1. All locale urls (/es/about) are routed through the first three routes below
+ 2. In the controller, the locale gets set to the session in the Controller
+    and then they get redirected to the regular URLs whose routes are handled
+    farther down
+*****************************************************************************/
 
+// Handle the available languages with prefixed url's
+Route::get('/en/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+Route::get('/es/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+
+///////////////////////////////////////////////////////////////////////////////
 // Front Page
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
-Route::get('/sitemap', [HomeController::class, 'sitemap'])->name('sitemap');
-Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/language/{locale}', [Controller::class, 'language']);
+Route::get('/sitemap', [HomeController::class, 'sitemap']);
+Route::get('/about', [HomeController::class, 'about']);
+Route::get('/terms', [HomeController::class, 'terms']);
+Route::get('/privacy', [HomeController::class, 'privacy']);
+Route::get('/contact', [HomeController::class, 'contact']);
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -70,7 +81,7 @@ Route::group(['prefix' => 'templates'], function () {
 	// add
 	Route::get('/add', [TemplateController::class, 'add']);
 	Route::post('/create', [TemplateController::class, 'create']);
-	
+
 	// edit
 	Route::get('/edit/{template}', [TemplateController::class, 'edit']);
 	Route::post('/update/{template}', [TemplateController::class, 'update']);
@@ -95,7 +106,7 @@ Route::group(['prefix' => 'users'], function () {
 	// add
 	Route::get('/register', [RegisterController::class, 'register'])->name('register');
 	Route::post('/create', [RegisterController::class, 'create']);
-	
+
 	// edit
 	Route::get('/edit/{user}', [UserController::class, 'edit']);
 	Route::post('/update/{user}', [UserController::class, 'update']);
@@ -103,10 +114,10 @@ Route::group(['prefix' => 'users'], function () {
 	// delete
 	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete']);
 	Route::post('/delete/{user}', [UserController::class, 'delete']);
-	
+
 	// email verification
 	Route::get('/verify-email/{user}/{token}', [VerificationController::class, 'verifyEmail']);
-	
+
 });
 
 // Translations
@@ -122,13 +133,13 @@ Route::group(['prefix' => 'translations'], function () {
 
 // Password
 Route::group(['prefix' => 'password'], function () {
-	
+
 	// reset via email
 	Route::get('/request-reset', [ResetPasswordController::class, 'requestReset']);
 	Route::post('/send-password-reset', [ResetPasswordController::class, 'sendPasswordReset']);
 	Route::get('/reset/{user}/{token}', [ResetPasswordController::class, 'resetPassword']);
 	Route::post('/reset-update/{user}', [ResetPasswordController::class, 'updatePassword']);
-	
+
 	// edit
 	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);
 	Route::post('/update/{user}', [LoginController::class, 'updatePassword']);
@@ -149,70 +160,3 @@ Route::group(['prefix' => 'events'], function () {
 // Move permanent routes above this section
 // =================================================================
 
-// GENERATED for Visitor model
-use App\Http\Controllers\Gen\VisitorController;
-	
-// Visitors
-Route::group(['prefix' => 'visitors'], function () {
-	Route::get('/', [VisitorController::class, 'index']);
-	Route::get('/index', [VisitorController::class, 'index']);
-	Route::get('/view/{visitor}', [VisitorController::class, 'view']);
-
-	// add
-	Route::get('/add', [VisitorController::class, 'add']);
-	Route::post('/create', [VisitorController::class, 'create']);
-	
-	// edit
-	Route::get('/edit/{visitor}', [VisitorController::class, 'edit']);
-	Route::post('/update/{visitor}', [VisitorController::class, 'update']);
-
-	// delete
-	Route::get('/confirmdelete/{visitor}', [VisitorController::class, 'confirmDelete']);
-	Route::post('/delete/{visitor}', [VisitorController::class, 'delete']);
-});
-
-
-// GENERATED for Definition model
-use App\Http\Controllers\Gen\DefinitionController;
-	
-// Definitions
-Route::group(['prefix' => 'definitions'], function () {
-	Route::get('/', [DefinitionController::class, 'index']);
-	Route::get('/index', [DefinitionController::class, 'index']);
-	Route::get('/view/{definition}', [DefinitionController::class, 'view']);
-
-	// add
-	Route::get('/add', [DefinitionController::class, 'add']);
-	Route::post('/create', [DefinitionController::class, 'create']);
-	
-	// edit
-	Route::get('/edit/{definition}', [DefinitionController::class, 'edit']);
-	Route::post('/update/{definition}', [DefinitionController::class, 'update']);
-
-	// delete
-	Route::get('/confirmdelete/{definition}', [DefinitionController::class, 'confirmDelete']);
-	Route::post('/delete/{definition}', [DefinitionController::class, 'delete']);
-});
-
-
-// GENERATED for Site model
-use App\Http\Controllers\Gen\SiteController;
-	
-// Sites
-Route::group(['prefix' => 'sites'], function () {
-	Route::get('/', [SiteController::class, 'index']);
-	Route::get('/index', [SiteController::class, 'index']);
-	Route::get('/view/{site}', [SiteController::class, 'view']);
-
-	// add
-	Route::get('/add', [SiteController::class, 'add']);
-	Route::post('/create', [SiteController::class, 'create']);
-	
-	// edit
-	Route::get('/edit/{site}', [SiteController::class, 'edit']);
-	Route::post('/update/{site}', [SiteController::class, 'update']);
-
-	// delete
-	Route::get('/confirmdelete/{site}', [SiteController::class, 'confirmDelete']);
-	Route::post('/delete/{site}', [SiteController::class, 'delete']);
-});

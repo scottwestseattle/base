@@ -12,7 +12,7 @@
 	<p><strong>{{__('base.Info')}}</strong>: {{Config::get('constants.email.info')}}</p>
 	<p><strong>{{__('base.Support')}}</strong>: {{Config::get('constants.email.support')}}</p>
 	<p><strong>{{__('base.Locale')}}</strong>: {{App::getLocale()}}</p>
-	<p><a href="/{{app()->getLocale()}}/sitemap">{{__('base.Site Map')}}</a></p>
+	<p><a href="{{lurl('sitemap')}}">{{__('base.Site Map')}}</a></p>
 
 @auth
 	<hr />

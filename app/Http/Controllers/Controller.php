@@ -16,7 +16,7 @@ define('SITE_ID', 0);
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-	
+
 	public function __construct ()
 	{
 		// session don't work in constructors (or in middleware), so this is the work arround:
@@ -27,8 +27,9 @@ class Controller extends BaseController
 				App::setLocale($locale);
 
 			return $next($request);
-		});	}	
-	
+		});	}
+
+    // this handles switching languages from dropdown
 	public function language($locale)
 	{
 		//dump($locale);
@@ -37,55 +38,28 @@ class Controller extends BaseController
 			session(['locale' => $locale]);
 			App::setLocale($locale);
 		}
-		
+
 		return back();
-	}	
-
-	public function en(Request $request) {
-		return self::handleLocalePrefix($request, 'en');
-	}
-	public function es(Request $request) {
-		return self::handleLocalePrefix($request, 'es');
-	}
-	public function zh(Request $request) {
-		return self::handleLocalePrefix($request, 'zh');
 	}
 
-	static private function handleLocalePrefix($request, $locale)
+	public function routeLocale(Request $request)
 	{
+	    $locale = $request->segments()[0];
+
 		self::setLocale($locale);
-		return redirect(self::getUrl($request, $locale));
+
+	    // trim off the locale: "es/about" to "/about"
+		return redirect(substr($request->path(), 2));
 	}
-	
+
 	static private function setLocale($locale)
 	{
 		session(['locale' => $locale]);
 		App::setLocale($locale);
 	}
 
-	static private function getUrl(Request $request, $locale)
-	{
-		$url = '';
-		$segments = $request->segments();
-		$i = 0;
-		
-		// remove the locale prefix from the url
-		// for example, change '/es/about' to '/about'
-		foreach($segments as $segment)
-		{
-			// skip the first segment which is the locale prefix
-			if ($i++ >= 1)
-			{
-				$url .= '/' . $segment;
-			}
-		}
-		
-		return $url;
-	}			
-	
-	
 	public function getViewData($vd)
 	{
 		return $vd;
-	}	
+	}
 }

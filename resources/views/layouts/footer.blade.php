@@ -14,10 +14,10 @@
 		<p>&copy; {{date("Y")}} {{domainName()}} - @LANG('base.All Rights Reserved')</p>
 		<span class="footer-links">
 			<a href="#top">@LANG('base.Back to Top')</a>&bull;
-			<a href="/privacy">@LANG('base.Privacy Policy')</a>&bull;
-			<a href="/terms">@LANG('base.Terms of Use')</a>&bull;
-			<a href="/sitemap">@LANG('base.Site Map')</a>&bull;
-			<a href="/about">@LANG('base.About')</a>
+			<a href="{{lurl('privacy')}}">@LANG('base.Privacy Policy')</a>&bull;
+			<a href="{{lurl('terms')}}">@LANG('base.Terms of Use')</a>&bull;
+			<a href="{{lurl('sitemap')}}">@LANG('base.Site Map')</a>&bull;
+			<a href="{{lurl('about')}}">@LANG('base.About')</a>
 		</span>
 	</div>
 </footer>

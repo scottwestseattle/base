@@ -9,7 +9,7 @@
 
 	<div class="mr-auto navbar-icon-shortcuts">
 @auth
-		<a class="navbar-item" href="{{route('dashboard')}}">
+		<a class="navbar-item" href="{{lurl('dashboard')}}">
 			<div>
 				<svg class="" width="24" height="24" fill="currentColor" style="{{isAdmin() ? 'color:gold;' : ''}}" >
 					<use xlink:href="/img/bootstrap-icons.svg#person-circle" />
@@ -17,7 +17,7 @@
 			</div>
 		</a>
 @else
-		<a class="navbar-item" href="{{route('login')}}">
+		<a class="navbar-item" href="{{lurl('login')}}">
 			<div>
 				<svg class="" width="24" height="24" style="color:LightGray;" >
 					<!-- use xlink:href="/img/bootstrap-icons.svg#box-arrow-in-right" / -->
@@ -33,8 +33,8 @@
 					<use xlink:href="/img/bootstrap-icons.svg#search" />
 				</svg>
 			</div>
-		</a>	
-		
+		</a>
+
 		<!-- Language Selector Dropdown -->
 		<div class="mt-1 middle dropdown">
 			<a href="#" class="navbar-item" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -45,7 +45,7 @@
 				<li><a href="/language/es"><img src="/img/language-es.png" /></a></li>
 				<li><a href="/language/zh"><img src="/img/language-zh.png" /></a></li>
 			</ul>
-		</div>		
+		</div>
 	</div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,15 +53,15 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">	
+    <ul class="navbar-nav mr-auto">
 	@auth
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			{{Auth::user()->name}}
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			@if (isAdmin())			
-				<a class="dropdown-item" href="/events">
+			@if (isAdmin())
+				<a class="dropdown-item" href="{{lurl('events')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 							<use xlink:href="/img/bootstrap-icons.svg#exclamation-diamond" />
@@ -69,7 +69,7 @@
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Event', 2)}}</div>
 				</a>
-				<a class="dropdown-item" href="{{route('translations')}}">
+				<a class="dropdown-item" href="{{lurl('translations')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 							<use xlink:href="/img/bootstrap-icons.svg#chat-right-text" />
@@ -77,7 +77,7 @@
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Translation', 2)}}</div>
 				</a>
-				<a class="dropdown-item" href="/users">
+				<a class="dropdown-item" href="{{lurl('users')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 							<use xlink:href="/img/bootstrap-icons.svg#people" />
@@ -87,20 +87,20 @@
 				</a>
 				<div class="dropdown-divider"></div>
 			@endif
-				<a class="dropdown-item" href="/users/view/{{Auth::id()}}">
+				<a class="dropdown-item" href="{{lurl('users/view/' . Auth::id())}}">
 					<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#person" />
 					</svg>
 					<div class="middle ml-1">{{__('base.Profile')}}</div>
 				</a>
-				<a class="dropdown-item" href="/password/edit/{{Auth::id()}}">
+				<a class="dropdown-item" href="{{lurl('password/edit/') . Auth::id()}}">
 					<svg class="float-left bi mt-1" width="20" height="20" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#pencil-square" />
 					</svg>
 					<div class="middle ml-2">{{__('base.Password')}}</div>
 				</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item red" href="{{ route('logout') }}">
+				<a class="dropdown-item red" href="{{lurl('logout')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 							<use xlink:href="/img/bootstrap-icons.svg#box-arrow-right" />
@@ -109,16 +109,16 @@
 					<div class="middle ml-1">{{__('base.Log-out')}}</div>
 				</a>
 			</div>
-		</li>		
+		</li>
 	@else
-		<li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{__('base.Log-in')}}</a></li>	  
-		<li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{__('base.Register')}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('login')}}">{{__('base.Log-in')}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('register')}}">{{__('base.Register')}}</a></li>
 	@endif
-	
+
 	@if (isAdmin())
-		<li class="nav-item"><a class="nav-link" href="/mvc">{{__('base.MVC')}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('mvc')}}">{{__('base.MVC')}}</a></li>
 	@endif
-		<li class="nav-item"><a class="nav-link" href="/about">{{__('base.About')}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('about')}}">{{__('base.About')}}</a></li>
     </ul>
     <form class="form-inline my-2 my-lg-0 d-none d-lg-block"><!-- only for large so it doesn't clutter the dropdown -->
       <input class="form-control mr-sm-2" type="search" placeholder="{{__('base.Search')}}" aria-label="Search">
