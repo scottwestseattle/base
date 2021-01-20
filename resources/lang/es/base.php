@@ -112,4 +112,5 @@ return [
 'Entries' => 'Entradas',
 'Entry' => 'entrada',
 'Comment' => 'Comentario',
+'Top Level (not Gen)' => 'Nivel superior (no gen)',
 ];

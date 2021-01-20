@@ -30,7 +30,7 @@ class MvcController extends Controller
 	{
 		$path = resource_path() . '/views/gen';
 
-		$files = getFilesVisible($path);
+		$files = getFilesVisible($path, /* includeFolders = */ true);
 
 		return view('mvc.index', ['files' => $files]);
 	}
@@ -56,6 +56,13 @@ class MvcController extends Controller
 
 		$paths = self::genPaths($model, $views);
 
+        $topLevel = false;
+		if (isset($request->topLevel))
+		{
+			// put it at the normal, non-gen level
+			$topLevel = true;
+		}
+
 		// generate the Model
 		$tpl = file_get_contents($paths['modelTpl']);
 		$tpl = str_replace('Template', $model, $tpl);
@@ -63,8 +70,8 @@ class MvcController extends Controller
 
 		// generate the Controller
 		$tpl = file_get_contents($paths['controllerTpl']);
+		$tpl = str_replace('templates', strtolower($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
-		$tpl = str_replace('template', strtolower($model), $tpl);
 		file_put_contents($paths['controllerOut'], $tpl);
 
 		// generate the views
@@ -73,6 +80,7 @@ class MvcController extends Controller
 		self::genView($model, $views, $paths, 'edit');
 		self::genView($model, $views, $paths, 'index');
 		self::genView($model, $views, $paths, 'menu-submenu');
+		self::genView($model, $views, $paths, 'publish');
 		self::genView($model, $views, $paths, 'view');
 
 		if (isset($request->add_routes))
@@ -165,6 +173,8 @@ class MvcController extends Controller
 
 	static private function genPaths($model = null, $views = null)
 	{
+	    $model = isset($model) ? ucfirst($model) : null;
+
 		// views
 		$rc['viewsOutPath'] = null;
 		$root = resource_path() . '/views/gen/';
@@ -204,8 +214,8 @@ class MvcController extends Controller
 		$viewFileOut = $paths['viewsOutPath'] . $viewFile; // ex: '/resources/views/visitors/index.blade.php'
 
 		$tpl = file_get_contents($viewFileTpl);
+		$tpl = str_replace('templates', strtolower($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
-		$tpl = str_replace('template', strtolower($model), $tpl);
 		file_put_contents($viewFileOut, $tpl);
 	}
 

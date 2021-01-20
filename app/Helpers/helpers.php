@@ -365,19 +365,23 @@ if (!function_exists('lurl')) {
 }
 
 if (!function_exists('getFilesVisible')) {
-    function getFilesVisible($path)
+    function getFilesVisible($path, $includeFolders = false)
     {
 		$files = [];
 
 		if (is_dir($path))
 		{
-            $folder = scandir($path);
+            $all = scandir($path);
 
-            foreach($folder as $file)
+            foreach($all as $file)
             {
-                if (Str::startsWith($file, '.') || is_dir($file))
+                if (Str::startsWith($file, '.'))
                 {
                     // skip the folders and hidden files
+                }
+                else if (!$includeFolders && is_dir($path . '/' . $file))
+                {
+                    // skip folders
                 }
                 else
                 {
