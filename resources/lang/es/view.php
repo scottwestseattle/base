@@ -9,4 +9,6 @@ return [
 'View Template' => 'Visualizar Plantilla',
 'Deleted Templates' => 'Plantillas eliminadas',
 'Publish Template' => 'Publicar Plantilla',
+'Comment' => 'Comentario|Comentarios',
+'Entry' => 'Entrada|Entradas',
 ];

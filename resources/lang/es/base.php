@@ -108,4 +108,8 @@ return [
 'Release Status' => 'Estado de lanzamiento',
 'Document Root' => 'Carpeta raíz',
 'App Debug' => 'Depuración de aplicaciones',
+'Comments' => 'Comentarios',
+'Entries' => 'Entradas',
+'Entry' => 'entrada',
+'Comment' => 'Comentario',
 ];

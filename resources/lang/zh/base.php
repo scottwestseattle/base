@@ -108,4 +108,8 @@ return [
 'Release Status' => '发行状态',
 'Document Root' => '文档根文件夹',
 'App Debug' => '应用调试',
+'Comments' => '评论',
+'Entries' => '参赛作品',
+'Entry' => '条目',
+'Comment' => '评论',
 ];

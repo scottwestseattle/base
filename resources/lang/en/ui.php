@@ -114,4 +114,5 @@ return [
 'Please click here to verify your email address' => 'Please click here to verify your email address',
 'ID' => 'ID',
 'IP' => 'IP',
+'View' => 'View',
 ];

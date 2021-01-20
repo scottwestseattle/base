@@ -114,4 +114,5 @@ return [
 'Please click here to verify your email address' => 'Haga clic aquí para verificar su dirección de correo electrónico',
 'ID' => 'ID',
 'IP' => 'IP',
+'View' => 'Visualizar',
 ];

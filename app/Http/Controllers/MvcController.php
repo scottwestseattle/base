@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App;
 use Log;
@@ -16,19 +17,20 @@ define('LOG_CLASS', 'MvcController');
 class MvcController extends Controller
 {
 	private $redirectTo = '/mvc';
-	
+
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
 		]);
-						
+
 		parent::__construct();
-	}	
+	}
 
 	public function index(Request $request)
 	{
 		$path = resource_path() . '/views/gen';
-		$files = scandir($path);
+
+		$files = getFilesVisible($path);
 
 		return view('mvc.index', ['files' => $files]);
 	}
@@ -36,7 +38,7 @@ class MvcController extends Controller
 	public function add(Request $request)
 	{
 		$paths = self::genPaths();
-		
+
 		return view('mvc.add', [
 			'paths' => $paths,
 		]);
@@ -45,10 +47,10 @@ class MvcController extends Controller
 	public function create(Request $request)
 	{
 		$data = $request->validate([
-			'model' => 'required|string|min:3|max:20',		
-			'plural' => 'required|string|min:3|max:20',		
-		]);	
-		
+			'model' => 'required|string|min:3|max:20',
+			'plural' => 'required|string|min:3|max:20',
+		]);
+
 		$model = $data['model'];
 		$views = $data['plural'];
 
@@ -58,13 +60,13 @@ class MvcController extends Controller
 		$tpl = file_get_contents($paths['modelTpl']);
 		$tpl = str_replace('Template', $model, $tpl);
 		file_put_contents($paths['modelOut'], $tpl);
-		
+
 		// generate the Controller
 		$tpl = file_get_contents($paths['controllerTpl']);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', strtolower($model), $tpl);
 		file_put_contents($paths['controllerOut'], $tpl);
-		
+
 		// generate the views
 		self::genView($model, $views, $paths, 'add');
 		self::genView($model, $views, $paths, 'confirmdelete');
@@ -81,7 +83,7 @@ class MvcController extends Controller
 
 		// generate the MySql db table schema
 		$schemaMysql = self::genSchemaMysql($views, $paths);
-		
+
 		return redirect('/mvc/view/' . strtolower($model) . '/' . $views);
 	}
 
@@ -89,7 +91,7 @@ class MvcController extends Controller
 	{
 		$paths = self::genPaths($model, $views);
 		$schemaMysql = self::genSchemaMysql($views, $paths);
-		
+
 		return view('mvc.view', [
 			'model' => $model,
 			'views' => $views,
@@ -112,25 +114,25 @@ class MvcController extends Controller
 	public function delete(Request $request)
 	{
 		$data = $request->validate([
-			'views' => 'required|alpha|min:3|max:20',		
-		]);	
-		
+			'views' => 'required|alpha|min:3|max:20',
+		]);
+
 		$views = $data['views'];
-		
+
 		if ($views == 'templates')
 		{
 			logError(LOG_CLASS, 'Error deleting MVC - cannot delete the template');
 			return redirect($this->redirectTo);
 		}
-		
+
 		$model = ucfirst(substr($views, 0, strlen($views) - 1));
 		$paths = self::genPaths($model, $views);
-		
+
 		try
 		{
 			if (is_file($paths['modelOut']))
 				unlink($paths['modelOut']);
-			
+
 			if (is_file($paths['mysqlSchemaOut']))
 				unlink($paths['mysqlSchemaOut']);
 
@@ -141,33 +143,33 @@ class MvcController extends Controller
 			if (is_dir($paths['viewsOutPath']))
 			{
 				$files = glob($paths['viewsOutPathWildcard']);
-				
+
 				foreach($files as $file)
 				{
 					if (is_file($file))
 						unlink($file);
 				}
-				
+
 				rmdir($paths['viewsOutPath']);
 			}
-			
+
 			logInfo(LOG_CLASS, 'MVC has been deleted', ['model' => $model, 'views' => $views]);
 		}
 		catch(Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error deleting MFC file');			
+			logException(LOG_CLASS, $e->getMessage(), 'Error deleting MFC file');
 		}
-		
+
 		return redirect($this->redirectTo);
 	}
-	
+
 	static private function genPaths($model = null, $views = null)
-	{				
+	{
 		// views
 		$rc['viewsOutPath'] = null;
 		$root = resource_path() . '/views/gen/';
-		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/gen/templates/'		
-		
+		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/gen/templates/'
+
 		if (isset($views))
 		{
 			$rc['viewsOutPath'] = $root . $views . '/'; //ex: '/resources/views/visitors/'
@@ -179,39 +181,39 @@ class MvcController extends Controller
 		$rc['modelTpl'] = app_path() . '/Gen/Template.php';
 		if (isset($model))
 			$rc['modelOut'] = app_path() . '/Gen/' . $model . '.php';
-		
+
 		// controller
 		$rc['controllerOut'] = null;
 		$rc['controllerTpl'] = app_path() . '/Http/Controllers/Gen/TemplateController.php';
 		if (isset($model))
-			$rc['controllerOut'] = app_path() . '/Http/Controllers/Gen/' . $model . 'Controller.php';		
+			$rc['controllerOut'] = app_path() . '/Http/Controllers/Gen/' . $model . 'Controller.php';
 
 		// mySQL table schema
 		$rc['mysqlSchemaOut'] = app_path() . '/Gen/' . $views . '.sql'; // ex: /app/Gen/visitors.sql
-		
+
 		return $rc;
-	}	
-	
+	}
+
 	static private function genView($model, $views, $paths, $view)
 	{
 		if (!is_dir($paths['viewsOutPath']))
 			mkdir($paths['viewsOutPath'], 0777);
-		
+
 		$viewFile = $view . '.blade.php'; 	 // ex: 'index.blade.php'
 		$viewFileTpl = $paths['viewsTplPath'] . $viewFile; // ex:  '/resources/views/templates/index.blade.php'
 		$viewFileOut = $paths['viewsOutPath'] . $viewFile; // ex: '/resources/views/visitors/index.blade.php'
-		
+
 		$tpl = file_get_contents($viewFileTpl);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', strtolower($model), $tpl);
-		file_put_contents($viewFileOut, $tpl);		
+		file_put_contents($viewFileOut, $tpl);
 	}
 
 	static private $routesTemplate = "
 
 // GENERATED for Template model
 use App\Http\Controllers\Gen\TemplateController;
-	
+
 // Templates
 Route::group(['prefix' => 'templates'], function () {
 	Route::get('/', [TemplateController::class, 'index']);
@@ -221,7 +223,7 @@ Route::group(['prefix' => 'templates'], function () {
 	// add
 	Route::get('/add', [TemplateController::class, 'add']);
 	Route::post('/create', [TemplateController::class, 'create']);
-	
+
 	// edit
 	Route::get('/edit/{template}', [TemplateController::class, 'edit']);
 	Route::post('/update/{template}', [TemplateController::class, 'update']);
@@ -235,9 +237,9 @@ Route::group(['prefix' => 'templates'], function () {
 	static private function genRoutes($model, $views)
 	{
 		$routesOut = base_path() . '/routes/web.php'; // ex: /routes/web.php
-				
+
 		$modelLc = strtolower($model);
-		
+
 		$tpl = self::$routesTemplate;
 		$tpl = str_replace('Templates', ucfirst($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
@@ -278,11 +280,11 @@ COMMIT;
 ";
 
 	static private function genSchemaMysql($table, $paths)
-	{		
+	{
 		$tpl = self::$schemaMysql;
 		$tpl = str_replace('templates', $table, $tpl);
 		file_put_contents($paths['mysqlSchemaOut'], $tpl);
 		return $tpl;
 	}
-	
+
 }

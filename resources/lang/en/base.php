@@ -108,4 +108,8 @@ return [
 'Release Status' => 'Release Status',
 'Document Root' => 'Document Root',
 'App Debug' => 'App Debug',
+'Comments' => 'Comments',
+'Entries' => 'Entries',
+'Entry' => 'Entry',
+'Comment' => 'Comment',
 ];

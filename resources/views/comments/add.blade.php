@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('ui.Add') . ' ' . trans_choice('view.Template', 1))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
+@section('title', __('ui.Add') . ' ' . trans_choice('view.Comment', 1))
+@section('menu-submenu')@component('comments.menu-submenu', ['prefix' => 'comments'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.Add')}} {{trans_choice('view.Template', 1)}}</h1>
-	<form method="POST" action="/templates/create">
+	<h1>{{__('ui.Add')}} {{trans_choice('view.Comment', 1)}}</h1>
+	<form method="POST" action="/comments/create">
 
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

@@ -61,6 +61,21 @@
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 			@if (isAdmin())
+				<a class="dropdown-item" href="{{lurl('comments')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#chat-right-text" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('base.Comments', 2)}}</div>
+				</a>				<a class="dropdown-item" href="{{lurl('entries')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#briefcase" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('base.Entries', 2)}}</div>
+				</a>
 				<a class="dropdown-item" href="{{lurl('events')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
@@ -72,7 +87,7 @@
 				<a class="dropdown-item" href="{{lurl('translations')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
-							<use xlink:href="/img/bootstrap-icons.svg#chat-right-text" />
+							<use xlink:href="/img/bootstrap-icons.svg#globe" />
 						</svg>
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Translation', 2)}}</div>

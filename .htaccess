@@ -9,11 +9,11 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Rewrite static resources
+  # Map static resources to public folder
   RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
   RewriteRule (.+) public/$1 [L]
 
-  # Rewrite everything else
+  # Map everything else to public folder
   RewriteRule .* public/ [L]
 </IfModule>
 #########

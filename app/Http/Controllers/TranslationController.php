@@ -14,6 +14,7 @@ use App\Entry;
 use App\Tools;
 use App\Translation;
 
+define('LOG_CLASS', 'TranslationController');
 define('TRANSLATIONS_FOLDER', '../resources/lang/');
 
 class TranslationController extends Controller
@@ -51,21 +52,17 @@ class TranslationController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			$msg = 'Error creating translation folder: ' . $folder;
-			Event::logException(LOG_MODEL_TRANSLATIONS, LOG_ACTION_INDEX, $msg, null, $e->getMessage());
-
-			$request->session()->flash('message.level', 'danger');
-			$request->session()->flash('message.content', $msg . ' ' . $e->getMessage());
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error with translation folder'));
 		}
 
 		try
 		{
-			$files = scandir($folder);
+			$files = getFilesVisible($folder);
 		}
 		catch (\Exception $e)
 		{
 			$msg = 'Error opening translation folder: ' . $folder;
-			Event::logException(LOG_MODEL_TRANSLATIONS, LOG_ACTION_INDEX, $msg, null, $e->getMessage());
+			Event::logException(LOG_CLASS, LOG_ACTION_INDEX, $msg, null, $e->getMessage());
 
 			$request->session()->flash('message.level', 'danger');
 			$request->session()->flash('message.content', $msg . ' ' . $e->getMessage());
@@ -73,10 +70,7 @@ class TranslationController extends Controller
 
 		foreach($files as $file)
 		{
-			if ($file != '.' && $file != '..')
-			{
-				$records[] = str_replace('.php', '', $file);
-			}
+			$records[] = str_replace('.php', '', $file);
 		}
 
 		return view('translations.index', $this->getViewData([
@@ -96,7 +90,7 @@ class TranslationController extends Controller
     public function view(Request $request, $filename)
     {
 		$filename = alpha($filename);
-		
+
 		$locale = App::getLocale();
 
 		App::setLocale('en');
@@ -130,7 +124,7 @@ class TranslationController extends Controller
 
 		return view('translations.view', $vdata);
     }
-	
+
     public function edit(Request $request, $filename)
     {
 		$locale = App::getLocale();
@@ -176,7 +170,7 @@ class TranslationController extends Controller
     {
 		$lines = [];
 		$array = [];
-				
+
 		for ($j = 0; $j < 100; $j++) // foreach each language
 		{
 			if (isset($request->records[$j]))
@@ -203,7 +197,7 @@ class TranslationController extends Controller
 					{
 					}
 				}
-				
+
 				//dd($array);
 			}
 			else
@@ -218,7 +212,7 @@ class TranslationController extends Controller
 
 		Log::info('Translations updated', ['id' => Auth::id()]);
 		flash('success', __('msgs.Translation file has been updated'));
-		
+
 		return redirect('/translations');
     }
 
@@ -248,8 +242,12 @@ class TranslationController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			Event::logException(LOG_MODEL_TRANSLATIONS, LOG_ACTION_EDIT, 'Error accessing translation file: ' . $path, null, $e->getMessage());
-            Tools::flash('danger', $e->getMessage());
+			//Event::logException(LOG_CLASS, LOG_ACTION_EDIT, 'Error accessing translation file: ' . $path, null, $e->getMessage());
+            $msg = __('msgs.Error accessing translation file');
+			logException(LOG_CLASS, $e->getMessage(), $msg . ': ' . $path);
+            flash('danger', $msg);
+
+            throw new \Exception($e); // rethrow so it doesn't fail silently
 		}
 
 	}
@@ -319,14 +317,14 @@ class TranslationController extends Controller
 			{
 				$record->save();
 
-				Event::logEdit(LOG_MODEL_TRANSLATIONS, $entry->title, $entry->id);
+				Event::logEdit(LOG_CLASS, $entry->title, $entry->id);
 
 				$request->session()->flash('message.level', 'success');
 				$request->session()->flash('message.content', $logMessage);
 			}
 			catch (\Exception $e)
 			{
-				Event::logException(LOG_MODEL_TRANSLATIONS, $logAction, Tools::getTextOrShowEmpty($entry->title), null, $e->getMessage());
+				Event::logException(LOG_CLASS, $logAction, Tools::getTextOrShowEmpty($entry->title), null, $e->getMessage());
 
 				$request->session()->flash('message.level', 'danger');
 				$request->session()->flash('message.content', $e->getMessage());

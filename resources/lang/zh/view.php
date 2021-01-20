@@ -9,4 +9,6 @@ return [
 'View Template' => '查看模板',
 'Deleted Templates' => '删除的模板',
 'Publish Template' => '发布模板',
+'Comment' => '评论|评论',
+'Entry' => '条目|参赛作品',
 ];

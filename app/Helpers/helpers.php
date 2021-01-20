@@ -363,3 +363,29 @@ if (!function_exists('lurl')) {
         return '/' . app()->getLocale() . '/' . $route;
     }
 }
+
+if (!function_exists('getFilesVisible')) {
+    function getFilesVisible($path)
+    {
+		$files = [];
+
+		if (is_dir($path))
+		{
+            $folder = scandir($path);
+
+            foreach($folder as $file)
+            {
+                if (Str::startsWith($file, '.') || is_dir($file))
+                {
+                    // skip the folders and hidden files
+                }
+                else
+                {
+                    $files[] = $file;
+                }
+            }
+		}
+
+        return $files;
+    }
+}

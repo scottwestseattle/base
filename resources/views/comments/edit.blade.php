@@ -1,12 +1,11 @@
 @extends('layouts.app')
-@section('title', __('ui.Edit') . ' ' . trans_choice('view.Template', 1))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('title', __('ui.Edit') . ' ' . trans_choice('view.Comment', 1))
+@section('menu-submenu')@component('comments.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Edit')}} {{trans_choice('view.Template', 1)}}</h1>
-
-	<form method="POST" id="form-edit" action="/templates/update/{{$record->id}}">
+	<h1>{{__('ui.Edit')}} {{trans_choice('base.Comment', 1)}}</h1>
+	<form method="POST" id="form-edit" action="/comments/update/{{$record->id}}">
 
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

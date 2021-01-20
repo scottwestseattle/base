@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', __('ui.Publish') . ' ' . trans_choice('view.Template', 1))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('title', __('ui.Publish') . ' ' . trans_choice('view.Comment', 1))
+@section('menu-submenu')@component('comments.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Publish')}} {{trans_choice('view.Template', 1)}}</h1>
+	<h1>{{__('ui.Publish')}} {{trans_choice('view.Comment', 1)}}</h1>
 
-	<form method="POST" action="/templates/publishupdate/{{$record->id}}">
+	<form method="POST" action="/comments/publishupdate/{{$record->id}}">
 
 		<h3 name="title" class="">{{$record->title}}</h3>
 

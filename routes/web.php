@@ -15,6 +15,9 @@ use App\Http\Controllers\MvcController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\EntryController;
+
 use App\Http\Controllers\Gen\TemplateController;
 
 /*
@@ -55,6 +58,7 @@ Route::get('/contact', [HomeController::class, 'contact']);
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 
 // MVC
@@ -104,7 +108,6 @@ Route::group(['prefix' => 'users'], function () {
 	Route::get('/view/{user}', [UserController::class, 'view']);
 
 	// add
-	Route::get('/register', [RegisterController::class, 'register'])->name('register');
 	Route::post('/create', [RegisterController::class, 'create']);
 
 	// edit
@@ -155,8 +158,57 @@ Route::group(['prefix' => 'events'], function () {
 	Route::get('/index/{filter?}', [EventController::class, 'index'])->middleware('admin');
 });
 
+
+// Comments
+Route::group(['prefix' => 'comments'], function () {
+	Route::get('/', [CommentController::class, 'index']);
+	Route::get('/index', [CommentController::class, 'index']);
+	Route::get('/view/{comment}', [CommentController::class, 'view']);
+
+	// add
+	Route::get('/add', [CommentController::class, 'add']);
+	Route::post('/create', [CommentController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{comment}', [CommentController::class, 'edit']);
+	Route::post('/update/{comment}', [CommentController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{comment}', [CommentController::class, 'publish']);
+	Route::post('/publishupdate/{comment}', [CommentController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{comment}', [CommentController::class, 'confirmDelete']);
+	Route::post('/delete/{comment}', [CommentController::class, 'delete']);
+});
+
+// Entries
+Route::group(['prefix' => 'entries'], function () {
+	Route::get('/', [EntryController::class, 'index']);
+	Route::get('/index', [EntryController::class, 'index']);
+	Route::get('/view/{entry}', [EntryController::class, 'view']);
+
+	// add
+	Route::get('/add', [EntryController::class, 'add']);
+	Route::post('/create', [EntryController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{entry}', [EntryController::class, 'edit']);
+	Route::post('/update/{entry}', [EntryController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{entry}', [EntryController::class, 'publish']);
+	Route::post('/publishupdate/{entry}', [EntryController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{entry}', [EntryController::class, 'confirmDelete']);
+	Route::post('/delete/{entry}', [EntryController::class, 'delete']);
+});
+
 // =================================================================
 // The following groups and routes are generated
 // Move permanent routes above this section
 // =================================================================
+
+
 

@@ -9,4 +9,6 @@ return [
 'View Template' => 'View Template',
 'Deleted Templates' => 'Deleted Templates',
 'Publish Template' => 'Publish Template',
+'Comment' => 'Comment|Comments',
+'Entry' => 'Entry|Entries',
 ];

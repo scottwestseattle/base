@@ -114,4 +114,5 @@ return [
 'Please click here to verify your email address' => '请单击此处验证您的电子邮件地址',
 'ID' => '记录ID',
 'IP' => 'IP',
+'View' => '视图',
 ];
