@@ -365,7 +365,7 @@ if (!function_exists('lurl')) {
 }
 
 if (!function_exists('getFilesVisible')) {
-    function getFilesVisible($path, $includeFolders = false)
+    function getFilesVisible($path, $wildcard = false, $includeFolders = false)
     {
 		$files = [];
 
@@ -385,7 +385,15 @@ if (!function_exists('getFilesVisible')) {
                 }
                 else
                 {
-                    $files[] = $file;
+                    if ($wildcard !== false)
+                    {
+                         if (strpos($file, $wildcard) !== false)
+                            $files[] = $file;
+                    }
+                    else
+                    {
+                        $files[] = $file;
+                    }
                 }
             }
 		}

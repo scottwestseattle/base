@@ -113,4 +113,5 @@ return [
 'Entry' => 'Entry',
 'Comment' => 'Comment',
 'Top Level (not Gen)' => 'Top Level (not Gen)',
+'Routes' => 'Routes',
 ];

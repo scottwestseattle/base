@@ -29,10 +29,27 @@ class MvcController extends Controller
 	public function index(Request $request)
 	{
 		$path = resource_path() . '/views/gen';
+		$path = app_path() . '/Gen';
+        $ext = '.sql';
 
-		$files = getFilesVisible($path, /* includeFolders = */ true);
+		//$files = getFilesVisible($path, false, /* includeFolders = */ true);
+		$files = getFilesVisible($path, $ext);
 
-		return view('mvc.index', ['files' => $files]);
+        $rc = [];
+        foreach($files as $file)
+        {
+            // remove the extension: sites.sql
+            $file = Str::replaceLast($ext, '', $file);
+
+            // make it the model name: Site
+            $file = ucfirst(Str::singular($file));
+
+            // don't include 'Template'
+    		if ($file != 'Template')
+    		    $rc[] = $file;
+        }
+
+		return view('mvc.index', ['files' => $rc]);
 	}
 
 	public function add(Request $request)
@@ -54,14 +71,14 @@ class MvcController extends Controller
 		$model = $data['model'];
 		$views = $data['plural'];
 
-		$paths = self::genPaths($model, $views);
-
         $topLevel = false;
 		if (isset($request->topLevel))
 		{
 			// put it at the normal, non-gen level
 			$topLevel = true;
 		}
+
+		$paths = self::genPaths($model, $views, $topLevel);
 
 		// generate the Model
 		$tpl = file_get_contents($paths['modelTpl']);
@@ -72,21 +89,28 @@ class MvcController extends Controller
 		$tpl = file_get_contents($paths['controllerTpl']);
 		$tpl = str_replace('templates', strtolower($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
+
+		if ($topLevel)
+		{
+    		$tpl = str_replace('\Gen', '', $tpl);
+    		$tpl = str_replace('gen.', '', $tpl);
+		}
+
 		file_put_contents($paths['controllerOut'], $tpl);
 
 		// generate the views
-		self::genView($model, $views, $paths, 'add');
-		self::genView($model, $views, $paths, 'confirmdelete');
-		self::genView($model, $views, $paths, 'edit');
-		self::genView($model, $views, $paths, 'index');
-		self::genView($model, $views, $paths, 'menu-submenu');
-		self::genView($model, $views, $paths, 'publish');
-		self::genView($model, $views, $paths, 'view');
+		self::genView($model, $views, $paths, $topLevel, 'add');
+		self::genView($model, $views, $paths, $topLevel, 'confirmdelete');
+		self::genView($model, $views, $paths, $topLevel, 'edit');
+		self::genView($model, $views, $paths, $topLevel, 'index');
+		self::genView($model, $views, $paths, $topLevel, 'menu-submenu');
+		self::genView($model, $views, $paths, $topLevel, 'publish');
+		self::genView($model, $views, $paths, $topLevel, 'view');
 
 		if (isset($request->add_routes))
 		{
 			// generate the routes/web
-			self::genRoutes($model, $views);
+			self::addRoutes($model, $views, $topLevel);
 		}
 
 		// generate the MySql db table schema
@@ -99,11 +123,13 @@ class MvcController extends Controller
 	{
 		$paths = self::genPaths($model, $views);
 		$schemaMysql = self::genSchemaMysql($views, $paths);
+        $routes = self::genRoutes($model, $views);
 
 		return view('mvc.view', [
 			'model' => $model,
 			'views' => $views,
 			'schemaMysql' => $schemaMysql,
+			'routes' => $routes,
 			'paths' => $paths,
 		]);
 	}
@@ -111,11 +137,16 @@ class MvcController extends Controller
 	public function confirmDelete(Request $request, $views)
 	{
 		$model = ucfirst(substr($views, 0, strlen($views) - 1));
-		$paths = self::genPaths($model, $views);
+
+		$testFile = app_path() . '/' . $model . '.php';
+		$topLevel = (file_exists($testFile));
+
+		$paths = self::genPaths($model, $views, $topLevel);
 		//dd($paths);
 		return view('mvc.confirmdelete', [
 			'views' => $views,
 			'paths' => $paths,
+			'topLevel' => $topLevel,
 		]);
 	}
 
@@ -133,8 +164,10 @@ class MvcController extends Controller
 			return redirect($this->redirectTo);
 		}
 
+		$topLevel = (isset($request->topLevel));
+
 		$model = ucfirst(substr($views, 0, strlen($views) - 1));
-		$paths = self::genPaths($model, $views);
+		$paths = self::genPaths($model, $views, $topLevel);
 
 		try
 		{
@@ -171,40 +204,54 @@ class MvcController extends Controller
 		return redirect($this->redirectTo);
 	}
 
-	static private function genPaths($model = null, $views = null)
+	static private function genPaths($model = null, $views = null, $topLevel = false)
 	{
 	    $model = isset($model) ? ucfirst($model) : null;
 
 		// views
 		$rc['viewsOutPath'] = null;
 		$root = resource_path() . '/views/gen/';
+		$rootOut = $topLevel ? resource_path() . '/views/' : $root;
+
 		$rc['viewsTplPath'] = $root . 'templates/'; //ex: '/resources/views/gen/templates/'
 
 		if (isset($views))
 		{
-			$rc['viewsOutPath'] = $root . $views . '/'; //ex: '/resources/views/visitors/'
-			$rc['viewsOutPathWildcard'] = $root . $views . '/*'; //ex: '/resources/views/visitors/*'
+			$rc['viewsOutPath'] = $rootOut . $views . '/'; //ex: '/resources/views/visitors/'
+			$rc['viewsOutPathWildcard'] = $rootOut . $views . '/*'; //ex: '/resources/views/visitors/*'
 		}
 
 		// model
 		$rc['modelOut'] = null;
 		$rc['modelTpl'] = app_path() . '/Gen/Template.php';
 		if (isset($model))
-			$rc['modelOut'] = app_path() . '/Gen/' . $model . '.php';
+		{
+		    if ($topLevel)
+    			$rc['modelOut'] = app_path() . '/' . $model . '.php';
+    		else
+    			$rc['modelOut'] = app_path() . '/Gen/' . $model . '.php';
+		}
 
 		// controller
 		$rc['controllerOut'] = null;
 		$rc['controllerTpl'] = app_path() . '/Http/Controllers/Gen/TemplateController.php';
 		if (isset($model))
-			$rc['controllerOut'] = app_path() . '/Http/Controllers/Gen/' . $model . 'Controller.php';
+		{
+            if ($topLevel)
+    			$rc['controllerOut'] = app_path() . '/Http/Controllers/' . $model . 'Controller.php';
+            else
+    			$rc['controllerOut'] = app_path() . '/Http/Controllers/Gen/' . $model . 'Controller.php';
+		}
 
-		// mySQL table schema
-		$rc['mysqlSchemaOut'] = app_path() . '/Gen/' . $views . '.sql'; // ex: /app/Gen/visitors.sql
+		// mySQL table schema (for topLevel mvc, they also go in the 'Gen' folder)
+    	$rc['mysqlSchemaOut'] = app_path() . '/Gen/' . $views . '.sql'; // ex: /app/Gen/visitors.sql
+
+        //dd($rc);
 
 		return $rc;
 	}
 
-	static private function genView($model, $views, $paths, $view)
+	static private function genView($model, $views, $paths, $topLevel, $view)
 	{
 		if (!is_dir($paths['viewsOutPath']))
 			mkdir($paths['viewsOutPath'], 0777);
@@ -216,12 +263,14 @@ class MvcController extends Controller
 		$tpl = file_get_contents($viewFileTpl);
 		$tpl = str_replace('templates', strtolower($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
+
+		if ($topLevel)
+		    $tpl = str_replace('gen.', '', $tpl);
+
 		file_put_contents($viewFileOut, $tpl);
 	}
 
-	static private $routesTemplate = "
-
-// GENERATED for Template model
+	static private $routesTemplate = "// GENERATED for Template model
 use App\Http\Controllers\Gen\TemplateController;
 
 // Templates
@@ -238,27 +287,41 @@ Route::group(['prefix' => 'templates'], function () {
 	Route::get('/edit/{template}', [TemplateController::class, 'edit']);
 	Route::post('/update/{template}', [TemplateController::class, 'update']);
 
+	// publish
+	Route::get('/publish/{template}', [TemplateController::class, 'publish']);
+	Route::post('/publishupdate/{template}', [TemplateController::class, 'updatePublish']);
+
 	// delete
 	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
 	Route::post('/delete/{template}', [TemplateController::class, 'delete']);
 });
 ";
 
-	static private function genRoutes($model, $views)
+	static private function addRoutes($model, $views, $topLevel)
 	{
 		$routesOut = base_path() . '/routes/web.php'; // ex: /routes/web.php
 
+		$tpl = self::genRoutes($model, $views, $topLevel);
+
+		file_put_contents($routesOut, $tpl, FILE_APPEND);
+	}
+
+	static private function genRoutes($model, $views, $topLevel = false)
+	{
 		$modelLc = strtolower($model);
 
 		$tpl = self::$routesTemplate;
 		$tpl = str_replace('Templates', ucfirst($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', $modelLc, $tpl);
-		file_put_contents($routesOut, $tpl, FILE_APPEND);
+
+		if ($topLevel)
+    		$tpl = str_replace('\Gen', '', $tpl);
+
+		return $tpl;
 	}
 
-	static private $schemaMysql = "
-SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";
+	static private $schemaMysql = "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = \"+00:00\";

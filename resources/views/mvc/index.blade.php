@@ -16,14 +16,11 @@
 	<table class="table">
 		<tbody>
 		@foreach($files as $file)
-			<!-- skip the . and the .. -->
-			@if ($file != 'templates')
 			<tr>
-				<td style="width:50px;"><a href="/{{$file}}">{{ucfirst($file)}}</a></td>
-				<td><a href="/mvc/view/{{Str::singular($file)}}/{{$file}}">Files</a></td>
-				<td class="icon"><a href='/mvc/confirmdelete/{{$file}}'>@component('components.icon-delete')@endcomponent</a></td>
+				<td style="width:50px;"><a href="/{{strtolower($file)}}">{{ucfirst($file)}}</a></td>
+				<td><a href="/mvc/view/{{strtolower($file)}}/{{strtolower(Str::plural($file))}}">Files</a></td>
+				<td class="icon"><a href='/mvc/confirmdelete/{{strtolower(Str::plural($file))}}'>@component('components.icon-delete')@endcomponent</a></td>
 			</tr>
-			@endif
 		@endforeach
 		</tbody>
 	</table>

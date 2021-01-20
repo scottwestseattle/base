@@ -8,12 +8,13 @@
 	<form method="POST" action="/mvc/delete">
 
 		<input name="views" type="hidden" value="{{$views}}" />
+		<input name="topLevel" type="hidden" value="{{$topLevel}}" />
 
 		<p>Model Template: {{$paths['modelOut']}}</p>
 		<p>MySQL Table Schema: {{$paths['mysqlSchemaOut']}}</p>
 		<p>Controller Template: {{$paths['controllerOut']}}</p>
 		<p>Views Templates: {{$paths['viewsOutPathWildcard']}}</p>
-		
+
 		<div class="form-group">
 			<button type="submit" class="btn btn-primary">Confirm Delete</button>
 		</div>

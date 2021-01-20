@@ -113,4 +113,5 @@ return [
 'Entry' => '条目',
 'Comment' => '评论',
 'Top Level (not Gen)' => '顶层',
+'Routes' => '路线',
 ];

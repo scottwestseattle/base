@@ -16,9 +16,15 @@
 		<li><a href="/{{$views}}">{{ucfirst($model)}}</a></li>
 		<li><a href="/{{$views}}/add">Add {{ucfirst($model)}}</a></li>
 	</ul>
+
 	<h3>MySQL {{__('base.Table Schema')}}</h3>
-	<div class="text-sm"><a href="" onclick="event.preventDefault(); select('schema');">select schema</a></div>
+	<div class="text-sm"><a href="" onclick="event.preventDefault(); select('schema');">select</a></div>
 	<p id="schema">{!!nl2br($schemaMysql)!!}</p>
+
+	<h3>{{__('base.Routes')}}</h3>
+	<div class="text-sm"><a href="" onclick="event.preventDefault(); select('routes');">select</a></div>
+	<p id="routes">{!!nl2br($routes)!!}</p>
+
 </div>
 <script>
 
@@ -29,7 +35,7 @@ function select(id)
 	range.selectNodeContents(document.getElementById(id));
 
 	selection.removeAllRanges();
-	selection.addRange(range);	
+	selection.addRange(range);
 }
 
 </script>
