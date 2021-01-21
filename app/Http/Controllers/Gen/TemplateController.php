@@ -233,8 +233,17 @@ class TemplateController extends Controller
     {
 		$record = $template;
 
-		$record->wip_flag = $request->wip_flag;
-		$record->release_flag = $request->release_flag;
+        if ($request->isMethod('get'))
+        {
+            // quick publish, set to toggle public / private
+            $record->wip_flag = $record->isFinished() ? getConstant('wip_flag.dev') : getConstant('wip_flag.finished');
+            $record->release_flag = $record->isPublic() ? RELEASEFLAG_PRIVATE : RELEASEFLAG_PUBLIC;
+        }
+        else
+        {
+            $record->wip_flag = $request->wip_flag;
+            $record->release_flag = $request->release_flag;
+        }
 
 		try
 		{

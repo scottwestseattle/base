@@ -11,4 +11,5 @@ return [
 'Publish Template' => 'Publish Template',
 'Comment' => 'Comment|Comments',
 'Entry' => 'Entry|Entries',
+'Site' => 'Site|Sites',
 ];

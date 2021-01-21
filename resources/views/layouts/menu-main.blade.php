@@ -68,10 +68,11 @@
 						</svg>
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Comments', 2)}}</div>
-				</a>				<a class="dropdown-item" href="{{lurl('entries')}}">
+				</a>
+				<a class="dropdown-item" href="{{lurl('entries')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
-							<use xlink:href="/img/bootstrap-icons.svg#briefcase" />
+							<use xlink:href="/img/bootstrap-icons.svg#collection" />
 						</svg>
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Entries', 2)}}</div>
@@ -83,6 +84,22 @@
 						</svg>
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Event', 2)}}</div>
+				</a>
+				<a class="dropdown-item" href="{{lurl('templates')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#diagram-3" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('ui.Template', 2)}}</div>
+				</a>
+				<a class="dropdown-item" href="{{lurl('sites')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#display" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('view.Site', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{lurl('translations')}}">
 					<div class="middle">

@@ -11,4 +11,5 @@ return [
 'Publish Template' => 'Publicar Plantilla',
 'Comment' => 'Comentario|Comentarios',
 'Entry' => 'Entrada|Entradas',
+'Site' => 'Sitio|Sitios',
 ];

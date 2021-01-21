@@ -4,7 +4,8 @@
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Edit')}} {{trans_choice('base.Comment', 1)}}</h1>
+	<h1>{{__('ui.Edit')}} {{trans_choice('view.Comment', 1)}}</h1>
+
 	<form method="POST" id="form-edit" action="/comments/update/{{$record->id}}">
 
 		<div class="form-group">

@@ -11,4 +11,5 @@ return [
 'Publish Template' => '发布模板',
 'Comment' => '评论|评论',
 'Entry' => '条目|参赛作品',
+'Site' => '网站|网站',
 ];

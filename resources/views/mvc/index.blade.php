@@ -17,9 +17,12 @@
 		<tbody>
 		@foreach($files as $file)
 			<tr>
-				<td style="width:50px;"><a href="/{{strtolower($file)}}">{{ucfirst($file)}}</a></td>
-				<td><a href="/mvc/view/{{strtolower($file)}}/{{strtolower(Str::plural($file))}}">Files</a></td>
-				<td class="icon"><a href='/mvc/confirmdelete/{{strtolower(Str::plural($file))}}'>@component('components.icon-delete')@endcomponent</a></td>
+			    @php
+			        $files = strtolower(Str::plural($file));
+			    @endphp
+				<td style="width:50px;"><a href="/{{$files}}">{{ucfirst($file)}}</a></td>
+				<td><a href="/mvc/view/{{strtolower($file)}}/{{$files}}">Files</a></td>
+				<td class="icon"><a href='/mvc/confirmdelete/{{$files}}'>@component('components.icon-delete')@endcomponent</a></td>
 			</tr>
 		@endforeach
 		</tbody>

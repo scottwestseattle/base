@@ -19,8 +19,9 @@
 			<tr>
 				<td><a href="/{{$prefix}}/edit/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
 				<td><a href="/{{$prefix}}/publish/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-publish"></span></a></td>
+				<td><a href="/{{$prefix}}/publish/{{$record->id}}">{{$record->getStatus()}}</a></td>
 				<td><a href="/{{$prefix}}/view/{{$record->id}}">{{$record->title}}</a></td>
-				<td>{{substr($record->description, 0, 200)}}</td>				
+				<td>{{substr($record->description, 0, 200)}}</td>
 				<td>
 					@if ($record->isUnfinished())
 					<a href="/{{$prefix}}/publish/{{$record->id}}"><button type="button" class="btn btn-xs {{$record->getStatus()['btn']}}">{{$record->getStatus()['text']}}</button></a>
@@ -31,6 +32,6 @@
 		@endforeach
 		</tbody>
 	</table>
-               
+
 </div>
 @endsection

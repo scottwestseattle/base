@@ -15,9 +15,6 @@ use App\Http\Controllers\MvcController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\EntryController;
-
 use App\Http\Controllers\Gen\TemplateController;
 
 /*
@@ -93,10 +90,12 @@ Route::group(['prefix' => 'templates'], function () {
 	// publish
 	Route::get('/publish/{template}', [TemplateController::class, 'publish']);
 	Route::post('/publishupdate/{template}', [TemplateController::class, 'updatePublish']);
+	Route::get('/publishupdate/{template}', [TemplateController::class, 'updatePublish']);
 
 	// delete
 	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
 	Route::post('/delete/{template}', [TemplateController::class, 'delete']);
+	Route::get('/delete/{template}', [TemplateController::class, 'delete']);
 	Route::get('/deleted', [TemplateController::class, 'deleted']);
 	Route::get('/undelete/{id}', [TemplateController::class, 'undelete']);
 });
@@ -159,6 +158,14 @@ Route::group(['prefix' => 'events'], function () {
 });
 
 
+// =================================================================
+// The following groups and routes are generated
+// Move permanent routes above this section
+// =================================================================
+
+// GENERATED for Comment model
+use App\Http\Controllers\CommentController;
+
 // Comments
 Route::group(['prefix' => 'comments'], function () {
 	Route::get('/', [CommentController::class, 'index']);
@@ -176,11 +183,19 @@ Route::group(['prefix' => 'comments'], function () {
 	// publish
 	Route::get('/publish/{comment}', [CommentController::class, 'publish']);
 	Route::post('/publishupdate/{comment}', [CommentController::class, 'updatePublish']);
+	Route::get('/publishupdate/{comment}', [CommentController::class, 'updatePublish']);
 
 	// delete
 	Route::get('/confirmdelete/{comment}', [CommentController::class, 'confirmDelete']);
 	Route::post('/delete/{comment}', [CommentController::class, 'delete']);
+	Route::get('/delete/{comment}', [CommentController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [CommentController::class, 'deleted']);
+	Route::get('/undelete/{id}', [CommentController::class, 'undelete']);
 });
+// GENERATED for Entry model
+use App\Http\Controllers\EntryController;
 
 // Entries
 Route::group(['prefix' => 'entries'], function () {
@@ -199,16 +214,45 @@ Route::group(['prefix' => 'entries'], function () {
 	// publish
 	Route::get('/publish/{entry}', [EntryController::class, 'publish']);
 	Route::post('/publishupdate/{entry}', [EntryController::class, 'updatePublish']);
+	Route::get('/publishupdate/{entry}', [EntryController::class, 'updatePublish']);
 
 	// delete
 	Route::get('/confirmdelete/{entry}', [EntryController::class, 'confirmDelete']);
 	Route::post('/delete/{entry}', [EntryController::class, 'delete']);
+	Route::get('/delete/{entry}', [EntryController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [EntryController::class, 'deleted']);
+	Route::get('/undelete/{id}', [EntryController::class, 'undelete']);
 });
+// GENERATED for Site model
+use App\Http\Controllers\SiteController;
 
-// =================================================================
-// The following groups and routes are generated
-// Move permanent routes above this section
-// =================================================================
+// Sites
+Route::group(['prefix' => 'sites'], function () {
+	Route::get('/', [SiteController::class, 'index']);
+	Route::get('/index', [SiteController::class, 'index']);
+	Route::get('/view/{site}', [SiteController::class, 'view']);
 
+	// add
+	Route::get('/add', [SiteController::class, 'add']);
+	Route::post('/create', [SiteController::class, 'create']);
 
+	// edit
+	Route::get('/edit/{site}', [SiteController::class, 'edit']);
+	Route::post('/update/{site}', [SiteController::class, 'update']);
 
+	// publish
+	Route::get('/publish/{site}', [SiteController::class, 'publish']);
+	Route::post('/publishupdate/{site}', [SiteController::class, 'updatePublish']);
+	Route::get('/publishupdate/{site}', [SiteController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{site}', [SiteController::class, 'confirmDelete']);
+	Route::post('/delete/{site}', [SiteController::class, 'delete']);
+	Route::get('/delete/{site}', [SiteController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [SiteController::class, 'deleted']);
+	Route::get('/undelete/{id}', [SiteController::class, 'undelete']);
+});

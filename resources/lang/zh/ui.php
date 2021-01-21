@@ -73,7 +73,7 @@ return [
 'Pending Approval' => '待批准',
 'Publish' => '发布',
 'Published' => '发布时间',
-'Approved' => '批准',
+'Approved' => '已批准',
 'Update' => '更新',
 'View Count' => '查看次数',
 'Location' => '地点',
@@ -115,4 +115,9 @@ return [
 'ID' => '记录ID',
 'IP' => 'IP',
 'View' => '视图',
+'Release' => '发行状态',
+'Public' => '上市',
+'Premium' => '高级会员',
+'None' => '没有设置',
+'Template' => '模板|模板',
 ];

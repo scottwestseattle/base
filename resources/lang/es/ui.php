@@ -115,4 +115,9 @@ return [
 'ID' => 'ID',
 'IP' => 'IP',
 'View' => 'Visualizar',
+'Release' => 'Estado',
+'Public' => 'Público',
+'Premium' => 'Premium',
+'None' => 'Ninguno',
+'Template' => 'Plantilla|Plantillas',
 ];

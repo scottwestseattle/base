@@ -115,4 +115,9 @@ return [
 'ID' => 'ID',
 'IP' => 'IP',
 'View' => 'View',
+'Release' => 'Release',
+'Public' => 'Public',
+'Premium' => 'Premium',
+'None' => 'None',
+'Template' => 'Template|Templates',
 ];

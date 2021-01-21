@@ -401,3 +401,31 @@ if (!function_exists('getFilesVisible')) {
         return $files;
     }
 }
+
+if (!function_exists('getReleaseStatus')) {
+    function getReleaseStatus($releaseFlag)
+    {
+        $label = [
+            RELEASEFLAG_NOTSET => 'ui.None',
+            RELEASEFLAG_PRIVATE => 'ui.Private',
+            RELEASEFLAG_APPROVED => 'ui.Approved',
+            RELEASEFLAG_PAID => 'ui.Premium',
+            RELEASEFLAG_MEMBER => 'ui.Member',
+            RELEASEFLAG_PUBLIC => 'ui.Public',
+        ];
+
+        $class = [
+            RELEASEFLAG_NOTSET => 'btn-secondary',
+            RELEASEFLAG_PRIVATE => 'btn-secondary',
+            RELEASEFLAG_APPROVED => 'btn-secondary',
+            RELEASEFLAG_PAID => 'btn-primary',
+            RELEASEFLAG_MEMBER => 'btn-primary',
+            RELEASEFLAG_PUBLIC => 'btn-success',
+        ];
+
+        $rc['label'] = $label[$releaseFlag];
+        $rc['class'] = $class[$releaseFlag];
+
+        return $rc;
+    }
+}

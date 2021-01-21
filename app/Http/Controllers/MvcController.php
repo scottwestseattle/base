@@ -80,15 +80,26 @@ class MvcController extends Controller
 
 		$paths = self::genPaths($model, $views, $topLevel);
 
+        //
 		// generate the Model
+		//
 		$tpl = file_get_contents($paths['modelTpl']);
 		$tpl = str_replace('Template', $model, $tpl);
+
+		if ($topLevel)
+		{
+    		$tpl = str_replace('\Gen', '', $tpl);
+ 		}
+
 		file_put_contents($paths['modelOut'], $tpl);
 
+        //
 		// generate the Controller
+		//
 		$tpl = file_get_contents($paths['controllerTpl']);
 		$tpl = str_replace('templates', strtolower($views), $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
+		$tpl = str_replace('$template', '$' . strtolower($model), $tpl);
 
 		if ($topLevel)
 		{
@@ -101,6 +112,7 @@ class MvcController extends Controller
 		// generate the views
 		self::genView($model, $views, $paths, $topLevel, 'add');
 		self::genView($model, $views, $paths, $topLevel, 'confirmdelete');
+		self::genView($model, $views, $paths, $topLevel, 'deleted');
 		self::genView($model, $views, $paths, $topLevel, 'edit');
 		self::genView($model, $views, $paths, $topLevel, 'index');
 		self::genView($model, $views, $paths, $topLevel, 'menu-submenu');
@@ -290,10 +302,16 @@ Route::group(['prefix' => 'templates'], function () {
 	// publish
 	Route::get('/publish/{template}', [TemplateController::class, 'publish']);
 	Route::post('/publishupdate/{template}', [TemplateController::class, 'updatePublish']);
+	Route::get('/publishupdate/{template}', [TemplateController::class, 'updatePublish']);
 
 	// delete
 	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
 	Route::post('/delete/{template}', [TemplateController::class, 'delete']);
+	Route::get('/delete/{template}', [TemplateController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [TemplateController::class, 'deleted']);
+	Route::get('/undelete/{id}', [TemplateController::class, 'undelete']);
 });
 ";
 
@@ -312,11 +330,14 @@ Route::group(['prefix' => 'templates'], function () {
 
 		$tpl = self::$routesTemplate;
 		$tpl = str_replace('Templates', ucfirst($views), $tpl);
+		$tpl = str_replace('templates', $views, $tpl);
 		$tpl = str_replace('Template', $model, $tpl);
 		$tpl = str_replace('template', $modelLc, $tpl);
 
 		if ($topLevel)
     		$tpl = str_replace('\Gen', '', $tpl);
+
+        //dd($tpl);
 
 		return $tpl;
 	}
@@ -357,6 +378,7 @@ COMMIT;
 		$tpl = self::$schemaMysql;
 		$tpl = str_replace('templates', $table, $tpl);
 		file_put_contents($paths['mysqlSchemaOut'], $tpl);
+
 		return $tpl;
 	}
 

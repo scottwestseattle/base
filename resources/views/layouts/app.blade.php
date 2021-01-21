@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>{{appName()}} - @yield('title')</title>		
+		<title>{{appName()}} - @yield('title')</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -19,32 +19,35 @@
                 font-family: 'Nunito';
             }
         </style>
-		
+
 		<!-- Styles -->
 		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
-		
+
 		<!-- Javascript -->
 		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
-		
+
+		<!-- Project -->
+		<script src="{{asset('/js/project.js')}}"></script>
+
     </head>
     <body class="antialiased">
 
 		<!-- Show the Main Menu -->
 		@component('layouts.menu-main')@endcomponent
-	
+
 		<!-- Show the admin submenu -->
         @section('menu-submenu')@show
-		
+
 		<!-- Show the flash method if any -->
 		@if(session()->has('message.level'))
 			<div class="alert alert-{{ session('message.level') }}">
 				{!!session('message.content')!!}
 			</div>
 		@endif
-		
+
         <div class="">
 			<div class="container project-page">
 				<main class="py-4">
@@ -53,9 +56,9 @@
 				</main>
 			</div>
         </div>
-		
+
 		<!-- Load the footer -->
-		@component('layouts.footer')@endcomponent		
-		
+		@component('layouts.footer')@endcomponent
+
     </body>
 </html>
