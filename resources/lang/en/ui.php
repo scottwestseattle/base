@@ -120,4 +120,5 @@ return [
 'Premium' => 'Premium',
 'None' => 'None',
 'Template' => 'Template|Templates',
+'word' => 'word|words',
 ];

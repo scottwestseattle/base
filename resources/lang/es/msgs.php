@@ -18,4 +18,5 @@ return [
 'Error getting deleted records' => 'Error al obtener registros eliminados',
 'Record has been undeleted' => 'Se ha recuperado el registro',
 'Error getting record list' => 'Error al obtener la lista de registros',
+'Record not found' => 'Registro no encontrado',
 ];

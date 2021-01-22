@@ -18,4 +18,5 @@ return [
 'Error getting deleted records' => 'Error getting deleted records',
 'Record has been undeleted' => 'Record has been undeleted',
 'Error getting record list' => 'Error getting record list',
+'Record not found' => 'Record not found',
 ];

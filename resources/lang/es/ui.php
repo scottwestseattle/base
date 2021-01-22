@@ -102,7 +102,7 @@ return [
 'Quit' => 'Salir',
 'by clicking here' => 'haciendo clic aquí',
 'Search' => 'Buscar',
-'views' => 'conteo de visitas',
+'views' => 'conteo de vistas',
 'Books' => 'Libros',
 'Review' => 'Revisar',
 'tags' => 'Etiqueta|Etiquetas',
@@ -120,4 +120,5 @@ return [
 'Premium' => 'Premium',
 'None' => 'Ninguno',
 'Template' => 'Plantilla|Plantillas',
+'word' => 'palabra|palabras',
 ];

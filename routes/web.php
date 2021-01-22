@@ -77,7 +77,6 @@ Route::group(['prefix' => 'email'], function () {
 Route::group(['prefix' => 'templates'], function () {
 	Route::get('/', [TemplateController::class, 'index']);
 	Route::get('/index', [TemplateController::class, 'index']);
-	Route::get('/view/{template}', [TemplateController::class, 'view']);
 
 	// add
 	Route::get('/add', [TemplateController::class, 'add']);
@@ -96,8 +95,14 @@ Route::group(['prefix' => 'templates'], function () {
 	Route::get('/confirmdelete/{template}', [TemplateController::class, 'confirmDelete']);
 	Route::post('/delete/{template}', [TemplateController::class, 'delete']);
 	Route::get('/delete/{template}', [TemplateController::class, 'delete']);
+
+	// undelete
 	Route::get('/deleted', [TemplateController::class, 'deleted']);
 	Route::get('/undelete/{id}', [TemplateController::class, 'undelete']);
+
+	// view
+	Route::get('/view/{template}', [TemplateController::class, 'view']);
+	Route::get('/{permalink}', [TemplateController::class, 'permalink']);
 });
 
 // Users
@@ -201,7 +206,6 @@ use App\Http\Controllers\EntryController;
 Route::group(['prefix' => 'entries'], function () {
 	Route::get('/', [EntryController::class, 'index']);
 	Route::get('/index', [EntryController::class, 'index']);
-	Route::get('/view/{entry}', [EntryController::class, 'view']);
 
 	// add
 	Route::get('/add', [EntryController::class, 'add']);
@@ -224,6 +228,11 @@ Route::group(['prefix' => 'entries'], function () {
 	// undelete
 	Route::get('/deleted', [EntryController::class, 'deleted']);
 	Route::get('/undelete/{id}', [EntryController::class, 'undelete']);
+
+	// view
+	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+
 });
 // GENERATED for Site model
 use App\Http\Controllers\SiteController;

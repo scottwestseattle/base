@@ -28,4 +28,23 @@ class Entry extends Model
     {
 		return ($this->release_flag);
     }
+
+    static public function getArticles($limit = PHP_MAXINT)
+    {
+        $records = null;
+
+		try
+		{
+			$records = Entry::select()
+				->orderByRaw('created_at DESC')
+				->limit($limit)
+				->get();
+		}
+		catch (\Exception $e)
+		{
+			logException(__FUNCTION__, $e->getMessage(), __('msgs.Record not found'));
+		}
+
+        return $records;
+    }
 }

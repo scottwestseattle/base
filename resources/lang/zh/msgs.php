@@ -18,4 +18,5 @@ return [
 'Error getting deleted records' => '获取删除的记录时出错',
 'Record has been undeleted' => '记录已被删除',
 'Error getting record list' => '获取记录列表时出错',
+'Record not found' => '记录不存在',
 ];

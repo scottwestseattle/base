@@ -14,6 +14,11 @@ class Site extends Model
     	return $this->belongsTo(User::class);
     }
 
+    static public function get()
+    {
+
+    }
+
     public function isFinished()
     {
 		return ($this->wip_flag >= getConstant('wip_flag.finished'));

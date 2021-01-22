@@ -1,7 +1,7 @@
 <?php
 return [
 'Template' => '范本|范本',
-'Site' => '现场|网站',
+'Site' => '网站|网站',
 'Add Site' => '新增网站',
 'Add Template' => '新增范本',
 'Edit Template' => '编辑范本',
@@ -11,5 +11,5 @@ return [
 'Publish Template' => '发布模板',
 'Comment' => '评论|评论',
 'Entry' => '条目|参赛作品',
-'Site' => '网站|网站',
+'Latest Articles' => '最新的文章',
 ];

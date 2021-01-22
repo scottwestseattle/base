@@ -23,12 +23,12 @@ body {
 /* No media query for `xs` since this is the default in Bootstrap */
 
 /* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) { 
+@media (min-width: 576px) {
 
 	h1 {
 		font-size: 24px;
 	}
-	
+
 	h2 {
 		font-size: 20px;
 	}
@@ -41,19 +41,19 @@ body {
 		margin-top:0px;
 		margin-bottom: 15px;
 	}
-	
+
 	.form-card-row {
 		margin-top:0;
 	}
 }
 
 /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) { 
+@media (min-width: 768px) {
 
 	h1 {
 		font-size: 32px;
 	}
-	
+
 	h2 {
 		font-size: 28px;
 	}
@@ -66,8 +66,8 @@ body {
 		margin-top:0px;
 		margin-bottom: 15px;
 	}
-	
-  
+
+
 	.form-card-row {
 		margin-top:15px;
 	}
@@ -75,12 +75,12 @@ body {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-	
+
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-	
+
 }
 
 /***************************************************
@@ -208,6 +208,27 @@ body {
 	color:red;
 }
 
+/***************************************************
+ Controls
+***************************************************/
+
+.btn-group-xs>.btn,
+.btn-xs {
+    padding: .25rem .25rem;
+    font-size: .6rem;
+    line-height: 1;
+    border-radius: .1rem
+}
+
+.btn-group-xxs>.btn,
+.btn-xxs {
+    padding: .25rem .25rem;
+    font-size: .53rem;
+    line-height: 1;
+    border-radius: .1rem
+}
+
+
 table.table-events {
 	width:100%;
 }
@@ -231,7 +252,7 @@ table.table-events {
 
 .navbar-icon-shortcuts a {
 	color: white;
-	margin: auto 10px;	
+	margin: auto 10px;
 }
 
 .navbar-icon-shortcuts a:hover {

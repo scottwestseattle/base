@@ -333,13 +333,16 @@ if (!function_exists('copyDirty')) {
 }
 
 if (!function_exists('createPermalink')) {
-    function createPermalink($title, $date = null)
+    function createPermalink($title, $hash = null, $date = null)
     {
 		$v = null;
 
+		if (blank($hash))
+		    $hash = timestamp();
+
 		if (isset($title))
 		{
-			$v = $title;
+		    $v .= convertAccentChars($title);
 		}
 
 		if (isset($date))
@@ -350,6 +353,11 @@ if (!function_exists('createPermalink')) {
 		$v = preg_replace('/[^\da-z ]/i', ' ', $v); // replace all non-alphanums with spaces
 		$v = str_replace(" ", "-", $v);				// replace spaces with dashes
 		$v = strtolower($v);						// make all lc
+
+        // make the permalink unique by adding a hashed string at the end
+        // hash the hash key (timestamp) and append the first 6 chars to the permalink
+        $v .= '-' . substr(hash('md2', $hash), 0, 6);
+
 		$v = trimNull($v);							// trim it or null it
 
 		return $v;
@@ -403,7 +411,7 @@ if (!function_exists('getFilesVisible')) {
 }
 
 if (!function_exists('getReleaseStatus')) {
-    function getReleaseStatus($releaseFlag)
+    function getReleaseStatus($flag)
     {
         $label = [
             RELEASEFLAG_NOTSET => 'ui.None',
@@ -423,9 +431,76 @@ if (!function_exists('getReleaseStatus')) {
             RELEASEFLAG_PUBLIC => 'btn-success',
         ];
 
-        $rc['label'] = $label[$releaseFlag];
-        $rc['class'] = $class[$releaseFlag];
+        $rc['label'] = $label[$flag];
+        $rc['class'] = $class[$flag];
 
         return $rc;
+    }
+}
+
+if (!function_exists('getWipStatus')) {
+    function getWipStatus($flag)
+    {
+        $label = [
+            WIP_NOTSET => 'ui.None',
+            WIP_INACTIVE => 'ui.Inactive',
+            WIP_DEV => 'ui.Dev',
+            WIP_TEST => 'ui.Test',
+            WIP_FINISHED => 'ui.Finished',
+            WIP_DEFAULT => 'ui.Dev',
+        ];
+
+        $class = [
+            WIP_NOTSET => 'btn-secondary',
+            WIP_INACTIVE => 'btn-secondary',
+            WIP_DEV => 'btn-secondary',
+            WIP_TEST => 'btn-primary',
+            WIP_FINISHED => 'btn-primary',
+            WIP_DEFAULT => 'btn-success',
+        ];
+
+        $rc['label'] = $label[$flag];
+        $rc['class'] = $class[$flag];
+        $rc['done'] = $flag >= WIP_FINISHED;
+
+        return $rc;
+    }
+}
+
+if (!function_exists('getReleaseFlagForUserLevel')) {
+    function getReleaseFlagForUserLevel()
+    {
+        return isAdmin() ? RELEASEFLAG_NOTSET : RELEASEFLAG_PUBLIC;
+    }
+}
+
+if (!function_exists('getConditionForUserLevel')) {
+    function getConditionForUserLevel()
+    {
+        return isAdmin() ? '>=' : '=';
+    }
+}
+
+
+if (!function_exists('convertAccentChars')) {
+    function convertAccentChars($v)
+    {
+dump($v);
+        //
+        // replace accent / special characters one by one
+        //
+		//$v = preg_replace("/ /", "-", $v);
+        //$v = preg_replace("/ñ/i", "n", $v);
+        $v = preg_replace("/[ÓÒÖÔòóôöõø]/", 'x', $v);
+/*
+        $v = str_replace(/ç/i, "c", $v);
+        $v = str_replace(/[ÀÁÄÂàáâäã]+/g, "a", $v);
+        $v = str_replace(/[ÉÈËÊèéêë]+/g, "e", $v);
+        $v = str_replace(/[ÍÌÏÎìíîï]+/g, "i", $v);
+        $v = str_replace(/[ÙÚÜÛùúûü]+/g, "u", $v);
+        $v = str_replace(/Ÿÿ/g, "y", $v);
+*/
+dd($v);
+        return $v;
     }
 }

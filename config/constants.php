@@ -8,13 +8,21 @@ define('RELEASEFLAG_PAID',      50);
 define('RELEASEFLAG_MEMBER',    80);
 define('RELEASEFLAG_PUBLIC',    100);
 
+// Work in progress
+define('WIP_NOTSET', 0);
+define('WIP_INACTIVE', 10);
+define('WIP_DEV', 20);
+define('WIP_TEST', 30);
+define('WIP_FINISHED', 100);
+define('WIP_DEFAULT', WIP_DEV);
+
 // misc options
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 
 return [
     'characters' => [
 		'accents' => 'áÁéÉíÍóÓúÚüÜñÑ',
-		'safe_punctuation' => '!@.,()-+=?!_',
+		'safe_punctuation' => '!@.,()\-+=?!_',
     ],
     'email' => [
         'support' => 'support@' . domainName(),

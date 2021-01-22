@@ -61,6 +61,7 @@ class EntryController extends Controller
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);
+        $record->permalink      = createPermalink($record->title);
 
 		try
 		{
@@ -78,22 +79,25 @@ class EntryController extends Controller
 
     public function permalink(Request $request, $permalink)
     {
-		$permalink = trim($permalink);
-
-		$record = null;
+ 		$record = null;
+		$permalink = alphanum($permalink);
+        $releaseFlag = getReleaseFlagForUserLevel();
+        $releaseFlagCondition = getConditionForUserLevel();
 
 		try
 		{
 			$record = Entry::select()
-				->where('site_id', SITE_ID)
-				->where('published_flag', 1)
+				->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
 				->first();
+
+			if (blank($record))
+			    throw new \Exception('permalink not found');
 		}
 		catch (\Exception $e)
 		{
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Record not found'), ['permalink' => $permalink]);
-			return back();
+    		return redirect($this->redirectTo);
 		}
 
 		return view(VIEWS . '.view', [
@@ -128,6 +132,7 @@ class EntryController extends Controller
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
+        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
 
 		if ($isDirty)
 		{
