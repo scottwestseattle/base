@@ -3,6 +3,7 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    Options +FollowSymLinks
     RewriteEngine On
 
     # Handle Authorization Header
@@ -19,13 +20,14 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 	
-	#Base: Send everything to https
-	#RewriteCond %{SERVER_PORT} 80
-	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]	
+	#don't force https on  localhost
+	RewriteCond %{HTTP_HOST} ^localhost [NC]
+	RewriteCond %{HTTPS} on
+	RewriteRule ^ http://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-	# USING THIS ONE ON HG Prod Server
-	#Rewrite rules from HostGator
-	#RewriteCond %{HTTPS} !=on
-	#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+	#Rewrite rules from HG (force all but localhost to https)
+	RewriteCond %{HTTP_HOST} !^localhost [NC]
+	RewriteCond %{HTTPS} !=on
+	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 </IfModule>
