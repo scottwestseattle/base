@@ -18,7 +18,7 @@
 <!-- ARTICLES -->
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['articles']))
-    <h3 class="mt-2">@LANG('content.Latest Articles') <span style="font-size:.8em;">({{count($options['articles'])}})</span></h3>
+    <h3 class="mt-2">@LANG('view.Latest Articles') <span style="font-size:.8em;">({{count($options['articles'])}})</span></h3>
     <div class="text-center mt-2" style="">
         <div style="display: inline-block; width:100%">
             <table style="width:100%;">

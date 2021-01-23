@@ -28,6 +28,14 @@ define('WIP_TEST', 30);
 define('WIP_FINISHED', 100);
 define('WIP_DEFAULT', WIP_DEV);
 
+// word types
+define('WORDTYPE_LESSONLIST',           1);
+define('WORDTYPE_LESSONLIST_USERCOPY',  2);
+define('WORDTYPE_USERLIST',             3);
+define('WORDTYPE_VOCABLIST',            4);
+define('WORDTYPE_SNIPPET',              5);
+define('WORDTYPE_USERLIST_LIMIT',       20);
+
 // misc options
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 

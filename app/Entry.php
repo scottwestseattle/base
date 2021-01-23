@@ -29,7 +29,7 @@ class Entry extends Model
 		return ($this->release_flag);
     }
 
-    static public function getArticles($limit = PHP_MAXINT)
+    static public function getArticles($limit = PHP_INT_MAX)
     {
         $records = null;
 

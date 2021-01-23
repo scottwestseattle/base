@@ -199,6 +199,7 @@ Route::group(['prefix' => 'comments'], function () {
 	Route::get('/deleted', [CommentController::class, 'deleted']);
 	Route::get('/undelete/{id}', [CommentController::class, 'undelete']);
 });
+
 // GENERATED for Entry model
 use App\Http\Controllers\EntryController;
 
@@ -234,6 +235,7 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 
 });
+
 // GENERATED for Site model
 use App\Http\Controllers\SiteController;
 
@@ -264,4 +266,39 @@ Route::group(['prefix' => 'sites'], function () {
 	// undelete
 	Route::get('/deleted', [SiteController::class, 'deleted']);
 	Route::get('/undelete/{id}', [SiteController::class, 'undelete']);
+});
+
+// GENERATED for Word model
+use App\Http\Controllers\WordController;
+
+// Words
+Route::group(['prefix' => 'words'], function () {
+	Route::get('/', [WordController::class, 'index']);
+	Route::get('/index', [WordController::class, 'index']);
+
+	// add
+	Route::get('/add', [WordController::class, 'add']);
+	Route::post('/create', [WordController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{word}', [WordController::class, 'edit']);
+	Route::post('/update/{word}', [WordController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{word}', [WordController::class, 'publish']);
+	Route::post('/publishupdate/{word}', [WordController::class, 'updatePublish']);
+	Route::get('/publishupdate/{word}', [WordController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{word}', [WordController::class, 'confirmDelete']);
+	Route::post('/delete/{word}', [WordController::class, 'delete']);
+	Route::get('/delete/{word}', [WordController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [WordController::class, 'deleted']);
+	Route::get('/undelete/{id}', [WordController::class, 'undelete']);
+
+	// view
+	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 });

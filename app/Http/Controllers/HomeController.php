@@ -13,6 +13,7 @@ use App\Event;
 use App\Home;
 use App\Site;
 use App\User;
+use App\Word;
 
 define('LOG_CLASS', 'HomeController');
 
@@ -41,7 +42,7 @@ class HomeController extends Controller
 	    // Get the site info for the current domain
 	    //
 	    $dn = domainName();
-	    $language = LANGUAGE_ES;
+	    $language = LANGUAGE_EN;
 		try
 		{
 			$record = Site::select()
@@ -65,33 +66,49 @@ class HomeController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $d]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $dn]);
 		}
 
-        $options = [];
-        if ($language == LANGUAGE_ES)
-            $options = self::getOptionsSpanish();
-        else if ($language == LANGUAGE_ALL)
-            $options = self::getOptionsLanguage();
+if ($dn == 'localhost')
+    $language = LANGUAGE_ALL;
+if ($dn == 'speakclearer.com')
+    $language = LANGUAGE_ALL;
+if ($dn == 'spanish50.com')
+    $language = LANGUAGE_ES;
+if ($dn == 'language4.me')
+    $language = LANGUAGE_ALL;
 
+        $options = [];
+        $options['loadSpeechModules'] = false; // this loads js and css
         $options['languageCodes'] = getSpeechLanguage($language);
         $options['showAllButton'] = true;
-        $options['loadSpeechModules'] = true;
         $options['snippetLanguages'] = getLanguageOptions();
         $options['returnUrl'] = '/';
 
-        // not implemented yet
+        if ($language == LANGUAGE_ES)
+            $options = self::getOptionsSpanish($options);
+        else if ($language == LANGUAGE_ALL)
+            $options = self::getOptionsLanguage($options);
+
+        // get the snippets for the appropriate langauge
+		$languageFlagCondition = ($language == LANGUAGE_ALL) ? '>=' : '=';
+        $snippetsLimit = 10;
+        $snippets = Word::getSnippets([
+            'limit' => $snippetsLimit,
+            'languageId' => $language,
+            'languageFlagCondition' => $languageFlagCondition
+        ]);
+        $options['records'] = $snippets;
         $options['snippet'] = null; //Word::getSnippet();
-        $options['records'] = null;
 
 		return view($view, [
 		    'options' => $options,
 		]);
 	}
 
-	static public function getOptionsSpanish()
+	static public function getOptionsSpanish($options)
 	{
-	    $options = [];
+        $options['loadSpeechModules'] = true; // this loads js and css
 
         //
         // get banner
@@ -110,25 +127,21 @@ class HomeController extends Controller
 
         $options['banner'] = 'es-banner' . $ix . '.png';
 
-
 		//
 		// get articles
 		//
 	    $options['articles'] = Entry::getArticles(5);
-
-
         return $options;
 	}
 
-	static public function getOptionsLanguage()
+	static public function getOptionsLanguage($options)
 	{
-	    $options = [];
+        $options['loadSpeechModules'] = true; // this loads js and css
 
 		//
 		// get articles
 		//
 	    $options['articles'] = Entry::getArticles();
-
 
         return $options;
 	}

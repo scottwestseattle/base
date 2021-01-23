@@ -282,7 +282,8 @@ class MvcController extends Controller
 		file_put_contents($viewFileOut, $tpl);
 	}
 
-	static private $routesTemplate = "// GENERATED for Template model
+	static private $routesTemplate = "
+// GENERATED for Template model
 use App\Http\Controllers\Gen\TemplateController;
 
 // Templates

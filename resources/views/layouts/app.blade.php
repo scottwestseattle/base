@@ -24,13 +24,18 @@
 		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
+        @if (isset($options['loadSpeechModules']) && $options['loadSpeechModules'])
+            <link href="{{ asset('css/recorder.css')}}" rel="stylesheet">
+        @endif
 
 		<!-- Javascript -->
 		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
-
-		<!-- Project -->
-		<script src="{{asset('/js/project.js')}}"></script>
+		<script src="{{asset('js/project.js')}}"></script>
+        @if (isset($options['loadSpeechModules']) && $options['loadSpeechModules'])
+            <script src="{{ asset('js/recorder.js') }}"></script>
+            <script src="{{ asset('js/reader.js') }}"></script>
+        @endif
 
     </head>
     <body class="antialiased">
