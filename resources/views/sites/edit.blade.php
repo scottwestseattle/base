@@ -9,8 +9,13 @@
 	<form method="POST" id="form-edit" action="/sites/update/{{$record->id}}">
 
 		<div class="form-group">
-			<label for="title" class="control-label">@LANG('base.Title'):</label>
+			<label for="title" class="control-label">@LANG('ui.URL'):</label>
 			<input type="text" name="title" class="form-control" value="{{$record->title}}"></input>
+		</div>
+
+		<div class="form-group">
+			<label for="frontpage" class="control-label">@LANG('view.Frontpage'):</label>
+			<input type="text" name="frontpage" class="form-control" placeholder="{{__('view.Enter frontpage view file name')}}" value="{{$record->frontpage}}" />
 		</div>
 
 		<div class="form-group">

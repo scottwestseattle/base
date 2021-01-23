@@ -61,6 +61,7 @@ class SiteController extends Controller
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);
+		$record->frontpage  	= trimNull($request->frontpage);
 
 		try
 		{
@@ -128,6 +129,7 @@ class SiteController extends Controller
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
+		$record->frontpage = copyDirty($record->frontpage, $request->frontpage, $isDirty, $changes);
 
 		if ($isDirty)
 		{

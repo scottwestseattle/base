@@ -40,11 +40,12 @@ class HomeController extends Controller
 	    //
 	    // Get the site info for the current domain
 	    //
-	    $d = domainName();
+	    $dn = domainName();
+	    $language = LANGUAGE_ES;
 		try
 		{
 			$record = Site::select()
-				->where('title', $d)
+				->where('title', $dn)
 				->first();
 
             if (!isset($record))
@@ -53,23 +54,84 @@ class HomeController extends Controller
             if (blank($record->frontpage))
                 throw new \Exception('Site frontpage not set');
 
+            $viewFile = resource_path() . '/views/home/' . $record->frontpage . '.blade.php';
+            if (!file_exists($viewFile))
+                throw new \Exception('Site frontpage file not found: ' . $viewFile);
+
+            if (isset($record->language))
+                $language = $record->language;
+
             $view = 'home.' . $record->frontpage;
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Record not found'), ['domain' => $d]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $d]);
 		}
+
+        $options = [];
+        if ($language == LANGUAGE_ES)
+            $options = self::getOptionsSpanish();
+        else if ($language == LANGUAGE_ALL)
+            $options = self::getOptionsLanguage();
+
+        $options['languageCodes'] = getSpeechLanguage($language);
+        $options['showAllButton'] = true;
+        $options['loadSpeechModules'] = true;
+        $options['snippetLanguages'] = getLanguageOptions();
+        $options['returnUrl'] = '/';
+
+        // not implemented yet
+        $options['snippet'] = null; //Word::getSnippet();
+        $options['records'] = null;
+
+		return view($view, [
+		    'options' => $options,
+		]);
+	}
+
+	static public function getOptionsSpanish()
+	{
+	    $options = [];
+
+        //
+        // get banner
+        //
+        $files = preg_grep('/^([^.])/', scandir(base_path() . '/public/img/spanish/banners')); // grep removes the hidden files
+        $fileCount = count($files);
+        $lastIx = $fileCount;
+        if (isset($bannerIx))
+        {
+            $ix = ($bannerIx <= $fileCount && $bannerIx > 0) ? $bannerIx : $lastIx;
+        }
+        else
+        {
+            $ix = rand(1, $fileCount);
+        }
+
+        $options['banner'] = 'es-banner' . $ix . '.png';
+
 
 		//
 		// get articles
 		//
-	    $articles = Entry::getArticles(5);
+	    $options['articles'] = Entry::getArticles(5);
 
-		return view($view, [
-		    'articles' => $articles,
-		]);
+
+        return $options;
 	}
 
+	static public function getOptionsLanguage()
+	{
+	    $options = [];
+
+		//
+		// get articles
+		//
+	    $options['articles'] = Entry::getArticles();
+
+
+        return $options;
+	}
 	public function about(Request $request)
 	{
 		return view('home.about');

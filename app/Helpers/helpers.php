@@ -504,3 +504,74 @@ dd($v);
         return $v;
     }
 }
+
+if (!function_exists('getSpeechLanguageShort')) {
+	function getSpeechLanguageShort($id)
+	{
+        $rc = getSpeechLanguage($id);
+
+	    return substr($rc['short'], 0, 2);
+    }
+}
+
+if (!function_exists('getSpeechLanguage')) {
+	function getSpeechLanguage($id)
+	{
+        $languageFlags = [
+            LANGUAGE_DE => 'de-DE',
+            LANGUAGE_EN => 'en-EN',
+            LANGUAGE_ES => 'es-ES',
+            LANGUAGE_FR => 'fr-FR',
+            LANGUAGE_IT => 'it-IT',
+            LANGUAGE_PT => 'pt-PT',
+            LANGUAGE_RU => 'ru-RU',
+            LANGUAGE_ZH => 'zh-ZH',
+            LANGUAGE_KO => 'ko-KO',
+            //LANGUAGE_ => '',
+        ];
+
+        $languageFlagsAlt = [
+            LANGUAGE_DE => 'ger-GER',
+            LANGUAGE_EN => 'eng-GBR',
+            LANGUAGE_ES => 'spa-ESP',
+            LANGUAGE_FR => 'fra-FRA',
+            LANGUAGE_IT => 'ita-ITA',
+            LANGUAGE_PT => 'por-POR',
+            LANGUAGE_RU => 'rus-RUS',
+            LANGUAGE_ZH => 'chi-CHI',
+            LANGUAGE_KO => 'kor-KOR',
+            //LANGUAGE_ => '',
+        ];
+
+        $rc['short'] = 'en-EN';
+        $rc['long'] = 'eng-GBR';
+
+        if (array_key_exists($id, $languageFlags))
+        {
+            $rc['short'] = $languageFlags[$id];
+        }
+
+        if (array_key_exists($id, $languageFlagsAlt))
+        {
+            $rc['long'] = $languageFlagsAlt[$id];
+        }
+
+	    return $rc;
+	}
+}
+
+if (!function_exists('getLanguageOptions')) {
+	function getLanguageOptions()
+	{
+        return [
+            LANGUAGE_EN => 'English',
+            LANGUAGE_ES => 'Spanish',
+            LANGUAGE_ZH => 'Chinese',
+            LANGUAGE_RU => 'Russian',
+            LANGUAGE_FR => 'French',
+            LANGUAGE_IT => 'Italian',
+            LANGUAGE_DE => 'German',
+            LANGUAGE_KO => 'Korean',
+        ];
+    }
+}

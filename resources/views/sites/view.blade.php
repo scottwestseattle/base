@@ -7,7 +7,9 @@
 
 	<h3 name="title">{{$record->title }}</h3>
 
-    @component('components.button-release-status', ['record' => $record, 'views' => 'sites'])@endcomponent
+    @if (!$record->isPublic())
+        @component('components.button-release-status', ['record' => $record, 'views' => 'sites'])@endcomponent
+    @endif
 
 	<p class="mt-3">{{$record->description }}</p>
 </div>

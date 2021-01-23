@@ -17,6 +17,11 @@
 		</div>
 
 		<div class="form-group">
+			<label for="frontpage" class="control-label">@LANG('view.Frontpage'):</label>
+			<input type="text" name="frontpage" class="form-control" placeholder="{{__('view.Enter frontpage view file name')}}" />
+		</div>
+
+		<div class="form-group">
 			<label for="description" class="control-label">@LANG('base.Description'):</label>
 			<textarea name="description" class="form-control"></textarea>
 		<div>
