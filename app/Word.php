@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+define('LOG_MODEL', 'Word');
+
 class Word extends Model
 {
 	use SoftDeletes;
@@ -28,6 +30,26 @@ class Word extends Model
     {
 		return ($this->release_flag);
     }
+
+	static public function get($type, $value, $column = 'id')
+	{
+		$record = null;
+
+		try
+		{
+			$record = Word::select()
+				->where($column, $value)
+				->where('type_flag', $type)
+				->first();
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting phrase';
+			logException(LOG_MODEL . '.' . __FUNCTION__, $e->getMessage(), $msg, ['value' => $value]);
+		}
+
+		return $record;
+	}
 
 	static public function getSnippets($parms = null)
 	{
@@ -54,26 +76,6 @@ class Word extends Model
 		}
 
 		return $records;
-	}
-
-	static public function getSnippet($value, $column = 'id')
-	{
-		$record = null;
-
-		try
-		{
-			$record = Word::select()
-				->where($column, $value)
-				->where('type_flag', WORDTYPE_SNIPPET)
-				->first();
-		}
-		catch (\Exception $e)
-		{
-			$msg = 'Error getting phrase';
-			logException('word', $msg . ': ' . $e->getMessage());
-		}
-
-		return $record;
 	}
 
 }

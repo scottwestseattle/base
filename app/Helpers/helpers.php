@@ -247,6 +247,33 @@ if (!function_exists('alphanumpunct')) {
 	}
 }
 
+if (!function_exists('alphanumHarsh')) {
+	function alphanumHarsh($text)
+	{
+	    $debug = false;
+	    //$debug = true;
+	    $clean = null;
+
+		if (isset($text))
+		{
+			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
+            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\-\r\n]/u", '', $text);
+            $chino = '\。\，';
+
+            if ($debug)
+            {
+                $c1 = strlen($text);
+                $c2 = strlen($clean);
+                dump('text: ' . $c1 . ' / ' . 'clean: ' . $c2);
+                dump('texto: ' . $text);
+                dd('clean: ' . $clean);
+            }
+		}
+
+		return $clean;
+	}
+}
+
 if (!function_exists('isExpired')) {
 	function isExpired($sDate)
 	{
@@ -485,22 +512,19 @@ if (!function_exists('getConditionForUserLevel')) {
 if (!function_exists('convertAccentChars')) {
     function convertAccentChars($v)
     {
-dump($v);
         //
         // replace accent / special characters one by one
         //
 		//$v = preg_replace("/ /", "-", $v);
-        //$v = preg_replace("/ñ/i", "n", $v);
-        $v = preg_replace("/[ÓÒÖÔòóôöõø]/", 'x', $v);
-/*
-        $v = str_replace(/ç/i, "c", $v);
-        $v = str_replace(/[ÀÁÄÂàáâäã]+/g, "a", $v);
-        $v = str_replace(/[ÉÈËÊèéêë]+/g, "e", $v);
-        $v = str_replace(/[ÍÌÏÎìíîï]+/g, "i", $v);
-        $v = str_replace(/[ÙÚÜÛùúûü]+/g, "u", $v);
-        $v = str_replace(/Ÿÿ/g, "y", $v);
-*/
-dd($v);
+        $v = preg_replace("/ñ/ui", "n", $v);
+        $v = preg_replace("/[ÀÁÄÂàáâäã]/ui", "a", $v);
+        $v = preg_replace("/[ÉÈËÊèéêë]/ui", "e", $v);
+        $v = preg_replace("/[ÍÌÏÎìíîï]/ui", "i", $v);
+        $v = preg_replace("/[ÓÒÖÔòóôöõø]/ui", 'o', $v);
+        $v = preg_replace("/[ÙÚÜÛùúûü]/ui", "u", $v);
+        $v = preg_replace("/ç/ui", "c", $v);
+        $v = preg_replace("/Ÿÿ/ui", "y", $v);
+
         return $v;
     }
 }

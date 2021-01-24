@@ -12,4 +12,6 @@ return [
 'Comment' => '评论|评论',
 'Entry' => '条目|参赛作品',
 'Latest Articles' => '最新的文章',
+'Practice Speaking' => '练习口语',
+'Practice Text' => '言语练习文本',
 ];

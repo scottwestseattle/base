@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Auth;
 use Config;
@@ -24,7 +25,9 @@ class WordController extends Controller
 
 	public function __construct ()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except(['index', 'view', 'permalink',
+            'createSnippet',
+        ]);
 
 		parent::__construct();
 	}
@@ -269,4 +272,67 @@ class WordController extends Controller
 		return redirect($this->redirectTo);
     }
 
+    public function createSnippet(Request $request)
+    {
+        $msg = null;
+        $raw = trim($request->textEdit); // save the before version so we can tell if it gets changed
+        $snippet = alphanumHarsh($raw);
+        $tag = "Text";
+
+		try
+		{
+            if (strlen($snippet) != strlen($raw))
+            {
+                $msg = "$tag has invalid characters";
+    			logError(__FUNCTION__, $msg);
+		        throw new \Exception($msg); // nope!
+            }
+
+            $msg = null;
+
+            $exists = false;
+            $record = Word::get(WORDTYPE_SNIPPET, $snippet, 'description');
+            if (isset($record))
+            {
+                // if it already exists and hasn't changed only let the admin update it
+                $exists = true;
+            }
+            else
+            {
+                $record = new Word();
+                $record->title 			= 'snippet';
+                $record->permalink		= createPermalink($record->title);
+                $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
+                $record->type_flag 		= WORDTYPE_SNIPPET;
+                $record->description	= Str::limit($snippet, 500);
+            }
+
+            $record->language_flag  = $request->language_flag;
+
+		    if (strlen($snippet) < 10)
+                $msg = "$tag is too short";
+
+            if ($exists && !Tools::isAdmin())
+                $msg = "$tag already exists";
+
+            if (isset($msg))
+		        throw new \Exception($msg); // nope!
+
+			$record->save();
+
+			$msg = $exists ? "$tag has been updated" : "New $tag has been saved";
+			logInfo($msg, $msg, ['title' => $record->title, 'id' => $record->id]);
+
+    		return redirect($request->returnUrl);
+		}
+		catch (\Exception $e)
+		{
+		    //dump($record);
+            //dd($e->getMessage());
+			$msg = isset($msg) ? $msg : "Error adding new $tag";
+			logException(__FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		return back();
+    }
 }

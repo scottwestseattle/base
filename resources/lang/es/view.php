@@ -12,4 +12,6 @@ return [
 'Comment' => 'Comentario|Comentarios',
 'Entry' => 'Entrada|Entradas',
 'Latest Articles' => 'Últimos artículos',
+'Practice Speaking' => 'Practica el habla',
+'Practice Text' => 'Texto de práctica',
 ];

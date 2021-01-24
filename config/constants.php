@@ -37,6 +37,7 @@ define('WORDTYPE_SNIPPET',              5);
 define('WORDTYPE_USERLIST_LIMIT',       20);
 
 // misc options
+define('USER_ID_NOTSET', 0);
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 
 return [

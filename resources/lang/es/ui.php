@@ -121,4 +121,7 @@ return [
 'None' => 'Ninguno',
 'Template' => 'Plantilla|Plantillas',
 'word' => 'palabra|palabras',
+'Record' => 'Grabar',
+'Robot' => 'Robot',
+'Copy' => 'Copiar',
 ];

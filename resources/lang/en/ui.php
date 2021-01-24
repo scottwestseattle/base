@@ -121,4 +121,7 @@ return [
 'None' => 'None',
 'Template' => 'Template|Templates',
 'word' => 'word|words',
+'Record' => 'Record',
+'Robot' => 'Robot',
+'Copy' => 'Copy',
 ];

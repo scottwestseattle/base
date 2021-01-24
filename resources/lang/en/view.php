@@ -12,4 +12,6 @@ return [
 'Comment' => 'Comment|Comments',
 'Entry' => 'Entry|Entries',
 'Latest Articles' => 'Latest Articles',
+'Practice Speaking' => 'Practice Speaking',
+'Practice Text' => 'Practice Text',
 ];

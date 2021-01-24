@@ -279,6 +279,7 @@ Route::group(['prefix' => 'words'], function () {
 	// add
 	Route::get('/add', [WordController::class, 'add']);
 	Route::post('/create', [WordController::class, 'create']);
+	Route::post('/create-snippet', [WordController::class, 'createSnippet']);
 
 	// edit
 	Route::get('/edit/{word}', [WordController::class, 'edit']);
