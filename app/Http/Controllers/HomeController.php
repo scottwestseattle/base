@@ -44,6 +44,7 @@ class HomeController extends Controller
 	    //
 	    $dn = domainName();
 	    $language = LANGUAGE_EN;
+        $options = [];
 		try
 		{
 			$record = Site::select()
@@ -63,6 +64,8 @@ class HomeController extends Controller
             if (isset($record->language))
                 $language = $record->language;
 
+            $options['title'] = $record->description;
+
             $view = 'home.' . $record->frontpage;
 		}
 		catch (\Exception $e)
@@ -79,7 +82,6 @@ if ($dn == 'spanish50.com')
 if ($dn == 'language4.me')
     $language = LANGUAGE_ALL;
 
-        $options = [];
         $options['loadSpeechModules'] = false; // this loads js and css
         $options['languageCodes'] = getSpeechLanguage($language);
         $options['showAllButton'] = true;

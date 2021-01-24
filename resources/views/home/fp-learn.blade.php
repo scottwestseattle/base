@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('base.Content Management System') )
+@section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
 @section('content')
 
 <!--------------------------------------------------------------------------------------->
