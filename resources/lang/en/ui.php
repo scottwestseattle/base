@@ -120,7 +120,7 @@ return [
 'Premium' => 'Premium',
 'None' => 'None',
 'Template' => 'Template|Templates',
-'word' => 'word|words',
+'Word' => 'Word|Words',
 'Record' => 'Record',
 'Robot' => 'Robot',
 'Copy' => 'Copy',

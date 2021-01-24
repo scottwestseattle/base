@@ -8,11 +8,10 @@ use Illuminate\Support\Str;
 
 use Auth;
 use Config;
+use Cookie;
 use Log;
 
 use App\Word;
-use App\Status;
-use App\Tools;
 use App\User;
 
 define('PREFIX', 'words');
@@ -41,7 +40,7 @@ class WordController extends Controller
 		try
 		{
 			$records = Word::select()
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
+			    ->orderByRaw('id DESC')
 				->get();
 		}
 		catch (\Exception $e)
@@ -312,13 +311,14 @@ class WordController extends Controller
 		    if (strlen($snippet) < 10)
                 $msg = "$tag is too short";
 
-            if ($exists && !Tools::isAdmin())
+            if ($exists && !isAdmin())
                 $msg = "$tag already exists";
 
             if (isset($msg))
 		        throw new \Exception($msg); // nope!
 
 			$record->save();
+            Cookie::queue('snippetId', $record->id, 525600);
 
 			$msg = $exists ? "$tag has been updated" : "New $tag has been saved";
 			logInfo($msg, $msg, ['title' => $record->title, 'id' => $record->id]);

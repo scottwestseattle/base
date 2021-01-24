@@ -42,10 +42,10 @@
                 id="textEdit"
                 name="textEdit"
                 class="form-control textarea-control"
-                placeholder="{{isset($options['snippet']) ? $options['snippet']->description : 'Enter text'}}"
+                placeholder=""
                 rows="7"
                 style="font-size:18px;"
-            ></textarea>
+            >{{isset($options['snippet']) ? $options['snippet']->description : 'Enter text'}}</textarea>
             </div>
         </div>
 
@@ -114,7 +114,7 @@
                                     <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
                                 </div>
                                 <div class="float-left" style="margin-top:2px;">
-                                    <div class=""><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.word', 2)}}</a></div>
+                                    <div class=""><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
                                 </div>
                                 <div style="float:left;">
                                     @if (App\User::isAdmin())

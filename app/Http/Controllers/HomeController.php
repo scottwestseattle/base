@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 //use Illuminate\Support\Str;
 
 use App;
+use Cookie;
 use Log;
 
 use App\Entry;
@@ -99,7 +100,14 @@ if ($dn == 'language4.me')
             'languageFlagCondition' => $languageFlagCondition
         ]);
         $options['records'] = $snippets;
-        $options['snippet'] = null; //Word::getSnippet();
+        $options['snippet'] = null;
+
+        $snippetId = intval(Cookie::get('snippetId'));
+        if (isset($snippetId) && $snippetId > 0)
+        {
+            $options['snippet'] = Word::get(WORDTYPE_SNIPPET, $snippetId, 'id');
+            //dd($options) ;
+        }
 
 		return view($view, [
 		    'options' => $options,

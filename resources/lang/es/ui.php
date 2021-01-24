@@ -120,7 +120,7 @@ return [
 'Premium' => 'Premium',
 'None' => 'Ninguno',
 'Template' => 'Plantilla|Plantillas',
-'word' => 'palabra|palabras',
+'Word' => 'Palabra|Palabras',
 'Record' => 'Grabar',
 'Robot' => 'Robot',
 'Copy' => 'Copiar',

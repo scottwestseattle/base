@@ -56,7 +56,7 @@ class Word extends Model
 		$records = [];
 
 		$limit = is_array($parms) && array_key_exists('limit', $parms) ? $parms['limit'] : PHP_INT_MAX;
-		$orderBy = is_array($parms) && array_key_exists('orderBy', $parms) ? $parms['orderBy'] : 'id DESC';
+		$orderBy = is_array($parms) && array_key_exists('orderBy', $parms) ? $parms['orderBy'] : 'updated_at DESC';
 		$languageId = is_array($parms) && array_key_exists('languageId', $parms) ? $parms['languageId'] : 0;
 		$languageFlagCondition = is_array($parms) && array_key_exists('languageFlagCondition', $parms) ? $parms['languageFlagCondition'] : '>=';
 

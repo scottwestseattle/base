@@ -9,7 +9,6 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
 use App;
-use Cookie;
 
 define('SITE_ID', 0);
 

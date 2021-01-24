@@ -120,7 +120,7 @@ return [
 'Premium' => '高级会员',
 'None' => '没有设置',
 'Template' => '模板|模板',
-'word' => '话|话',
+'Word' => '话|话',
 'Record' => '开始录音',
 'Robot' => '机器人',
 'Copy' => '复制',
