@@ -114,4 +114,7 @@ return [
 'Comment' => '评论',
 'Top Level (not Gen)' => '顶层',
 'Routes' => '路线',
+'siteTitle-tools' => '语言学习者工具',
+'siteTitle-spanish50' => '在50课中学习西班牙语',
+'siteTitle-localhost' => '这是本地主机',
 ];

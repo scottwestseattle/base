@@ -29,20 +29,25 @@ class Entry extends Model
 		return ($this->release_flag);
     }
 
-    static public function getArticles($limit = PHP_INT_MAX)
+    static public function getArticles($languageFlag = LANGUAGE_ALL, $limit = PHP_INT_MAX)
     {
         $records = null;
 
+        $languageCondition = ($languageFlag == LANGUAGE_ALL) ? '>=' : '=';
+        $releaseCondition = isAdmin() ? '>=' : '=';
+        $releaseFlag = isAdmin() ? RELEASEFLAG_NOTSET : RELEASEFLAG_PUBLIC;
 		try
 		{
 			$records = Entry::select()
+			    ->where('language_flag', $languageCondition, $languageFlag)
+			    ->where('release_flag', $releaseCondition, $releaseFlag)
 				->orderByRaw('created_at DESC')
 				->limit($limit)
 				->get();
 		}
 		catch (\Exception $e)
 		{
-			logException(__FUNCTION__, $e->getMessage(), __('msgs.Record not found'));
+			logException(__FUNCTION__, $e->getMessage(), __('msgs.Error getting articles'));
 		}
 
         return $records;

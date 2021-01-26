@@ -24,7 +24,12 @@ class EntryController extends Controller
 
 	public function __construct ()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except([
+            'index',
+            'view',
+            'permalink',
+            'articles',
+        ]);
 
 		parent::__construct();
 	}
@@ -264,4 +269,21 @@ class EntryController extends Controller
 		return redirect($this->redirectTo);
     }
 
+    public function articles(Request $request)
+    {
+		$records = [];
+
+		try
+		{
+			$records = Entry::getArticles($this->site()->language_flag);
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting articles'));
+		}
+
+		return view(VIEWS . '.articles', [
+			'records' => $records,
+		]);
+    }
 }

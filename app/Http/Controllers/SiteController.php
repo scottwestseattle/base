@@ -51,6 +51,7 @@ class SiteController extends Controller
     public function add()
     {
 		return view(VIEWS . '.add', [
+			'languages' => getLanguageOptions(/* includeAll = */ true),
 			]);
 	}
 
@@ -62,6 +63,7 @@ class SiteController extends Controller
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);
 		$record->frontpage  	= trimNull($request->frontpage);
+        $record->language_flag  = $request->language_flag;
 
 		try
 		{
@@ -117,6 +119,7 @@ class SiteController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
+			'languages' => getLanguageOptions(/* includeAll = */ true),
 			]);
     }
 
@@ -130,6 +133,7 @@ class SiteController extends Controller
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
 		$record->frontpage = copyDirty($record->frontpage, $request->frontpage, $isDirty, $changes);
+		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
 
 		if ($isDirty)
 		{

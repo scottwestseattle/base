@@ -43,7 +43,7 @@ class HomeController extends Controller
 	    // Get the site info for the current domain
 	    //
 	    $dn = domainName();
-	    $language = LANGUAGE_EN;
+	    $language = LANGUAGE_ALL;
         $options = [];
 		try
 		{
@@ -61,8 +61,8 @@ class HomeController extends Controller
             if (!file_exists($viewFile))
                 throw new \Exception('Site frontpage file not found: ' . $viewFile);
 
-            if (isset($record->language))
-                $language = $record->language;
+            if (isset($record->language_flag))
+                $language = $record->language_flag;
 
             $options['title'] = $record->description;
 
@@ -73,29 +73,26 @@ class HomeController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $dn]);
 		}
 
-if ($dn == 'localhost')
-    $language = LANGUAGE_ALL;
-if ($dn == 'speakclearer.com')
-    $language = LANGUAGE_ALL;
-if ($dn == 'spanish50.com')
-    $language = LANGUAGE_ES;
-if ($dn == 'language4.me')
-    $language = LANGUAGE_ALL;
-
         $options['loadSpeechModules'] = false; // this loads js and css
         $options['languageCodes'] = getSpeechLanguage($language);
         $options['showAllButton'] = true;
         $options['snippetLanguages'] = getLanguageOptions();
         $options['returnUrl'] = '/';
 
-        if ($language == LANGUAGE_ES)
-            $options = self::getOptionsSpanish($options);
-        else if ($language == LANGUAGE_ALL)
+        if ($language == LANGUAGE_ALL)
             $options = self::getOptionsLanguage($options);
+        else
+            $options = self::getOptions($options, $language);
 
         // get the snippets for the appropriate langauge
-		$languageFlagCondition = ($language == LANGUAGE_ALL) ? '>=' : '=';
-        $snippetsLimit = 10;
+    	$languageFlagCondition = '=';
+        $snippetsLimit = 5;
+        if ($language == LANGUAGE_ALL)
+        {
+    		$languageFlagCondition = '>=';
+            $snippetsLimit = 10;
+        }
+
         $snippets = Word::getSnippets([
             'limit' => $snippetsLimit,
             'languageId' => $language,
@@ -116,31 +113,35 @@ if ($dn == 'language4.me')
 		]);
 	}
 
-	static public function getOptionsSpanish($options)
+	static public function getOptions($options, $languageFlag)
 	{
         $options['loadSpeechModules'] = true; // this loads js and css
 
-        //
-        // get banner
-        //
-        $files = preg_grep('/^([^.])/', scandir(base_path() . '/public/img/spanish/banners')); // grep removes the hidden files
-        $fileCount = count($files);
-        $lastIx = $fileCount;
-        if (isset($bannerIx))
+        if ($languageFlag == LANGUAGE_ES)
         {
-            $ix = ($bannerIx <= $fileCount && $bannerIx > 0) ? $bannerIx : $lastIx;
-        }
-        else
-        {
-            $ix = rand(1, $fileCount);
-        }
+            //
+            // get banner
+            //
+            $files = preg_grep('/^([^.])/', scandir(base_path() . '/public/img/spanish/banners')); // grep removes the hidden files
+            $fileCount = count($files);
+            $lastIx = $fileCount;
+            if (isset($bannerIx))
+            {
+                $ix = ($bannerIx <= $fileCount && $bannerIx > 0) ? $bannerIx : $lastIx;
+            }
+            else
+            {
+                $ix = rand(1, $fileCount);
+            }
 
-        $options['banner'] = 'es-banner' . $ix . '.png';
+            $options['banner'] = 'es-banner' . $ix . '.png';
+        }
 
 		//
 		// get articles
 		//
-	    $options['articles'] = Entry::getArticles(5);
+	    $options['articles'] = Entry::getArticles($languageFlag, 5);
+
         return $options;
 	}
 
@@ -151,7 +152,7 @@ if ($dn == 'language4.me')
 		//
 		// get articles
 		//
-	    $options['articles'] = Entry::getArticles();
+	    $options['articles'] = Entry::getArticles(LANGUAGE_ALL, 5);
 
         return $options;
 	}

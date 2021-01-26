@@ -16,7 +16,26 @@ class Site extends Model
 
     static public function get()
     {
+	    //
+	    // Get the site info for the current domain
+	    //
+	    $domain = domainName();
 
+		try
+		{
+			$record = Site::select()
+				->where('title', $domain)
+				->first();
+
+            if (!isset($record))
+                throw new \Exception('Site not found');
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $domain]);
+		}
+
+		return $record;
     }
 
     public function isFinished()

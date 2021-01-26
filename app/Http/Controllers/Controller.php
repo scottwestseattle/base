@@ -9,12 +9,35 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
 use App;
+use App\Site;
 
 define('SITE_ID', 0);
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+	private $_site = null;
+
+	public function site()
+	{
+		if (!isset($this->_site))
+		{
+			$this->_site = Site::get();
+
+			if (!isset($this->_site))
+			{
+			    // make a dummy site, only happens if site record hasn't been added yet
+			    $this->_site = new Site();
+			    $this->_site->title = 'not set';
+			    $this->_site->description = 'not set - add site record';
+			    $this->_site->language_flag = LANGUAGE_ALL;
+			}
+		}
+        //dump('site: ' . $this->_site);
+
+		return $this->_site;
+	}
 
 	public function __construct ()
 	{

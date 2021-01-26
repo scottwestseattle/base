@@ -12,6 +12,7 @@
 				<th></th>
 				<th>@LANG('ui.Release')</th>
 				<th>@LANG('base.Title')</th>
+				<th>@LANG('ui.Language')</th>
 				<th>@LANG('base.Description')</th>
 				<th>@LANG('ui.Created')</th>
 				<th></th>
@@ -24,6 +25,7 @@
 				<td class="icon"><a href='/sites/publishupdate/{{$record->id}}'>@component('components.icon', ['svg' => 'lightning'])@endcomponent</a></td>
 				<td class="index-button">@component('components.button-release-status', ['record' => $record, 'views' => 'sites'])@endcomponent</td>
 				<td><a href="/sites/view/{{ $record->id }}">{{$record->title}}</a></td>
+				<td>{{getLanguageName($record->language_flag)}}</td>
 				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
 				<td>{{$record->created_at}}</td>
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/sites/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>

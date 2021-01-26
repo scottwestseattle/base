@@ -585,9 +585,9 @@ if (!function_exists('getSpeechLanguage')) {
 }
 
 if (!function_exists('getLanguageOptions')) {
-	function getLanguageOptions()
+	function getLanguageOptions($includeAll = false)
 	{
-        return [
+        $languages = [
             LANGUAGE_EN => 'English',
             LANGUAGE_ES => 'Spanish',
             LANGUAGE_ZH => 'Chinese',
@@ -597,12 +597,17 @@ if (!function_exists('getLanguageOptions')) {
             LANGUAGE_DE => 'German',
             LANGUAGE_KO => 'Korean',
         ];
+
+	    if ($includeAll)
+            $languages[LANGUAGE_ALL] = 'All';
+
+        return $languages;
     }
 }
 
 if (!function_exists('getLanguageName')) {
 	function getLanguageName($languageFlag)
 	{
-	    return isset($languageFlag) && $languageFlag >= 0 ? getLanguageOptions()[$languageFlag] : '';
+	    return isset($languageFlag) ? getLanguageOptions(true)[$languageFlag] : '';
 	}
 }

@@ -17,6 +17,16 @@
 		</div>
 
 		<div class="form-group">
+			<label for="language_flag" class="control-label">@LANG('ui.Language'):</label>
+            @component('components.control-dropdown-language', [
+                'options' => $languages,
+                'selected_option' =>  -1,
+                'field_name' => 'language_flag',
+                'select_class' => 'form-control',
+            ])@endcomponent
+		</div>
+
+		<div class="form-group">
 			<label for="frontpage" class="control-label">@LANG('view.Frontpage'):</label>
 			<input type="text" name="frontpage" class="form-control" placeholder="{{__('view.Enter frontpage view file name')}}" />
 		</div>

@@ -16,6 +16,7 @@ use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Gen\TemplateController;
+use App\Http\Controllers\EntryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,9 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
+// Top level urls
+Route::get('/articles', [EntryController::class, 'articles']);
 
 // MVC
 Route::group(['prefix' => 'mvc'], function () {
@@ -201,7 +205,6 @@ Route::group(['prefix' => 'comments'], function () {
 });
 
 // GENERATED for Entry model
-use App\Http\Controllers\EntryController;
 
 // Entries
 Route::group(['prefix' => 'entries'], function () {
@@ -300,6 +303,7 @@ Route::group(['prefix' => 'words'], function () {
 	Route::get('/undelete/{id}', [WordController::class, 'undelete']);
 
 	// view
-	Route::get('/view/{entry}', [EntryController::class, 'view']);
-	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+	Route::get('/view/{word}', [WordController::class, 'view']);
+	Route::get('/practice/{word}', [WordController::class, 'view']);
+	Route::get('/{permalink}', [WordController::class, 'permalink']);
 });

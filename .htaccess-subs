@@ -11,10 +11,9 @@
 
   # Map static resources to public folder
   RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
-  RewriteRule (.+) public/$1 [L]
+  RewriteRule (.+) _subdomains/base/public/$1 [L]
 
   # Map everything else to public folder
-  RewriteRule .* public/ [L]
-
+  RewriteRule .* _subdomains/base/public/ [L]
 </IfModule>
 #########

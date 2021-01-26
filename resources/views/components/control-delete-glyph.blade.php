@@ -4,7 +4,7 @@ $size = isset($size) ? $size : 16;
 <div class="dropdown {{isset($margin) ? $margin : ''}}" >
 	<a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="" tablindex="-1">
         <svg class="mt-1 text-primary" width="{{$size}}" height="{{$size}}" >
-            <use xlink:href="/img/bootstrap-icons.svg#{{$svg}}" />
+            <use xlink:href="/img/bootstrap-icons.svg#trash" />
         </svg>
 	</a>
 	<ul class="small-thin-text dropdown-menu dropdown-menu-right">

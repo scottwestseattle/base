@@ -1,5 +1,5 @@
 @extends('layouts.frontpage')
-@section('title', __('base.Content Management System') )
+@section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
 @section('content')
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
@@ -63,5 +63,5 @@
                     </div>
                 </div>
             </div>
-			
+
 @endsection
