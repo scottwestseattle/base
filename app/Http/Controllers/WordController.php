@@ -343,6 +343,7 @@ class WordController extends Controller
         // all the stuff for the speak and record module
         //
         $siteLanguage = $this->getSiteLanguage()['id'];
+
         $options = [];
         $options['showAllButton'] = false;
         $options['loadSpeechModules'] = true;

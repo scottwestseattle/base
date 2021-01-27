@@ -124,4 +124,5 @@ return [
 'Record' => 'Grabar',
 'Robot' => 'Robot',
 'Copy' => 'Copiar',
+'Error' => 'Error|Errores',
 ];

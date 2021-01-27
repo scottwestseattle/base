@@ -33,10 +33,10 @@
                         <tr>
                             <td style="font-size:.8em; font-weight:100;">
                                 <div class="float-left mr-3">
-                                    <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
+                                    <img width="25" src="/img/flags/{{getSpeechLanguage($record->language_flag)['code']}}.png" />
                                 </div>
                                 <div style="float:left;">
-                                    @component('components.icon-read', ['href' => "/entries/read/$record->id", 'color' => 'white'])@endcomponent
+                                    @component('components.icon-read', ['href' => "/entries/read/$record->id", 'color' => ''])@endcomponent
                                     <div style="margin-right:15px; float:left;">{{$record->view_count}} @LANG('content.views')</div>
                                     <div style="margin-right:15px; margin-bottom:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
 

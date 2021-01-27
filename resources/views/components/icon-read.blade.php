@@ -1,5 +1,5 @@
 @if (!isset($nodiv) || !$nodiv)
-<div class="mr-2 float-left white">
+<div class="mr-2 float-left">
 @endif
 
 @if (isset($href))

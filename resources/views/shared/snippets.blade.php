@@ -113,7 +113,7 @@
                                 <div class="float-left mr-3">
                                     <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
                                 </div>
-                                <div class="float-left" style="margin-top:2px;">
+                                <div class="float-left" style="margin-top:2px; margin-right: 10px;">
                                     <div class=""><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
                                 </div>
                                 <div style="float:left;">

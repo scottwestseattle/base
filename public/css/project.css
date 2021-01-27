@@ -388,12 +388,53 @@ td.icon {
 }
 
 
+/***************************************************
+Fancy Text
+***************************************************/
 
+.small-text, .small-thin-text {
+	font-size:12px;
+}
+.small-thin-text {
+	font-weight:200;
+}
 
+.medium-text, .medium-thin-text {
+	font-size:15px;
+	font-weight: normal;
+}
+.medium-thin-text {
+	font-weight:200;
+}
 
 .large-text, .large-thin-text {
 	font-size:22px;
 }
 .large-thin-text {
 	font-weight:200;
+}
+
+.xl-thin-text {
+	font-size:26px;
+	font-weight:200;
+}
+
+.large-text {
+	font-size:18px;
+}
+
+/***************************************************
+Drop Box
+***************************************************/
+
+.drop-box {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.drop-box-ghost {
+	box-shadow: 1px 1px 10px 1px #e0e0e0;
+}
+
+.drop-box-ghost-small {
+	box-shadow: 1px 1px 5px 1px #e0e0e0;
 }
