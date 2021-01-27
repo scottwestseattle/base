@@ -19,6 +19,15 @@ class Controller extends BaseController
 
 	private $_site = null;
 
+	public function getSiteLanguage()
+	{
+	    $id = $this->site()->language_flag;
+
+        $language = getSpeechLanguage($id);
+
+		return $language;
+	}
+
 	public function site()
 	{
 		if (!isset($this->_site))
@@ -78,10 +87,5 @@ class Controller extends BaseController
 	{
 		session(['locale' => $locale]);
 		App::setLocale($locale);
-	}
-
-	public function getViewData($vd)
-	{
-		return $vd;
 	}
 }

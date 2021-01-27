@@ -52,6 +52,8 @@ Route::get('/about', [HomeController::class, 'about']);
 Route::get('/terms', [HomeController::class, 'terms']);
 Route::get('/privacy', [HomeController::class, 'privacy']);
 Route::get('/contact', [HomeController::class, 'contact']);
+Route::get('/hash', [HomeController::class, 'hash']);
+Route::post('/hash', [HomeController::class, 'hash']);
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -304,6 +306,6 @@ Route::group(['prefix' => 'words'], function () {
 
 	// view
 	Route::get('/view/{word}', [WordController::class, 'view']);
-	Route::get('/practice/{word}', [WordController::class, 'view']);
+	Route::get('/practice', [WordController::class, 'snippets']);
 	Route::get('/{permalink}', [WordController::class, 'permalink']);
 });

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//use Illuminate\Support\Str;
+use Illuminate\Support\Str;
 
 use App;
 use Cookie;
@@ -185,17 +185,93 @@ class HomeController extends Controller
 	{
 		$events = null;
 		$users = null;
+        $site = null;
 
 		if (isAdmin())
 		{
 			$users = User::count();
-
+            $language = $this->getSiteLanguage();
 			$events = Event::get();
 			if ($events['emergency'] > 0)
 				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));
 		}
 
-		return view('home.dashboard', ['events' => $events, 'users' => $users]);
+		return view('home.dashboard', [
+		    'events' => $events,
+		    'users' => $users,
+		    'language' => $language,
+		]);
+	}
+
+	public function hash(Request $request)
+	{
+	    $hash = null;
+	    $hashed = null;
+
+	    if (isset($request->hash))
+	    {
+            $hash = trim($request->get('hash'));
+            $hashed = self::getHash($hash);
+
+            if (Str::startsWith($hash, 'Fi') || Str::startsWith($hash, 'Go') || Str::startsWith($hash, 'Ya'))
+                $hashed .= '!';
+            else
+                $hashed .= '#';
+	    }
+
+
+		return view('home.hash', [
+			'hash' => $hash,
+			'hashed' => $hashed,
+		]);
+	}
+
+    static private function getHash($text)
+	{
+		$s = sha1(trim($text));
+		$s = str_ireplace('-', '', $s);
+		$s = strtolower($s);
+		$s = substr($s, 0, 8);
+		$final = '';
+
+		for ($i = 0; $i < 6; $i++)
+		{
+			$c = substr($s, $i, 1);
+
+			if ($i % 2 != 0)
+			{
+				if (ctype_digit($c))
+				{
+                    if ($i == 1)
+                    {
+                        $final .= "Q";
+                    }
+                    else if ($i == 3)
+                    {
+                        $final .= "Z";
+                    }
+                    else
+                    {
+                        $final .= $c;
+                    }
+				}
+				else
+				{
+					$final .= strtoupper($c);
+				}
+			}
+			else
+			{
+				$final .= $c;
+			}
+		}
+
+		// add last 2 chars
+		$final .= substr($s, 6, 2);
+
+		//echo $final;
+
+		return $final;
 	}
 
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Auth;
 use Config;
 use Cookie;
+use Lang;
 use Log;
 
 use App\Word;
@@ -334,5 +335,39 @@ class WordController extends Controller
 		}
 
 		return back();
+    }
+
+	public function snippets()
+    {
+        //
+        // all the stuff for the speak and record module
+        //
+        $siteLanguage = $this->getSiteLanguage()['id'];
+        $options = [];
+        $options['showAllButton'] = false;
+        $options['loadSpeechModules'] = true;
+        $options['siteLanguage'] = $siteLanguage;
+        $options['records'] = Word::getSnippets();
+        $options['snippetLanguages'] = getLanguageOptions();
+        $options['languageCodes'] = getSpeechLanguage($siteLanguage);
+        $options['returnUrl'] = '/words/practice';
+
+        // get the snippets for the appropriate langauge
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+        $snippets = Word::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+        $options['records'] = $snippets;
+
+        // not implemented yet
+        $options['snippet'] = null; //Word::getSnippet();
+        if (!isset($options['snippet']))
+        {
+            $options['snippet'] = new Word();
+            $options['snippet']->description = Lang::get('fp.recorderTextInit');
+            $options['snippet']->language_flag = $siteLanguage;
+        }
+
+		return view('words.snippets', [
+		    'options' => $options,
+		]);
     }
 }

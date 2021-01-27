@@ -387,3 +387,13 @@ td.icon {
 	background: #efefef;
 }
 
+
+
+
+
+.large-text, .large-thin-text {
+	font-size:22px;
+}
+.large-thin-text {
+	font-weight:200;
+}

@@ -73,18 +73,16 @@ class TranslationController extends Controller
 			$records[] = str_replace('.php', '', $file);
 		}
 
-		return view('translations.index', $this->getViewData([
+		return view('translations.index', [
 			'records' => $records,
-		]));
+		]);
 	}
 
     public function add(Request $request)
     {
-		$vdata = $this->getViewData([
+		return view('entries.add', [
 			'records' => $records,
 		]);
-
-		return view('entries.add', $vdata);
 	}
 
     public function view(Request $request, $filename)
@@ -116,13 +114,11 @@ class TranslationController extends Controller
 			}
 		}
 
-		$vdata = $this->getViewData([
+		return view('translations.view', [
 			'prefix' => 'translations',
 			'filename' => $filename,
 			'records' => $records,
 		]);
-
-		return view('translations.view', $vdata);
     }
 
     public function edit(Request $request, $filename)

@@ -532,9 +532,7 @@ if (!function_exists('convertAccentChars')) {
 if (!function_exists('getSpeechLanguageShort')) {
 	function getSpeechLanguageShort($id)
 	{
-        $rc = getSpeechLanguage($id);
-
-	    return substr($rc['short'], 0, 2);
+        return getSpeechLanguage($id)['code'];
     }
 }
 
@@ -579,6 +577,14 @@ if (!function_exists('getSpeechLanguage')) {
         {
             $rc['long'] = $languageFlagsAlt[$id];
         }
+
+        // first two letters are the language code
+        $rc['code'] = substr($rc['short'], 0, 2);
+
+        // return the id too
+        $rc['id'] = $id;
+
+        $rc['name'] = getLanguageName($id);
 
 	    return $rc;
 	}
