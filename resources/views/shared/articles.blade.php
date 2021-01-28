@@ -20,8 +20,8 @@
                                 </div>
                                 <div style="float:left;">
                                     @component('components.icon-read', ['href' => "/entries/read/$record->id", 'color' => ''])@endcomponent
-                                    <div style="margin-right:15px; float:left;">{{$record->view_count}} @LANG('content.views')</div>
-                                    <div style="margin-right:15px; margin-bottom:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
+                                    <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
+                                    <div style="margin-right:15px; margin-bottom:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>
 
                                     @if (App\User::isAdmin())
                                         <div style="margin-right:15px; float:left;">

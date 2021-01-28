@@ -226,6 +226,10 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/', [EntryController::class, 'index']);
 	Route::get('/index', [EntryController::class, 'index']);
 
+	// view
+	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	Route::get('/read/{entry}', [EntryController::class, 'read']);
+
 	// add
 	Route::get('/add', [EntryController::class, 'add']);
 	Route::post('/create', [EntryController::class, 'create']);
@@ -248,8 +252,7 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/deleted', [EntryController::class, 'deleted']);
 	Route::get('/undelete/{id}', [EntryController::class, 'undelete']);
 
-	// view
-	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	// permalink
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 
 });

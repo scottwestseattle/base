@@ -1,0 +1,46 @@
+
+.btn-panel-bottom {
+	text-align: center;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	background: white;
+	width:100%;
+	opacity:0.8;
+}
+
+.glyphReader {
+	font-size:27px;
+	margin-right: 10px;
+}
+
+.glyphReaderReturn {
+	font-size:18px;
+	color: #286090;
+}
+
+.glyphReaderMove {
+	font-size:2em;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.glyphReaderPlay {
+	font-size:2em;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.glyphcircle {
+	color:white;
+	background-color:#4993FD;
+	border-radius: 50%;
+	padding: 10px;
+}
+
+.highlight-word {
+	background-color: yellow;
+	border-radius: 25px;
+	padding: 5px 0;
+}
+

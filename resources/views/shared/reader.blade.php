@@ -1,5 +1,5 @@
 @extends('layouts.reader')
-
+@section('title', __('Reading') . ' ' . $record->title )
 @section('content')
 
 <!-------------------------------------------------------->
@@ -14,7 +14,7 @@
 	data-type="{{$record->type_flag}}"
 	data-contenttype="{{$contentType}}"
 	data-contentid="{{$record->id}}"
-	data-isadmin="{{$isAdmin ? 1 : 0}}"
+	data-isadmin="{{isAdmin() ? 1 : 0}}"
 	data-userid="{{Auth::id()}}"
 	data-readlocation={{$readLocation}}
 ></div>
@@ -30,7 +30,7 @@
 	    data-id="{{$record->id}}"
 	    data-seconds="10"
 	    data-between="2"
-	    data-countdown="{{App\Tools::isLocalhost() ? '3' : '1'}}"
+	    data-countdown="1"
 	>
 	</div>
 @endforeach

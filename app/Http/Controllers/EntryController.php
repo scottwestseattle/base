@@ -347,31 +347,30 @@ class EntryController extends Controller
 
     public function read(Request $request, Entry $entry)
     {
-		if ($entry->deleted_flag != 0)
+		if (!blank($entry->deleted_at))
 		{
 			return $this->pageNotFound404('read/' . $entry->id);
 		}
 
-		$readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
-
-		Entry::countView($entry);
+		//todo: $readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+		//todo: Entry::countView($entry);
 
 		$record = $entry;
 		$text = [];
 
-		$text = Tools::getSentences($record->title);
-		$text = array_merge($text, Tools::getSentences($record->description_short));
-		$text = array_merge($text, Tools::getSentences($record->description));
+		$text = Entry::getSentences($record->title);
+		$text = array_merge($text, Entry::getSentences($record->description_short));
+		$text = array_merge($text, Entry::getSentences($record->description));
 		//dd($text);
 
 		$record['lines'] = $text;
 
-    	return view('shared.reader', $this->getViewData([
+    	return view('shared.reader', [
 			'record' => $record,
-			'readLocation' => (Auth::check() ? $readLocation : null),
+			'readLocation' => null, //todo: Auth::check() ? $readLocation : null),
 			'contentType' => 'Entry',
-			'languageCodes' => Tools::getSpeechLanguage($record->language_flag),
-		]));
+			'languageCodes' => getSpeechLanguage($record->language_flag),
+		]);
     }
 
 }
