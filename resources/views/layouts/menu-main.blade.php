@@ -85,6 +85,16 @@
 					</div>
 					<div class="middle ml-1">{{trans_choice('base.Event', 2)}}</div>
 				</a>
+
+				<a class="dropdown-item" href="{{lurl('mvc')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#code-slash" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{__('MVC')}}</div>
+				</a>
+
 				<a class="dropdown-item" href="{{lurl('templates')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
@@ -148,9 +158,9 @@
 	@endif
 
 	@if (isAdmin())
-		<li class="nav-item"><a class="nav-link" href="{{lurl('mvc')}}">{{__('base.MVC')}}</a></li>
 	@endif
-		<li class="nav-item"><a class="nav-link" href="{{lurl('about')}}">{{__('base.About')}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('ui.Article', 2)}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('about')}}">{{__('ui.About')}}</a></li>
     </ul>
     <form class="form-inline my-2 my-lg-0 d-none d-lg-block"><!-- only for large so it doesn't clutter the dropdown -->
       <input class="form-control mr-sm-2" type="search" placeholder="{{__('base.Search')}}" aria-label="Search">

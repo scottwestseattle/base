@@ -53,6 +53,8 @@
 			</div>
 		@endif
 
+        @yield('banner')
+
         <div class="">
 			<div class="container project-page">
 				<main class="py-4">

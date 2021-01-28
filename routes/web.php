@@ -64,6 +64,19 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 // Top level urls
 Route::get('/articles', [EntryController::class, 'articles']);
 
+// Articles
+Route::group(['prefix' => 'article'], function () {
+
+    // add / (create done in entries)
+	Route::get('/add/', [EntryController::class, 'addArticle']);
+
+    // edit / (update done in entries)
+	Route::get('/edit/', [EntryController::class, 'editArticle']);
+
+    // permalink
+	Route::get('/{permalink}', [EntryController::class, 'article']);
+});
+
 // MVC
 Route::group(['prefix' => 'mvc'], function () {
 	Route::get('/', [MvcController::class, 'index']);

@@ -25,10 +25,8 @@ class EntryController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-            'index',
-            'view',
-            'permalink',
-            'articles',
+            'index', 'view', 'permalink',
+            'articles', 'article', 'read',
         ]);
 
 		parent::__construct();
@@ -282,8 +280,98 @@ class EntryController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting articles'));
 		}
 
+		$options['articles'] = $records;
+
 		return view(VIEWS . '.articles', [
-			'records' => $records,
+			'options' => $options,
 		]);
     }
+
+    public function article(Request $request, $permalink)
+    {
+ 		$record = null;
+		$permalink = alphanum($permalink);
+        $releaseFlag = getReleaseFlagForUserLevel();
+        $releaseFlagCondition = getConditionForUserLevel();
+
+		try
+		{
+			$record = Entry::select()
+				->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				->where('permalink', $permalink)
+				->first();
+
+			if (blank($record))
+			    throw new \Exception('article not found');
+
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Article not found'), ['permalink' => $permalink]);
+    		return redirect($this->redirectTo);
+		}
+
+		$next = null;
+		$prev = null;
+		$options['wordCount'] = null;
+
+		//todo: $id = isset($record) ? $record->id : null;
+		//todo: $visitor = $this->saveVisitor(LOG_MODEL_ENTRIES, LOG_PAGE_PERMALINK, $id);
+		//todo: $isRobot = isset($visitor) && $visitor->robot_flag;
+
+		if (isset($record))
+		{
+			//todo: $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+			//todo: Entry::countView($record);
+			$options['wordCount'] = str_word_count($record->description); // count it before <br/>'s are added
+			$record->description = nl2br($record->description);
+		}
+		else
+		{
+			return $this->pageNotFound404($permalink);
+		}
+
+        $options['backLink'] = '/articles';
+        $options['index'] = 'articles';
+        $options['backLinkText'] = __('ui.Back to List');
+        $options['page_title'] = trans_choice('ui.Article', 1) . ' - ' . $record->title;
+
+        //todo: $next = Entry::getNextPrevEntry($record);
+        //todo: $prev = Entry::getNextPrevEntry($record, /* next = */ false);
+
+		return view(VIEWS . '.article', [
+			'options' => $options,
+			'record' => $record,
+			]);
+	}
+
+    public function read(Request $request, Entry $entry)
+    {
+		if ($entry->deleted_flag != 0)
+		{
+			return $this->pageNotFound404('read/' . $entry->id);
+		}
+
+		$readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+
+		Entry::countView($entry);
+
+		$record = $entry;
+		$text = [];
+
+		$text = Tools::getSentences($record->title);
+		$text = array_merge($text, Tools::getSentences($record->description_short));
+		$text = array_merge($text, Tools::getSentences($record->description));
+		//dd($text);
+
+		$record['lines'] = $text;
+
+    	return view('shared.reader', $this->getViewData([
+			'record' => $record,
+			'readLocation' => (Auth::check() ? $readLocation : null),
+			'contentType' => 'Entry',
+			'languageCodes' => Tools::getSpeechLanguage($record->language_flag),
+		]));
+    }
+
 }
