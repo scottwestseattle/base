@@ -14,4 +14,6 @@ return [
 'Latest Articles' => 'Latest Articles',
 'Practice Speaking' => 'Practice Speaking',
 'Practice Text' => 'Practice Text',
+'Text has been updated' => 'Text has been updated',
+'New Text has been saved' => 'New text has been saved',
 ];

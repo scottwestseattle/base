@@ -283,7 +283,7 @@ class WordController extends Controller
 		{
             if (strlen($snippet) != strlen($raw))
             {
-                $msg = "$tag has invalid characters";
+                $msg = __("view.$tag has invalid characters");
     			logError(__FUNCTION__, $msg);
 		        throw new \Exception($msg); // nope!
             }
@@ -310,10 +310,10 @@ class WordController extends Controller
             $record->language_flag  = $request->language_flag;
 
 		    if (strlen($snippet) < 10)
-                $msg = "$tag is too short";
+                $msg = __("view.$tag is too short");
 
             if ($exists && !isAdmin())
-                $msg = "$tag already exists";
+                $msg = __("view.$tag already exists");
 
             if (isset($msg))
 		        throw new \Exception($msg); // nope!
@@ -321,7 +321,7 @@ class WordController extends Controller
 			$record->save();
             Cookie::queue('snippetId', $record->id, 525600);
 
-			$msg = $exists ? "$tag has been updated" : "New $tag has been saved";
+			$msg = $exists ? __("view.$tag has been updated") : __("view.New $tag has been saved");
 			logInfo($msg, $msg, ['title' => $record->title, 'id' => $record->id]);
 
     		return redirect($request->returnUrl);

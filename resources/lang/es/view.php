@@ -14,4 +14,6 @@ return [
 'Latest Articles' => 'Últimos artículos',
 'Practice Speaking' => 'Practica el habla',
 'Practice Text' => 'Texto de práctica',
+'Text has been updated' => 'El texto se ha actualizado',
+'New Text has been saved' => 'Se ha guardado el nuevo texto',
 ];

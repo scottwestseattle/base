@@ -141,13 +141,6 @@
 
     <section class="main-controls">
         <canvas id="feedback" class="visualizer" height="40px"></canvas>
-        @if (false)
-        <div id="buttons">
-            <button id="buttonRecord" class="record" onclick="startRecording()">Record</button>
-            <button id="buttonPlayback" class="playback" onclick="playRecording()">Play</button>
-            <button id="buttonRead" class="" onClick="readPage()">Robot</button>
-        </div>
-        @endif
     </section>
 
     <section class="sound-clips">

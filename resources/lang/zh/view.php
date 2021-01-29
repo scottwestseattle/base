@@ -14,4 +14,6 @@ return [
 'Latest Articles' => '最新的文章',
 'Practice Speaking' => '练习口语',
 'Practice Text' => '言语练习文本',
+'Text has been updated' => '文字已更新',
+'New Text has been saved' => '新文本已保存',
 ];

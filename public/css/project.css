@@ -1,13 +1,5 @@
 /***********************************************************
-
-Colors:
-
-Header Orange: #FF6900
-Header Blue: #4993FD
-Section and Button Green: #5CB85C
-Glyph Icon Blue: #286090
-Super Light Green: #eff7f0
-
+General
 ************************************************************/
 
 body {
@@ -98,6 +90,44 @@ body {
 
 }
 
+.middle {
+	display:inline-block;
+	vertical-align:middle;
+}
+
+/***************************************************
+ Navbar
+***************************************************/
+
+.navbar-icon-shortcuts a {
+	color: white;
+	margin: auto 10px;
+}
+
+.navbar-icon-shortcuts a:hover {
+	text-decoration: none;
+}
+
+.navbar-icon-shortcuts a div {
+	vertical-align: middle;
+	display:inline-block;
+}
+
+.navbar-icon-shortcuts a div svg {
+	margin-top: 5px;
+}
+
+.navbar-submenu {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.li.nav-item svg {
+    width: 22px;
+    height: 22px;
+}
+
+
 /***************************************************
  Footer
 ***************************************************/
@@ -136,7 +166,13 @@ body {
 }
 
 /***************************************************
- Colors
+Colors
+-------
+Header Orange: #FF6900
+Header Blue: #4993FD
+Section and Button Green: #5CB85C
+Glyph Icon Blue: #286090
+Super Light Green: #eff7f0
 ***************************************************/
 
 .app-color-primary {
@@ -252,9 +288,8 @@ body {
 	color: white;
 }
 
-
 /***************************************************
- Controls
+ Buttons
 ***************************************************/
 
 .btn-group-xs>.btn,
@@ -273,6 +308,9 @@ body {
     border-radius: .1rem
 }
 
+/***************************************************
+ Tables
+***************************************************/
 
 table.table-events {
 	width:100%;
@@ -288,34 +326,6 @@ table.table-events {
 
 .table-translations tbody tr td:first-child, .table-translations tbody tr td:last-child {
 	width: 10px;
-}
-
-.middle {
-	display:inline-block;
-	vertical-align:middle;
-}
-
-.navbar-icon-shortcuts a {
-	color: white;
-	margin: auto 10px;
-}
-
-.navbar-icon-shortcuts a:hover {
-	text-decoration: none;
-}
-
-.navbar-icon-shortcuts a div {
-	vertical-align: middle;
-	display:inline-block;
-}
-
-.navbar-icon-shortcuts a div svg {
-	margin-top: 5px;
-}
-
-.navbar-submenu {
-	padding-top: 0;
-	padding-bottom: 0;
 }
 
 .checkbox-label

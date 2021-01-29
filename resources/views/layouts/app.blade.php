@@ -48,7 +48,7 @@
 
 		<!-- Show the flash method if any -->
 		@if(session()->has('message.level'))
-			<div class="alert alert-{{ session('message.level') }}">
+			<div class="alert alert-{{ session('message.level') }} m-0">
 				{!!session('message.content')!!}
 			</div>
 		@endif
