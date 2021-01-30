@@ -395,3 +395,40 @@ Route::group(['prefix' => 'visitors'], function () {
 	Route::get('/view/{entry}', [EntryController::class, 'view']);
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 });
+
+// GENERATED for Definition model
+use App\Http\Controllers\Gen\DefinitionController;
+
+Route::get('/dictionary', [DefinitionController::class, 'index']);
+
+// Definitions
+Route::group(['prefix' => 'definitions'], function () {
+	Route::get('/', [DefinitionController::class, 'index']);
+	Route::get('/index', [DefinitionController::class, 'index']);
+
+	// add
+	Route::get('/add', [DefinitionController::class, 'add']);
+	Route::post('/create', [DefinitionController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{definition}', [DefinitionController::class, 'edit']);
+	Route::post('/update/{definition}', [DefinitionController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{definition}', [DefinitionController::class, 'publish']);
+	Route::post('/publishupdate/{definition}', [DefinitionController::class, 'updatePublish']);
+	Route::get('/publishupdate/{definition}', [DefinitionController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{definition}', [DefinitionController::class, 'confirmDelete']);
+	Route::post('/delete/{definition}', [DefinitionController::class, 'delete']);
+	Route::get('/delete/{definition}', [DefinitionController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [DefinitionController::class, 'deleted']);
+	Route::get('/undelete/{id}', [DefinitionController::class, 'undelete']);
+
+	// view
+	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+});

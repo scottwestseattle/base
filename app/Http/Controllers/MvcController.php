@@ -133,6 +133,7 @@ class MvcController extends Controller
 
 	public function view(Request $request, $model, $views)
 	{
+	    $model = ucfirst($model);
 		$paths = self::genPaths($model, $views);
 		$schemaMysql = self::genSchemaMysql($views, $paths);
         $routes = self::genRoutes($model, $views);

@@ -100,7 +100,7 @@ body {
 ***************************************************/
 
 .navbar-icon-shortcuts a {
-	color: white;
+    color: white; /* for the icons */
 	margin: auto 10px;
 }
 
@@ -122,11 +122,11 @@ body {
 	padding-bottom: 0;
 }
 
-.li.nav-item svg {
-    width: 22px;
-    height: 22px;
+.nav-link {
+    color: rgb(255, 255, 255, 1.0) !important; /* overrides bootstrap */
+    font-size: 20px;
+    font-weight: 400;
 }
-
 
 /***************************************************
  Footer
