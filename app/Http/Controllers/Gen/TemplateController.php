@@ -22,7 +22,7 @@ class TemplateController extends Controller
 {
 	private $redirectTo = PREFIX;
 
-	public function __construct ()
+	public function __construct()
 	{
         $this->middleware('admin')->except(['index', 'view', 'permalink']);
 
@@ -39,6 +39,7 @@ class TemplateController extends Controller
 		{
 			$records = Template::select()
 				->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				->orderByRaw('id DESC')
 				->get();
 		}
 		catch (\Exception $e)

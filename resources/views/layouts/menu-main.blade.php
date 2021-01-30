@@ -70,7 +70,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#chat-right-text" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{trans_choice('base.Comments', 2)}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.Comment', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{lurl('entries')}}">
 					<div class="middle">
@@ -78,7 +78,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#collection" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{trans_choice('base.Entries', 2)}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.Entry', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{lurl('events')}}">
 					<div class="middle">
@@ -86,7 +86,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#exclamation-diamond" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{trans_choice('base.Event', 2)}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.Event', 2)}}</div>
 				</a>
 
 				<a class="dropdown-item" href="{{lurl('mvc')}}">
@@ -112,7 +112,15 @@
 							<use xlink:href="/img/bootstrap-icons.svg#display" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{trans_choice('view.Site', 2)}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.Site', 2)}}</div>
+				</a>
+				<a class="dropdown-item" href="{{lurl('tags')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#tags" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('ui.Tag', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{lurl('translations')}}">
 					<div class="middle">
@@ -120,7 +128,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#globe" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{trans_choice('base.Translation', 2)}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.Translation', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{lurl('users')}}">
 					<div class="middle">
@@ -128,7 +136,15 @@
 							<use xlink:href="/img/bootstrap-icons.svg#people" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{trans_choice('base.User', 2)}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.User', 2)}}</div>
+				</a>
+				<a class="dropdown-item" href="{{lurl('visitors')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#people-fill" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('ui.Visitor', 2)}}</div>
 				</a>
 				<div class="dropdown-divider"></div>
 			@endif
@@ -136,13 +152,13 @@
 					<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#person" />
 					</svg>
-					<div class="middle ml-1">{{__('base.Profile')}}</div>
+					<div class="middle ml-1">{{trans_choice('ui.Profile', 2)}}</div>
 				</a>
 				<a class="dropdown-item" href="{{lurl('password/edit/') . Auth::id()}}">
 					<svg class="float-left bi mt-1" width="20" height="20" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#pencil-square" />
 					</svg>
-					<div class="middle ml-2">{{__('base.Password')}}</div>
+					<div class="middle ml-2">{{__('ui.Password')}}</div>
 				</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item red" href="{{lurl('logout')}}">
@@ -151,7 +167,7 @@
 							<use xlink:href="/img/bootstrap-icons.svg#box-arrow-right" />
 						</svg>
 					</div>
-					<div class="middle ml-1">{{__('base.Log-out')}}</div>
+					<div class="middle ml-1">{{__('ui.Log-out')}}</div>
 				</a>
 			</div>
 		</li>

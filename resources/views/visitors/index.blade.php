@@ -1,22 +1,31 @@
 @extends('layouts.app')
-@section('title', __('view.Visitor List'))
+@section('title', trans_choice('ui.Visitor', 2))
 @section('menu-submenu')@component('visitors.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('view.Visitors')}} ({{count($records)}})</h1>
-	
-	<a href="/visitors/add">{{__('view.Add Visitor')}}</a>
-	
-	<div class="">
-		@foreach($records as $record)			
-		<div class="">
-			<div class="" >
-				<a class="" href="/{{$prefix}}/view/{{$record->id}}">{{$record->title}}</a>
-				<div>{{$record->description}}</div>
-			</div>		
-		</div>
-		@endforeach		
+	<h1>{{trans_choice('ui.Visitor', 2)}} ({{count($records)}})</h1>
+	<div  class="table-responsive">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>@LANG('ui.IP')</th><th>@LANG('ui.Host')</th><th>@LANG('ui.Referrer')</th><th>@LANG('ui.Created')</th><th></th>
+			</tr>
+		</thead>
+		<tbody>
+		@foreach($records as $record)
+			<tr>
+				<td>{{$record->ip_address}}</td>
+				<td>{{$record->host_name}}</td>
+				<td>{{$record->referrer}}</td>
+				<td>{{$record->created_at}}</td>
+				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/visitors/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
+				<!-- td class="icon"><a href='/visitors/confirmdelete/{{$record->id}}'>@component('components.icon', ['svg' => 'trash-fill'])@endcomponent</a></td -->
+			</tr>
+		@endforeach
+		</tbody>
+	</table>
 	</div>
+
 </div>
 
 @endsection

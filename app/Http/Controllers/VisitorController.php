@@ -2,229 +2,272 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
 use Config;
 use Log;
 
 use App\Visitor;
+use App\Status;
 use App\Tools;
 use App\User;
 
 define('PREFIX', 'visitors');
+define('VIEWS', 'visitors');
 define('LOG_CLASS', 'VisitorController');
 
 class VisitorController extends Controller
 {
-	use SoftDeletes;
-	private $redirectTo = '/' . PREFIX;
-	
-	public function __construct ()
+	private $redirectTo = PREFIX;
+
+	public function __construct()
 	{
         $this->middleware('admin')->except(['index', 'view', 'permalink']);
-	
+
 		parent::__construct();
 	}
-	
+
     public function index(Request $request)
-    {	
+    {
 		$records = [];
-		
+        $releaseFlag = getReleaseFlagForUserLevel();
+        $releaseFlagCondition = getConditionForUserLevel();
+
 		try
 		{
 			$records = Visitor::select()
-				->get(5);
+				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				->orderByRaw('id DESC')
+				->get();
 		}
-		catch (\Exception $e) 
+		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error selecting list');
-		}	
-			
-		return view(PREFIX . '.index', [
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
+		}
+
+		return view(VIEWS . '.index', [
 			'records' => $records,
-			'prefix' => PREFIX,
 		]);
-    }	
+    }
 
     public function add()
-    {		 
-		return view(PREFIX . '.add', [
+    {
+		return view(VIEWS . '.add', [
 			]);
 	}
-		
+
     public function create(Request $request)
-    {					
+    {
 		$record = new Visitor();
-		
+
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);
-		$record->permalink		= createPermalink($request->title);
+        $record->permalink      = createPermalink($record->title);
 
 		try
 		{
-			$record->save();	
-			logInfo(LOG_CLASS, 'New record has been added', ['record_id' => $record->id]);
+			$record->save();
+
+			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
 		}
-		catch (\Exception $e) 
+		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error adding new visitor');			
-			return back(); 
-		}	
-			
-		return redirect('/' . PREFIX . '/view/' . $record->id);		
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
+			return back();
+		}
+
+		return redirect($this->redirectTo . '/view/' . $record->id);
     }
 
     public function permalink(Request $request, $permalink)
     {
-		$permalink = trim($permalink);
-		
 		$record = null;
-			
+		$permalink = alphanum($permalink);
+        $releaseFlag = getReleaseFlagForUserLevel();
+        $releaseFlagCondition = getConditionForUserLevel();
+
 		try
 		{
 			$record = Visitor::select()
-				->where('site_id', SITE_ID)
-				->where('published_flag', 1)
+				//->where('site_id', SITE_ID)
+				->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
 				->first();
-		}
-		catch (\Exception $e) 
-		{
-			logException(LOG_CLASS, $e->getMessage(), 'Record not found', ['permalink' => $permalink]);			
-			return back();					
-		}	
 
-		return view(PREFIX . '.view', [
-			'record' => $record, 
+			if (blank($record))
+			    throw new \Exception('permalink not found');
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Record not found'), ['permalink' => $permalink]);
+    		return redirect($this->redirectTo);
+		}
+
+		return view(VIEWS . '.view', [
+			'record' => $record,
 			]);
 	}
-	
+
 	public function view(Visitor $visitor)
-    {		
+    {
 		$record = $visitor;
-		
-		return view(PREFIX . '.view', [
+
+		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
     }
-	
+
 	public function edit(Visitor $visitor)
-    {		 
+    {
 		$record = $visitor;
-		
-		return view(PREFIX . '.edit', [
+
+		return view(VIEWS . '.edit', [
 			'record' => $record,
 			]);
     }
-	
+
     public function update(Request $request, Visitor $visitor)
     {
-		$record = $visitor; 
-		 
+		$record = $visitor;
+
 		$isDirty = false;
 		$changes = '';
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
-								
+        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
+
 		if ($isDirty)
-		{						
+		{
 			try
 			{
 				$record->save();
-				logInfo(LOG_CLASS, 'Record has been updated', ['record_id' => $record->id, 'changes' => $changes]);
+				logInfo(LOG_CLASS, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
 			}
-			catch (\Exception $e) 
+			catch (\Exception $e)
 			{
-				logException(LOG_CLASS, $e->getMessage(), 'Error updating record', ['record_id' => $record->id]);
-			}				
+				logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
+			}
 		}
 		else
 		{
-			logInfo(LOG_CLASS, 'No changes made to record', ['record_id' => $record->id]);						
+			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);
 		}
 
 		return redirect('/' . PREFIX . '/view/' . $record->id);
 	}
-	
-    public function confirmdelete(Visitor $visitor)
-    {	
-		$record = $visitor; 
-			 
-		return view(PREFIX . '.confirmdelete', [
-			'record' => $record,		
-		]);
-    }
-	
-    public function delete(Request $request, Visitor $visitor)
-    {	
-		$record = $visitor; 
-				
-		try 
-		{
-			$record->delete();
-			logInfo(LOG_CLASS, 'Record has been deleted', ['record_id' => $record->id]);
-		}
-		catch (\Exception $e) 
-		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error deleting record', ['record_id' => $record->id]);
-			return back();
-		}	
-			
-		return redirect($this->redirectTo);
-    }	
-	
-    public function undelete()
-    {	
-		$records = []; // make this countable so view will always work
-		
-		try
-		{
-			$records = Visitor::select()
-				->whereNotNull('deleted_at')
-				->get();
-		}
-		catch (\Exception $e) 
-		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error getting undelete records');
-		}	
-			
-		return view(PREFIX . '.undelete', [
-			'records' => $records,
-		]);		
-    }
 
-    public function publish(Request $request, Visitor $visitor)
-    {			
-		$record = $visitor; 
-	
-		return view(PREFIX . '.publish', [
+    public function confirmDelete(Visitor $visitor)
+    {
+		$record = $visitor;
+
+		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,
 		]);
     }
-	
-    public function publishupdate(Request $request, Visitor $visitor)
-    {	
-		$record = $visitor; 
-		
-		$record->wip_flag = $request->wip_flag;
-		$record->release_flag = $request->release_flag;
-		
+
+    public function delete(Request $request, Visitor $visitor)
+    {
+		$record = $visitor;
+
+		try
+		{
+			$record->delete();
+			logInfo(LOG_CLASS, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
+			return back();
+		}
+
+		return redirect($this->redirectTo);
+    }
+
+    public function undelete(Request $request, $id)
+    {
+		$id = intval($id);
+
+		try
+		{
+			$record = Visitor::withTrashed()
+				->where('id', $id)
+				->first();
+
+			$record->restore();
+			logInfo(LOG_CLASS, __('msgs.Record has been undeleted'), ['record_id' => $record->id]);
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error undeleting record'), ['record_id' => $record->id]);
+			return back();
+		}
+
+		return redirect($this->redirectTo);
+    }
+
+    public function deleted()
+    {
+		$records = []; // make this countable so view will always work
+
+		try
+		{
+			$records = Visitor::withTrashed()
+				->whereNotNull('deleted_at')
+				->get();
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting deleted records'));
+		}
+
+		return view(VIEWS . '.deleted', [
+			'records' => $records,
+		]);
+    }
+
+    public function publish(Request $request, Visitor $visitor)
+    {
+		$record = $visitor;
+
+		return view(VIEWS . '.publish', [
+			'record' => $record,
+			'release_flags' => Status::getReleaseFlags(),
+			'wip_flags' => Status::getWipFlags(),
+		]);
+    }
+
+    public function updatePublish(Request $request, Visitor $visitor)
+    {
+		$record = $visitor;
+
+        if ($request->isMethod('get'))
+        {
+            // quick publish, set to toggle public / private
+            $record->wip_flag = $record->isFinished() ? getConstant('wip_flag.dev') : getConstant('wip_flag.finished');
+            $record->release_flag = $record->isPublic() ? RELEASEFLAG_PRIVATE : RELEASEFLAG_PUBLIC;
+        }
+        else
+        {
+            $record->wip_flag = $request->wip_flag;
+            $record->release_flag = $request->release_flag;
+        }
+
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, 'Record status has been updated', ['record_id' => $record->id]);			
+			logInfo(LOG_CLASS, __('msgs.Record status has been updated'), ['record_id' => $record->id]);
 		}
-		catch (\Exception $e) 
+		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), 'Error updating record status', ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
 			return back();
-		}				
-		
+		}
+
 		return redirect($this->redirectTo);
-    }	
-	
+    }
+
 }

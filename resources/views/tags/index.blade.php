@@ -1,14 +1,14 @@
 @extends('layouts.app')
-@section('title', trans_choice('view.Tag', 2))
+@section('title', trans_choice('ui.Tag', 2))
 @section('menu-submenu')@component('tags.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{trans_choice('view.Tag', 2)}} ({{count($records)}})</h1>
+	<h1>{{trans_choice('ui.Tag', 2)}} ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>
 			<tr>
-				<th></th><th>@LANG('base.Name')</th><th>@LANG('ui.Created')</th><th></th>
+				<th></th><th>@LANG('ui.Name')</th><th>@LANG('ui.Created')</th><th></th>
 			</tr>
 		</thead>
 		<tbody>
