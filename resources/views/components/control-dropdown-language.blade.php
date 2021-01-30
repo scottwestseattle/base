@@ -26,9 +26,9 @@ $select_class = isset($select_class) ? $select_class : null;
 
 	@foreach ($options as $key => $value)
 		@if (isset($selected_option) && $key == $selected_option)
-			<option value="{{$key}}" selected>@LANG('ui.' . $value)</option>
+			<option value="{{$key}}" selected>@LANG('geo.' . $value)</option>
 		@else
-			<option value="{{$key}}">@LANG('ui.' . $value)</option>
+			<option value="{{$key}}">@LANG('geo.' . $value)</option>
 		@endif
 	@endforeach
 

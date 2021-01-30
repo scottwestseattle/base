@@ -10,8 +10,8 @@
 <!--------------------------------------------------------------------------------------->
 
 @php
-    $banner = in_array('banner', $options) ? $options['banner'] : null;
-    $articles = in_array('articles', $options) ? $options['articles'] : null;
+    $banner = isset($options['banner']) ? $options['banner'] : null;
+    $articles = isset($options['articles']) ? $options['articles'] : null;
 @endphp
 
 <!--------------------------------------------------------------------------------------->
