@@ -106,7 +106,7 @@ return [
 'Review' => '评论',
 'tags' => '标签',
 'User' => '用户',
-'List' => '清单',
+'List' => '清单|清单',
 'Restart' => '重新开始',
 'Translation' => '翻译',
 'Email Verification' => '电子邮件验证',

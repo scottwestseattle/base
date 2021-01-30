@@ -106,7 +106,7 @@ return [
 'Review' => 'Revisar',
 'tags' => 'Etiqueta|Etiquetas',
 'User' => 'Usuario',
-'List' => 'Lista',
+'List' => 'Lista|Listas',
 'Restart' => 'Reiniciar',
 'Translation' => 'Traducción',
 'Email Verification' => 'Verificacion de email',

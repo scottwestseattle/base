@@ -117,4 +117,5 @@ return [
 'siteTitle-tools' => '语言学习者工具',
 'siteTitle-spanish50' => '在50课中学习西班牙语',
 'siteTitle-localhost' => '这是本地主机',
+'All events deleted' => '所有事件已删除',
 ];

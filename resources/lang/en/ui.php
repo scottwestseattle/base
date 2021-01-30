@@ -106,7 +106,7 @@ return [
 'Review' => 'Review',
 'tags' => 'Tag|Tags',
 'User' => 'User',
-'List' => 'List',
+'List' => 'List|Lists',
 'Restart' => 'Restart',
 'Translation' => 'Translation',
 'Email Verification' => 'Email Verification',

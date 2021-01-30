@@ -117,4 +117,5 @@ return [
 'siteTitle-tools' => 'Herramientas para estudiantes de idiomas',
 'siteTitle-spanish50' => 'Aprende español en 50 lecciones',
 'siteTitle-localhost' => 'Este es localhost',
+'All events deleted' => 'Todos los eventos eliminados',
 ];

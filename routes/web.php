@@ -325,3 +325,38 @@ Route::group(['prefix' => 'words'], function () {
 	Route::get('/practice', [WordController::class, 'snippets']);
 	Route::get('/{permalink}', [WordController::class, 'permalink']);
 });
+
+// GENERATED for Tag model
+use App\Http\Controllers\TagController;
+
+// Tags
+Route::group(['prefix' => 'tags'], function () {
+	Route::get('/', [TagController::class, 'index']);
+	Route::get('/index', [TagController::class, 'index']);
+
+	// add
+	Route::get('/add', [TagController::class, 'add']);
+	Route::post('/create', [TagController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{tag}', [TagController::class, 'edit']);
+	Route::post('/update/{tag}', [TagController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{tag}', [TagController::class, 'publish']);
+	Route::post('/publishupdate/{tag}', [TagController::class, 'updatePublish']);
+	Route::get('/publishupdate/{tag}', [TagController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{tag}', [TagController::class, 'confirmDelete']);
+	Route::post('/delete/{tag}', [TagController::class, 'delete']);
+	Route::get('/delete/{tag}', [TagController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [TagController::class, 'deleted']);
+	Route::get('/undelete/{id}', [TagController::class, 'undelete']);
+
+	// view
+	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+});

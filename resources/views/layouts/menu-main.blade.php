@@ -54,6 +54,9 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+		<li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('ui.Article', 2)}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('dictionary')}}">{{__('proj.Dictionary')}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('lists')}}">{{trans_choice('ui.List', 2)}}</a></li>
 	@auth
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -156,10 +159,6 @@
 		<li class="nav-item"><a class="nav-link" href="{{lurl('login')}}">{{__('base.Log-in')}}</a></li>
 		<li class="nav-item"><a class="nav-link" href="{{lurl('register')}}">{{__('base.Register')}}</a></li>
 	@endif
-
-	@if (isAdmin())
-	@endif
-		<li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('ui.Article', 2)}}</a></li>
 		<li class="nav-item"><a class="nav-link" href="{{lurl('about')}}">{{__('ui.About')}}</a></li>
     </ul>
     <form class="form-inline my-2 my-lg-0 d-none d-lg-block"><!-- only for large so it doesn't clutter the dropdown -->
