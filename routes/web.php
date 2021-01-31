@@ -435,8 +435,41 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// view
 	Route::get('/view/{entry}', [EntryController::class, 'view']);
-	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 
+	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
+	Route::get('/list/{tag}', [DefinitionController::class, 'list']);
+	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);
+	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review']);
+	Route::get('/review-newest/{reviewType?}', [DefinitionController::class, 'reviewNewest']);
+	Route::get('/review-newest-verbs/{reviewType?}', [DefinitionController::class, 'reviewNewestVerbs']);
+	Route::get('/review-random-words/{reviewType?}', [DefinitionController::class, 'reviewRandomWords']);
+	Route::get('/review-random-verbs/{reviewType?}', [DefinitionController::class, 'reviewRandomVerbs']);
+
+	// ajax calls
+	Route::get('/find/{text}', [DefinitionController::class, 'find']);
+	Route::get('/wordexists/{text}', [DefinitionController::class, 'wordExistsAjax']);
+	Route::get('/get/{text}/{entryId}',[DefinitionController::class, 'getAjax']);
+	Route::get('/translate/{text}/{entryId?}',[DefinitionController::class, 'translateAjax']);
+	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);
+	Route::get('/unheart/{definition}',[DefinitionController::class, 'unheartAjax']);
+	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
+	Route::get('/get-random-word/',[DefinitionController::class, 'getRandomWordAjax']);
+	Route::get('/scrape-definition/{word}',[DefinitionController::class, 'scrapeDefinitionAjax']);
+
+	// search
+	Route::get('/search/{sort?}', [DefinitionController::class, 'search']);
+	Route::post('/search/{sort?}', [DefinitionController::class, 'search']);
+	Route::get('/search-ajax/{text?}', [DefinitionController::class, 'searchAjax']);
+
+	// conjugations
+	Route::get('/conjugationsgen/{definition}', [DefinitionController::class, 'conjugationsGen']);
+	Route::get('/conjugationsgenajax/{text}', [DefinitionController::class, 'conjugationsGenAjax']);
+	Route::get('/conjugationscomponent/{definition}',[DefinitionController::class, 'conjugationsComponentAjax']);
+
+	//
+	// catch-all last
+	//
+	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 
 });

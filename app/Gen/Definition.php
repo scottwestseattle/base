@@ -541,6 +541,177 @@ class Definition extends Model
 
 	//////////////////////////////////////////////////////////////////////
 	//
+	// Search
+	//
+	//////////////////////////////////////////////////////////////////////
+
+	// search checks title and forms
+    static public function searchPartial($word)
+    {
+		$word = alpha($word);
+		$records = null;
+
+		if (!isset($word))
+		{
+			// show full list
+			return self::getIndex();
+		}
+
+		try
+		{
+			$records = Definition::select()
+				->where('deleted_at', null)
+    			->where('type_flag', DEFTYPE_DICTIONARY)
+				->where(function ($query) use ($word){$query
+					->where('title', 'LIKE', $word . '%')							// exact match of title
+					->orWhere('forms', 'LIKE', '%;' . $word . ';%')					// exact match of ";word;"
+					->orWhere('conjugations_search', 'LIKE', '%;' . $word . '%;%') 	// exact match of ";word;"
+					;})
+				->orderBy('title')
+				->get();
+
+			if (false && !isset($record)) // not yet
+			{
+				$record = self::searchDeeper($word);
+			}
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting word: ' . $word;
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		//dd($records);
+
+		return $records;
+	}
+
+	// search checks title and forms
+    static public function searchGeneral($word)
+    {
+		$word = Tools::alpha($word);
+		$records = null;
+
+		if (!isset($word))
+		{
+			// show full list
+			return self::getIndex();
+		}
+
+		try
+		{
+			$records = Definition::select()
+				->where('deleted_at', null)
+    			->where('type_flag', DEFTYPE_DICTIONARY)
+				->where(function ($query) use ($word){$query
+					->where('title', 'LIKE', $word . '%')
+					->orWhere('forms', 'LIKE', '%' . $word . '%')
+					->orWhere('conjugations_search', 'LIKE', '%' . $word . '%')
+					->orWhere('translation_en', 'LIKE', '%' . $word . '%')
+					;})
+				->orderBy('title')
+				->get();
+
+			if (false && !isset($record)) // not yet
+			{
+				$record = self::searchDeeper($word);
+			}
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting word: ' . $word;
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		//dd($records);
+
+		return $records;
+	}
+
+	// search checks title and forms
+    static public function search($word)
+    {
+		$word = Tools::alphanum($word, /* strict = */ true);
+		$record = null;
+
+		try
+		{
+			$record = Definition::select()
+				->where('deleted_at', null)
+    			->where('type_flag', DEFTYPE_DICTIONARY)
+				->where(function ($query) use ($word){$query
+					->where('title', $word)											// exact match of title
+					->orWhere('forms', 'LIKE', '%;' . $word . ';%')					// exact match of ";word;"
+					->orWhere('conjugations_search', 'LIKE', '%;' . $word . ';%') 	// exact match of ";word;"
+					;})
+				->first();
+
+			if (!isset($record))
+			{
+				$record = self::searchDeeper($word);
+			}
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting word: ' . $word;
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		//dd($record);
+
+		return $record;
+	}
+
+	// handle special cases:
+	// imperative: haz, haga, hagamos, hagan + me, melo, se, selo, nos, noslo
+	// hazme, hazmelo, haznos, haznoslo
+	// hagame, hágamelo, hagase, hágaselo, haganos, háganoslo
+	// hagámoslo, hagámosle
+	// haganme, haganmelo, haganse, haganselo
+	// hacerme, hacermelo, hacernos, hacernoslo, hacerse, hacerselo
+	static public function searchDeeper($word)
+	{
+		$wordRaw = $word;
+		$record = null;
+
+		$suffixes = [
+			'me',    'te',    'se',    'nos',
+			'melo',  'telo',  'selo',  'noslo',
+			'mela',  'tela',  'sela',  'nosla',
+			'melos', 'telos', 'selos', 'noslos',
+			'melas', 'telas', 'selas', 'noslas',
+		];
+
+		$any = Tools::endsWithAnyIndex($word, $suffixes);
+		if ($any !== false)
+		{
+			// trim off the suffix and search for the stem which should be the imperative
+			$word = rtrim($word, $suffixes[$any]);
+			$wordReflexive = $word . 'se';
+
+			//dump($any . ': ' . $suffixes[$any] . ', word: ' . $word);
+
+			// we're only looking for verbs at this point
+			$record = Definition::select()
+				->where('deleted_at', null)
+    			->where('type_flag', DEFTYPE_DICTIONARY)
+				->where(function ($query) use ($word, $wordReflexive){$query
+					->where('title', $word)											// exact match of title
+					->orWhere('title', $wordReflexive)								// exact match of reflexive
+					->orWhere('forms', 'LIKE', '%;' . $word . ';%')					// exact match of ";word;"
+					->orWhere('conjugations_search', 'LIKE', '%;' . $word . ';%') 	// exact match of ";word;"
+					;})
+				->first();
+
+			if (!isset($record))
+                logInfo('searchDeeper', 'text not found', ['wordRaw' => $wordRaw, 'word' => $word]);
+		}
+
+		return $record;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	//
 	// Snippets
 	//
 	//////////////////////////////////////////////////////////////////////

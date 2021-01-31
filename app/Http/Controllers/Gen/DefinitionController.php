@@ -398,6 +398,7 @@ class DefinitionController extends Controller
     public function searchAjax(Request $request, $text = null)
     {
 		$text = getOrSetString(alpha($text), null);
+        $records = [];
 
 		try
 		{
@@ -422,7 +423,7 @@ class DefinitionController extends Controller
     public function search(Request $request, $sort = null)
     {
 		$sort = intval($sort);
-		$records = null;
+		$records = [];
 		$search = '';
 
 		if ($sort == DEFINITIONS_SEARCH_NOTSET)
@@ -451,7 +452,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			$msg = 'Error getting ' . $this->title . ' list';
+			$msg = 'Search dictionary error';
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
 		}
 
