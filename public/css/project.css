@@ -339,6 +339,11 @@ td.icon {
 	width:10px;
 }
 
+.date-sm {
+    font-size: 12px;
+    width: 150px;
+}
+
 /***********************************************************
 
  Dropdown character menu
@@ -425,6 +430,10 @@ td.icon {
 /***************************************************
 Fancy Text
 ***************************************************/
+
+.xs-text {
+	font-size: 10px;
+}
 
 .small-text, .small-thin-text {
 	font-size:12px;

@@ -117,6 +117,12 @@ if (!function_exists('logWarning')) {
 		logFlash('error', $msg, $flash, $parms);
 	}
 
+	function logExceptionEx($class, $function, $exception, $flash = null, $parms = null)
+	{
+		$msg = $exception . ', ' . $class . ':' . $function;
+		logFlash('error', $msg, $flash, $parms);
+	}
+
 	function logError($msg, $flash = null, $parms = null)
 	{
 		logFlash('error', $msg, $flash, $parms);
@@ -648,5 +654,45 @@ if (!function_exists('getLanguageName')) {
 	function getLanguageName($languageFlag)
 	{
 	    return isset($languageFlag) ? getLanguageOptions(true)[$languageFlag] : '';
+	}
+}
+
+if (!function_exists('getOrSetString')) {
+	function getOrSetString($text, $default)
+    {
+		// if text not set or blank then return the default
+		return ((isset($text) && strlen($text) > 0) ? $text : $default);
+	}
+}
+
+if (!function_exists('timestamp2date')) {
+    function timestamp2date($timestamp)
+    {
+		return translateDate($timestamp);
+	}
+}
+
+if (!function_exists('translateDate')) {
+    function translateDate($date)
+    {
+		$dateFormat = "%B %e, %Y";
+
+		if (App::getLocale() == 'es')
+		{
+			$dateFormat = "%e " . __('ui.of') . ' ' . __('ui.' . strftime("%B", strtotime($date))) . ", %Y";
+
+		}
+		else if (App::getLocale() == 'zh')
+		{
+			// 2019年12月25日
+			$dateFormat = "%Y" . __('ui.year') . "%m" . __('ui.month') . "%e" . __('ui.date');
+		}
+		else
+		{
+		}
+
+		$date = strftime($dateFormat, strtotime($date));
+
+		return $date;
 	}
 }

@@ -398,8 +398,13 @@ Route::group(['prefix' => 'visitors'], function () {
 // GENERATED for Definition model
 use App\Http\Controllers\Gen\DefinitionController;
 
-Route::get('/dictionary', [DefinitionController::class, 'index']);
+Route::get('/dictionary', [DefinitionController::class, 'search']);
 Route::get('/practice', [DefinitionController::class, 'snippets']);
+
+// Definitions
+Route::group(['prefix' => 'dictionary'], function () {
+	Route::get('/search/{sort}', [DefinitionController::class, 'search']);
+});
 
 // Definitions
 Route::group(['prefix' => 'definitions'], function () {

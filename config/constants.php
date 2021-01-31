@@ -44,6 +44,21 @@ define('DEFTYPE_OTHER',         100);
 
 define('DEF_HASH_LENGTH',        50);
 
+define('DEFINITIONS_SEARCH_NOTSET', 0);
+define('DEFINITIONS_SEARCH_ALPHA', 1);
+define('DEFINITIONS_SEARCH_REVERSE', 2);
+define('DEFINITIONS_SEARCH_NEWEST', 3);
+define('DEFINITIONS_SEARCH_RECENT', 4);
+define('DEFINITIONS_SEARCH_MISSING_TRANSLATION', 5);
+define('DEFINITIONS_SEARCH_MISSING_DEFINITION', 6);
+define('DEFINITIONS_SEARCH_MISSING_CONJUGATION', 7);
+define('DEFINITIONS_SEARCH_WIP_NOTFINISHED', 8);
+define('DEFINITIONS_SEARCH_VERBS', 9);
+define('DEFINITIONS_SEARCH_ALL', 10);
+define('DEFINITIONS_SEARCH_NEWEST_VERBS', 11);
+define('DEFINITIONS_SEARCH_RANDOM_VERBS', 12);
+define('DEFINITIONS_SEARCH_RANDOM_WORDS', 13);
+
 // parts of speech
 define('POS_NOTSET',            0);
 define('POS_NOUN',              10);
@@ -51,6 +66,15 @@ define('POS_VERB',              11);
 define('POS_ADJECTIVE',         12);
 define('POS_ADVERB',            13);
 define('POS_OTHER',             100);
+
+// Tag types
+define('TAGTYPE_NOTSET',			   	0);
+define('TAGTYPE_SYSTEM',				1); // one for everybody, ex: recent article
+//define('TAGTYPE_RECENT_ARTICLE',	   	1); // old way
+define('TAGTYPE_BOOK',				   	2); //not implented yet: need one per book
+define('TAGTYPE_DEF_FAVORITE', 	        3); // one per user so we have empty favorites list
+define('TAGTYPE_OTHER',			   	    99);
+//define('TAGTYPE_DEFAULT', TAG_TYPE_SYSTEM); // need this?
 
 // misc options
 define('USER_ID_NOTSET', 0);
