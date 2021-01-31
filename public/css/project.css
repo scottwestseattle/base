@@ -407,6 +407,15 @@ td.icon {
 	background: #0088cc;
 }
 
+@media (max-width: 500px) {
+
+.dropdown-menu {
+      height: 300px;
+      overflow-y: auto;
+   }
+
+}
+
 .flat-content button {
 	color: #0088cc;
 	background: #efefef;

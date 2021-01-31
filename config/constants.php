@@ -42,6 +42,8 @@ define('DEFTYPE_SNIPPET',       1);
 define('DEFTYPE_DICTIONARY',    10);
 define('DEFTYPE_OTHER',         100);
 
+define('DEF_HASH_LENGTH',        50);
+
 // parts of speech
 define('POS_NOTSET',            0);
 define('POS_NOUN',              10);

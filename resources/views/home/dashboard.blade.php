@@ -16,9 +16,10 @@
         <table>
 			<tr><td><strong>Server Time:</strong>&nbsp;&nbsp;</td><td>{{date("M d, Y H:i:s")}}</td></tr>
 			<tr><td><strong>Language:</strong></td><td>{{$language['name']}} ({{$language['short'] . ', ' . $language['long']}})</td></tr>
-            <tr><td><strong>Client:</strong></td><td>{{ipAddress()}}&nbsp<span style="font-size:11px;">({{getVisitorInfo()['hash']}})</span></td></tr>
-            <tr><td><strong>Folder:</strong></td><td>{{base_path()}}</td></tr>
-			<tr><td><strong>Session:</strong></td><td>{{env('SESSION_LIFETIME', 0)}}</td></tr>
+            <tr><td><strong>Folder:</strong></td><td style="font-size:12px;">{{base_path()}}</td></tr>
+			<!-- tr><td><strong>Session:</strong></td><td>{{env('SESSION_LIFETIME', 0)}}</td></tr -->
+            <tr><td><strong>Client:</strong></td><td>{{ipAddress()}}</td></tr>
+            <tr><td><strong>Hash:</strong></td><td style="font-size:12px;">{{getVisitorInfo()['hash']}}</td></tr>
     		<tr><td><strong>Debug:</strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
         </table>
 

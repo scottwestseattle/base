@@ -58,7 +58,6 @@ function getVisitorInfo()
     if (array_key_exists("HTTP_REFERER", $_SERVER))
     {
         $rc['referrer'] = $_SERVER["HTTP_REFERER"];
-        $rc['hash'] .= ':' . $rc['referrer'];
     }
 
     $rc['userAgent'] = null;
@@ -68,7 +67,7 @@ function getVisitorInfo()
         $rc['hash'] .= ':' . $rc['userAgent'];
     }
 
-    $rc['hash'] = hash('md2', $rc['hash']);
+    $rc['hash'] = Str::limit(hash('md2', $rc['hash']), DEF_HASH_LENGTH);
 
     return $rc;
 }

@@ -296,6 +296,7 @@ use App\Http\Controllers\WordController;
 Route::group(['prefix' => 'words'], function () {
 	Route::get('/', [WordController::class, 'index']);
 	Route::get('/index', [WordController::class, 'index']);
+    Route::get('/snippets', [DefinitionController::class, 'snippets']);
 
 	// add
 	Route::get('/add', [WordController::class, 'add']);

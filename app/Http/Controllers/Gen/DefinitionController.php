@@ -37,13 +37,11 @@ class DefinitionController extends Controller
     public function index(Request $request)
     {
 		$records = [];
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
 
 		try
 		{
 			$records = Definition::select()
-				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				->where('type_flag', DEFTYPE_DICTIONARY)
 				->orderByRaw('id DESC')
 				->get();
 		}
