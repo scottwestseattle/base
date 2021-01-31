@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Gen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Auth;
 use Config;
+use Cookie;
 use Log;
 
 use App\Gen\Definition;
@@ -24,7 +26,10 @@ class DefinitionController extends Controller
 
 	public function __construct()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except([
+            'index', 'view', 'permalink',
+            'snippets', 'createSnippet',
+        ]);
 
 		parent::__construct();
 	}
@@ -270,4 +275,106 @@ class DefinitionController extends Controller
 		return redirect($this->redirectTo);
     }
 
+    public function createSnippet(Request $request)
+    {
+        $msg = null;
+        $raw = trim($request->textEdit); // save the before version so we can tell if it gets changed
+        $snippet = alphanumHarsh($raw);
+        $tag = "Text";
+
+		try
+		{
+            if (strlen($snippet) != strlen($raw))
+            {
+                $msg = __("proj.$tag has invalid characters");
+    			logError(__FUNCTION__, $msg);
+		        throw new \Exception($msg); // nope!
+            }
+
+            $msg = null;
+
+            $exists = false;
+            $record = Definition::getSnippet($snippet);
+            if (isset($record))
+            {
+                // if it already exists let usere or visitor update it
+                $exists = true;
+                $record->visitor_id     = getVisitorInfo()['hash'];
+            }
+            else
+            {
+                $record = new Definition();
+                $record->title 			= 'snippet-' . timestamp();
+                $record->permalink		= createPermalink('snippet');
+                $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
+                $record->type_flag 		= DEFTYPE_SNIPPET;
+                $record->release_flag   = RELEASEFLAG_PUBLIC;
+                $record->examples	    = Str::limit($snippet, 500);
+                $record->visitor_id     = getVisitorInfo()['hash'];
+            }
+
+            $record->language_flag  = $request->language_flag;
+
+		    if (strlen($snippet) < 10)
+                $msg = __("proj.$tag is too short");
+
+            if ($exists && !isAdmin())
+                $msg = __("proj.$tag already exists");
+
+            if (isset($msg))
+		        throw new \Exception($msg); // nope!
+
+			$record->save();
+            Cookie::queue('snippetId', $record->id, 525600);
+
+			$msg = $exists ? __("proj.$tag has been updated") : __("proj.New $tag has been saved");
+			logInfo($msg, $msg, ['title' => $record->title, 'id' => $record->id]);
+
+    		return redirect($request->returnUrl);
+		}
+		catch (\Exception $e)
+		{
+		    //dump($record);
+            //dd($e->getMessage());
+			$msg = isset($msg) ? $msg : "Error adding new $tag";
+			logException(__FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		return back();
+    }
+
+	public function snippets()
+    {
+        //
+        // all the stuff for the speak and record module
+        //
+        $siteLanguage = $this->getSiteLanguage()['id'];
+
+        $options = [];
+        $options['showAllButton'] = false;
+        $options['loadSpeechModules'] = true;
+        $options['siteLanguage'] = $siteLanguage;
+        $options['records'] = Definition::getSnippets();
+        $options['snippetLanguages'] = getLanguageOptions();
+        $options['languageCodes'] = getSpeechLanguage($siteLanguage);
+        $options['returnUrl'] = '/practice';
+
+        // get the snippets for the appropriate langauge
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+        $snippets = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+        $options['records'] = $snippets;
+
+        // not implemented yet
+        $snippetId = intval(Cookie::get('snippetId'));
+        if (isset($snippetId) && $snippetId > 0)
+        {
+            $options['snippet'] = Definition::get(DEFTYPE_SNIPPET, $snippetId, 'id');
+        }
+
+        $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
+
+		return view('gen.definitions.snippets', [
+		    'options' => $options,
+		]);
+    }
 }

@@ -40,6 +40,40 @@ function ipAddress()
 }
 }
 
+if (!function_exists('getVisitorInfo')) {
+function getVisitorInfo()
+{
+    $rc = [];
+
+    //
+    // get visitor info
+    //
+    $rc['ip'] = ipAddress();
+
+    $rc['host'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+
+    $rc['hash'] = $rc['ip'] . ':' . $rc['host'];
+
+    $rc['referrer'] = null;
+    if (array_key_exists("HTTP_REFERER", $_SERVER))
+    {
+        $rc['referrer'] = $_SERVER["HTTP_REFERER"];
+        $rc['hash'] .= ':' . $rc['referrer'];
+    }
+
+    $rc['userAgent'] = null;
+    if (array_key_exists("HTTP_USER_AGENT", $_SERVER))
+    {
+        $rc['userAgent'] = $_SERVER["HTTP_USER_AGENT"];
+        $rc['hash'] .= ':' . $rc['userAgent'];
+    }
+
+    $rc['hash'] = hash('md2', $rc['hash']);
+
+    return $rc;
+}
+}
+
 if (!function_exists('isAdmin')) {
 function isAdmin()
 {

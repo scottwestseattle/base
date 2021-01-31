@@ -1,6 +1,6 @@
 <?php
 
-// language codes
+// language flag
 define('LANGUAGE_ALL', -1);
 define('LANGUAGE_EN', 0);
 define('LANGUAGE_ES', 1);
@@ -35,6 +35,20 @@ define('WORDTYPE_USERLIST',             3);
 define('WORDTYPE_VOCABLIST',            4);
 define('WORDTYPE_SNIPPET',              5);
 define('WORDTYPE_USERLIST_LIMIT',       20);
+
+// defintion types
+define('DEFTYPE_NOTSET',        0);
+define('DEFTYPE_SNIPPET',       1);
+define('DEFTYPE_DICTIONARY',    10);
+define('DEFTYPE_OTHER',         100);
+
+// parts of speech
+define('POS_NOTSET',            0);
+define('POS_NOUN',              10);
+define('POS_VERB',              11);
+define('POS_ADJECTIVE',         12);
+define('POS_ADVERB',            13);
+define('POS_OTHER',             100);
 
 // misc options
 define('USER_ID_NOTSET', 0);

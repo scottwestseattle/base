@@ -300,7 +300,6 @@ Route::group(['prefix' => 'words'], function () {
 	// add
 	Route::get('/add', [WordController::class, 'add']);
 	Route::post('/create', [WordController::class, 'create']);
-	Route::post('/create-snippet', [WordController::class, 'createSnippet']);
 
 	// edit
 	Route::get('/edit/{word}', [WordController::class, 'edit']);
@@ -322,7 +321,6 @@ Route::group(['prefix' => 'words'], function () {
 
 	// view
 	Route::get('/view/{word}', [WordController::class, 'view']);
-	Route::get('/practice', [WordController::class, 'snippets']);
 	Route::get('/{permalink}', [WordController::class, 'permalink']);
 });
 
@@ -400,6 +398,7 @@ Route::group(['prefix' => 'visitors'], function () {
 use App\Http\Controllers\Gen\DefinitionController;
 
 Route::get('/dictionary', [DefinitionController::class, 'index']);
+Route::get('/practice', [DefinitionController::class, 'snippets']);
 
 // Definitions
 Route::group(['prefix' => 'definitions'], function () {
@@ -431,4 +430,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	// view
 	Route::get('/view/{entry}', [EntryController::class, 'view']);
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+
+	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
+
 });

@@ -1,3 +1,16 @@
+DB Changes:
+
+ALTER TABLE `definitions` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `wip_flag`;
+ALTER TABLE `definitions` ADD `language_flag` TINYINT NULL AFTER `release_flag`;
+ALTER TABLE `definitions` ADD `type_flag` TINYINT NULL COMMENT 'See DEFTYPE_* for values' AFTER `release_flag`;
+ALTER TABLE `definitions` DROP `language_id`;
+ALTER TABLE `definitions` DROP `translation_es`;
+ALTER TABLE `definitions` DROP `translation_ru`;
+
+update `definitions` set release_flag = 100 WHERE 1;
+UPDATE `definitions` set language_flag = 1 WHERE 1;
+UPDATE `definitions` set type_flag = 10 WHERE 1;
+
 =====================================================================
 How to add a Helper file
 - create helper.php in app\Helpers

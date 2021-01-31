@@ -1,14 +1,17 @@
 @extends('layouts.app')
-@section('title', __('base.About'))
+@section('title', __('ui.About'))
 @section('content')
 
-<h1>{{__('base.About')}}</h1>
+<h1>{{__('ui.About')}}</h1>
 
 <div class="">
+@if (NULL != env('APP_DEBUG'))
+	<p>{{domainName()}} v0.0</p>
 	<p>PHP v{{phpversion()}}</p>
 	<p>Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
 	<p>{{ipAddress()}}</p>
-	<p>{{domainName()}} @LANG('base.Version') 0.0</p>
+	<p>Hash: {{getVisitorInfo()['hash']}}</p>
+@endif
 	<p><strong>{{__('base.Info')}}</strong>: {{Config::get('constants.email.info')}}</p>
 	<p><strong>{{__('base.Support')}}</strong>: {{Config::get('constants.email.support')}}</p>
 	<p><strong>{{__('base.Locale')}}</strong>: {{App::getLocale()}}</p>

@@ -21,7 +21,7 @@
 <div class="data-slides"
     data-title="No title"
     data-number="1"
-    data-description="@LANG('view.Enter text to read')"
+    data-description="@LANG('proj.Enter text to read')"
     data-id="0"
     data-seconds="10"
     data-between="2"
@@ -34,7 +34,7 @@
 <!--------------------------------------------------------------------------------------->
 <div class="record-form text-center mt-4 p-1">
 
-	<form method="POST" action="/words/create-snippet">
+	<form method="POST" action="/definitions/create-snippet">
         <h3 class="practice-title mt-0 pt-0">@LANG('view.Practice Speaking')</h3>
 		<div class="">
 		    <div style="xmin-height: 300px; ">
@@ -42,18 +42,18 @@
                 id="textEdit"
                 name="textEdit"
                 class="form-control textarea-control"
-                placeholder=""
+                placeholder="{{__('proj.Enter text to read')}}"
                 rows="7"
                 style="font-size:18px;"
-            >{{isset($options['snippet']) ? $options['snippet']->description : 'Enter text'}}</textarea>
+            >{{isset($options['snippet']) ? $options['snippet']->examples : ''}}</textarea>
             </div>
         </div>
 
         <span class='mini-menu'>
         @component('components.control-dropdown-language', [
-            'record' => $options['snippet'],
+            'record' => isset($options['snippet']) ? $options['snippet'] : null,
 			'options' => $options['snippetLanguages'],
-			'selected_option' => isset($options['snippet']) ? $options['snippet']->language_flag : -1,
+			'selected_option' => $options['language'],
 			'field_name' => 'language_flag',
 			'select_class' => 'mt-1 mr-2',
 		])@endcomponent
@@ -104,8 +104,8 @@
                     <tbody>
                         <tr>
                             <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
-                                <a href="" onclick="copyToReader(event, '#{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->description, 200)}}</a>
-                                <input id="{{$record->id}}" type="hidden" value="{{$record->description}}" />
+                                <a href="" onclick="copyToReader(event, '#{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->examples, 200)}}</a>
+                                <input id="{{$record->id}}" type="hidden" value="{{$record->examples}}" />
                             </td>
                         </tr>
                         <tr>
@@ -114,12 +114,12 @@
                                     <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
                                 </div>
                                 <div class="float-left" style="margin-top:2px; margin-right: 10px;">
-                                    <div class=""><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
+                                    <div class=""><a href="/defintions/stats/{{$record->id}}">{{str_word_count($record->examples)}} {{trans_choice('ui.Word', 2)}}</a></div>
                                 </div>
                                 <div style="float:left;">
                                     @if (App\User::isAdmin())
-                                    <div style="margin-right:5px; float:left;"><a href='/words/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
-                                    <div style="margin-right:0px; float:left;"><a href='/words/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
+                                    <div style="margin-right:5px; float:left;"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
+                                    <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
                                     @endif
                                 </div>
                             </td>
@@ -135,7 +135,7 @@
             @endif
             </table>
             @if ($options['showAllButton'])
-                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/words/practice">@LANG('ui.Show All')</a></div>
+                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice">@LANG('ui.Show All')</a></div>
             @endif
         </div>
     </div>

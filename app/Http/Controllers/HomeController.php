@@ -14,7 +14,7 @@ use App\Event;
 use App\Home;
 use App\Site;
 use App\User;
-use App\Word;
+use App\Gen\Definition;
 
 define('LOG_CLASS', 'HomeController');
 
@@ -43,7 +43,7 @@ class HomeController extends Controller
 	    // Get the site info for the current domain
 	    //
 	    $dn = domainName();
-	    $language = LANGUAGE_ALL;
+	    $siteLanguage = LANGUAGE_ALL;
         $options = [];
 		try
 		{
@@ -62,7 +62,7 @@ class HomeController extends Controller
                 throw new \Exception('Site frontpage file not found: ' . $viewFile);
 
             if (isset($record->language_flag))
-                $language = $record->language_flag;
+                $siteLanguage = $record->language_flag;
 
             $options['title'] = $record->description;
 
@@ -74,39 +74,39 @@ class HomeController extends Controller
 		}
 
         $options['loadSpeechModules'] = false; // this loads js and css
-        $options['languageCodes'] = getSpeechLanguage($language);
+        $options['languageCodes'] = getSpeechLanguage($siteLanguage);
         $options['showAllButton'] = true;
         $options['snippetLanguages'] = getLanguageOptions();
         $options['returnUrl'] = '/';
 
-        if ($language == LANGUAGE_ALL)
+        if ($siteLanguage == LANGUAGE_ALL)
             $options = self::getOptionsLanguage($options);
         else
-            $options = self::getOptions($options, $language);
+            $options = self::getOptions($options, $siteLanguage);
 
         // get the snippets for the appropriate langauge
     	$languageFlagCondition = '=';
         $snippetsLimit = 5;
-        if ($language == LANGUAGE_ALL)
+        if ($siteLanguage == LANGUAGE_ALL)
         {
     		$languageFlagCondition = '>=';
             $snippetsLimit = 10;
         }
 
-        $snippets = Word::getSnippets([
+        $snippets = Definition::getSnippets([
             'limit' => $snippetsLimit,
-            'languageId' => $language,
+            'languageId' => $siteLanguage,
             'languageFlagCondition' => $languageFlagCondition
         ]);
         $options['records'] = $snippets;
-        $options['snippet'] = null;
 
         $snippetId = intval(Cookie::get('snippetId'));
         if (isset($snippetId) && $snippetId > 0)
         {
-            $options['snippet'] = Word::get(WORDTYPE_SNIPPET, $snippetId, 'id');
-            //dd($options) ;
+            $options['snippet'] = Definition::get(DEFTYPE_SNIPPET, $snippetId, 'id');
         }
+
+        $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
 
 		return view($view, [
 		    'options' => $options,

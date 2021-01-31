@@ -315,8 +315,8 @@ Route::group(['prefix' => 'templates'], function () {
 	Route::get('/undelete/{id}', [TemplateController::class, 'undelete']);
 
 	// view
-	Route::get('/view/{entry}', [EntryController::class, 'view']);
-	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+	Route::get('/view/{entry}', [TemplateController::class, 'view']);
+	Route::get('/{permalink}', [TemplateController::class, 'permalink']);
 });
 ";
 
