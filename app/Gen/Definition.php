@@ -73,7 +73,7 @@ class Definition extends Model
 
 		if (Auth::check())
 		{
-			$tag = Tag::getOrCreate($name, TAGTYPE_DEF_FAVORITE, Auth::id());
+			$tag = Tag::getOrCreate($name, TAG_TYPE_DEF_FAVORITE, Auth::id());
 			if (isset($tag))
 			{
 				$this->tags()->detach($tag->id); // if it's already tagged, remove it so it will by updated
@@ -94,7 +94,7 @@ class Definition extends Model
 		if (Auth::check())
 		{
 			$name = 'Favorites';
-			$tag = Tag::get($name, TAGTYPE_DEF_FAVORITE, Auth::id());
+			$tag = Tag::get($name, TAG_TYPE_DEF_FAVORITE, Auth::id());
 			if (isset($tag))
 			{
 				$this->tags()->detach($tag->id);
@@ -150,7 +150,7 @@ class Definition extends Model
 				->select(DB::raw('tags.id, tags.name, tags.user_id, count(definition_tag.tag_id) as wc'))
 				->where('tags.deleted_at', null)
 				->where('tags.user_id', Auth::id())
-				->where('type_flag', TAGTYPE_DEF_FAVORITE)
+				->where('type_flag', TAG_TYPE_DEF_FAVORITE)
 				->groupBy('tags.id', 'tags.name', 'tags.user_id')
 				->get();
 		}

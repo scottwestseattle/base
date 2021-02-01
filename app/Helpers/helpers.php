@@ -696,3 +696,26 @@ if (!function_exists('translateDate')) {
 		return $date;
 	}
 }
+
+if (!function_exists('getController')) {
+    function getController()
+    {
+        $c = app('request')->route()->getAction();
+        $c = class_basename($c['controller']);
+        $c = explode('@', $c);
+        $c = count($c) > 0 ? $c[0] : '';
+
+        return $c;
+    }
+}
+
+if (!function_exists('intOrNull')) {
+    function intOrNull($n)
+    {
+    	// if n isn't null then return intval
+		if (isset($n))
+			$n = intval($n);
+
+		return($n);
+	}
+}

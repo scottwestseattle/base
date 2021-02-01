@@ -67,14 +67,31 @@ define('POS_ADJECTIVE',         12);
 define('POS_ADVERB',            13);
 define('POS_OTHER',             100);
 
+// entries
+define('ENTRY_TYPE_NOTSET', 	-1);
+define('ENTRY_TYPE_ENTRY', 		1);
+define('ENTRY_TYPE_ARTICLE', 	2);
+define('ENTRY_TYPE_BOOK',	 	3);
+define('ENTRY_TYPE_OTHER',		99);
+
+// query sorting
+define('ORDERBY_APPROVED', 0);
+define('ORDERBY_TITLE', 1);
+define('ORDERBY_DATE', 2);
+define('ORDERBY_VIEWS', 3);
+
+// Tags
+define('TAG_RECENT', 'recent');
+define('TAG_BOOK', 'book');
+
 // Tag types
-define('TAGTYPE_NOTSET',			   	0);
-define('TAGTYPE_SYSTEM',				1); // one for everybody, ex: recent article
-//define('TAGTYPE_RECENT_ARTICLE',	   	1); // old way
-define('TAGTYPE_BOOK',				   	2); //not implented yet: need one per book
-define('TAGTYPE_DEF_FAVORITE', 	        3); // one per user so we have empty favorites list
-define('TAGTYPE_OTHER',			   	    99);
-//define('TAGTYPE_DEFAULT', TAG_TYPE_SYSTEM); // need this?
+define('TAG_TYPE_NOTSET',			   	0);
+define('TAG_TYPE_SYSTEM',				1); // one for everybody, ex: recent article
+//define('TAG_TYPE_RECENT_ARTICLE',	   	1); // old way
+define('TAG_TYPE_BOOK',				   	2); //not implented yet: need one per book
+define('TAG_TYPE_DEF_FAVORITE', 	    3); // one per user so we have empty favorites list
+define('TAG_TYPE_OTHER',			   	99);
+//define('TAG_TYPE_DEFAULT', TAG_TYPE_SYSTEM); // need this?
 
 // misc options
 define('USER_ID_NOTSET', 0);

@@ -8,7 +8,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th></th><th>@LANG('ui.Name')</th><th>@LANG('ui.Created')</th><th></th>
+				<th></th><th>@LANG('ui.Name')</th><th>@LANG('ui.Updated')</th><th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,7 +16,7 @@
 			<tr>
 				<td class="icon"><a href='/tags/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
 				<td><a href="/tags/view/{{$record->id}}">{{$record->name}}</a></td>
-				<td>{{$record->created_at}}</td>
+				<td>{{$record->updated_at}}</td>
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/tags/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
 			</tr>
 		@endforeach

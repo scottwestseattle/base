@@ -41,7 +41,9 @@
 								@endif
 							</a></div>
 							<div id="showconjugations-{{$record->id}}" class="hidden"></div>
-							<a href="/verbs/{{$record->definition}}">Full Conjugation</a>
+							@if (false)
+							    <a href="/verbs/{{$record->title}}">Full Conjugation</a>
+							@endif
 						@endif
 
 					</td>

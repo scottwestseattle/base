@@ -24,6 +24,7 @@ class Controller extends BaseController
 	    $id = $this->site()->language_flag;
 
         $language = getSpeechLanguage($id);
+        $language['condition'] = ($language['id'] == LANGUAGE_ALL) ? '>=' : '=';
 
 		return $language;
 	}

@@ -270,10 +270,15 @@ class EntryController extends Controller
     public function articles(Request $request)
     {
 		$records = [];
+		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
 
 		try
 		{
-			$records = Entry::getArticles($this->site()->language_flag);
+		    $parms = $this->getSiteLanguage();
+		    $parms['type'] = ENTRY_TYPE_ARTICLE;
+			//$records = Entry::getArticles();
+
+		    $records = Entry::getRecentList($parms);
 		}
 		catch (\Exception $e)
 		{
@@ -321,8 +326,8 @@ class EntryController extends Controller
 
 		if (isset($record))
 		{
-			//todo: $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
-			//todo: Entry::countView($record);
+			$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+			Entry::countView($record);
 			$options['wordCount'] = str_word_count($record->description); // count it before <br/>'s are added
 			$record->description = nl2br($record->description);
 		}
