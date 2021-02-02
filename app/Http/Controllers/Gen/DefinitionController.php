@@ -77,8 +77,9 @@ class DefinitionController extends Controller
 
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
-		$record->description	= trimNull($request->description);
+		$record->definition	    = trimNull($request->definition);
         $record->permalink      = createPermalink($record->title);
+        $record->type_flag      = isAdmin() ? DEFTYPE_DICTIONARY : DEFTYPE_USER;
 
 		try
 		{
@@ -93,7 +94,7 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo . '/view/' . $record->id);
+		return redirect('/definitions/view/' . $record->id);
     }
 
     public function permalink(Request $request, $permalink)
@@ -129,7 +130,7 @@ class DefinitionController extends Controller
     {
 		$record = $definition;
 
-		return view(VIEWS . '.view', [
+		return view(PREFIX . '.view', [
 			'record' => $record,
 			]);
     }
@@ -174,8 +175,7 @@ class DefinitionController extends Controller
 			logInfo($f, __('msgs.No changes made'), ['record_id' => $record->id]);
 		}
 
-		//todo: return redirect('/' . PREFIX . '/view/' . $record->id);
-		return redirect('/');
+		return redirect('/definitions/view/' . $record->id);
 	}
 
     public function confirmDelete(Definition $definition)
@@ -385,7 +385,7 @@ class DefinitionController extends Controller
         $snippetId = intval(Cookie::get('snippetId'));
         if (isset($snippetId) && $snippetId > 0)
         {
-            $options['snippet'] = Definition::get(DEFTYPE_SNIPPET, $snippetId, 'id');
+            $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $snippetId, 'id');
         }
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;

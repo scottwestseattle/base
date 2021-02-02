@@ -40,6 +40,7 @@ define('WORDTYPE_USERLIST_LIMIT',       20);
 define('DEFTYPE_NOTSET',        0);
 define('DEFTYPE_SNIPPET',       1);
 define('DEFTYPE_DICTIONARY',    10);
+define('DEFTYPE_USER',          11);
 define('DEFTYPE_OTHER',         100);
 
 define('DEF_HASH_LENGTH',        50);
@@ -108,7 +109,7 @@ return [
     ],
     'regex' => [
 		'alpha' => 'a-zA-Z ',
-		'alphanum' => 'a-zA-Z0-9 \r\n',
+		'alphanum' => 'a-zA-Z0-9- \r\n',
     ],
     'release_flag' => [
         'notset' => 0,

@@ -10,6 +10,10 @@ use DB;
 
 use App\Entry;
 
+// system Tag names (made unique)
+define('TAG_NAME_WOTD', 'WOTD-4f96d5');
+define('TAG_NAME_POTD', 'POTD-4f96d5');
+
 class Tag extends Model
 {
 	use SoftDeletes;
@@ -106,7 +110,6 @@ class Tag extends Model
 		if (isset($userId))
 		{
 			$record = $record = Tag::select()
-					->where('deleted_at', null)
 					->where('name', $name)
 					->where('type_flag', $type)
 					->where('user_id', $userId)
@@ -115,7 +118,6 @@ class Tag extends Model
 		else
 		{
 			$record = $record = Tag::select()
-					->where('deleted_at', null)
 					->where('name', $name)
 					->where('type_flag', $type)
 					->first();

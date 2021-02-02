@@ -19,17 +19,18 @@
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('proj.Definition'):</label>
-			<textarea name="description" class="form-control">{{$record->description}}</textarea>
+			<label for="definition" class="control-label">{{trans_choice('proj.Definition', 1)}}:</label>
+			<textarea name="definition" class="form-control">{{$record->description}}</textarea>
 		</div>
 
+
 		<div class="form-group">
-			<label for="translation_en" class="control-label">@LANG('proj.Translation'):</label>
+			<label for="translation_en" class="control-label">{{trans_choice('proj.Translation', 2)}}:</label>
 			<textarea name="translation_en" class="form-control">{{$record->translation_en}}</textarea>
 		</div>
 
 		<div class="form-group">
-			<label for="examples" class="control-label">@LANG('proj.Examples'):</label>
+			<label for="examples" class="control-label">{{trans_choice('proj.Example', 2)}}:</label>
 			<textarea name="examples" class="form-control">{{$record->examples}}</textarea>
 		</div>
 

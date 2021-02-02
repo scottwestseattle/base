@@ -8,7 +8,6 @@ return [
 'Chinese' => '简体中文',
 'About' => 'Sobre',
 'Visitor' => 'Visitante|Visitantes',
-'Article' => 'Artículo|Artículos',
 'Privacy Notice' => 'Aviso de Privacidad',
 'Blogs' => 'Blogs',
 'Galleries' => 'Gallerias',

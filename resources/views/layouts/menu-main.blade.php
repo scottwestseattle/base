@@ -54,7 +54,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-		<li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('ui.Article', 2)}}</a></li>
+		<li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('proj.Article', 2)}}</a></li>
 		<li class="nav-item"><a class="nav-link" href="{{lurl('dictionary')}}">{{__('proj.Dictionary')}}</a></li>
 		<li class="nav-item"><a class="nav-link" href="{{lurl('favorites')}}">{{trans_choice('ui.List', 2)}}</a></li>
 	@auth

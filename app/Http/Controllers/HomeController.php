@@ -107,7 +107,7 @@ class HomeController extends Controller
         $snippetId = intval(Cookie::get('snippetId'));
         if (isset($snippetId) && $snippetId > 0)
         {
-            $options['snippet'] = Definition::get(DEFTYPE_SNIPPET, $snippetId, 'id');
+            $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $snippetId, 'id');
         }
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
@@ -115,7 +115,7 @@ class HomeController extends Controller
         //
         // Get WOTD
         //
-        $tag = Tag::get("Word of the Day", TAG_TYPE_DEF_FAVORITE);
+        $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
         if (isset($tag))
         {
             $options['wotd'] = $tag->definitions()->orderBy('updated_at', 'desc')->first();
@@ -124,13 +124,15 @@ class HomeController extends Controller
         //
         // Get POTD
         //
-        $tag = Tag::get("Reading of the Day", TAG_TYPE_DEF_FAVORITE);
+        $tag = Tag::get(TAG_NAME_POTD, TAG_TYPE_DEF_FAVORITE);
         if (isset($tag))
         {
             $record = $tag->definitions()->orderBy('updated_at', 'desc')->first();
             if (isset($record))
                 $options['potd'] = $record->examples;
         }
+
+        $options['loadSpeechModules'] = true; // this loads js and css
 
 		return view($view, [
 		    'options' => $options,
@@ -139,7 +141,7 @@ class HomeController extends Controller
 
 	static public function getOptions($options, $languageFlag)
 	{
-        $options['loadSpeechModules'] = true; // this loads js and css
+        $options['showWidgets'] = true;
 
         if ($languageFlag == LANGUAGE_ES)
         {
@@ -171,8 +173,6 @@ class HomeController extends Controller
 
 	static public function getOptionsLanguage($options)
 	{
-        $options['loadSpeechModules'] = true; // this loads js and css
-
 		//
 		// get articles
 		//

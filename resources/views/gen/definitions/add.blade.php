@@ -17,9 +17,19 @@
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('base.Description'):</label>
-			<textarea name="description" class="form-control"></textarea>
-		<div>
+			<label for="definition" class="control-label">{{trans_choice('proj.Definition', 1)}}:</label>
+			<textarea name="definition" class="form-control"></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="translation_en" class="control-label">@LANG('proj.Translation'):</label>
+			<textarea name="translation_en" class="form-control"></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="examples" class="control-label">{{trans_choice('proj.Example', 2)}}:</label>
+			<textarea name="examples" class="form-control"></textarea>
+		</div>
 
 		<div class="form-group">
 			<button type="submit" name="update" class="mt-3 btn btn-primary">@LANG('base.Add')</button>

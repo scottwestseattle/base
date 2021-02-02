@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', trans_choice('base.Translation', 2))
+@section('title', trans_choice('ui.Translation', 2))
 @section('menu-submenu')@component('translations.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>@LANG('ui.Translations') ({{ count($records) }})</h1>
+	<h1>{{trans_choice('ui.Translation', 2)}} ({{ count($records) }})</h1>
 
 	<div class="table-responsive">
 	<table class="table table-striped table-translations">
@@ -17,8 +17,8 @@
 		@endforeach
 		</tbody>
 	</table>
-	
+
 	</div>
-	
+
 </div>
 @endsection

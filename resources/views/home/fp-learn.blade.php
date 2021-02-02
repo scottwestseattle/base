@@ -32,6 +32,41 @@
 @section('content')
 
 <!--------------------------------------------------------------------------------------->
+<!-- Dictionary, Lists, and Books shortcuts widget -->
+<!--------------------------------------------------------------------------------------->
+@if (isset($options['showWidgets']) && $options['showWidgets'])
+    <div class="hidden-xs mb-3"></div>
+    <div class="d-block d-md-none d-flex justify-content-center text-center bg-none p-0 mt-3">
+
+        <div class="" style="width: 25%;">
+            <a class="purple" href="/articles">
+                <div class="glyphicon glyphicon-globe" style="font-size:35px;"></div>
+                <div class="" style="font-size:10px;">{{trans_choice('proj.Article', 2)}}</div>
+            </a>
+        </div>
+        <div class="" style="width: 25%;">
+            <a class="purple" href="/books">
+                <div class="glyphicon glyphicon-book" style="font-size:35px;"></div>
+                <div class="" style="font-size:10px;">{{trans_choice('proj.Book', 2)}}</div>
+            </a>
+        </div>
+        <div class="" style="width: 25%;">
+            <a class="purple" href="/dictionary">
+                <div class="glyphicon glyphicon-font" style="font-size:35px;"></div>
+                <div class="" style="font-size:10px;">{{__('proj.Dictionary')}}</div>
+            </a>
+        </div>
+        <div class="" style="width: 25%;">
+            <a class="purple" href="/favorites">
+                <div class="glyphicon glyphicon-th-list" style="font-size:35px;"></div>
+                <div class="" style="font-size:10px;">{{trans_choice('ui.List', 2)}}</div>
+            </a>
+        </div>
+
+    </div>
+@endif
+
+<!--------------------------------------------------------------------------------------->
 <!-- WORD AND PHRASE OF THE DAY -->
 <!--------------------------------------------------------------------------------------->
 @if (isset($wotd) || isset($potd))

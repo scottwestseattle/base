@@ -435,7 +435,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/undelete/{id}', [DefinitionController::class, 'undelete']);
 
 	// view
-	Route::get('/view/{entry}', [EntryController::class, 'view']);
+	Route::get('/view/{definition}', [DefinitionController::class, 'view']);
 
 	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
