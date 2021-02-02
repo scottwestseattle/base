@@ -400,6 +400,7 @@ use App\Http\Controllers\Gen\DefinitionController;
 
 Route::get('/dictionary', [DefinitionController::class, 'search']);
 Route::get('/practice', [DefinitionController::class, 'snippets']);
+Route::get('/favorites', [DefinitionController::class, 'favorites']);
 
 // Definitions
 Route::group(['prefix' => 'dictionary'], function () {

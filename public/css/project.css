@@ -95,6 +95,62 @@ body {
 	vertical-align:middle;
 }
 
+.checkbox-label
+{
+	font-size: 1.2em;
+	padding: 5px 5px 5px 0px;
+	margin: 0px 0px 10px 0px;
+}
+
+/* doesn't work for the checkbox, just the label */
+.checkbox-xs {
+	color:gray;
+	font-size:11px;
+	line-height: 12px;
+	vertical-align: middle;
+}
+
+.hidden {
+	display:none;
+}
+
+@media (max-width:767px) {
+    .hidden-xs {
+        display: none!important
+    }
+}
+
+@media (min-width:768px) and (max-width:991px) {
+    .hidden-sm {
+        display: none!important
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+    .hidden-md {
+        display: none!important
+    }
+}
+
+@media (min-width:1200px) {
+    .hidden-lg {
+        display: none!important
+    }
+}
+
+.wordwrap
+{
+	/* wrap long text and urls */
+	white-space: pre; /* CSS 2.0 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	white-space: pre-line; /* CSS 3.0 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: -moz-pre-wrap; /* Mozilla */
+	word-wrap: break-word; /* IE 5+ */
+}
+
+
 /***************************************************
  Navbar
 ***************************************************/
@@ -328,13 +384,6 @@ table.table-events {
 	width: 10px;
 }
 
-.checkbox-label
-{
-	font-size: 1.2em;
-	padding: 5px 5px 5px 0px;
-	margin: 0px 0px 10px 0px;
-}
-
 td.icon {
 	width:10px;
 }
@@ -480,4 +529,182 @@ Drop Box
 
 .drop-box-ghost-small {
 	box-shadow: 1px 1px 5px 1px #e0e0e0;
+}
+
+/*********************************************************
+Badges
+**********************************************************/
+
+.badge-purple, .badge-blue {
+	display: inline-block;
+	vertical-align: middle;
+	margin-bottom: 3px;
+}
+
+.badge-purple {
+	background-color: purple;
+	color: white;
+}
+
+.badge-blue {
+	background-color: #4993FD; /* bright-blue */
+	color: white;
+}
+
+.badge-white {
+	background-color: white;
+	color: #4993FD;
+}
+
+.badge-medium {
+	font-size:12px;
+	margin-left: 10px;
+}
+
+.badge-small {
+	font-size:10px;
+	padding:2px 2px;
+	font-weight:bold;
+	margin-left: 5px;
+}
+
+/*********************************************************
+Cards
+**********************************************************/
+
+
+.middle {
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.tab-body {
+	padding-bottom:60px;
+}
+
+td.icon {
+	width:10px;
+}
+
+.submenu-view td.icon {
+	width: 40px;
+}
+
+.quizStats {
+	font-size:13px;
+	color:#4682b4; /* steelblue */
+}
+
+.type-not-set-color {
+	background-color: red;
+	color: white;
+	border: DarkRed;
+}
+
+h6 {
+	font-size:1em;
+	xfont-weight:300;
+	margin-top:30px;
+	margin-bottom:20px;
+}
+
+.fn, .fancy-number {
+	font-weight:bold;
+	background-color:#5CB85C;
+	color:white;
+	border-radius:5px;
+	padding:0 10px;
+	margin-right:5px;
+}
+
+.irregular {
+	color:#5CB85C; /* minty green */
+	font-size:.8em;
+	font-style: italic;
+}
+
+.card-flashcard, .card-flashcard a {
+	max-width:100%;
+	width:500px;
+	min-height:200px;
+	color:white;
+	text-decoration:none;
+}
+
+.card-blue {
+	background-color: #4993FD;
+}
+
+.phrase-of-the-day {
+	color: white;
+	background-color:#fe5b4c;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #d03b2d;
+	border-radius: 5px;
+	width:100%;
+	max-width:600px;
+	font-weight: 300;
+	font-size: 28px;
+}
+
+.phrase-of-the-day p:last-child {
+    margin-bottom: 0;
+}
+
+.phrase-of-the-day h4 {
+    color: #5cb85c;
+	color:#666;
+    margin-bottom:30px;
+}
+
+.card-potd, .card-potd a, .card-wotd, .card-votd {
+	min-height:200px;
+	color:white;
+	text-decoration:none;
+}
+
+.card-potd {
+	background-color: #fe5b4c; /* mars sky */
+}
+
+.card-wotd {
+	background-color: #5CB85C; /* minty green */
+}
+
+.card-votd {
+	background-color: #4993FD; /* bright blue */
+}
+
+.card-header-potd {
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.card-body-potd {
+    font-size: 26px;
+    font-weight: 300;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#textEdit::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #007bff;
+  opacity: .6;
+  font-style: italic;
+  font-size: 14px;
+}
+
+#textEdit:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #007bff;
+  opacity: .6;
+  font-style: italic;
+  font-size: 14px;
+}
+
+#textEdit::-ms-input-placeholder { /* Microsoft Edge */
+  color: #007bff;
+  opacity: .6;
+  font-style: italic;
+  font-size: 14px;
 }

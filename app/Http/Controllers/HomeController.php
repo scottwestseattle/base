@@ -13,7 +13,9 @@ use App\Entry;
 use App\Event;
 use App\Home;
 use App\Site;
+use App\Tag;
 use App\User;
+
 use App\Gen\Definition;
 
 define('LOG_CLASS', 'HomeController');
@@ -84,7 +86,9 @@ class HomeController extends Controller
         else
             $options = self::getOptions($options, $siteLanguage);
 
+        //
         // get the snippets for the appropriate langauge
+        //
     	$languageFlagCondition = '=';
         $snippetsLimit = 5;
         if ($siteLanguage == LANGUAGE_ALL)
@@ -107,6 +111,26 @@ class HomeController extends Controller
         }
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
+
+        //
+        // Get WOTD
+        //
+        $tag = Tag::get("Word of the Day", TAG_TYPE_DEF_FAVORITE);
+        if (isset($tag))
+        {
+            $options['wotd'] = $tag->definitions()->orderBy('updated_at', 'desc')->first();
+        }
+
+        //
+        // Get POTD
+        //
+        $tag = Tag::get("Reading of the Day", TAG_TYPE_DEF_FAVORITE);
+        if (isset($tag))
+        {
+            $record = $tag->definitions()->orderBy('updated_at', 'desc')->first();
+            if (isset($record))
+                $options['potd'] = $record->examples;
+        }
 
 		return view($view, [
 		    'options' => $options,

@@ -60,12 +60,12 @@ class Tag extends Model
     public function definitions()
     {
 		// many to many
-        return $this->belongsToMany('App\Definition')->orderBy('title');
+        return $this->belongsToMany('App\Gen\Definition')->orderBy('title');
     }
 
     public function definitionsUser()
     {
-		return $this->belongsToMany('App\Definition')->wherePivot('user_id', Auth::id())->orderBy('title');
+		return $this->belongsToMany('App\Gen\Definition')->wherePivot('user_id', Auth::id()); //->orderBy('title');
     }
 
 	//////////////////////////////////////////////////////////////////////

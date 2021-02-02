@@ -12,8 +12,7 @@ use Cookie;
 use Log;
 
 use App\Gen\Definition;
-use App\Status;
-use App\Tools;
+use App\Tag;
 use App\User;
 
 define('PREFIX', 'gen.definitions');
@@ -37,6 +36,8 @@ class DefinitionController extends Controller
 			'heartAjax', 'unheartAjax',
 			'setFavoriteList',
 			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs',
+
+			'favorites',
         ]);
 
 		parent::__construct();
@@ -139,7 +140,8 @@ class DefinitionController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
-			]);
+			'favoriteLists' => Definition::getUserFavoriteLists(),
+		]);
     }
 
     public function update(Request $request, Definition $definition)
@@ -151,7 +153,8 @@ class DefinitionController extends Controller
 		$changes = '';
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
-		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
+		$record->definition = copyDirty($record->definition, $request->definition, $isDirty, $changes);
+		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
         $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
 
 		if ($isDirty)
@@ -171,7 +174,8 @@ class DefinitionController extends Controller
 			logInfo($f, __('msgs.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect('/' . PREFIX . '/view/' . $record->id);
+		//todo: return redirect('/' . PREFIX . '/view/' . $record->id);
+		return redirect('/');
 	}
 
     public function confirmDelete(Definition $definition)
@@ -919,5 +923,39 @@ class DefinitionController extends Controller
 			'record' => $record,
 			'headers' => Definition::$_verbConjugations,
 			]);
+    }
+
+    public function list(Request $request, Tag $tag)
+    {
+		$records = []; // make this countable so view will always work
+		try
+		{
+			$records = $tag->definitionsUser()->orderBy('title', 'asc')->get();
+		}
+		catch (\Exception $e)
+		{
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('msgs.Error getting list'));
+		}
+
+		return view(PREFIX . '.list', [
+			'records' => $records,
+			'tag' => $tag,
+			'lists' => Definition::getUserFavoriteLists(),
+//			'favoriteListsOptions' => Definition::getUserFavoriteListsOptions(),
+		]);
+    }
+
+    public function favorites(Request $request)
+    {
+		// definitions favorites
+		$favorites = Definition::getUserFavoriteLists();
+
+		// articles/books look ups
+		//todo: $entries = Entry::getDefinitionsUser();
+
+		return view(PREFIX . '.favorites', [
+			'favorites' => $favorites,
+			//'newest' => true, // show the option for "New Dictionary Entries" review and flashcards
+		]);
     }
 }

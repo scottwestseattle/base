@@ -276,8 +276,8 @@ class EntryController extends Controller
 		{
 		    $parms = $this->getSiteLanguage();
 		    $parms['type'] = ENTRY_TYPE_ARTICLE;
-			//$records = Entry::getArticles();
 
+			//$records = Entry::getArticles();
 		    $records = Entry::getRecentList($parms);
 		}
 		catch (\Exception $e)

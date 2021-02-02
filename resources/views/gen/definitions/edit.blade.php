@@ -1,21 +1,36 @@
 @extends('layouts.app')
-@section('title', __('ui.Edit') . ' ' . trans_choice('view.Definition', 1))
+@section('title', __('ui.Edit') . ' ' . trans_choice('proj.Definition', 1))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Edit')}} {{trans_choice('view.Definition', 1)}}</h1>
+	<h1>{{__('ui.Edit')}} {{trans_choice('proj.Definition', 1)}}</h1>
+
+    @component('gen.definitions.component-heart', [
+        'record' => $record,
+        'lists' => $favoriteLists,
+    ])@endcomponent
 
 	<form method="POST" id="form-edit" action="/definitions/update/{{$record->id}}">
 
 		<div class="form-group">
-			<label for="title" class="control-label">@LANG('base.Title'):</label>
+			<label for="title" class="control-label">@LANG('ui.Title'):</label>
 			<input type="text" name="title" class="form-control" value="{{$record->title}}"></input>
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('base.Description'):</label>
+			<label for="description" class="control-label">@LANG('proj.Definition'):</label>
 			<textarea name="description" class="form-control">{{$record->description}}</textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="translation_en" class="control-label">@LANG('proj.Translation'):</label>
+			<textarea name="translation_en" class="form-control">{{$record->translation_en}}</textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="examples" class="control-label">@LANG('proj.Examples'):</label>
+			<textarea name="examples" class="form-control">{{$record->examples}}</textarea>
 		</div>
 
 		<div class="submit-button">

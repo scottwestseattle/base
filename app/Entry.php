@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 use DB;
 
-use App\Definition;
+use App\Gen\Definition;
 use App\Tag;
 
 class Entry extends Model
