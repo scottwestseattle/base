@@ -719,3 +719,25 @@ if (!function_exists('intOrNull')) {
 		return($n);
 	}
 }
+
+if (!function_exists('splitSentences')) {
+	function splitSentences($string)
+	{
+		$sentences = null;
+
+		if (isset($string))
+		{
+			$pattern = '/[\r\n]/';
+			$parts = preg_split($pattern, $string);
+
+			foreach($parts as $part)
+			{
+				$part = trim($part);
+				if (strlen($part) > 0)
+					$sentences[] = ucfirst($part); // self::appendIfMissing(ucfirst($part), '.');
+			}
+		}
+
+		return $sentences;
+	}
+}

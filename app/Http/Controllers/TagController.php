@@ -62,9 +62,8 @@ class TagController extends Controller
 		$record = new Tag();
 
 		$record->user_id 		= Auth::id();
-		$record->title 			= trimNull($request->title);
-		$record->description	= trimNull($request->description);
-        $record->permalink      = createPermalink($record->title);
+		$record->name 			= trimNull($request->title);
+		$record->type_flag 		= $request->type_flag;
 
 		try
 		{
@@ -135,9 +134,8 @@ class TagController extends Controller
 		$isDirty = false;
 		$changes = '';
 
-		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
-		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
-        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
+		$record->name      = copyDirty($record->name, $request->name, $isDirty, $changes);
+		$record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
 
 		if ($isDirty)
 		{
@@ -156,7 +154,7 @@ class TagController extends Controller
 			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect('/' . PREFIX . '/view/' . $record->id);
+		return redirect('tags/view/' . $record->id);
 	}
 
     public function confirmDelete(Tag $tag)

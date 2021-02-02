@@ -8,7 +8,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th></th><th>@LANG('base.Title')</th><th>@LANG('base.Description')</th><th>@LANG('ui.Release')</th><th>@LANG('ui.Created')</th><th></th>
+				<th></th><th>@LANG('ui.Title')</th><th>@LANG('ui.Description')</th><th>@LANG('ui.Release')</th><th>@LANG('ui.Created')</th><th></th>
 			</tr>
 		</thead>
 		<tbody>

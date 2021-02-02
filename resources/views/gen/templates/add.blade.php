@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('ui.Add') . ' ' . trans_choice('view.Template', 1))
+@section('title', __('proj.Add Template'))
 @section('menu-submenu')@component('gen.templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.Add')}} {{trans_choice('view.Template', 1)}}</h1>
+	<h1>{{__('proj.Add Template')}}</h1>
 	<form method="POST" action="/templates/create">
 
 		<div class="form-group">

@@ -85,8 +85,7 @@
                             {{$wotd->examples}}
                             @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val())"])@endcomponent
                         </div>
-
-                        <input type="hidden" id="wotd" value="{{$wotd->title . '. ' . $wotd->examples}}" />
+                        <input type="hidden" id="wotd" value="{{$wotd->title . '. Ejemplo: ' . $wotd->examples}}" />
                     @else
                         <div>@LANG('ui.Not Found')</div>
                     @endif

@@ -118,7 +118,19 @@ class HomeController extends Controller
         $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
         if (isset($tag))
         {
-            $options['wotd'] = $tag->definitions()->orderBy('updated_at', 'desc')->first();
+            $record = $tag->definitions()->orderBy('updated_at', 'desc')->first();
+            if (isset($record))
+            {
+                // only show the first sentence in the examples
+                if (isset($record->examples))
+                {
+                    $s = splitSentences($record->examples);
+                    if (isset($s) && count($s) > 0)
+                        $record->examples = $s[0];
+                }
+
+                $options['wotd'] = $record;
+            }
         }
 
         //
@@ -129,7 +141,9 @@ class HomeController extends Controller
         {
             $record = $tag->definitions()->orderBy('updated_at', 'desc')->first();
             if (isset($record))
+            {
                 $options['potd'] = $record->examples;
+            }
         }
 
         $options['loadSpeechModules'] = true; // this loads js and css

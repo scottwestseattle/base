@@ -356,8 +356,7 @@ Route::group(['prefix' => 'tags'], function () {
 	Route::get('/undelete/{id}', [TagController::class, 'undelete']);
 
 	// view
-	Route::get('/view/{entry}', [EntryController::class, 'view']);
-	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+	Route::get('/view/{tag}', [TagController::class, 'view']);
 });
 
 // GENERATED for Visitor model
