@@ -125,4 +125,5 @@ return [
 'Profile' => 'Perfil|Perfiles',
 'Entry' => 'Entrada|Entradas',
 'Event' => 'Suceso|Sucesos',
+'Subscribe' => 'Suscribir',
 ];

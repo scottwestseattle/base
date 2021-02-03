@@ -17,17 +17,71 @@
 @endphp
 
 <!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
+<!-- Page Header -->
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
+
+@section('header')
+<div style="width:100%; background-color: white; background-position: center; background-repeat: no-repeat; background-image:url('/img/spanish/load-loop.gif'); " >
+
+<!--------------------------------------------------------------------------------------->
 <!-- Banner Photo -->
 <!--------------------------------------------------------------------------------------->
-@if (isset($banner))
-@section('banner')
-<div style="width:100%; background-color: white; background-position: center; background-repeat: no-repeat; background-image:url('/img/spanish/load-loop.gif'); " >
+@if (isset($banner) )
     <div class="" style="background-image: url(/img/spanish/banners/{{$banner}}); background-size: 100%; background-repeat: no-repeat;">
         <a href="/"><img src="/img/spanish/{{App::getLocale()}}-spacer.png" style="width:100%;" /></a>
     </div>
+@endif
+
+<!--------------------------------------------------------------------------------------->
+<!-- Logo and Subscribe Form-->
+<!--------------------------------------------------------------------------------------->
+@if (!Auth::check())
+    <div class="" style="background-color:#4993FD">
+        <div class="text-center py-3" >
+            <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:200px;"/>
+            <form method="POST" action="/subscribe" class="px-3 mt-2">
+                <div class="form-group text-center">
+                    <div class="input-group mt-2" style="max-width:600px; margin:0 auto;">
+                        <input name="email" id="email" type="email"
+                            style="font-weight:200; font-size:18px;"
+                            class="form-control @error('email') is-invalid @enderror"
+                            value="{{ old('email') }}"
+                            autocomplete="email"
+                            maxlength="50"
+                            placeholder="@LANG('ui.Email Address')"
+                            required
+                        />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-success" type="button">@LANG('ui.Subscribe')</button>
+                        </div>
+
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="mt-2 white small-thin-text">@LANG('base.Subscribe to mailing list')</div>
+
+                </div>
+                <div class="form-group">
+                </div>
+                {{ csrf_field() }}
+            </form>
+        </div>
+    </div>
+@endif
+
 </div>
 @endsection
-@endif
+
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
+<!-- Page Body -->
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
 
 @section('content')
 
@@ -35,8 +89,7 @@
 <!-- Dictionary, Lists, and Books shortcuts widget -->
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['showWidgets']) && $options['showWidgets'])
-    <div class="hidden-xs mb-3"></div>
-    <div class="d-block d-md-none d-flex justify-content-center text-center bg-none p-0 mt-3">
+    <div class="d-block d-md-none d-flex justify-content-center text-center bg-none mb-2">
 
         <div class="" style="width: 25%;">
             <a class="purple" href="/articles">
@@ -72,7 +125,7 @@
 @if (isset($wotd) || isset($potd))
 	<div class="row row-course">
     @if (isset($wotd))
-		<div class="col-sm-12 col-lg-6 col-course" style="">
+		<div class="col-sm-12 col-lg-6 pb-2">
             <div class="card card-wotd truncate mt-1" style="">
                 <div class="card-header card-header-potd">
                     <div>@LANG('proj.Word of the day')</div>
@@ -125,7 +178,5 @@
 <!-- ARTICLES -->
 <!--------------------------------------------------------------------------------------->
 @component('shared.articles', ['options' => $options])@endcomponent
-
-
 
 @endsection

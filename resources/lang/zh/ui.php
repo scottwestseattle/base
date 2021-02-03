@@ -125,4 +125,5 @@ return [
 'Profile' => '个人资料|个人资料',
 'Entry' => '条目|参赛作品',
 'Event' => '事件|大事记',
+'Subscribe' => '订阅',
 ];

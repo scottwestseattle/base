@@ -177,10 +177,12 @@
 	@endif
 		<li class="nav-item"><a class="nav-link" href="{{lurl('about')}}">{{__('ui.About')}}</a></li>
     </ul>
+    @if (false)
     <form class="form-inline my-2 my-lg-0 d-none d-lg-block"><!-- only for large so it doesn't clutter the dropdown -->
       <input class="form-control mr-sm-2" type="search" placeholder="{{__('base.Search')}}" aria-label="Search">
       <button class="btn my-2 my-sm-0 white" type="submit">{{__('base.Search')}}</button>
     </form>
+    @endif
   </div>
 </nav>
 

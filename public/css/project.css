@@ -291,6 +291,10 @@ Super Light Green: #eff7f0
 }
 
 .white {
+	color: white;
+}
+
+.bg-white {
 	background-color: white;
 	color: #fe5b4c;
 }

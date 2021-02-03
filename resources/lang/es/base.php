@@ -118,4 +118,5 @@ return [
 'siteTitle-spanish50' => 'Aprende español en 50 lecciones',
 'siteTitle-localhost' => 'Este es localhost',
 'All events deleted' => 'Todos los eventos eliminados',
+'Subscribe to mailing list' => 'Suscríbir a la lista de correo',
 ];

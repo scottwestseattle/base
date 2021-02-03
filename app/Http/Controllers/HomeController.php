@@ -111,41 +111,6 @@ class HomeController extends Controller
         }
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
-
-        //
-        // Get WOTD
-        //
-        $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
-        if (isset($tag))
-        {
-            $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
-            if (isset($record))
-            {
-                // only show the first sentence in the examples
-                if (isset($record->examples))
-                {
-                    $s = splitSentences($record->examples);
-                    if (isset($s) && count($s) > 0)
-                        $record->examples = $s[0];
-                }
-
-                $options['wotd'] = $record;
-            }
-        }
-
-        //
-        // Get POTD
-        //
-        $tag = Tag::get(TAG_NAME_POTD, TAG_TYPE_DEF_FAVORITE);
-        if (isset($tag))
-        {
-            $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
-            if (isset($record))
-            {
-                $options['potd'] = $record->examples;
-            }
-        }
-
         $options['loadSpeechModules'] = true; // this loads js and css
 
 		return view($view, [
@@ -175,6 +140,40 @@ class HomeController extends Controller
             }
 
             $options['banner'] = 'es-banner' . $ix . '.png';
+
+            //
+            // Get WOTD
+            //
+            $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
+            if (isset($tag))
+            {
+                $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
+                if (isset($record))
+                {
+                    // only show the first sentence in the examples
+                    if (isset($record->examples))
+                    {
+                        $s = splitSentences($record->examples);
+                        if (isset($s) && count($s) > 0)
+                            $record->examples = $s[0];
+                    }
+
+                    $options['wotd'] = $record;
+                }
+            }
+
+            //
+            // Get POTD
+            //
+            $tag = Tag::get(TAG_NAME_POTD, TAG_TYPE_DEF_FAVORITE);
+            if (isset($tag))
+            {
+                $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
+                if (isset($record))
+                {
+                    $options['potd'] = $record->examples;
+                }
+            }
         }
 
 		//

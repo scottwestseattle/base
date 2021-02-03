@@ -32,7 +32,7 @@
 <!--------------------------------------------------------------------------------------->
 <!-- The record form -->
 <!--------------------------------------------------------------------------------------->
-<div class="record-form text-center mt-4 p-1">
+<div class="record-form text-center mt-2 p-1">
 
 	<form method="POST" action="/definitions/create-snippet">
         <h3 class="practice-title mt-0 pt-0">@LANG('view.Practice Speaking')</h3>

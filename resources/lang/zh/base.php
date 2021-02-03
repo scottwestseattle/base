@@ -118,4 +118,5 @@ return [
 'siteTitle-spanish50' => '在50课中学习西班牙语',
 'siteTitle-localhost' => '这是本地主机',
 'All events deleted' => '所有事件已删除',
+'Subscribe to mailing list' => '订阅邮件列表',
 ];

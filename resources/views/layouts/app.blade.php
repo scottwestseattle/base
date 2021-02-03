@@ -53,11 +53,11 @@
 			</div>
 		@endif
 
-        @yield('banner')
+        @yield('header')
 
         <div class="">
 			<div class="container project-page">
-				<main class="py-4">
+				<main class="py-3">
 					<!-- Show the current page -->
 					@yield('content')
 				</main>
