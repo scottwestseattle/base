@@ -463,10 +463,10 @@ td.icon {
 
 @media (max-width: 500px) {
 
-.dropdown-menu {
-      height: 300px;
-      overflow-y: auto;
-   }
+    .dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+    }
 
 }
 

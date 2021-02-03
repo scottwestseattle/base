@@ -118,7 +118,7 @@ class HomeController extends Controller
         $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
         if (isset($tag))
         {
-            $record = $tag->definitions()->orderBy('updated_at', 'desc')->first();
+            $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
             if (isset($record))
             {
                 // only show the first sentence in the examples
@@ -139,7 +139,7 @@ class HomeController extends Controller
         $tag = Tag::get(TAG_NAME_POTD, TAG_TYPE_DEF_FAVORITE);
         if (isset($tag))
         {
-            $record = $tag->definitions()->orderBy('updated_at', 'desc')->first();
+            $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
             if (isset($record))
             {
                 $options['potd'] = $record->examples;

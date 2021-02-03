@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Auth;
 use Config;
@@ -15,7 +16,6 @@ use App\Tools;
 use App\User;
 
 define('PREFIX', 'entries');
-define('VIEWS', 'entries');
 define('LOG_CLASS', 'EntryController');
 
 class EntryController extends Controller
@@ -26,7 +26,7 @@ class EntryController extends Controller
 	{
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
-            'articles', 'article', 'read',
+            'articles', 'viewArticle', 'read',
         ]);
 
 		parent::__construct();
@@ -46,14 +46,20 @@ class EntryController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
 		}
 
-		return view(VIEWS . '.index', [
+		return view(PREFIX . '.index', [
 			'records' => $records,
 		]);
     }
 
     public function add()
     {
-		return view(VIEWS . '.add', [
+		return view(PREFIX . '.add', [
+			]);
+	}
+
+    public function addArticle()
+    {
+		return view(PREFIX . '.addArticle', [
 			]);
 	}
 
@@ -61,15 +67,45 @@ class EntryController extends Controller
     {
 		$record = new Entry();
 
-		$record->user_id 		= Auth::id();
-		$record->title 			= trimNull($request->title);
-		$record->description	= trimNull($request->description);
-        $record->permalink      = createPermalink($record->title);
+		$record->site_id             = $this->getSiteId();
+		$record->user_id             = Auth::id();
+		//$record->parent_id 			= $request->parent_id;
+		$record->title 				= trimNull($request->title);
+		$record->description_short	= trimNull($request->description_short);
+		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$record->source				= trimNull($request->source);
+		$record->source_credit		= trimNull($request->source_credit);
+		$record->source_link		= trimNull($request->source_link);
+		$record->display_date 		= timestamp();
+		$record->release_flag 		= RELEASEFLAG_PUBLIC;
+		$record->wip_flag 			= WIP_FINISHED;
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : $this->getSiteLanguage()['id'];
+		$record->type_flag 			= $request->type_flag;
+		$record->permalink          = createPermalink($record->title, $record->created_at);
 
 		try
 		{
+			if ($record->type_flag <= 0)
+				throw new \Exception('Entry type not set');
+			if (!isset($record->title))
+				throw new \Exception('Title not set');
+			if (!isset($record->display_date))
+				throw new \Exception('Date not set');
+
 			$record->save();
-			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
+
+			// set up the book tag (if it's a book).  has to be done after the entry is created and has an id
+			$record->updateBookTag();
+
+			$msg = 'Entry has been added';
+			$status = 'success';
+			if (strlen($request->description) > MAX_DB_TEXT_COLUMN_LENGTH)
+			{
+				$msg .= ' - DESCRIPTION TOO LONG, TRUNCATED';
+				$status = 'danger';
+			}
+
+			logInfo(LOG_CLASS, __('msgs.New entry has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
@@ -77,7 +113,7 @@ class EntryController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo . '/view/' . $record->id);
+		return redirect($record->getRedirect()['view']);
     }
 
     public function permalink(Request $request, $permalink)
@@ -103,7 +139,7 @@ class EntryController extends Controller
     		return redirect($this->redirectTo);
 		}
 
-		return view(VIEWS . '.view', [
+		return view(PREFIX . '.view', [
 			'record' => $record,
 			]);
 	}
@@ -112,7 +148,7 @@ class EntryController extends Controller
     {
 		$record = $entry;
 
-		return view(VIEWS . '.view', [
+		return view(PREFIX . '.view', [
 			'record' => $record,
 			]);
     }
@@ -121,7 +157,16 @@ class EntryController extends Controller
     {
 		$record = $entry;
 
-		return view(VIEWS . '.edit', [
+		return view(PREFIX . '.edit', [
+			'record' => $record,
+			]);
+    }
+
+	public function editArticle(Entry $entry)
+    {
+		$record = $entry;
+
+		return view(PREFIX . '.editArticle', [
 			'record' => $record,
 			]);
     }
@@ -154,14 +199,14 @@ class EntryController extends Controller
 			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect('/' . PREFIX . '/view/' . $record->id);
+		return redirect($record->getRedirect()['view']);
 	}
 
     public function confirmDelete(Entry $entry)
     {
 		$record = $entry;
 
-		return view(VIEWS . '.confirmdelete', [
+		return view(PREFIX . '.confirmdelete', [
 			'record' => $record,
 		]);
     }
@@ -181,7 +226,7 @@ class EntryController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+		return redirect($record->getRedirect()['index']);
     }
 
     public function undelete(Request $request, $id)
@@ -221,7 +266,7 @@ class EntryController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting deleted records'));
 		}
 
-		return view(VIEWS . '.deleted', [
+		return view(PREFIX . '.deleted', [
 			'records' => $records,
 		]);
     }
@@ -230,7 +275,7 @@ class EntryController extends Controller
     {
 		$record = $entry;
 
-		return view(VIEWS . '.publish', [
+		return view(PREFIX . '.publish', [
 			'record' => $record,
 			'release_flags' => Status::getReleaseFlags(),
 			'wip_flags' => Status::getWipFlags(),
@@ -287,12 +332,12 @@ class EntryController extends Controller
 
 		$options['articles'] = $records;
 
-		return view(VIEWS . '.articles', [
+		return view(PREFIX . '.articles', [
 			'options' => $options,
 		]);
     }
 
-    public function article(Request $request, $permalink)
+    public function viewArticle(Request $request, $permalink)
     {
  		$record = null;
 		$permalink = alphanum($permalink);
@@ -344,7 +389,7 @@ class EntryController extends Controller
         //todo: $next = Entry::getNextPrevEntry($record);
         //todo: $prev = Entry::getNextPrevEntry($record, /* next = */ false);
 
-		return view(VIEWS . '.article', [
+		return view(PREFIX . '.article', [
 			'options' => $options,
 			'record' => $record,
 			]);

@@ -33,6 +33,60 @@ class Entry extends Model
 
 	//////////////////////////////////////////////////////////////////////
 	//
+	// Types
+	//
+	//////////////////////////////////////////////////////////////////////
+
+	static private $entryTypes = [
+		ENTRY_TYPE_NOTSET => 'Not Set',
+		ENTRY_TYPE_ARTICLE => 'Article',
+		ENTRY_TYPE_BOOK => 'Book',
+		ENTRY_TYPE_ENTRY => 'Entry',
+	];
+
+	static private $_redirects = [
+		ENTRY_TYPE_NOTSET   => 'entries',
+		ENTRY_TYPE_ARTICLE  => 'articles',
+		ENTRY_TYPE_BOOK     => 'books',
+		ENTRY_TYPE_ENTRY    => 'entries',
+	];
+
+	static public function getEntryTypes()
+	{
+		return self::$entryTypes;
+	}
+
+	public function getRedirect()
+	{
+        $root = self::$_redirects[$this->type_flag];
+        $url['index'] = '/' . $root;
+
+
+        if ($this->type_flag == ENTRY_TYPE_ARTICLE)
+            $url['view'] = $root . '/' . $this->permalink;
+        else
+            $url['view'] = $root . '/view/' . $this->id;
+
+		return $url;
+	}
+
+	public function getTypeName()
+	{
+		return self::$entryTypes[$this->type_flag];
+	}
+
+	static public function getTypeFlagName($type)
+	{
+		return self::$entryTypes[$type];
+	}
+
+	public function isBook()
+	{
+		return($this->type_flag == ENTRY_TYPE_BOOK);
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	//
 	// Release status
 	//
 	//////////////////////////////////////////////////////////////////////
@@ -192,7 +246,7 @@ class Entry extends Model
     public function updateBookTag()
     {
 		if (intval($this->type_flag) === ENTRY_TYPE_BOOK)
-		{
+        {
 			// non-book may have been changed to book
 			$this->addBookTag();
 		}
@@ -205,7 +259,7 @@ class Entry extends Model
 
     private function addBookTag()
     {
-		if (Tools::isAdmin()) // for now only admin can update a book
+		if (isAdmin()) // for now only admin can update a book
 		{
 			$tag = $this->getBookTag();
 			if (isset($tag)) // replace old one if exists
@@ -218,7 +272,7 @@ class Entry extends Model
 
     private function removeBookTag()
     {
-		if (Tools::isAdmin()) // for now only admin can update a book
+		if (isAdmin()) // for now only admin can update a book
 		{
 			// don't use getOrCreate() because it doesn't have to exist
 			$name = $this->source;
@@ -308,7 +362,7 @@ class Entry extends Model
 						$join->where('entry_tag.tag_id', $tag->id);
 					})
 					->select('entries.*')
-					->where('entries.deleted_flag', 0)
+					->whereNull('entries.deleted_at')
 					->where('entries.language_flag', $parms['id'], $parms['condition'])
 					->where('entries.type_flag', $type)
 					->where('entries.release_flag', '>=', self::getReleaseFlag())

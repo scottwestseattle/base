@@ -6,102 +6,110 @@ use Illuminate\Support\Str;
 use App\User;
 
 if (!function_exists('obj_count')) {
-function obj_count($obj)
-{
-	if (isset($obj))
-		return count($obj);
-	else
-		return 0;
-}
+    function obj_count($obj)
+    {
+        if (isset($obj))
+            return count($obj);
+        else
+            return 0;
+    }
 }
 
 if (!function_exists('ipAddress')) {
-function ipAddress()
-{
-	$ip_address = null;
+    function ipAddress()
+    {
+        $ip_address = null;
 
-	// normal
-	if (!empty($_SERVER['HTTP_CLIENT_IP']))
-	{
-		$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-	}
-	// proxy
-	elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-	{
-		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	}
-	// remote address
-	else
-	{
-		$ip_address = $_SERVER['REMOTE_ADDR'];
-	}
+        // normal
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))
+        {
+            $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+        }
+        // proxy
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        {
+            $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        // remote address
+        else
+        {
+            $ip_address = $_SERVER['REMOTE_ADDR'];
+        }
 
-	return $ip_address;
-}
+        return $ip_address;
+    }
 }
 
 if (!function_exists('getVisitorInfo')) {
-function getVisitorInfo()
-{
-    $rc = [];
-
-    //
-    // get visitor info
-    //
-    $rc['ip'] = ipAddress();
-
-    $rc['host'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-
-    $rc['hash'] = $rc['ip'] . ':' . $rc['host'];
-
-    $rc['referrer'] = null;
-    if (array_key_exists("HTTP_REFERER", $_SERVER))
+    function getVisitorInfo()
     {
-        $rc['referrer'] = $_SERVER["HTTP_REFERER"];
+        $rc = [];
+
+        //
+        // get visitor info
+        //
+        $rc['ip'] = ipAddress();
+
+        $rc['host'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+
+        $rc['hash'] = $rc['ip'] . ':' . $rc['host'];
+
+        $rc['referrer'] = null;
+        if (array_key_exists("HTTP_REFERER", $_SERVER))
+        {
+            $rc['referrer'] = $_SERVER["HTTP_REFERER"];
+        }
+
+        $rc['userAgent'] = null;
+        if (array_key_exists("HTTP_USER_AGENT", $_SERVER))
+        {
+            $rc['userAgent'] = $_SERVER["HTTP_USER_AGENT"];
+            $rc['hash'] .= ':' . $rc['userAgent'];
+        }
+
+        $rc['hash'] = hashQuick($rc['hash'], DEF_HASH_LENGTH);
+
+        return $rc;
     }
-
-    $rc['userAgent'] = null;
-    if (array_key_exists("HTTP_USER_AGENT", $_SERVER))
-    {
-        $rc['userAgent'] = $_SERVER["HTTP_USER_AGENT"];
-        $rc['hash'] .= ':' . $rc['userAgent'];
-    }
-
-    $rc['hash'] = Str::limit(hash('md2', $rc['hash']), DEF_HASH_LENGTH);
-
-    return $rc;
 }
+
+if (!function_exists('hashQuick')) {
+    function hashQuick($text, $length = PHP_INT_MAX)
+    {
+        $hash = hash('md2', $text);
+        return substr($hash, 0, $length);
+    }
 }
 
 if (!function_exists('isAdmin')) {
-function isAdmin()
-{
-	return User::isAdmin();
-}
+    function isAdmin()
+    {
+        return User::isAdmin();
+    }
 }
 
 if (!function_exists('flash')) {
-function flash($level, $content)
-{
-	request()->session()->flash('message.level', $level);
-	request()->session()->flash('message.content', $content);
-}
+    function flash($level, $content)
+    {
+        request()->session()->flash('message.level', $level);
+        request()->session()->flash('message.content', $content);
+    }
 }
 
 if (!function_exists('referrer')) {
-function referrer()
-{
-	$rc['input'] = '';
-	$rc['url'] = '';
+    function referrer()
+    {
+        $rc['input'] = '';
+        $rc['url'] = '';
 
-	if (isset($_SERVER["HTTP_REFERER"]))
-	{
-		$rc['url'] = $_SERVER["HTTP_REFERER"];
-		$rc['input'] = new HtmlString("<input name='referrer' type='hidden' value='" . $rc['url'] . "' />");
-	}
+        if (isset($_SERVER["HTTP_REFERER"]))
+        {
+            $rc['url'] = $_SERVER["HTTP_REFERER"];
+            $rc['input'] = new HtmlString("<input name='referrer' type='hidden' value='" . $rc['url'] . "' />");
+        }
 
-	return $rc;
-}
+        return $rc;
+    }
 }
 
 if (!function_exists('logWarning')) {
@@ -422,7 +430,7 @@ if (!function_exists('createPermalink')) {
 
         // make the permalink unique by adding a hashed string at the end
         // hash the hash key (timestamp) and append the first 6 chars to the permalink
-        $v .= '-' . substr(hash('md2', $hash), 0, 6);
+        $v .= '-' . hashQuick($hash, 6);
 
 		$v = trimNull($v);							// trim it or null it
 

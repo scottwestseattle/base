@@ -65,7 +65,7 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 Route::get('/articles', [EntryController::class, 'articles']);
 
 // Articles
-Route::group(['prefix' => 'article'], function () {
+Route::group(['prefix' => 'articles'], function () {
 
     // add / (create done in entries)
 	Route::get('/add/', [EntryController::class, 'addArticle']);
@@ -74,7 +74,7 @@ Route::group(['prefix' => 'article'], function () {
 	Route::get('/edit/', [EntryController::class, 'editArticle']);
 
     // permalink
-	Route::get('/{permalink}', [EntryController::class, 'article']);
+	Route::get('/{permalink}', [EntryController::class, 'viewArticle']);
 });
 
 // MVC

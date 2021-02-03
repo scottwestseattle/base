@@ -11,7 +11,7 @@
                     <table>
                     <tbody>
                         <tr>
-                            <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;"><a href="/article/{{$record->permalink}}">{{$record->title}}</a></td>
+                            <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;"><a href="/articles/{{$record->permalink}}">{{$record->title}}</a></td>
                         </tr>
                         <tr>
                             <td style="font-size:.8em; font-weight:100;">

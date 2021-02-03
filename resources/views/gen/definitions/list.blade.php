@@ -24,8 +24,14 @@
         <tr id="row{{$record->id}}">
             <td style="width:100%;">
                 <a href="/definitions/view/{{$record->id}}">{{$record->title}}</a>
-                <div>{{$record->translation_en}}</div>
+                @if (isset($record->translation_en))
+                    <div>{{$record->translation_en}}</div>
+                @else
+                    <div>{{$record->examples}}</div>
+                @endif
             </td>
+
+            <td>{{$record->updated_at}}</td>
 
             @if (count($lists) > 1)
             <td class="icon mr-2">

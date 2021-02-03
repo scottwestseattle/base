@@ -1,6 +1,6 @@
 <div class="col-sm"><!-- need to split word list into multiple columns here -->
 	<div class="table" style="font-size: 13px;">
-		<table id="searchDefinitionsResultsTable" class="table-responsive table-striped table-condensed">
+		<table id="searchDefinitionsResultsTable" class="table-responsive table-striped table-condensed" style="min-height:500px;">
 			<tbody>
 				@foreach($records as $record)
 				<tr>

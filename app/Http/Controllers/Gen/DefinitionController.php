@@ -930,7 +930,7 @@ class DefinitionController extends Controller
 		$records = []; // make this countable so view will always work
 		try
 		{
-			$records = $tag->definitionsUser()->orderBy('title', 'asc')->get();
+			$records = $tag->definitionsUser()->get();
 		}
 		catch (\Exception $e)
 		{

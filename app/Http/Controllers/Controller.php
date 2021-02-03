@@ -29,6 +29,11 @@ class Controller extends BaseController
 		return $language;
 	}
 
+    public function getSiteId()
+    {
+        return $this->site()->id;
+    }
+
 	public function site()
 	{
 		if (!isset($this->_site))

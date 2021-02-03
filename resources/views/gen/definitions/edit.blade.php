@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('ui.Edit') . ' ' . trans_choice('proj.Definition', 1))
+@section('title', __('proj.Edit Definition'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Edit')}} {{trans_choice('proj.Definition', 1)}}</h1>
+	<h1>{{__('proj.Edit Definition')}}</h1>
 
     @component('gen.definitions.component-heart', [
         'record' => $record,

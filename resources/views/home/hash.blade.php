@@ -22,6 +22,12 @@
 		<button type="submit" name="submit" class="btn btn-primary">Submit</button>
 	</div>
 
+    @if (isset($hash))
+        <div class="form-group">
+            <span class="small-thin-text">{{hashQuick($hash)}}</span>
+        </div>
+	@endif
+
 {{ csrf_field() }}
 </form>
 

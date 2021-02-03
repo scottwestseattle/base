@@ -1,22 +1,22 @@
 @if (isAdmin())
 @php
-    $index = isset($index) ? $index : 'entries';
+    $prefix = isset($prefix) ? $prefix : 'entries';
 @endphp
 <nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
     <ul class="nav">
 		<li class="nav-item">
-		    @component('components.icon-link', ['href' => '/' . $index, 'svg' => 'list-ul'])@endcomponent
+		    @component('components.icon-link', ['href' => '/' . $prefix, 'svg' => 'list-ul'])@endcomponent
 		</li>
 		<li class="nav-item">
-			@component('components.icon-link', ['href' => '/entries/add', 'svg' => 'file-earmark-plus'])@endcomponent
+			@component('components.icon-link', ['href' => '/' . $prefix . '/add', 'svg' => 'file-earmark-plus'])@endcomponent
 		</li>
 		@isset($record)
 			<li class="nav-item">
-       			@component('components.icon-link', ['href' => '/entries/view/' . $record->id, 'svg' => 'eye'])@endcomponent
+       			@component('components.icon-link', ['href' => '/' . $prefix . '/view/' . $record->id, 'svg' => 'eye'])@endcomponent
 			</li>
 			<li class="nav-item">
-    			@component('components.icon-link', ['href' => '/entries/edit/' . $record->id, 'svg' => 'pencil-square'])@endcomponent
+    			@component('components.icon-link', ['href' => '/' . $prefix . '/edit/' . $record->id, 'svg' => 'pencil-square'])@endcomponent
 			</li>
 			<li class="nav-item">
     			@component('components.icon-link', ['href' => '/entries/publish/' . $record->id, 'svg' => 'lightning'])@endcomponent
