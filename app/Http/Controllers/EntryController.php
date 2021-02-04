@@ -66,7 +66,7 @@ class EntryController extends Controller
     {
 		$record = new Entry();
 
-		$record->site_id             = $this->getSiteId();
+		$record->site_id             = Site::getId();
 		$record->user_id             = Auth::id();
 		//$record->parent_id 			= $request->parent_id;
 		$record->title 				= trimNull($request->title);
@@ -401,8 +401,8 @@ class EntryController extends Controller
 			return $this->pageNotFound404('read/' . $entry->id);
 		}
 
-		//todo: $readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
-		//todo: Entry::countView($entry);
+		$readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+		Entry::countView($entry);
 
 		$record = $entry;
 		$text = [];
@@ -416,7 +416,7 @@ class EntryController extends Controller
 
     	return view('shared.reader', [
 			'record' => $record,
-			'readLocation' => null, //todo: Auth::check() ? $readLocation : null),
+			'readLocation' => Auth::check() ? $readLocation : null,
 			'contentType' => 'Entry',
 			'languageCodes' => getSpeechLanguage($record->language_flag),
 		]);

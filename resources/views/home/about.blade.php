@@ -36,8 +36,8 @@
 		<p><strong>{{__('base.Database')}}</strong>: {{env('DB_DATABASE')}}</p>
 		<p><strong>{{__('base.Mail Host')}}</strong>: {{env('MAIL_HOST')}}</p>
 		<p><strong>{{__('base.Sample Token')}}</strong>: {{uniqueToken()}}</p>
-		<p><strong>{{__('base.Singular')}}</strong>: {{trans_choice('ui.tags', 1)}}</p>
-		<p><strong>{{__('base.Plural')}}</strong>: {{trans_choice('ui.tags', 2)}}</p>
+		<p><strong>{{__('base.Singular')}}</strong>: {{trans_choice('ui.Tag', 1)}}</p>
+		<p><strong>{{__('base.Plural')}}</strong>: {{trans_choice('ui.Tag', 2)}}</p>
 	@endif
 @endif
 

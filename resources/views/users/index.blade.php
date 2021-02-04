@@ -10,7 +10,7 @@
 			<tr>
 				<th></th><th>@LANG('ui.Name')</th><th>@LANG('ui.Email')</th><th>@LANG('ui.Type')</th><th>@LANG('ui.Blocked')</th>
 				<th>@LANG('ui.IP')</th>
-				<th>@LANG('ui.Site')</th>
+				<th>{{trans_choice('ui.Site', 1)}}</th>
 			</tr>
 		</thead>
 		<tbody>
