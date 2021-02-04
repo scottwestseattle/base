@@ -17,43 +17,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-	private $_site = null;
-
-	public function getSiteLanguage()
-	{
-	    $id = $this->site()->language_flag;
-
-        $language = getSpeechLanguage($id);
-        $language['condition'] = ($language['id'] == LANGUAGE_ALL) ? '>=' : '=';
-
-		return $language;
-	}
-
-    public function getSiteId()
-    {
-        return $this->site()->id;
-    }
-
-	public function site()
-	{
-		if (!isset($this->_site))
-		{
-			$this->_site = Site::get();
-
-			if (!isset($this->_site))
-			{
-			    // make a dummy site, only happens if site record hasn't been added yet
-			    $this->_site = new Site();
-			    $this->_site->title = 'not set';
-			    $this->_site->description = 'not set - add site record';
-			    $this->_site->language_flag = LANGUAGE_ALL;
-			}
-		}
-        //dump('site: ' . $this->_site);
-
-		return $this->_site;
-	}
-
 	public function __construct ()
 	{
 		// session don't work in constructors (or in middleware), so this is the work arround:

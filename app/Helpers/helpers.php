@@ -206,9 +206,7 @@ if (!function_exists('domainName')) {
 if (!function_exists('appName')) {
 	function appName()
 	{
-		//$key = 'APP_NAME_' . domainName();
-		//$v = env($key, 'App Name');
-		$v = ucfirst(domainName());
+		$v = domainName();
 
 		return $v;
 	}

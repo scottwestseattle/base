@@ -11,8 +11,7 @@ use Config;
 use Log;
 
 use App\Entry;
-use App\Status;
-use App\Tools;
+use App\Site;
 use App\User;
 
 define('PREFIX', 'entries');
@@ -79,7 +78,7 @@ class EntryController extends Controller
 		$record->display_date 		= timestamp();
 		$record->release_flag 		= RELEASEFLAG_PUBLIC;
 		$record->wip_flag 			= WIP_FINISHED;
-		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : $this->getSiteLanguage()['id'];
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= $request->type_flag;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
 
@@ -319,7 +318,7 @@ class EntryController extends Controller
 
 		try
 		{
-		    $parms = $this->getSiteLanguage();
+		    $parms = Site::getLanguage();
 		    $parms['type'] = ENTRY_TYPE_ARTICLE;
 
 			//$records = Entry::getArticles();

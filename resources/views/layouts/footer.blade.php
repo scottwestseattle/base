@@ -10,7 +10,7 @@
 		</a>
 
 		<p style="font-size:2em;" class="footer-heading">{{domainName()}}</p>
-		<p style="font-size:1.2em;" class="">{{env('APP_NAME', 'App Name')}}</p>
+    	<p style="font-size:1.2em;" class="">{{App\Site::getTitle()}}</p>
 		<p>@LANG('base.All Rights Reserved') &copy; 2020 &ndash; {{date("Y")}}</p>
 		<span class="footer-links">
 			<a href="#top">@LANG('base.Back to Top')</a>&bull;

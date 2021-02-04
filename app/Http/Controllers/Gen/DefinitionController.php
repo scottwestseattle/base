@@ -12,6 +12,7 @@ use Cookie;
 use Log;
 
 use App\Gen\Definition;
+use App\Site;
 use App\Tag;
 use App\User;
 
@@ -365,7 +366,7 @@ class DefinitionController extends Controller
         //
         // all the stuff for the speak and record module
         //
-        $siteLanguage = $this->getSiteLanguage()['id'];
+        $siteLanguage = Site::getLanguage()['id'];
 
         $options = [];
         $options['showAllButton'] = false;

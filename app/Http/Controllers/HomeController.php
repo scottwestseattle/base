@@ -44,14 +44,11 @@ class HomeController extends Controller
 	    //
 	    // Get the site info for the current domain
 	    //
-	    $dn = domainName();
 	    $siteLanguage = LANGUAGE_ALL;
         $options = [];
 		try
 		{
-			$record = Site::select()
-				->where('title', $dn)
-				->first();
+			$record = Site::site();
 
             if (!isset($record))
                 throw new \Exception('Site not found');
@@ -72,6 +69,7 @@ class HomeController extends Controller
 		}
 		catch (\Exception $e)
 		{
+    	    $dn = domainName();
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $dn]);
 		}
 
@@ -227,7 +225,7 @@ class HomeController extends Controller
 		if (isAdmin())
 		{
 			$users = User::count();
-            $language = $this->getSiteLanguage();
+            $language = Site::getLanguage();
 			$events = Event::get();
 			if ($events['emergency'] > 0)
 				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));

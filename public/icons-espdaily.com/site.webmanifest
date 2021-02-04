@@ -3,13 +3,13 @@
     "short_name": "",
     "icons": [
         {
-            "src": "/icons-english/android-chrome-192x192.png",
+            "src": "/icons-spanish50.com/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/icons-english/android-chrome-256x256.png",
-            "sizes": "256x256",
+            "src": "/icons-spanish50.com/android-chrome-512x512.png",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ],
