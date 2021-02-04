@@ -12,6 +12,8 @@ use Cookie;
 use Log;
 
 use App\Gen\Definition;
+use App\Gen\Spanish;
+
 use App\Site;
 use App\Tag;
 use App\User;
@@ -65,9 +67,12 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function add()
+    public function add($word = null)
     {
+		$word = alpha($word);
+
 		return view(VIEWS . '.add', [
+				'word' => $word,
 			]);
 	}
 
@@ -139,9 +144,26 @@ class DefinitionController extends Controller
 	public function edit(Definition $definition)
     {
 		$record = $definition;
+		$forms = null;
+
+		if (isset($record->forms))
+		{
+			// make it prettier
+			$forms = Spanish::getFormsPretty($record->forms);
+		}
+		else
+		{
+			//$records = Definition::conjugationsGen($definition->title);
+			//if (isset($records))
+			//{
+			//	$forms = $records['formsPretty'];
+			//	$record->forms = $forms;
+			//}
+		}
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
+			'formsPretty' => $forms,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
 		]);
     }
@@ -150,33 +172,55 @@ class DefinitionController extends Controller
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 		$record = $definition;
-
 		$isDirty = false;
 		$changes = '';
+		$parent = null;
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->definition = copyDirty($record->definition, $request->definition, $isDirty, $changes);
+		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
-        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
+
+		$forms 	= Spanish::formatForms($request->forms);
+		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
+		$record->type_flag = DEFTYPE_DICTIONARY;
+
+		try
+		{
+			// this will check if a raw conjugations has been entered and if so, clean it
+			// if it's not raw, then it just sends it back
+			$conj = Spanish::getConjugations($request->conjugations);
+			$record->conjugations = copyDirty($record->conjugations, $conj['full'], $isDirty, $changes);
+			$record->conjugations_search = copyDirty($record->conjugations, $conj['search'], $isDirty, $changes);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Changes not saved: error getting conjugations';
+			logException($f, $msg, $e->getMessage());
+			return back();
+		}
 
 		if ($isDirty)
 		{
 			try
 			{
 				$record->save();
-				logInfo($f, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
+				logInfo($f, 'Definition has been updated', ['title' => $record->title, 'id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e)
 			{
-				logException($f, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
+				$msg = "Error updating record";
+				logException($f, $e->getMessage(), $msg);
 			}
 		}
 		else
 		{
-			logInfo($f, __('msgs.No changes made'), ['record_id' => $record->id]);
+			logFlash('success', 'No changes were made');
 		}
 
-		return redirect('/definitions/view/' . $record->id);
+        $returnPath = '/definitions/view/' . $record->id;
+
+		return redirect($returnPath);
 	}
 
     public function confirmDelete(Definition $definition)
@@ -472,7 +516,7 @@ class DefinitionController extends Controller
     public function conjugationsGen(Request $request, Definition $definition)
     {
 		$record = $definition;
-		$records = Definition::conjugationsGen($record->title);
+		$records = Spanish::conjugationsGen($record->title);
 		$status = null;
 		if (isset($records))
 		{
@@ -492,7 +536,7 @@ class DefinitionController extends Controller
     {
 		$forms = null;
 
-		$scraped = Definition::isIrregular($text);
+		$scraped = Spanish::isIrregular($text);
 		if ($scraped['irregular'])
 		{
 			$forms = $scraped['conj']['full'];
@@ -501,7 +545,7 @@ class DefinitionController extends Controller
 		}
 		else
 		{
-			$records = Definition::conjugationsGen($text);
+			$records = Spanish::conjugationsGen($text);
 			if (isset($records))
 			{
 				$forms = $records['forms'];
@@ -515,7 +559,7 @@ class DefinitionController extends Controller
 
     public function scrapeDefinitionAjax(Request $request, $word)
     {
-		$rc = Definition::scrapeDefinition($word);
+		$rc = Spanish::scrapeDefinition($word);
 
 		return $rc;
     }
@@ -523,7 +567,7 @@ class DefinitionController extends Controller
 	public function conjugationsComponentAjax(Request $request, Definition $definition)
     {
 		$record = $definition;
-		$record->conjugations = Definition::getConjugationsPretty($record->conjugations);
+		$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
 
 		return view(PREFIX . '.component-conjugations', [
 			'record' => $record,
@@ -918,11 +962,11 @@ class DefinitionController extends Controller
 		$record = Definition::get($verb);
 
 		if (isset($record->conjugations))
-			$record->conjugations = Definition::getConjugationsFull($record->conjugations);
+			$record->conjugations = Spanish::getConjugationsFull($record->conjugations);
 
 		return view('definitions.verb', [
 			'record' => $record,
-			'headers' => Definition::$_verbConjugations,
+			'headers' => Spanish::$_verbConjugations,
 			]);
     }
 

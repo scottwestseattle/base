@@ -14,4 +14,11 @@ return [
 'Example' => '例子|例子',
 'Article' => '文章|文章',
 'View Definition' => '查看定义',
+'Add Article' => '添加文章',
+'Edit Article' => '编辑文章',
+'Word' => '字',
+'Word Forms' => '这个词的形式',
+'Examples' => '例子',
+'Conjugations' => '词形变化',
+'Edit Definition' => '可视化定义',
 ];

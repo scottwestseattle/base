@@ -119,4 +119,5 @@ return [
 'siteTitle-localhost' => '这是本地主机',
 'All events deleted' => '所有事件已删除',
 'Subscribe to mailing list' => '订阅邮件列表',
+'siteTitle-cms' => '内容管理系统',
 ];

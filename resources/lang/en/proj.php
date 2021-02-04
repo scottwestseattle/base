@@ -14,4 +14,11 @@ return [
 'Example' => 'Example|Examples',
 'Article' => 'Article|Articles',
 'View Definition' => 'View Definition',
+'Add Article' => 'Add Article',
+'Edit Article' => 'Edit Article',
+'Word' => 'Word',
+'Word Forms' => 'Word Forms',
+'Examples' => 'Examples',
+'Conjugations' => 'Conjugations',
+'Edit Definition' => 'Edit Definition',
 ];

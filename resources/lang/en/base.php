@@ -119,4 +119,5 @@ return [
 'siteTitle-localhost' => 'This is localhost',
 'All events deleted' => 'All events deleted',
 'Subscribe to mailing list' => 'Subscribe to mailing list',
+'siteTitle-cms' => 'Content Management System',
 ];

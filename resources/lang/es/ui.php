@@ -40,7 +40,7 @@ return [
 'no' => 'no',
 'Show All' => 'Mostrar Todos',
 'Sample' => 'Muestra',
-'Logout' => 'Cerrar Sesión',
+'Log-out' => 'Cerrar Sesión',
 'Show Phone Number' => 'Número de Teléfono',
 'Show Email Address' => 'Correo Electrónico',
 'SITE MAP' => 'MAPA DEL SITIO',
@@ -126,4 +126,6 @@ return [
 'Entry' => 'Entrada|Entradas',
 'Event' => 'Suceso|Sucesos',
 'Subscribe' => 'Suscribir',
+'Locale' => 'Lugar',
+'Unknown' => 'Desconocido',
 ];

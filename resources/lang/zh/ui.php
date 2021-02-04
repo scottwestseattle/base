@@ -40,7 +40,7 @@ return [
 'no' => '没有',
 'Show All' => '显示所有',
 'Sample' => '示例课程',
-'Logout' => '登出',
+'Log-out' => '登出',
 'Show Phone Number' => '电话号码',
 'Show Email Address' => '电子邮件地址',
 'SITE MAP' => '网站地图',
@@ -126,4 +126,6 @@ return [
 'Entry' => '条目|参赛作品',
 'Event' => '事件|大事记',
 'Subscribe' => '订阅',
+'Locale' => '区域设置',
+'Unknown' => '未知',
 ];

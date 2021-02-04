@@ -34,7 +34,7 @@
 
 						@if (isset($record->conjugations))
 							<div class="small-thin-text mt-2"><a href="" onclick="event.preventDefault(); $('#showconjugations-{{$record->id}}').toggle(); ajaxexec('/definitions/conjugationscomponent/{{$record->id}}', '#showconjugations-{{$record->id}}');">
-								@if (App\Gen\Definition::fixConjugations($record))
+								@if (App\Gen\Spanish::fixConjugations($record))
 									<a href="/definitions/edit/{{$record->id}}" class="small-thin-text danger">conjugations</a>
 								@else
 									<span>conjugations preview</span>

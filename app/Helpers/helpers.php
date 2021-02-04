@@ -747,3 +747,51 @@ if (!function_exists('splitSentences')) {
 		return $sentences;
 	}
 }
+
+if (!function_exists('trunc')) {
+	function trunc($string, $length, $ellipsis = null)
+	{
+	    $rc = trim($string);
+		$l = strlen($rc);
+
+		if ($l > $length)
+		{
+		    if (isset($ellipsis))
+		    {
+		        $l += strlen($ellipsis);
+    			$rc = mb_substr($rc, 0, $l - $length);
+    			$rc .= $ellipsis;
+		    }
+		    else
+		    {
+    			$rc = mb_substr($rc, 0, $l - $length);
+		    }
+		}
+
+		return $rc;
+	}
+}
+
+if (!function_exists('endsWithAnyIndex')) {
+	function endsWithAnyIndex($haystack, $needle)
+	{
+		$rc = false;
+
+		if (is_array($needle))
+		{
+			foreach($needle as $index => $n)
+			{
+				$rc = Str::endsWith($haystack, $n);
+				if ($rc) // if it ends with any of them then it's true
+				{
+					$rc = $index;
+					break;
+				}
+			}
+		}
+
+		return $rc;
+	}
+}
+
+

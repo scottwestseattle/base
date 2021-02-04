@@ -14,4 +14,11 @@ return [
 'Example' => 'Ejemplo|Ejemplos',
 'Article' => 'Artículo|Artículos',
 'View Definition' => 'Visualizar Definición',
+'Add Article' => 'Agregar artículo',
+'Edit Article' => 'Editar artículo',
+'Word' => 'Palabra',
+'Word Forms' => 'Formas del palabra',
+'Examples' => 'Ejemplos',
+'Conjugations' => 'Conjugaciones',
+'Edit Definition' => 'Editar Definición',
 ];
