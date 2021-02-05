@@ -138,14 +138,10 @@ class DefinitionController extends Controller
     {
 		$record = null;
 		$permalink = alphanum($permalink);
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
 
 		try
 		{
 			$record = Definition::select()
-				//->where('site_id', SITE_ID)
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
 				->first();
 
@@ -158,17 +154,23 @@ class DefinitionController extends Controller
     		return redirect($this->redirectTo);
 		}
 
-		return view(VIEWS . '.view', [
-			'record' => $record,
-			]);
+		return $this->view($record);
 	}
 
 	public function view(Definition $definition)
     {
 		$record = $definition;
 
+		// format the examples to display as separate sentences
+		$record->examples = splitSentences($record->examples);
+
+        // format the conjugations
+		if (isset($record->conjugations))
+			$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
+
 		return view(VIEWS . '.view', [
 			'record' => $record,
+			'favoriteLists' => Definition::getUserFavoriteLists(),
 			]);
     }
 
