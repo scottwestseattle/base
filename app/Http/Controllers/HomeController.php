@@ -145,16 +145,15 @@ class HomeController extends Controller
             $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
             if (isset($tag))
             {
+                // get the last record added to the tag
                 $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
                 if (isset($record))
                 {
+                    // only show the first part of the definition
+                    $record->definition = getSentences($record->definition, 1);
+
                     // only show the first sentence in the examples
-                    if (isset($record->examples))
-                    {
-                        $s = splitSentences($record->examples);
-                        if (isset($s) && count($s) > 0)
-                            $record->examples = $s[0];
-                    }
+                    $record->examples = getSentences($record->examples, 1);
 
                     $options['wotd'] = $record;
                 }

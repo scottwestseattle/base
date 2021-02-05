@@ -133,14 +133,15 @@
                 </div>
                 <div class="card-body card-body-potd">
                     @if(isset($wotd))
-                        <div><b>{{$wotd->title}}</b> - <i>{{$wotd->translation_en}}</i></div>
+                        <div><b>{{$wotd->title}}</b> - {{$wotd->translation_en}}</div>
                         <div class="large-thin-text">
-                            {{$wotd->examples}}
+                        @if (isset($wotd->definition))
+                            <div><i>Definición:</i> {{$wotd->definition}}</div>
+                        @endif
+                            <i>Ejemplo:</i> {{$wotd->examples}}
                             @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val())"])@endcomponent
                         </div>
-                        <input type="hidden" id="wotd" value="{{$wotd->title . '. Ejemplo: ' . $wotd->examples}}" />
-                    @else
-                        <div>@LANG('ui.Not Found')</div>
+                        <input type="hidden" id="wotd" value="{{$wotd->title . '. Definición: ' . $wotd->definition . '. Ejemplo: ' . $wotd->examples}}" />
                     @endif
                 </div>
             </div>

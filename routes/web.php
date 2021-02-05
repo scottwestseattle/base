@@ -17,6 +17,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Gen\TemplateController;
 use App\Http\Controllers\EntryController;
+use App\Http\Controllers\Gen\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,19 +63,19 @@ Route::get('/register', [RegisterController::class, 'register'])->name('register
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 
 // Top level urls
-Route::get('/articles', [EntryController::class, 'articles']);
+Route::get('/articles', [ArticleController::class, 'index']);
 
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
     // add / (create done in entries)
-	Route::get('/add/', [EntryController::class, 'addArticle']);
+	Route::get('/add/', [ArticleController::class, 'add']);
 
     // edit / (update done in entries)
-	Route::get('/edit/', [EntryController::class, 'editArticle']);
+	Route::get('/edit/', [ArticleController::class, 'edit']);
 
     // permalink
-	Route::get('/{permalink}', [EntryController::class, 'viewArticle']);
+	Route::get('/{permalink}', [ArticleController::class, 'view']);
 });
 
 // MVC

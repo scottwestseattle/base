@@ -31,10 +31,10 @@
 	@if (isset($record))
 
 	<div>
+		@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 		<h3>
 			<div class="middle">
 				<div class="float-left">{{$record->title}}@component('components.badge', ['text' => $record->view_count])@endcomponent</div>
-				@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 			</div>
 
 			@if (App\User::isSuperAdmin())

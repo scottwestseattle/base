@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', $options['page_title'] )
-@section('menu-submenu')@component('entries.menu-submenu', ['record' => $record, 'index' => $options['index']])@endcomponent @endsection
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record, 'index' => 'index'])@endcomponent @endsection
 @section('content')
 
     <!------------------------------------>

@@ -423,8 +423,10 @@ if (!function_exists('createPermalink')) {
 		}
 
 		$v = preg_replace('/[^\da-z ]/i', ' ', $v); // replace all non-alphanums with spaces
-		$v = str_replace(" ", "-", $v);				// replace spaces with dashes
+		$v = preg_replace('/\s+/', "-", $v);		// replace spaces with dashes
 		$v = strtolower($v);						// make all lc
+		$v = preg_replace('/^-+/', '', $v);         // remove any leading '-'
+		$v = preg_replace('/-+$/', '', $v);         // remove any trailing '-'
 
         // make the permalink unique by adding a hashed string at the end
         // hash the hash key (timestamp) and append the first 6 chars to the permalink
@@ -724,6 +726,36 @@ if (!function_exists('intOrNull')) {
 
 		return($n);
 	}
+}
+
+if (!function_exists('getSentences')) {
+	function getSentences($string, $count)
+	{
+	    $string = trim($string);
+	    $rc = null;
+
+        if (isset($string))
+        {
+            $s = splitSentences($string);
+            if (isset($s))
+            {
+                for ($i = 0; $i < $count; $i++)
+                {
+                    if (count($s) > $i)
+                    {
+                        if (isset($rc))
+                        {
+                            $rc .= "\r\n";
+                        }
+
+                        $rc .= $s[$i];
+                    }
+                }
+            }
+        }
+
+        return $rc;
+    }
 }
 
 if (!function_exists('splitSentences')) {

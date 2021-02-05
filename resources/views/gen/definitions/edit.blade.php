@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('title', __('proj.Edit Definition'))
-@section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
+@section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions', 'record' => $record])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">
+
+	@component('gen.definitions.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 
 	<h1>{{__('proj.Edit Definition')}}</h1>
 

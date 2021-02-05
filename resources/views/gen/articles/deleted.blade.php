@@ -1,20 +1,20 @@
 @extends('layouts.app')
-@section('title', __('base.Deleted Entries'))
-@section('menu-submenu')@component('entries.menu-submenu')@endcomponent @endsection
+@section('title', __('proj.Deleted Articles'))
+@section('menu-submenu')@component('gen.articles.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('base.Deleted Entries')}} ({{count($records)}})</h1>
+	<h1>{{__('proj.Deleted Articles')}} ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>
 			<tr>
-				<th></th><th>@LANG('base.Title')</th><th>@LANG('base.Description')</th><th>@LANG('ui.Release')</th><th>@LANG('ui.Created')</th><th></th>
+				<th></th><th>@LANG('ui.Title')</th><th>@LANG('ui.Description')</th><th>@LANG('ui.Release')</th><th>@LANG('ui.Created')</th><th></th>
 			</tr>
 		</thead>
 		<tbody>
 		@foreach($records as $record)
 			<tr>
-				<td class="index-button"><a href='/entries/undelete/{{$record->id}}'>{{__('ui.Undelete')}}</a></td>
+				<td class="index-button"><a href='/articles/undelete/{{$record->id}}'>{{__('ui.Undelete')}}</a></td>
 				<td>{{$record->title}}</td>
 				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
 				<td class="index-button">{{__(getReleaseStatus($record->release_flag)['label'])}}</td>

@@ -168,9 +168,11 @@ class DefinitionController extends Controller
 		if (isset($record->conjugations))
 			$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
 
+        $lists = Definition::getUserFavoriteLists();
+
 		return view(VIEWS . '.view', [
 			'record' => $record,
-			'favoriteLists' => Definition::getUserFavoriteLists(),
+			'favoriteLists' => $lists,
 			]);
     }
 
