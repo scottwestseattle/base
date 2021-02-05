@@ -18,7 +18,7 @@ use App\Site;
 use App\Tag;
 use App\User;
 
-define('PREFIX', 'gen.definitions');
+define('PREFIX', 'definitions');
 define('VIEWS', 'gen.definitions');
 define('LOG_CLASS', 'DefinitionController');
 
@@ -79,24 +79,55 @@ class DefinitionController extends Controller
     public function create(Request $request)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
+
+		$title = trim($request->title);
+		$record = Definition::get($title);
+		if (isset($record))
+		{
+			logFlash('danger', 'record already exists');
+			return redirect('/' . PREFIX . '/edit/' . $record->id);
+		}
+
 		$record = new Definition();
 
 		$record->user_id 		= Auth::id();
-		$record->title 			= trimNull($request->title);
-		$record->definition	    = trimNull($request->definition);
-        $record->permalink      = createPermalink($record->title);
-        $record->type_flag      = isAdmin() ? DEFTYPE_DICTIONARY : DEFTYPE_USER;
+		$record->language_flag 	= LANGUAGE_ES;
+		$record->type_flag      = DEFTYPE_DICTIONARY;
+		$record->title 			= $request->title;
+		$record->forms 			= Spanish::formatForms($request->forms);
+		$record->definition		= $request->definition;
+		$record->translation_en	= $request->translation_en;
+		$record->examples		= $request->examples;
+		$record->permalink		= createPermalink($request->title);
+		$record->wip_flag		= WIP_DEFAULT;
+		//TODO: $record->rank   		= null;
+
+		try
+		{
+			// format the forms and conjugations if it's a verb
+			$conj = Spanish::getConjugations($request->conjugations);
+			$record->conjugations = $conj['full'];
+			$record->conjugations_search = $conj['search'];
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Record not added: error getting conjugations';
+			logException($f, $e->getMessage(), $msg);
+			return back();
+		}
 
 		try
 		{
 			$record->save();
 
-			$rc = __('msgs.New record has been added');
-            logInfo($f, $rc, ['id' => $record->id]);
+			$msg = 'New record has been added';
+			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException($f, $e->getMessage(), __('msgs.Error adding new record'));
+			$msg = isset($msg) ? $msg : 'Error adding new definition';
+			logException($f, $e->getMessage(), $msg, ['title' => $record->title]);
+
 			return back();
 		}
 
@@ -136,7 +167,7 @@ class DefinitionController extends Controller
     {
 		$record = $definition;
 
-		return view(PREFIX . '.view', [
+		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
     }
@@ -460,7 +491,7 @@ class DefinitionController extends Controller
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), null, ['text' => $text]);
 		}
 
-		return view(PREFIX . '.component-search-results', [
+		return view(VIEWS . '.component-search-results', [
 			'records' => $records,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
 		]);
@@ -505,7 +536,7 @@ class DefinitionController extends Controller
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
 		}
 
-		return view(PREFIX . '.search', [
+		return view(VIEWS . '.search', [
 			'records' => $records,
 			'search' => $search,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
@@ -525,7 +556,7 @@ class DefinitionController extends Controller
 			$records = $records['records'];
 		}
 
-		return view(PREFIX . '.conjugations', [
+		return view(VIEWS . '.conjugations', [
 			'record' => $record,
 			'records' => $records,
 			'status' => $status,
@@ -569,7 +600,7 @@ class DefinitionController extends Controller
 		$record = $definition;
 		$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
 
-		return view(PREFIX . '.component-conjugations', [
+		return view(VIEWS . '.component-conjugations', [
 			'record' => $record,
 			]);
     }
@@ -982,7 +1013,7 @@ class DefinitionController extends Controller
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('msgs.Error getting list'));
 		}
 
-		return view(PREFIX . '.list', [
+		return view(VIEWS . '.list', [
 			'records' => $records,
 			'tag' => $tag,
 			'lists' => Definition::getUserFavoriteLists(),
@@ -998,7 +1029,7 @@ class DefinitionController extends Controller
 		// articles/books look ups
 		//todo: $entries = Entry::getDefinitionsUser();
 
-		return view(PREFIX . '.favorites', [
+		return view(VIEWS . '.favorites', [
 			'favorites' => $favorites,
 			//'newest' => true, // show the option for "New Dictionary Entries" review and flashcards
 		]);
