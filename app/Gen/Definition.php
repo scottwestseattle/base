@@ -187,6 +187,18 @@ class Definition extends Model
 		return ($this->release_flag);
     }
 
+    public function toggleWip()
+    {
+        if ($this->isFinished())
+            $this->wip_flag = WIP_DEFAULT;
+        else
+            $this->wip_flag = WIP_FINISHED;
+
+            $this->save();
+
+		return $this->isFinished();
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// General Access

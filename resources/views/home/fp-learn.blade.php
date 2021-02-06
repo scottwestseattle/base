@@ -138,7 +138,7 @@
                         @if (isset($wotd->definition))
                             <div><i>Definición:</i> {{$wotd->definition}}</div>
                         @endif
-                            <i>Ejemplo:</i> {{$wotd->examples}}
+                            <i>Ejemplo:</i><span class="mx-2">{{$wotd->examples}}</span>
                             @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val())"])@endcomponent
                         </div>
                         <input type="hidden" id="wotd" value="{{$wotd->title . '. Definición: ' . $wotd->definition . '. Ejemplo: ' . $wotd->examples}}" />
@@ -157,7 +157,7 @@
                 </div>
                 <div class="card-body card-body-potd">
                     <div class="xl-thin-text">
-                        {{$potd}}
+                        <span class="mr-2">{{$potd}}</span>
                         @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#potd').val())"])@endcomponent
                     </div>
                     <input type="hidden" id="potd" value="{{$potd}}" />

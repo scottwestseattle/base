@@ -410,6 +410,11 @@ Route::group(['prefix' => 'dictionary'], function () {
 });
 
 // Definitions
+Route::group(['prefix' => 'snippets'], function () {
+	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+});
+
+// Definitions
 Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/', [DefinitionController::class, 'index']);
 	Route::get('/index', [DefinitionController::class, 'index']);

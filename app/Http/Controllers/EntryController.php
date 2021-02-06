@@ -11,6 +11,7 @@ use Config;
 use Log;
 
 use App\Entry;
+use App\Gen\Spanish;
 use App\Site;
 use App\User;
 
@@ -322,17 +323,18 @@ class EntryController extends Controller
 		Entry::countView($entry);
 
 		$record = $entry;
-		$text = [];
+		$lines = [];
 
-		$text = Entry::getSentences($record->title);
-		$text = array_merge($text, Entry::getSentences($record->description_short));
-		$text = array_merge($text, Entry::getSentences($record->description));
-		//dd($text);
-
-		$record['lines'] = $text;
+		$lines = Spanish::getSentences($record->title);
+		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
+		$lines = array_merge($lines, Spanish::getSentences($record->description));
+		//dd($lines);
 
     	return view('shared.reader', [
-			'record' => $record,
+    	    'lines' => $lines,
+    	    'title' => $record->title,
+			'recordId' => $record->id,
+			'return' => '/articles',
 			'readLocation' => Auth::check() ? $readLocation : null,
 			'contentType' => 'Entry',
 			'languageCodes' => getSpeechLanguage($record->language_flag),

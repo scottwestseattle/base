@@ -1,19 +1,24 @@
 @extends('layouts.reader')
-@section('title', __('Reading') . ' ' . $record->title )
+@section('title', __('Reading') . ' ' . $title )
 @section('content')
+@php
+    $recordId = isset($record->id) ? $record->id : -1;
+    $readLocation = isset($readLocation) ? $readLocation : null;
+    $count = count($lines);
+@endphp
 
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->
 <div class="data-misc"
-	data-count="{{count($record['lines'])}}"
+	data-count="{{$count}}"
 	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
-	data-max="{{count($record['lines'])}}"
+	data-max="{{$count}}"
 	data-language="{{$languageCodes['short']}}"
 	data-language-long="{{$languageCodes['long']}}"
-	data-type="{{$record->type_flag}}"
+	data-type="{{$contentType}}"
 	data-contenttype="{{$contentType}}"
-	data-contentid="{{$record->id}}"
+	data-contentid="{{$recordId}}"
 	data-isadmin="{{isAdmin() ? 1 : 0}}"
 	data-userid="{{Auth::id()}}"
 	data-readlocation={{$readLocation}}
@@ -22,12 +27,12 @@
 	<!-------------------------------------------------------->
 	<!-- Add the body lines to read -->
 	<!-------------------------------------------------------->
-@foreach($record['lines'] as $r)
+@foreach($lines as $line)
 	<div class="data-slides"
-	    data-title="{{$r}}"
+	    data-title="{{$line}}"
 	    data-number="1"
-	    data-description="{{$r}}"
-	    data-id="{{$record->id}}"
+	    data-description="{{$line}}"
+	    data-id="{{$recordId}}"
 	    data-seconds="10"
 	    data-between="2"
 	    data-countdown="1"
@@ -46,7 +51,7 @@
 		<!-- Top Row Buttons -->
 		<!-------------------------------------------------------->
 		<div>
-			<span class="glyphReader"><a href="/articles/{{$record->permalink}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a></span>
+			<span class="glyphReader"><a href="{{$return}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a></span>
 			<span class="glyphReader"><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, -3);" href=""><span class="glyphicon glyphicon-zoom-out"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, 3);" href=""><span class="glyphicon glyphicon-zoom-in"></span></a></span>
@@ -71,8 +76,8 @@
 		<div id="panel-start" class="slide-panel">
 
 			<div class="text-center">
-				<div class="small-thin-text">{{count($record['lines'])}} lines</div>
-				<div id="slideTitle" style="font-size:18px" class="mb-2">{{$record->title}}</div>
+				<div class="small-thin-text">{{$count}} lines</div>
+				<div id="slideTitle" style="font-size:18px" class="mb-2">{{$title}}</div>
 				<a onclick="event.preventDefault(); run()"  href="" class="btn btn-primary mb-3"  id="button-start-reading" role="button">Start Reading</a>
 				<div><a onclick="event.preventDefault(); runContinue()"  href="" class="btn btn-success mb-3" id="button-continue-reading" style="display:none;" role="button">Continue reading from line</a></div>
 				<div><a onclick="event.preventDefault(); runContinueOther()"  href="" class="btn btn-warning mb-3" id="button-continue-reading-other" style="display:none;" role="button">Continue reading from location on other device</a></div>
@@ -94,7 +99,7 @@
 		  <div class="row">
 			<div id="panel-run-col-text" class="" style="width:100%;" >
 				<div id="panel-run" class="slide-panel text-center" style="">
-					<div><span class="medium-thin-text" id="title">{{$record->title}}</span></div>
+					<div><span class="medium-thin-text" id="title">{{$title}}</span></div>
 					<div>
 						<span class="small-thin-text" id="slideCount"></span><span id="clock" class="small-thin-text ml-3">00:00</span>
 					</div>

@@ -30,7 +30,7 @@ class DefinitionController extends Controller
 	{
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
-            'snippets', 'createSnippet',
+            'snippets', 'createSnippet', 'readSnippets',
 
             // copied
 			'find', 'search', 'list',
@@ -477,6 +477,31 @@ class DefinitionController extends Controller
 		]);
     }
 
+	public function readSnippets()
+    {
+        $siteLanguage = Site::getLanguage()['id'];
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+
+        $records = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+
+        $lines = [];
+        $languageFlag = null;
+        foreach($records as $record)
+        {
+    		$text = Spanish::getSentences($record->examples);
+    		$lines = array_merge($lines, $text);
+    		if (!isset($languageFlag))
+    		    $languageFlag = $record->language_flag;
+        }
+
+    	return view('shared.reader', [
+    	    'lines' => $lines,
+    	    'title' => 'Practice Text',
+    	    'return' => '/practice',
+			'contentType' => 'Snippet',
+			'languageCodes' => getSpeechLanguage($languageFlag),
+		]);
+    }
 
 	//
 	// This handles the search form from the index/search page
@@ -1040,4 +1065,25 @@ class DefinitionController extends Controller
 			//'newest' => true, // show the option for "New Dictionary Entries" review and flashcards
 		]);
     }
+
+	public function toggleWipAjax(Request $request, Definition $definition, $done = true)
+    {
+		$record = $definition;
+        $msg = null;
+
+		try
+		{
+    		$msg = 'Set to ' . ($record->toggleWip() ? 'finished' : 'unfinished');
+	    	logInfo($msg, null, ['id' => $record->id]);
+            //throw new \Exception('test exception');
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error setting status';
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+		}
+
+		return __('base.' . $msg);
+    }
+
 }
