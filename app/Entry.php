@@ -51,6 +51,33 @@ class Entry extends Model
 		ENTRY_TYPE_ENTRY    => 'entries',
 	];
 
+    const _releaseFlags = [
+		RELEASEFLAG_NOTSET => 'Not Set',
+		RELEASEFLAG_PRIVATE => 'Private',
+		RELEASEFLAG_APPROVED => 'Approved',
+		RELEASEFLAG_PAID => 'Premium',
+		RELEASEFLAG_MEMBER => 'Member',
+		RELEASEFLAG_PUBLIC => 'Public',
+    ];
+
+	const _wipFlags = [
+		WIP_NOTSET => 'Not Set',
+		WIP_INACTIVE => 'Inactive',
+		WIP_DEV => 'Dev',
+		WIP_TEST => 'Test',
+		WIP_FINISHED => 'Finished',
+	];
+
+    static public function getReleaseFlags()
+    {
+		return self::_releaseFlags;
+	}
+
+    static public function getWipFlags()
+    {
+		return self::_wipFlags;
+	}
+
 	static public function getEntryTypes()
 	{
 		return self::$entryTypes;

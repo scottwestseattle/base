@@ -14,7 +14,9 @@
         <p>Hash: {{getVisitorInfo()['hash']}}</p>
     	<p>{{__('ui.Locale')}}: {{App::getLocale()}}</p>
 	@endif
+	<p><strong>Snippet:&nbsp;</strong>{{Cookie::get('snippetId')}}</p>
 @endif
+
 	<p><strong>{{__('base.Info')}}</strong>: {{Config::get('constants.email.info')}}</p>
 	<p><strong>{{__('base.Support')}}</strong>: {{Config::get('constants.email.support')}}</p>
 	<p><a href="{{lurl('sitemap')}}">{{__('base.Site Map')}}</a></p>

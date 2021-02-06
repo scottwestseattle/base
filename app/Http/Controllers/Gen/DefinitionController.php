@@ -218,7 +218,9 @@ class DefinitionController extends Controller
 
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
-		$record->type_flag = DEFTYPE_DICTIONARY;
+
+		$type = (Str::startsWith($record->title, 'snippet')) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+		$record->type_flag = copyDirty($record->type_flag, $type, $isDirty, $changes);
 
 		try
 		{
@@ -250,7 +252,7 @@ class DefinitionController extends Controller
 		}
 		else
 		{
-			logFlash('success', 'No changes were made');
+			logFlash('info', $f, 'No changes were made');
 		}
 
         $returnPath = '/definitions/view/' . $record->id;

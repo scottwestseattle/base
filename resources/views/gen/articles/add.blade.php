@@ -7,7 +7,7 @@
 
 	<h1>{{__('proj.Add Article')}}</h1>
 
-	<form method="POST" action="/entries/create">
+	<form method="POST" action="/articles/create">
 		<div class="form-control-big">
 
 			@component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent

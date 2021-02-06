@@ -276,8 +276,8 @@ class EntryController extends Controller
 
 		return view(PREFIX . '.publish', [
 			'record' => $record,
-			'release_flags' => Status::getReleaseFlags(),
-			'wip_flags' => Status::getWipFlags(),
+			'release_flags' => Entry::getReleaseFlags(),
+			'wip_flags' => Entry::getWipFlags(),
 		]);
     }
 

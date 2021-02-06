@@ -19,6 +19,7 @@
             <tr><td><strong>Client:</strong></td><td>{{ipAddress()}}</td></tr>
     		<tr><td><strong>Debug:</strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
 			<!-- tr><td><strong>Session:</strong></td><td>{{env('SESSION_LIFETIME', 0)}}</td></tr -->
+	        <tr><td><strong>Snippet:</strong></td><td>{{Cookie::get('snippetId')}}</td></tr>
             <tr><td><strong>Folder:</strong></td><td class="xs-text">{{base_path()}}</td></tr>
             <tr><td><strong>Hash:</strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
         </table>

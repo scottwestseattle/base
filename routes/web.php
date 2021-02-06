@@ -70,9 +70,11 @@ Route::group(['prefix' => 'articles'], function () {
 
     // add / (create done in entries)
 	Route::get('/add/', [ArticleController::class, 'add']);
+	Route::post('/create/', [ArticleController::class, 'create']);
 
     // edit / (update done in entries)
-	Route::get('/edit/', [ArticleController::class, 'edit']);
+	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);
+	Route::post('/update/{entry}', [ArticleController::class, 'update']);
 
     // permalink
 	Route::get('/{permalink}', [ArticleController::class, 'view']);

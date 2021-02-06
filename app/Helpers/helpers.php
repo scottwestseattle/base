@@ -146,7 +146,7 @@ if (!function_exists('logWarning')) {
 		logFlash('emergency', $msg, $flash, $parms);
 	}
 
-	function logFlash($type, $msg, $flash, $parms)
+	function logFlash($type, $msg, $flash, $parms = null)
 	{
 		$info = ['user id' => Auth::id(), 'ip' => ipAddress()];
 

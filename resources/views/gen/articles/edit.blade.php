@@ -1,24 +1,22 @@
 @extends('layouts.app')
-
+@section('title', __('proj.Edit Article'))
+@section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'articles', 'record' => $record])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">
 
-	@component('entries.menu-submenu', ['record' => $record, 'index' => $index])@endcomponent
-
 	<h1>Edit</h1>
 
-	<form method="POST" action="/entries/update/{{ $record->id }}">
+	<form method="POST" action="/articles/update/{{ $record->id }}">
 		<div class="form-group form-control-big">
 
 			@component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent
 
 			<input type="hidden" name="referer" value={{array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER["HTTP_REFERER"] : ''}} />
 
-			@component('components.control-entry-types', ['current_type' => $record->type_flag, 'entryTypes' => $entryTypes])
-			@endcomponent
-
-			@component('components.control-dropdown-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent
+            @if (false)
+                @component('components.control-dropdown-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent
+            @endif
 
 			<div class="mb-3" style="clear:both;">
 				<button type="submit" name="update" class="btn btn-primary">Save</button>

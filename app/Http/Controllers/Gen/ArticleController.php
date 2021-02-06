@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Gen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Auth;
 use Config;
@@ -25,7 +26,10 @@ class ArticleController extends Controller
 
 	public function __construct()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except([
+            'index', 'view', 'permalink',
+            'add', 'edit',
+        ]);
 
 		parent::__construct();
 	}
@@ -121,26 +125,55 @@ class ArticleController extends Controller
 
     public function create(Request $request)
     {
-		$record = new Article();
+		$record = new Entry();
 
-		$record->user_id 		= Auth::id();
-		$record->title 			= trimNull($request->title);
-		$record->description	= trimNull($request->description);
-        $record->permalink      = createPermalink($record->title);
+		$record->site_id             = Site::getId();
+		$record->user_id             = Auth::id();
+		//$record->parent_id 			= $request->parent_id;
+		$record->title 				= trimNull($request->title);
+		$record->description_short	= trimNull($request->description_short);
+		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$record->source				= trimNull($request->source);
+		$record->source_credit		= trimNull($request->source_credit);
+		$record->source_link		= trimNull($request->source_link);
+		$record->display_date 		= timestamp();
+		$record->release_flag 		= RELEASEFLAG_PUBLIC;
+		$record->wip_flag 			= WIP_FINISHED;
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
+		$record->type_flag 			= $request->type_flag;
+		$record->permalink          = createPermalink($record->title, $record->created_at);
 
 		try
 		{
+			if ($record->type_flag <= 0)
+				throw new \Exception('Entry type not set');
+			if (!isset($record->title))
+				throw new \Exception('Title not set');
+			if (!isset($record->display_date))
+				throw new \Exception('Date not set');
+
 			$record->save();
 
-			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
+			// set up the book tag (if it's a book).  has to be done after the entry is created and has an id
+			$record->updateBookTag();
+
+			$msg = 'Entry has been added';
+			$status = 'success';
+			if (strlen($request->description) > MAX_DB_TEXT_COLUMN_LENGTH)
+			{
+				$msg .= ' - DESCRIPTION TOO LONG, TRUNCATED';
+				$status = 'danger';
+			}
+
+			logInfo(LOG_CLASS, __('base.New entry has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error adding new record'));
 			return back();
 		}
 
-		return redirect($this->redirectTo . '/view/' . $record->id);
+		return redirect($record->getRedirect()['view']);
     }
 
     public function permalink(Request $request, $permalink)
@@ -172,44 +205,57 @@ class ArticleController extends Controller
 			]);
 	}
 
-	public function edit(Article $article)
+	public function edit(Entry $entry)
     {
-		$record = $article;
+		$record = $entry;
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			]);
     }
 
-    public function update(Request $request, Article $article)
+    public function update(Request $request, Entry $entry)
     {
-		$record = $article;
+		$record = $entry;
+		$prevTitle = $record->title;
 
-		$isDirty = false;
-		$changes = '';
+		$record->site_id 			= Site::getId();
+		$record->title 				= trimNull($request->title);
+		$record->description_short	= trimNull($request->description_short);
+		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$record->source				= trimNull($request->source);
+		$record->source_credit		= trimNull($request->source_credit);
+		$record->source_link		= trimNull($request->source_link);
+		//todo: $record->display_date 		= Controller::getSelectedDate($request);
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
+		$record->type_flag 			= intval($request->type_flag);
+		$record->permalink          = createPermalink($record->title, $record->created_at);
 
-		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
-		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
-        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
+		$record->updateBookTag();
 
-		if ($isDirty)
+		try
 		{
-			try
+			$record->save();
+
+			logInfo('update article', null, ['title' => $record->title, 'id' => $record->id, 'prevTitle' => $prevTitle, 'title' => $record->title]);
+
+			$msg = 'Entry has been updated';
+			$status = 'success';
+			if (strlen($request->description) > MAX_DB_TEXT_COLUMN_LENGTH)
 			{
-				$record->save();
-				logInfo(LOG_CLASS, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
+				$msg .= ' - DESCRIPTION TOO LONG, TRUNCATED';
+				$status = 'danger';
 			}
-			catch (\Exception $e)
-			{
-				logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
-			}
+
+			logInfo(LOG_CLASS, __('base.' . $msg), ['record_id' => $record->id]);
 		}
-		else
+		catch (\Exception $e)
 		{
-			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating article'));
+			return back();
 		}
 
-		return redirect('/' . VIEWS . '/view/' . $record->id);
+		return redirect('/' . PREFIX . '/' . $record->permalink);
 	}
 
     public function confirmDelete(Article $article)
