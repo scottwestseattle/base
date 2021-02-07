@@ -50,20 +50,20 @@
         </div>
 
         <span class='mini-menu'>
-        @component('components.control-dropdown-language', [
-            'record' => isset($options['snippet']) ? $options['snippet'] : null,
-			'options' => $options['snippetLanguages'],
-			'selected_option' => $options['language'],
-			'field_name' => 'language_flag',
-			'select_class' => 'mt-1 mr-2',
-		])@endcomponent
-            <select onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
+            @component('components.control-dropdown-language', [
+                'record' => isset($options['snippet']) ? $options['snippet'] : null,
+                'options' => $options['snippetLanguages'],
+                'selected_option' => $options['language'],
+                'field_name' => 'language_flag',
+                'select_class' => 'mini-border mt-1 mr-2',
+            ])@endcomponent
+            <select class="mini-border" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
             <a href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
             <a href="" onclick="copySnippet(event)" class="ml-1">@LANG('ui.Copy')<a/>
         </span>
 
         @if (true /* !isMobile() */)
-    	    @component('components.control-accent-chars-esp', ['label_class' => 'white', 'visible' => true, 'target' => 'textEdit'])@endcomponent
+    	    @component('components.control-accent-chars-esp', ['labelClass' => 'white', 'visible' => true, 'target' => 'textEdit'])@endcomponent
         @endif
 
         <input type="hidden" name="returnUrl" value="{{$options['returnUrl']}}" />

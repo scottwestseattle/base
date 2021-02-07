@@ -27,14 +27,13 @@
 		<button tabindex="-1" onclick="event.preventDefault(); insertChar('&rarr;', '{{$id}}', '{{$tinymce}}')">&rarr;</button>
 		<button tabindex="-1" onclick="event.preventDefault(); insertChar('&#xab;', '{{$id}}', '{{$tinymce}}')">&#xab;</button>
 		<button tabindex="-1" onclick="event.preventDefault(); insertChar('&#xbb;', '{{$id}}', '{{$tinymce}}')">&#xbb;</button>
-
 	</div>
 
 @else
 
 <div class="data-accent-chars ml-2">
 	<div id="accent-chars" class="dropdown">
-		<button id="dropdown-trigger-button" onclick="event.preventDefault();">ñ</button>
+		<button id="dropdown-trigger-button" onclick="event.preventDefault();" class="{{$labelClass}}" style="font-weight:bold;">ñ</button>
 		<div class="dropdown-content accent-buttons">
 			<button onclick="event.preventDefault(); insertChar('á', '{{$id}}', '{{$tinymce}}')">á</button>
 			<button onclick="event.preventDefault(); insertChar('é', '{{$id}}', '{{$tinymce}}')">é</button>

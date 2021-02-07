@@ -1,3 +1,11 @@
+SELECT title, description as definition, language_flag, type_flag
+FROM `words`
+WHERE 1
+AND type_flag = 5
+AND deleted_at is null
+AND vocab_list_id = 21
+;
+
 DB Changes:
 
 ALTER TABLE `definitions` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `wip_flag`;

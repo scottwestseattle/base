@@ -19,7 +19,15 @@
 			<tr>
 				<td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
 				<td><a href="/definitions/{{ blank($record->permalink) ? 'view/' . $record->id : $record->permalink }}">{{$record->title}}</a></td>
-				<td>{{$record->definition}}</td>
+                @if (isset($record->definition))
+				    <td>{{$record->definition}}</td>
+				@elseif (isset($record->translation_en))
+				    <td>{{$record->translation_en}}</td>
+				@elseif (isset($record->examples))
+				    <td>{{$record->examples}}</td>
+				@else
+				    <td></td>
+				@endif
 				<td class="date-sm">{{$record->created_at}}</td>
                 @if (isAdmin())
     				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/definitions/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>

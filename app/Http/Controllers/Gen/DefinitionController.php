@@ -29,7 +29,8 @@ class DefinitionController extends Controller
 	public function __construct()
 	{
         $this->middleware('admin')->except([
-            'index', 'view', 'permalink',
+            //'index',
+            'view', 'permalink',
             'snippets', 'createSnippet', 'readSnippets',
 
             // copied
@@ -53,7 +54,7 @@ class DefinitionController extends Controller
 		try
 		{
 			$records = Definition::select()
-				->where('type_flag', DEFTYPE_DICTIONARY)
+				//->where('type_flag', DEFTYPE_DICTIONARY)
 				->orderByRaw('id DESC')
 				->get();
 		}

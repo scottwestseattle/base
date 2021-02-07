@@ -1267,7 +1267,6 @@ class Spanish
 			}
 		}
 
-		//dump($lines);
 		return $lines;
 	}
 
@@ -1275,6 +1274,10 @@ class Spanish
 	{
 		// change dash to long dash so it won't be read as 'minus'
 		$text = str_replace('-', '–', trim($text));
+
+		// replace the quotes that cause read tracking problems
+        $quotes = array('“', '“', '”', '"', '‘', '’');
+        $text = str_replace($quotes, "'", $text);
 
 		// put the sentence splitter subs back to the originals
 		$text = str_replace(self::$_lineSplittersSubs, self::$_lineSplitters, $text);
