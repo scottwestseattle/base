@@ -128,4 +128,6 @@ return [
 'Subscribe' => 'Subscribe',
 'Locale' => 'Locale',
 'Unknown' => 'Unknown',
+'Favorite' => 'Favorite|Favorites',
+'Add New List' => 'Add New List',
 ];

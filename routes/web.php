@@ -71,6 +71,7 @@ Route::group(['prefix' => 'articles'], function () {
     // add / (create done in entries)
 	Route::get('/add/', [ArticleController::class, 'add']);
 	Route::post('/create/', [ArticleController::class, 'create']);
+	Route::get('/read/{entry}', [ArticleController::class, 'read']);
 
     // edit / (update done in entries)
 	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);
@@ -479,5 +480,43 @@ Route::group(['prefix' => 'definitions'], function () {
 	// catch-all last
 	//
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+
+});
+
+// GENERATED for Book model
+use App\Http\Controllers\Gen\BookController;
+
+// Books
+Route::group(['prefix' => 'books'], function () {
+	Route::get('/', [BookController::class, 'index']);
+	Route::get('/admin', [BookController::class, 'admin']);
+	Route::get('/index', [BookController::class, 'index']);
+
+	// view
+	Route::get('/view/{entry}', [BookController::class, 'view']);
+	Route::get('/read/{entry}', [BookController::class, 'read']);
+	Route::get('/show/{permalink}', [BookController::class, 'permalink']);
+
+	// add
+	Route::get('/add', [BookController::class, 'add']);
+	Route::post('/create', [BookController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{book}', [BookController::class, 'edit']);
+	Route::post('/update/{book}', [BookController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{book}', [BookController::class, 'publish']);
+	Route::post('/publishupdate/{book}', [BookController::class, 'updatePublish']);
+	Route::get('/publishupdate/{book}', [BookController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{book}', [BookController::class, 'confirmDelete']);
+	Route::post('/delete/{book}', [BookController::class, 'delete']);
+	Route::get('/delete/{book}', [BookController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [BookController::class, 'deleted']);
+	Route::get('/undelete/{id}', [BookController::class, 'undelete']);
 
 });

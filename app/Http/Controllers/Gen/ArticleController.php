@@ -16,7 +16,7 @@ use App\Entry;
 use App\Site;
 use App\User;
 
-define('PREFIX', 'articles');
+define('PREFIX', '/articles/');
 define('VIEWS', 'gen.articles');
 define('LOG_CLASS', 'ArticleController');
 
@@ -106,7 +106,7 @@ class ArticleController extends Controller
         $options['backLink'] = '/articles';
         $options['index'] = 'articles';
         $options['backLinkText'] = __('ui.Back to List');
-        $options['page_title'] = trans_choice('ui.Article', 1) . ' - ' . $record->title;
+        $options['page_title'] = trans_choice('proj.Article', 1) . ' - ' . $record->title;
 
         //todo: $next = Entry::getNextPrevEntry($record);
         //todo: $prev = Entry::getNextPrevEntry($record, /* next = */ false);
@@ -255,7 +255,7 @@ class ArticleController extends Controller
 			return back();
 		}
 
-		return redirect('/' . PREFIX . '/' . $record->permalink);
+		return redirect(PREFIX . $record->permalink);
 	}
 
     public function confirmDelete(Article $article)
@@ -366,6 +366,11 @@ class ArticleController extends Controller
 		}
 
 		return redirect($this->redirectTo);
+    }
+
+    public function read(Request $request, Entry $entry)
+    {
+        return $this->reader($entry, ['return' => PREFIX]);
     }
 
 }

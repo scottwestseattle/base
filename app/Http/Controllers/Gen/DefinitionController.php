@@ -1080,7 +1080,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			$msg = 'Error setting status';
+			$msg = 'Error toggling status';
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
 		}
 

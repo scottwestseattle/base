@@ -120,4 +120,9 @@ return [
 'All events deleted' => '所有事件已删除',
 'Subscribe to mailing list' => '订阅邮件列表',
 'siteTitle-cms' => '内容管理系统',
+'Set to finished' => '记录已完成',
+'Set to unfinished' => '记录设置为未完成',
+'Error toggling status' => '更改状态时出错',
+'New entry has been added' => '新条目已添加',
+'Error getting record list' => '获取记录列表时出错',
 ];

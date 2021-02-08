@@ -290,7 +290,12 @@ use App\Http\Controllers\Gen\TemplateController;
 // Templates
 Route::group(['prefix' => 'templates'], function () {
 	Route::get('/', [TemplateController::class, 'index']);
+	Route::get('/admin', [TemplateController::class, 'admin']);
 	Route::get('/index', [TemplateController::class, 'index']);
+
+	// view
+	Route::get('/view/{template}', [TemplateController::class, 'view']);
+	Route::get('/show/{permalink}', [TemplateController::class, 'permalink']);
 
 	// add
 	Route::get('/add', [TemplateController::class, 'add']);
@@ -313,10 +318,6 @@ Route::group(['prefix' => 'templates'], function () {
 	// undelete
 	Route::get('/deleted', [TemplateController::class, 'deleted']);
 	Route::get('/undelete/{id}', [TemplateController::class, 'undelete']);
-
-	// view
-	Route::get('/view/{entry}', [TemplateController::class, 'view']);
-	Route::get('/{permalink}', [TemplateController::class, 'permalink']);
 });
 ";
 

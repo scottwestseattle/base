@@ -21,4 +21,10 @@ return [
 'Examples' => 'Examples',
 'Conjugations' => 'Conjugations',
 'Edit Definition' => 'Edit Definition',
+'Add Definition' => 'Add Definition',
+'Text has been updated' => 'Text has been updated',
+'Dictionary Search' => 'Search Dictionary',
+'Vocabulary favorited from dictionary' => 'Vocabulary favorited from dictionary',
+'Latest Chapters Viewed' => 'Latest Chapters Viewed',
+'Chapter' => 'Chapter|Chapters',
 ];

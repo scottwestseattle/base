@@ -314,31 +314,7 @@ class EntryController extends Controller
 
     public function read(Request $request, Entry $entry)
     {
-		if (!blank($entry->deleted_at))
-		{
-			return $this->pageNotFound404('read/' . $entry->id);
-		}
-
-		$readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
-		Entry::countView($entry);
-
-		$record = $entry;
-		$lines = [];
-
-		$lines = Spanish::getSentences($record->title);
-		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
-		$lines = array_merge($lines, Spanish::getSentences($record->description));
-		//dd($lines);
-
-    	return view('shared.reader', [
-    	    'lines' => $lines,
-    	    'title' => $record->title,
-			'recordId' => $record->id,
-			'return' => '/articles',
-			'readLocation' => Auth::check() ? $readLocation : null,
-			'contentType' => 'Entry',
-			'languageCodes' => getSpeechLanguage($record->language_flag),
-		]);
+        return $this->reader($entry, ['return' => 'entries']);
     }
 
 }

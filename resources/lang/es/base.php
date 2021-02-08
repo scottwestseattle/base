@@ -120,4 +120,9 @@ return [
 'All events deleted' => 'Todos los eventos eliminados',
 'Subscribe to mailing list' => 'Suscríbir a la lista de correo',
 'siteTitle-cms' => 'Sistema de gestión de contenidos',
+'Set to finished' => 'Establecido como terminado',
+'Set to unfinished' => 'Establecido como inacabado',
+'Error toggling status' => 'Error al cambiar el estado',
+'New entry has been added' => 'Se ha agregado una nueva entrada',
+'Error getting record list' => 'Error al obtener la lista de registros',
 ];

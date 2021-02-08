@@ -128,4 +128,6 @@ return [
 'Subscribe' => '订阅',
 'Locale' => '区域设置',
 'Unknown' => '未知',
+'Favorite' => '喜爱|收藏夹',
+'Add New List' => '新增清单',
 ];

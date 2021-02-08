@@ -120,4 +120,9 @@ return [
 'All events deleted' => 'All events deleted',
 'Subscribe to mailing list' => 'Subscribe to mailing list',
 'siteTitle-cms' => 'Content Management System',
+'Set to finished' => 'Set to finished',
+'Set to unfinished' => 'Set to unfinished',
+'Error toggling status' => 'Error toggling status',
+'New entry has been added' => 'New entry has been added',
+'Error getting record list' => 'Error getting record list',
 ];

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('ui.View') . ' ' . $record->title)
+@section('title', trans_choice('proj.Definition', 1) . ' - ' . $record->title)
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
 @section('content')
 @php

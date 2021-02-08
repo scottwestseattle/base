@@ -9,15 +9,16 @@ use Auth;
 use Config;
 use Log;
 
-use App\Gen\Template;
+use App\Entry;
+use App\Gen\Book;
 use App\Site;
 use App\User;
 
-define('PREFIX', 'templates');
-define('VIEWS', 'gen.templates');
-define('LOG_CLASS', 'TemplateController');
+define('PREFIX', '/books/');
+define('VIEWS', 'gen.books');
+define('LOG_CLASS', 'BookController');
 
-class TemplateController extends Controller
+class BookController extends Controller
 {
 	private $redirectTo = PREFIX;
 
@@ -36,7 +37,8 @@ class TemplateController extends Controller
 
 		try
 		{
-			$records = Template::select()
+			$records = Entry::select()
+				->where('type_flag', ENTRY_TYPE_BOOK)
 				->orderBy('id', 'DESC')
 				->get();
 		}
@@ -52,24 +54,17 @@ class TemplateController extends Controller
 
     public function index(Request $request)
     {
-		$records = [];
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+		//todo: $this->saveVisitor(LOG_MODEL_BOOKS, LOG_PAGE_INDEX);
 
-		try
-		{
-			$records = Template::select()
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
-				->orderByRaw('id DESC')
-				->get();
-		}
-		catch (\Exception $e)
-		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
-		}
+		$records = Entry::getRecentList(ENTRY_TYPE_BOOK, 5);
+		$books = Entry::getBookTags();
 
-		return view(VIEWS . '.index', [
+    	return view(VIEWS . '.index', [
+			'books' => $books,
 			'records' => $records,
+			'page_title' => 'Books',
+			'index' => 'books',
+			'isIndex' => true,
 		]);
     }
 
@@ -81,7 +76,7 @@ class TemplateController extends Controller
 
     public function create(Request $request)
     {
-		$record = new Template();
+		$record = new Book();
 
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
@@ -105,54 +100,86 @@ class TemplateController extends Controller
 
     public function permalink(Request $request, $permalink)
     {
-		$record = null;
+ 		$record = null;
 		$permalink = alphanum($permalink);
+
         $releaseFlag = getReleaseFlagForUserLevel();
         $releaseFlagCondition = getConditionForUserLevel();
 
 		try
 		{
-			$record = Template::select()
-				//->where('site_id', SITE_ID)
+			$record = Entry::select()
 				->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
 				->first();
 
 			if (blank($record))
-			    throw new \Exception('permalink not found');
+			    throw new \Exception('book not found');
+
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Record not found'), ['permalink' => $permalink]);
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Book not found'), ['permalink' => $permalink]);
     		return redirect($this->redirectTo);
 		}
 
-		return view(VIEWS . '.view', [
-			'record' => $record,
-			]);
+        return $this->view($record);
 	}
 
-	public function view(Template $template)
+	public function view(Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
+
+		$next = null;
+		$prev = null;
+		$options['wordCount'] = null;
+
+		//todo: $id = isset($record) ? $record->id : null;
+		//todo: $visitor = $this->saveVisitor(LOG_MODEL_ENTRIES, LOG_PAGE_PERMALINK, $id);
+		//todo: $isRobot = isset($visitor) && $visitor->robot_flag;
+
+		if (isset($record))
+		{
+			$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+			Entry::countView($record);
+			$options['wordCount'] = str_word_count($record->description); // count it before <br/>'s are added
+			$record->description = nl2br($record->description);
+		}
+		else
+		{
+			return $this->pageNotFound404($permalink);
+		}
+
+        $options['backLink'] = '/articles';
+        $options['index'] = 'articles';
+        $options['backLinkText'] = __('ui.Back to List');
+        $options['page_title'] = trans_choice('proj.Article', 1) . ' - ' . $record->title;
+
+        //todo: $next = Entry::getNextPrevEntry($record);
+        //todo: $prev = Entry::getNextPrevEntry($record, /* next = */ false);
+
+		return view(VIEWS . '.view', [
+			'options' => $options,
+			'record' => $record,
+			]);
 
 		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
     }
 
-	public function edit(Template $template)
+	public function edit(Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			]);
     }
 
-    public function update(Request $request, Template $template)
+    public function update(Request $request, Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
 
 		$isDirty = false;
 		$changes = '';
@@ -178,21 +205,21 @@ class TemplateController extends Controller
 			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect('/' . PREFIX . '/view/' . $record->id);
+		return redirect(PREFIX . 'view/' . $record->id);
 	}
 
-    public function confirmDelete(Template $template)
+    public function confirmDelete(Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
 
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,
 		]);
     }
 
-    public function delete(Request $request, Template $template)
+    public function delete(Request $request, Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
 
 		try
 		{
@@ -214,7 +241,7 @@ class TemplateController extends Controller
 
 		try
 		{
-			$record = Template::withTrashed()
+			$record = Entry::withTrashed()
 				->where('id', $id)
 				->first();
 
@@ -236,7 +263,7 @@ class TemplateController extends Controller
 
 		try
 		{
-			$records = Template::withTrashed()
+			$records = Entry::withTrashed()
 				->whereNotNull('deleted_at')
 				->get();
 		}
@@ -250,9 +277,9 @@ class TemplateController extends Controller
 		]);
     }
 
-    public function publish(Request $request, Template $template)
+    public function publish(Request $request, Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
 
 		return view(VIEWS . '.publish', [
 			'record' => $record,
@@ -261,9 +288,9 @@ class TemplateController extends Controller
 		]);
     }
 
-    public function updatePublish(Request $request, Template $template)
+    public function updatePublish(Request $request, Entry $entry)
     {
-		$record = $template;
+		$record = $entry;
 
         if ($request->isMethod('get'))
         {
@@ -289,6 +316,11 @@ class TemplateController extends Controller
 		}
 
 		return redirect($this->redirectTo);
+    }
+
+    public function read(Request $request, Entry $entry)
+    {
+        return $this->reader($entry, ['return' => PREFIX]);
     }
 
 }

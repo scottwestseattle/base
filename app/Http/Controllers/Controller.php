@@ -9,7 +9,10 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
 use App;
+use App\Entry;
+use App\Gen\Spanish;
 use App\Site;
+use Auth;
 
 define('SITE_ID', 0);
 
@@ -57,4 +60,29 @@ class Controller extends BaseController
 		session(['locale' => $locale]);
 		App::setLocale($locale);
 	}
+
+    static public function reader(Entry $entry, $options)
+    {
+        $record = $entry;
+		$readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+		Entry::countView($entry);
+
+		$record = $entry;
+		$lines = [];
+
+		$lines = Spanish::getSentences($record->title);
+		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
+		$lines = array_merge($lines, Spanish::getSentences($record->description));
+		//dd($lines);
+
+    	return view('shared.reader', [
+    	    'lines' => $lines,
+    	    'title' => $record->title,
+			'recordId' => $record->id,
+			'options' => $options,
+			'readLocation' => Auth::check() ? $readLocation : null,
+			'contentType' => 'Entry',
+			'languageCodes' => getSpeechLanguage($record->language_flag),
+		]);
+    }
 }
