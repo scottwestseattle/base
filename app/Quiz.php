@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+
 use Auth;
 use App;
 use App\User;
@@ -201,11 +204,11 @@ class Quiz
 		];
 
 		// options
-		$options = Tools::getOptionArray('font-size="150%"');
-		$options['prompt'] = Tools::getSafeArrayString($options, 'prompt', 'Select the correct answer');
-		$options['prompt-reverse'] = Tools::getSafeArrayString($options, 'prompt-reverse', 'Select the correct question');
-		$options['question-count'] = Tools::getSafeArrayInt($options, 'question-count', 0);
-		$options['font-size'] = Tools::getSafeArrayString($options, 'font-size', '120%');
+		$options = self::getOptionArray('font-size="150%"');
+		$options['prompt'] = Arr::get($options, 'prompt', 'Select the correct answer');
+		$options['prompt-reverse'] = Arr::get($options, 'prompt-reverse', 'Select the correct question');
+		$options['question-count'] = Arr::get($options, 'question-count', 0);
+		$options['font-size'] = Arr::get($options, 'font-size', '120%');
 
 		// defaults
 		if ($reviewType == REVIEWTYPE_MC_RANDOM)
@@ -226,4 +229,42 @@ class Quiz
 
 		return $rc;
 	}
+
+    static public function getOptionArray($options)
+    {
+		$arr = [];
+
+		// prompt="Select the correct capital"; reverse-prompt="Select the country for the capital"; question-count=20; text-size="medium";
+		$key = '/([a-zA-Z\-^=]*)=\"([^\"]*)/i';
+		if (preg_match_all($key, $options, $matches))
+		{
+			if (count($matches) > 2)
+			{
+				foreach($matches[1] as $key => $data)
+				{
+					$arr[$data] = $matches[2][$key];
+				}
+			}
+		}
+
+        return $arr;
+    }
+
+    static public function getOption($options, $key)
+    {
+		$r = '';
+
+		// prompt="Select the correct capital"; reverse-prompt="Select the country for the capital"; question-count=20; text-size="medium";
+		$key = "/" . $key . '=\"([^\"]*)/';
+		if (preg_match($key, $options, $matches))
+		{
+			if (count($matches) > 1)
+			{
+				$r = $matches[1];
+			}
+		}
+
+        return $r;
+    }
+
 }

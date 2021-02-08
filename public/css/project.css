@@ -594,11 +594,6 @@ td.icon {
 	width: 40px;
 }
 
-.quizStats {
-	font-size:13px;
-	color:#4682b4; /* steelblue */
-}
-
 .type-not-set-color {
 	background-color: red;
 	color: white;
@@ -723,3 +718,41 @@ h6 {
 	font-size:.8em;
 	display: inline;
 }
+
+/***********************************************************
+
+ Quiz Styles
+
+************************************************************/
+
+.quiz-panel {
+	clear: both;
+	display: none;
+	margin: 10px 0 20px 0;
+}
+
+.quiz-panel-content {
+	min-height: 400px;
+}
+
+.quizStats {
+	font-size:13px;
+	color:#4682b4; /* steelblue */
+}
+
+.btn-quiz {
+	margin-top:10px;
+}
+
+.btn-quiz-mc3 {
+	margin-bottom:10px;
+	font-size: 1em;
+	width:100%;
+ }
+
+.btn-quiz-mc1 {
+	margin-right:5px;
+	margin-bottom:5px;
+	font-size: .8em;
+ }
+

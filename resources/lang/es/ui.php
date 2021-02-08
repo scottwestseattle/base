@@ -130,4 +130,5 @@ return [
 'Unknown' => 'Desconocido',
 'Favorite' => 'Favorito|Favoritos',
 'Add New List' => 'Agregar Lista Nueva',
+'Continue' => 'Continuar',
 ];

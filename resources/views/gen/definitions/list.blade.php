@@ -7,7 +7,7 @@
     <a class="btn btn-success btn-sm btn-nav-top" role="button" href="/favorites">
         @LANG('proj.Back to Lists')<span class="glyphicon glyphicon-button-back-to"></span>
     </a>
-    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/defintions/review/{{$tag->id}}">
+    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
         @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
     </a>
     <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}/1">

@@ -13,7 +13,7 @@ use Log;
 
 use App\Gen\Definition;
 use App\Gen\Spanish;
-
+use App\Quiz;
 use App\Site;
 use App\Tag;
 use App\User;

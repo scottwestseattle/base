@@ -116,7 +116,7 @@
                                     <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
                                 </div>
                                 <div class="float-left" style="margin-top:2px; margin-right: 10px;">
-                                    <div class=""><a href="/defintions/stats/{{$record->id}}">{{str_word_count($record->examples)}} {{trans_choice('ui.Word', 2)}}</a></div>
+                                    <div class=""><a href="/definitions/stats/{{$record->id}}">{{str_word_count($record->examples)}} {{trans_choice('ui.Word', 2)}}</a></div>
                                 </div>
                                 <div style="float:left;">
                                     @if (App\User::isAdmin())

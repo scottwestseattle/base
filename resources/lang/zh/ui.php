@@ -130,4 +130,5 @@ return [
 'Unknown' => '未知',
 'Favorite' => '喜爱|收藏夹',
 'Add New List' => '新增清单',
+'Continue' => '继续',
 ];

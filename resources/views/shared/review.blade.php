@@ -1,5 +1,5 @@
 @extends('layouts.review')
-
+@section('title', __('proj.Review'))
 @section('content')
 
 <!-------------------------------------------------------->
@@ -7,20 +7,20 @@
 <!-------------------------------------------------------->
 <div class="data-misc"
 	data-max="{{$sentenceCount}}"
-	data-prompt="@LANG('lesson.' . $settings['options']['prompt'])"
-	data-prompt-reverse="@LANG('lesson.' . $settings['options']['prompt-reverse'])"
+	data-prompt="@LANG('quiz.' . $settings['options']['prompt'])"
+	data-prompt-reverse="@LANG('quiz.' . $settings['options']['prompt-reverse'])"
 	data-question-count="{{$settings['options']['question-count']}}"
-	data-quiztext-round="@LANG('content.Round')"
-	data-quiztext-correct="@LANG('content.Correct')"
-	data-quiztext-question="@LANG('content.Question')"
+	data-quiztext-round="@LANG('quiz.Round')"
+	data-quiztext-correct="@LANG('quiz.Correct')"
+	data-quiztext-question="{{trans_choice('quiz.Question', 1)}}"
 	data-ismc="{{$isMc}}"
-	data-quiztext-of="@LANG('content.of')"
-	data-quiztext-correct-answer="@LANG('content.Correct!')"
-	data-quiztext-wrong-answer="@LANG('content.Wrong!')"
-	data-quiztext-marked-wrong="@LANG('content.Answer marked as wrong')"	
-	data-quiztext-override-correct="@LANG('content.Change to Correct')"
-	data-quiztext-override-wrong="@LANG('content.Change to Wrong')"
-	data-quiztext-score-changed="@LANG('content.Score Changed')"
+	data-quiztext-of="@LANG('quiz.of')"
+	data-quiztext-correct-answer="@LANG('quiz.Correct!')"
+	data-quiztext-wrong-answer="@LANG('quiz.Wrong!')"
+	data-quiztext-marked-wrong="@LANG('quiz.Answer marked as wrong')"
+	data-quiztext-override-correct="@LANG('quiz.Change to Correct')"
+	data-quiztext-override-wrong="@LANG('quiz.Change to Wrong')"
+	data-quiztext-score-changed="@LANG('quiz.Score Changed')"
 @if (false)
 	data-quiztype="{{$record->type_flag}}"
 	data-lessonid="{{$record->id}}"
@@ -59,14 +59,14 @@
 
 		<!-------------------------------------------------------->
 		<!-- Run-time Stats -->
-		<!-------------------------------------------------------->		
+		<!-------------------------------------------------------->
 		<div id="stats">
 			<div class="middle mt-1 mr-1"><a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a></div>
 			<span id="statsCount" class="mr-2"></span>
 			<span id="statsScore"></span>
 			<span id="statsAlert"></span><!-- what is this? -->
 		</div>
-		
+
 
 	</div>
 
@@ -131,7 +131,7 @@
 			<div><button id="3" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
 			<div><button id="4" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
 		</div>
-		
+
 		</fieldset>
 
 	<!----------------------------------------------------------------------------->
@@ -142,23 +142,23 @@
 
 		<div class="btn-panel-bottom pb-2">
 			<button class="btn btn-success btn-quiz" onclick="event.preventDefault(); nextAttempt()" id="button-next-attempt">@LANG('ui.Next')</button>
-			<input class="btn btn-default btn-quiz " type="button" value="@LANG('content.I KNOW IT') (Alt+k)" onclick="checkAnswer(2)" id="button-know" style="display: default; background-color: green; color: white;">
-			<input class="btn btn-default btn-quiz" type="button" value="@LANG('content.I DONT KNOW') (Alt+d)" onclick="checkAnswer(3)" id="button-dont-know" style="display: none; background-color: red; color: white;">
-			<input class="btn btn-default btn-quiz" type="button" value="@LANG('content.Change to Wrong') (Alt+c)" onclick="override()" id="button-override" style="display: none;">
+			<input class="btn btn-default btn-quiz " type="button" value="@LANG('quiz.I KNOW IT') (Alt+k)" onclick="checkAnswer(2)" id="button-know" style="display: default; background-color: green; color: white;">
+			<input class="btn btn-default btn-quiz" type="button" value="@LANG('quiz.I DONT KNOW') (Alt+d)" onclick="checkAnswer(3)" id="button-dont-know" style="display: none; background-color: red; color: white;">
+			<input class="btn btn-default btn-quiz" type="button" value="@LANG('quiz.Change to Wrong') (Alt+c)" onclick="override()" id="button-override" style="display: none;">
 		</div>
 
 		<div class="form-group">
-			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('content.Check Typed Answer')</button>
-			<button class="btn btn-warning btn-quiz" onclick="event.preventDefault(); stopQuiz()" id="button-stop">@LANG('content.Stop Review')</button>
-			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); showAnswerOptionButtons()" id="button-show-options">@LANG('content.Show Choices')</button>
-			<button class="btn btn-success btn-quiz" onclick="event.preventDefault(); showAnswer()" id="button-show-answer">@LANG('content.Show Answer')</button>
+			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
+			<button class="btn btn-warning btn-quiz" onclick="event.preventDefault(); stopQuiz()" id="button-stop">@LANG('quiz.Stop Review')</button>
+			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); showAnswerOptionButtons()" id="button-show-options">@LANG('quiz.Show Choices')</button>
+			<button class="btn btn-success btn-quiz" onclick="event.preventDefault(); showAnswer()" id="button-show-answer">@LANG('quiz.Show Answer')</button>
 			<div class="mt-2 ml-1">
 				<input type="checkbox" name="checkbox-hide-options" id="checkbox-hide-options" onclick="displayAnswerButtons()" />
-				<label for="checkbox-hide-options" class="checkbox-xs" onclick="displayAnswerButtons()">@LANG('content.Hide choices before answering')</label>
+				<label for="checkbox-hide-options" class="checkbox-xs" onclick="displayAnswerButtons()">@LANG('quiz.Hide choices before answering')</label>
 			</div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
-				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion();">@LANG('content.Reverse question and answer')</label>
+				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion();">@LANG('quiz.Reverse question and answer')</label>
 			</div>
 		</div>
 
@@ -175,17 +175,17 @@
 		<div class="form-group hide-for-mc">
 			<div>
 				<input type="checkbox" name="checkbox-type-answers" id="checkbox-type-answers" class="" onclick="quiz.typeAnswersClick()" />
-				<label for="checkbox-type-answers" class="checkbox-big-label" onclick="quiz.typeAnswersClick()">@LANG('content.Type Answers')</label>
+				<label for="checkbox-type-answers" class="checkbox-big-label" onclick="quiz.typeAnswersClick()">@LANG('quiz.Type Answers')</label>
 			</div>
 
 			<div>
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="quiz.flip()" />
-				<label for="checkbox-flip" class="checkbox-big-label">@LANG('content.Flip Question/Answer')</label>
+				<label for="checkbox-flip" class="checkbox-big-label">@LANG('quiz.Flip Question/Answer')</label>
 			</div>
 
 			<div>
 				<input type="checkbox" name="checkbox-show-answers" id="checkbox-show-answers" onclick="quiz.showAnswersClick()" />
-				<label for="checkbox-show-answers" class="checkbox-big-label">@LANG('content.Show Answers')</label>
+				<label for="checkbox-show-answers" class="checkbox-big-label">@LANG('quiz.Show Answers')</label>
 			</div>
 		</div>
 	</div>
@@ -201,14 +201,14 @@
 		<div class="quiz-panel-content">
 			<h2>{{$parentTitle}}</h2>
 			<!-- span style="margin:20px; font-size:75px;" class="glyphicon glyphicon-star-empty bright-blue-fg"></span -->
-			<img style="margin:20px;" height="100" src="/img/quiz-start.jpg" />
-			<h3>@LANG('content.Number of Questions')</h3>
+			<img style="margin:20px;" height="100" src="/img/quiz/quiz-start.jpg" />
+			<h3>@LANG('quiz.Number of Questions')</h3>
 			<h1 id="panelStartCount"></h1>
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); quiz.start()" id="button-start">@LANG('content.Start Review')</button>
-			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>			
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); quiz.start()" id="button-start">@LANG('quiz.Start Review')</button>
+			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 
 	</div>
@@ -219,17 +219,17 @@
 	<div id="panel-endofround" class="quiz-panel text-center">
 
 		<div class="quiz-panel-content">
-			<span class="hidden" id="panelResultsRoundBase">@LANG('content.End of Round')</span>
+			<span class="hidden" id="panelResultsRoundBase">@LANG('quiz.End of Round')</span>
 			<h1 id="panelResultsRound"></h1>
 			<!-- span style="margin:20px; font-size:75px;" class="glyphicon glyphicon-stats bright-blue-fg"></span -->
-			<img style="margin:20px;" height="100" src="/img/quiz-endofround.png" />
-			<h3>@LANG('content.Correct Answers')</h3>
+			<img style="margin:20px;" height="100" src="/img/quiz/quiz-endofround.png" />
+			<h3>@LANG('quiz.Correct Answers')</h3>
 			<h1 id="panelResultsCount"></h1>
 			<h3 id="panelResultsPercent"></h3>
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); continueQuiz()" id="button-continue">@LANG('content.Continue')</button>
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); continueQuiz()" id="button-continue">@LANG('quiz.Continue')</button>
 			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); stopQuiz()" id="button-stop">@LANG('ui.Quit')</button>
 		</div>
 
@@ -241,18 +241,18 @@
 	<div id="panel-endofquiz" class="quiz-panel text-center">
 
 		<div class="quiz-panel-content">
-			<h1 class="" id="">@LANG('content.End of Review')</h1>
-			<p id="panelEndofquizFinished">@LANG('content.All questions answered correctly.')</p>
-			<p id="panelEndofquizStopped">@LANG('content.Review was stopped.')</p>
+			<h1 class="" id="">@LANG('quiz.End of Review')</h1>
+			<p id="panelEndofquizFinished">@LANG('quiz.All questions answered correctly.')</p>
+			<p id="panelEndofquizStopped">@LANG('quiz.Review was stopped')</p>
 			<!-- span style="margin:20px; font-size:75px;" class="glyphicon glyphicon-thumbs-up bright-blue-fg"></span -->
-			<img style="margin-bottom:20px;" width="100" src="/img/quiz-end.jpg" />
-			<h3>@LANG('content.Scores by Round')</h3>
-			<span class="hidden" id="roundsStart">@LANG('content.None Completed')</span>
+			<img style="margin-bottom:20px;" width="100" src="/img/quiz/quiz-end.jpg" />
+			<h3>@LANG('quiz.Scores by Round')</h3>
+			<span class="hidden" id="roundsStart">@LANG('quiz.None Completed')</span>
 			<span id="rounds"></span>
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('content.Continue')</button>
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Continue')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 
