@@ -1087,4 +1087,25 @@ class DefinitionController extends Controller
 		return __('base.' . $msg);
     }
 
+	public function find(Request $request, $text)
+    {
+		$record = Definition::search($text);
+		if (isset($record))
+		{
+			// update the view timestamp so it will move to the back of the list
+			//todo: $record->updateLastViewedTime();
+
+			// format the examples to display as separate sentences
+			$record->examples = splitSentences($record->examples);
+
+			$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
+		}
+
+		return view(VIEWS . '.view', [
+			'record' => isset($record) ? $record : null,
+			'word' => alphanum($text, true),
+			'favoriteLists' => null,
+			]);
+	}
+
 }

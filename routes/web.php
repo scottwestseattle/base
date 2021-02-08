@@ -230,6 +230,10 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/', [EntryController::class, 'index']);
 	Route::get('/index', [EntryController::class, 'index']);
 
+	// stats
+	Route::get('/stats/{entry}', [EntryController::class, 'stats']);
+	Route::get('/superstats', [EntryController::class, 'superstats']);
+
 	// view
 	Route::get('/view/{entry}', [EntryController::class, 'view']);
 	Route::get('/read/{entry}', [EntryController::class, 'read']);

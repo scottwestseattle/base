@@ -317,4 +317,71 @@ class EntryController extends Controller
         return $this->reader($entry, ['return' => 'entries']);
     }
 
+    public function stats(Request $request, Entry $entry)
+    {
+		$record = $entry;
+
+		$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+
+		$stats = Spanish::getWordStats($record->description);
+
+		// count possible verbs
+		$possibleVerbs = 0;
+		foreach($stats['sortCount'] as $key => $value)
+		{
+			if (Str::endsWith($key, ['ar', 'er', 'ir']))
+				$possibleVerbs++;
+		}
+
+    	return view('entries.stats', [
+			'record' => $record,
+			'stats' => $stats,
+			'possibleVerbs' => $possibleVerbs,
+			'index' => $record->type_flag == ENTRY_TYPE_ARTICLE ? 'articles' : 'books',
+		]);
+    }
+
+    public function superstats(Request $request)
+    {
+		$words = [];
+		$i = 0;
+		$wordCount = 0;
+		$articleCount = 0;
+		$stats = null;
+
+		$records = Entry::getRecentList(ENTRY_TYPE_BOOK);
+		foreach($records as $record)
+		{
+			if ($record->language_flag == LANGUAGE_ES)
+			{
+				$stats = Spanish::getWordStats($record->description, $words);
+				$wordCount += $stats['wordCount'];
+				$words = $stats['sortAlpha'];
+
+				//dump($stats);
+
+				$articleCount++;
+				//if ($articleCount > 1) break;
+			}
+		}
+
+		// count possible verbs
+		$possibleVerbs = 0;
+		foreach($stats['sortCount'] as $key => $value)
+		{
+			if (Str::endsWith($key, ['ar', 'er', 'ir']))
+				$possibleVerbs++;
+		}
+
+		$stats['wordCount'] = $wordCount;
+
+    	return view('entries.stats', [
+			'record' => null,
+			'stats' => $stats,
+			'articleCount' => $articleCount,
+			'possibleVerbs' => $possibleVerbs,
+			'index' => $record->type_flag == ENTRY_TYPE_ARTICLE ? 'articles' : 'books',
+		]);
+    }
+
 }

@@ -125,4 +125,6 @@ return [
 'Error toggling status' => '更改状态时出错',
 'New entry has been added' => '新条目已添加',
 'Error getting record list' => '获取记录列表时出错',
+'Add Tag' => '添加标签',
+'Edit Tag' => '编辑标签',
 ];

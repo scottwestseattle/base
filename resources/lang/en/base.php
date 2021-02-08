@@ -125,4 +125,6 @@ return [
 'Error toggling status' => 'Error toggling status',
 'New entry has been added' => 'New entry has been added',
 'Error getting record list' => 'Error getting record list',
+'Add Tag' => 'Add Tag',
+'Edit Tag' => 'Edit Tag',
 ];

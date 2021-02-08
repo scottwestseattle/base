@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('ui.Publish') . ' ' . trans_choice('view.Tag', 1))
+@section('title', __('base.Publish Tag'))
 @section('menu-submenu')@component('tags.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Publish')}} {{trans_choice('view.Tag', 1)}}</h1>
+	<h1>{{__('base.Publish Tag')}}</h1>
 
 	<form method="POST" action="/tags/publishupdate/{{$record->id}}">
 

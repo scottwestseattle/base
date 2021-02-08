@@ -27,4 +27,6 @@ return [
 'Vocabulary favorited from dictionary' => '词典中的词汇收藏夹',
 'Latest Chapters Viewed' => '最新章节浏览',
 'Chapter' => '章节|章',
+'Back to Lists' => '返回清单',
+'Flashcards' => '练习卡',
 ];

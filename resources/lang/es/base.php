@@ -125,4 +125,6 @@ return [
 'Error toggling status' => 'Error al cambiar el estado',
 'New entry has been added' => 'Se ha agregado una nueva entrada',
 'Error getting record list' => 'Error al obtener la lista de registros',
+'Add Tag' => 'Agregar etiqueta',
+'Edit Tag' => 'Editar etiqueta',
 ];

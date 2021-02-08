@@ -1,10 +1,11 @@
-@extends('layouts.app')
-@section('title', trans_choice('proj.Definition', 1) . ' - ' . $record->title)
-@section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
-@section('content')
 @php
+    $title = isset($record->title) ? $record->title : __('proj.not found');
     $prefix = 'gen.definitions';
 @endphp
+@extends('layouts.app')
+@section('title', trans_choice('proj.Find Definition', 1) . ' - ' . $title)
+@section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
+@section('content')
 	@if (isset($fromDictionary))
 	<div class="page-nav-buttons">
 		<a class="btn btn-success btn-sm btn-nav-top" role="button" href="/{{$prefix}}/">
@@ -69,8 +70,8 @@
 	</div>
 
 	<div class="">
-		<p style="font-size:1.2em;">Not found in dictionary</p>
-		<p><a target='_blank' href="/definitions/add/{{$word}}">Add</a></p>
+		<p style="font-size:1.2em;">{{__('proj.Not found in dictionary')}}</p>
+		<p><a target='_blank' href="/definitions/add/{{$word}}">{{__('ui.Add')}}</a></p>
 		<p><a target='_blank' href="https://translate.google.com/#view=home&op=translate&sl=es&tl=en&text={{$word}}">Google Translate: {{$word}}</a></p>
 		<p><a target='_blank' href="https://www.spanishdict.com/translate/{{$word}}">Span¡shD!ct.com: {{$word}}</a></p>
 	</div>

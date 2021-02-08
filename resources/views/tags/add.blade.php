@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('ui.Add') . ' ' . trans_choice('view.Tag', 1))
+@section('title', __('base.Add Tag'))
 @section('menu-submenu')@component('tags.menu-submenu', ['prefix' => 'tags'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.Add')}} {{trans_choice('view.Tag', 1)}}</h1>
+	<h1>{{__('base.Add Tag')}}</h1>
 	<form method="POST" action="/tags/create">
 
 		<div class="form-group">

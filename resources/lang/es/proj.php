@@ -27,4 +27,6 @@ return [
 'Vocabulary favorited from dictionary' => 'Vocabulario favorito del diccionario',
 'Latest Chapters Viewed' => 'Últimos capítulos vistos',
 'Chapter' => 'Capítulo | Capítulos',
+'Back to Lists' => 'Volver a las listas',
+'Flashcards' => 'Tarjetas',
 ];

@@ -27,4 +27,6 @@ return [
 'Vocabulary favorited from dictionary' => 'Vocabulary favorited from dictionary',
 'Latest Chapters Viewed' => 'Latest Chapters Viewed',
 'Chapter' => 'Chapter|Chapters',
+'Back to Lists' => 'Back to Lists',
+'Flashcards' => 'Flashcards',
 ];

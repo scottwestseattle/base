@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('ui.View Tag'))
+@section('title', __('base.View Tag'))
 @section('menu-submenu')@component('tags.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.View Tag')}}</h1>
+	<h1>{{__('base.View Tag')}}</h1>
 
 	<h3 name="title">{{$record->name }}</h3>
 
