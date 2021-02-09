@@ -127,4 +127,5 @@ return [
 'Error getting record list' => '获取记录列表时出错',
 'Add Tag' => '添加标签',
 'Edit Tag' => '编辑标签',
+'Entry has been updated' => '病毒时代的爱好',
 ];

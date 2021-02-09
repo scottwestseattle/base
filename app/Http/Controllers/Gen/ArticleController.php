@@ -29,6 +29,7 @@ class ArticleController extends Controller
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
             'add', 'edit',
+            'read',
         ]);
 
 		parent::__construct();
@@ -140,7 +141,7 @@ class ArticleController extends Controller
 		$record->release_flag 		= RELEASEFLAG_PUBLIC;
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
-		$record->type_flag 			= $request->type_flag;
+		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
 
 		try

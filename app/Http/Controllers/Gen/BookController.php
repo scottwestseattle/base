@@ -78,6 +78,7 @@ class BookController extends Controller
     {
 		$record = new Book();
 
+        die('not implemented yet');
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
 		$record->description	= trimNull($request->description);

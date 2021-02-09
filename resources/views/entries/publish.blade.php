@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('ui.Publish') . ' ' . trans_choice('view.Entry', 1))
+@section('title', __('base.Publish Entry'))
 @section('menu-submenu')@component('entries.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Publish')}} {{trans_choice('view.Entry', 1)}}</h1>
+	<h1>{{__('base.Publish Entry')}}</h1>
 
 	<form method="POST" action="/entries/publishupdate/{{$record->id}}">
 

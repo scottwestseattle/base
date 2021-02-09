@@ -18,6 +18,11 @@
 			<textarea name="description" class="form-control">{{$record->description}}</textarea>
 		</div>
 
+		@component('components.control-entry-types', [
+		    'current_type' => $record->type_flag,
+		    'entryTypes' => App\Entry::getEntryTypes()
+		    ])@endcomponent
+
 		<div class="submit-button">
 			<button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
 		</div>

@@ -21,7 +21,8 @@
 	data-contentid="{{$recordId}}"
 	data-isadmin="{{isAdmin() ? 1 : 0}}"
 	data-userid="{{Auth::id()}}"
-	data-readlocation={{$readLocation}}
+	data-readlocation="{{$readLocation}}"
+	data-useKeyboard="1"
 ></div>
 
 	<!-------------------------------------------------------->

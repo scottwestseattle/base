@@ -708,7 +708,7 @@ h6 {
   font-size: 14px;
 }
 
-.mini-border {
+.mini-border, select {
     border: 1px solid DarkGray;
     padding: 2px;
     border-radius: 4px;

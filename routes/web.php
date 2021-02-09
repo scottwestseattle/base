@@ -260,9 +260,11 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/deleted', [EntryController::class, 'deleted']);
 	Route::get('/undelete/{id}', [EntryController::class, 'undelete']);
 
+    // custom
+    Route::get('/set-read-location/{entry}/{location}', 'EntryController@setReadLocationAjax');
+
 	// permalink
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
-
 });
 
 // GENERATED for Site model
@@ -424,6 +426,7 @@ Route::group(['prefix' => 'dictionary'], function () {
 // Definitions
 Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
 
 // Definitions

@@ -12,7 +12,8 @@
 	data-contentid="1"
 	data-isadmin="0"
 	data-userid="0"
-	data-readlocation=0
+	data-readlocation="0"
+	data-useKeyboard="0"
 ></div>
 
 <!-------------------------------------------------------->
@@ -62,7 +63,7 @@
             <a href="" onclick="copySnippet(event)" class="ml-1">@LANG('ui.Copy')<a/>
         </span>
 
-        @if (true /* !isMobile() */)
+        @if (!isMobile())
     	    @component('components.control-accent-chars-esp', ['labelClass' => 'white', 'visible' => true, 'target' => 'textEdit'])@endcomponent
         @endif
 
@@ -106,7 +107,7 @@
                     <tbody>
                         <tr>
                             <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
-                                <a href="" onclick="copyToReader(event, '#{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->examples, 200)}}</a>
+                                <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->examples, 200)}}</a>
                                 <input id="{{$record->id}}" type="hidden" value="{{$record->examples}}" />
                             </td>
                         </tr>
@@ -205,21 +206,21 @@ function setEdit()
 {
     return;
 
-    console.log('setEdit');
-    $('#buttonEdit').text('Show');
-    $('#textEdit').show();
-    $('#textShow').hide();
+    //console.log('setEdit');
+    //$('#buttonEdit').text('Show');
+    //$('#textEdit').show();
+    //$('#textShow').hide();
 }
 
 function setShow()
 {
     return;
 
-    console.log('setShow');
-    $('#textShow').html($('#textEdit').val())
-    $('#buttonEdit').text('Edit');
-    $('#textEdit').hide();
-    $('#textShow').show();
+    //console.log('setShow');
+    //$('#textShow').html($('#textEdit').val())
+    //$('#buttonEdit').text('Edit');
+    //$('#textEdit').hide();
+    //$('#textShow').show();
 }
 
 </script>

@@ -127,4 +127,5 @@ return [
 'Error getting record list' => 'Error getting record list',
 'Add Tag' => 'Add Tag',
 'Edit Tag' => 'Edit Tag',
+'Entry has been updated' => 'Entry has been updated',
 ];

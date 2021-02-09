@@ -309,6 +309,9 @@ function playRecording()
 
 function copyToReader(event, fromId, toId, scrollClass)
 {
+    var id = fromId;
+    fromId = '#' + fromId;
+
     event.preventDefault();
     //console.log('from: ' + $(fromId).val());
     $(toId).val($(fromId).val());
@@ -316,4 +319,7 @@ function copyToReader(event, fromId, toId, scrollClass)
 	var e = $(scrollClass).first();
 	var position = e.offset();
     window.scroll(position.left, position.top - 60);
+
+    // set the cookie to keep it active
+	ajaxexec('/snippets/cookie/' + id + '');
 }

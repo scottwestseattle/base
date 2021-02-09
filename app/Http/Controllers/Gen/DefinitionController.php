@@ -42,6 +42,7 @@ class DefinitionController extends Controller
 			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs',
 
 			'favorites',
+			'setSnippetCookie',
         ]);
 
 		parent::__construct();
@@ -425,7 +426,7 @@ class DefinitionController extends Controller
 		        throw new \Exception($msg); // nope!
 
 			$record->save();
-            Cookie::queue('snippetId', $record->id, 525600);
+			self::setSnippetCookie($record->id);
 
 			$msg = $exists ? __("proj.$tag has been updated") : __("proj.New $tag has been saved");
 			logInfo($f, $msg, ['title' => $record->title, 'id' => $record->id]);
@@ -441,6 +442,11 @@ class DefinitionController extends Controller
 		}
 
 		return back();
+    }
+
+	static public function setSnippetCookie($id)
+    {
+        Cookie::queue('snippetId', intval($id), MS_YEAR);
     }
 
 	public function snippets()
@@ -495,10 +501,12 @@ class DefinitionController extends Controller
     		    $languageFlag = $record->language_flag;
         }
 
+        $options['return'] = '/practice';
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => 'Practice Text',
-    	    'return' => '/practice',
+    	    'options' => $options,
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 		]);

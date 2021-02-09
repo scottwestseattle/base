@@ -31,6 +31,7 @@ var _bottomPanelHeight; // height of bottom button panel
 var _incLine = 0; // helper to get to a starting line
 // track read time
 var _startTime = null;
+var _useKeyboard = true;
 
 $(document).ready(function() {
 
@@ -70,18 +71,23 @@ $(window).on('unload', function() {
 });
 
 $(document).keyup(function(event) {
-    if(event.keyCode == 32)		// spacebar
-	{
-		togglePause();
+
+    if (_useKeyboard)
+    {
+        if(event.keyCode == 32)		// spacebar
+        {
+            togglePause();
+        }
+        else if(event.keyCode == 37) // left arrow
+        {
+            prev();
+        }
+        else if(event.keyCode == 39) // right arrow
+        {
+            next();
+        }
     }
-    else if(event.keyCode == 37) // left arrow
-	{
-		prev();
-    }
-    else if(event.keyCode == 39) // right arrow
-	{
-		next();
-    }
+
 });
 
 //
@@ -313,7 +319,12 @@ function loadData()
 		deck.readLocationTag += deck.contentType + deck.contentId;
 
 		// this is the read location from the db
-		deck.readLocationOtherDevice = container.data('readlocation');
+		deck.readLocationOtherDevice = parseInt(container.data('readlocation'), 10);
+        //console.log('read location: ' + deck.readLocationOtherDevice);
+
+        // use keyboard
+		_useKeyboard = parseInt(container.data('usekeyboard'), 10);
+		//console.log('keyboard: ' + _useKeyboard);
     });
 }
 
@@ -1001,10 +1012,12 @@ function saveReadLocation(location)
 		$('#button-start-reading').text("Start Reading");
 	}
 
-	if (deck.userId > 0) // if logged in, save read location in db
-		ajaxexec('/entries/set-read-location/' + parseInt(deck.contentId, 10) + '/' + location + '/');
-	deck.readLocationOtherDevice = location;
-	//debug("saveReadLocation: " + location, _debug);
+    var recordId = parseInt(deck.contentId, 10);
+	if (deck.userId > 0 && recordId > 0) // if logged in, save read location in db
+	{
+		ajaxexec('/entries/set-read-location/' + recordId + '/' + location + '/');
+    	deck.readLocationOtherDevice = location;
+	}
 }
 
 function getReadLocation()

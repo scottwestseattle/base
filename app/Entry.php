@@ -39,6 +39,7 @@ class Entry extends Model
 
 	static private $entryTypes = [
 		ENTRY_TYPE_NOTSET => 'Not Set',
+		ENTRY_TYPE_NOTUSED => 'Not Used',
 		ENTRY_TYPE_ARTICLE => 'Article',
 		ENTRY_TYPE_BOOK => 'Book',
 		ENTRY_TYPE_ENTRY => 'Entry',

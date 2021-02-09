@@ -25,7 +25,9 @@ class EntryController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-            'index', 'view', 'permalink',
+            //'index',
+            'view',
+            'permalink',
             'articles', 'viewArticle', 'read',
         ]);
 
@@ -39,6 +41,7 @@ class EntryController extends Controller
 		try
 		{
 			$records = Entry::select()
+			    ->orderByRaw('type_flag, id desc')
 				->get(5);
 		}
 		catch (\Exception $e)
@@ -181,6 +184,7 @@ class EntryController extends Controller
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
         $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
+        $record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
 
 		if ($isDirty)
 		{
@@ -383,5 +387,14 @@ class EntryController extends Controller
 			'index' => $record->type_flag == ENTRY_TYPE_ARTICLE ? 'articles' : 'books',
 		]);
     }
+
+    public function setReadLocationAjax(Request $request, Entry $entry, $location)
+    {
+		$location = intval($location);
+
+		$rc = $entry->setReadLocation($location);
+
+		return ($rc ? 'read location saved' : 'read location not saved - user id: ' . Auth::id());
+	}
 
 }

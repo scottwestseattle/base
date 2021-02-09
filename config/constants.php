@@ -70,6 +70,7 @@ define('POS_OTHER',             100);
 
 // entries
 define('ENTRY_TYPE_NOTSET', 	-1);
+define('ENTRY_TYPE_NOTUSED', 	0);
 define('ENTRY_TYPE_ENTRY', 		1);
 define('ENTRY_TYPE_ARTICLE', 	2);
 define('ENTRY_TYPE_BOOK',	 	3);
@@ -107,6 +108,7 @@ define('REVIEWTYPE_DEFAULT', REVIEWTYPE_MC_RANDOM);
 define('USER_ID_NOTSET', 0);
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 byetes for db overhead
+define('MS_YEAR', 525600); // milliseconds for one year
 
 return [
     'characters' => [

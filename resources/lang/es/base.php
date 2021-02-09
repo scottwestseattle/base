@@ -127,4 +127,5 @@ return [
 'Error getting record list' => 'Error al obtener la lista de registros',
 'Add Tag' => 'Agregar etiqueta',
 'Edit Tag' => 'Editar etiqueta',
+'Entry has been updated' => 'La entrada ha sido actualizada',
 ];
