@@ -5,7 +5,7 @@ return [
 'Definition' => '定义|定义',
 'Enter text to read' => '输入文字阅读',
 'New Text has been saved' => '新文本已保存',
-'Practice Text' => 'Practice Text',
+'Practice Text' => '实践课文',
 'Word of the day' => '每日一词',
 'Phrase of the day' => '阅读当天',
 'A new word to learn every day' => '每天学习一个新词',
@@ -29,4 +29,6 @@ return [
 'Chapter' => '章节|章',
 'Back to Lists' => '返回清单',
 'Flashcards' => '练习卡',
+'Practice Speaking' => '练习口语',
+'Latest Articles' => '最新的文章',
 ];

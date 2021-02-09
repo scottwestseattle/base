@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('view.Deleted Comments'))
+@section('title', __('proj.Deleted Comments'))
 @section('menu-submenu')@component('comments.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('view.Deleted Comments')}} ({{count($records)}})</h1>
+	<h1>{{__('proj.Deleted Comments')}} ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>

@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('ui.Add') . ' ' . trans_choice('view.Comment', 1))
+@section('title', __('ui.Add') . ' ' . trans_choice('ui.Comment', 1))
 @section('menu-submenu')@component('comments.menu-submenu', ['prefix' => 'comments'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.Add')}} {{trans_choice('view.Comment', 1)}}</h1>
+	<h1>{{__('ui.Add')}} {{trans_choice('ui.Comment', 1)}}</h1>
 	<form method="POST" action="/comments/create">
 
 		<div class="form-group">

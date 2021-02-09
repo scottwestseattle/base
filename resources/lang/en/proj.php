@@ -29,4 +29,6 @@ return [
 'Chapter' => 'Chapter|Chapters',
 'Back to Lists' => 'Back to Lists',
 'Flashcards' => 'Flashcards',
+'Practice Speaking' => 'Practice Speaking',
+'Latest Articles' => 'Latest Articles',
 ];

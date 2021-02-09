@@ -365,6 +365,13 @@ Route::group(['prefix' => 'tags'], function () {
 
 	// view
 	Route::get('/view/{tag}', [TagController::class, 'view']);
+
+    // custom
+	Route::get('/add-user-favorite-list', [TagController::class, 'addUserFavoriteList']);
+	Route::post('/create-user-favorite-list', [TagController::class, 'createUserFavoriteList']);
+	Route::get('/confirm-user-favorite-list-delete/{tag}', [TagController::class, 'confirmUserFavoriteListDelete']);
+	Route::get('/edit-user-favorite-list/{tag}', [TagController::class, 'editUserFavoriteList']);
+
 });
 
 // GENERATED for Visitor model

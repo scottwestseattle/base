@@ -5,7 +5,7 @@ return [
 'Definition' => 'Definición|Definiciones',
 'Enter text to read' => 'Ingrese texto para leer',
 'New Text has been saved' => 'Se ha guardado el nuevo texto',
-'Practice Text' => 'Practice Text',
+'Practice Text' => 'Texto de práctica',
 'Word of the day' => 'Palabra del día',
 'Phrase of the day' => 'Lectura del día',
 'A new word to learn every day' => 'Una nueva palabra para aprender cada día',
@@ -29,4 +29,6 @@ return [
 'Chapter' => 'Capítulo | Capítulos',
 'Back to Lists' => 'Volver a las listas',
 'Flashcards' => 'Tarjetas',
+'Practice Speaking' => 'Practicar el habla',
+'Latest Articles' => 'Últimos artículos',
 ];

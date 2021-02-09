@@ -14,7 +14,7 @@ use App\Status;
 use App\Tools;
 use App\User;
 
-define('PREFIX', 'tags');
+define('PREFIX', '/tags');
 define('VIEWS', 'tags');
 define('LOG_CLASS', 'TagController');
 
@@ -43,7 +43,7 @@ class TagController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
+			logException(LOG_CLASS, $e->getMessage(), __('msg.Error getting record list'));
 		}
 
 		return view(VIEWS . '.index', [
@@ -265,6 +265,56 @@ class TagController extends Controller
 		}
 
 		return redirect($this->redirectTo);
+    }
+
+    public function addUserFavoriteList(Request $request)
+    {
+    	return view('tags.add-user-favorite-list', [
+    	]);
+    }
+
+    public function createUserFavoriteList(Request $request)
+    {
+		try
+		{
+			$record = new Tag();
+			$record->name = alphanum($request->name);
+			$record->type_flag = TAG_TYPE_DEF_FAVORITE;
+			$record->user_id = Auth::id();
+			$record->save();
+
+			logInfo(__FUNCTION__, __('pron.New list has been added'), ['name' => $record->name, 'id' => $record->id]);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error adding new list';
+			logException(__FUNCTION__, $msg, $e->getMessage());
+		}
+
+		return redirect(PREFIX);
+    }
+
+    public function editUserFavoriteList(Request $request, Tag $tag)
+    {
+		$record = $tag;
+
+		return view('tags.edit', [
+			'record' => $record,
+			'allowTypeChange' => false,
+		]);
+	}
+
+    public function confirmUserFavoriteListDelete(Tag $tag)
+    {
+		$count = DB::table('definition_tag')
+			->select()
+			->where('tag_id', $tag->id)
+			->count();
+
+		return view('tags.confirm-user-favorite-list-delete', [
+			'record' => $tag,
+			'count' => $count,
+		]);
     }
 
 }

@@ -93,7 +93,7 @@ return [
 'Undelete' => 'Recuperar',
 'First' => 'Primero',
 'Last' => 'Último',
-'Clear' => 'Limpiar',
+'Clear' => 'Borrar',
 'Save' => 'Guardar',
 'Quit' => 'Salir',
 'by clicking here' => 'haciendo clic aquí',

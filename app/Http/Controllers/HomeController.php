@@ -176,7 +176,20 @@ class HomeController extends Controller
 		//
 		// get articles
 		//
-	    $options['articles'] = Entry::getArticles($languageFlag, 5);
+	    //$options['articles'] = Entry::getArticles($languageFlag, 5);
+
+		try
+		{
+		    $parms = Site::getLanguage();
+		    $parms['type'] = ENTRY_TYPE_ARTICLE;
+
+			//$records = Entry::getArticles();
+		    $options['articles'] = Entry::getRecentList($parms, 5);
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting articles'));
+		}
 
         return $options;
 	}
