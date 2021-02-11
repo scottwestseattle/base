@@ -128,4 +128,13 @@ return [
 'Add Tag' => 'Add Tag',
 'Edit Tag' => 'Edit Tag',
 'Entry has been updated' => 'Entry has been updated',
+'Publish Entry' => 'Publish Entry',
+'Record status has been updated' => 'Record status has been updated',
+'Record has been deleted' => 'Record has been deleted',
+'Edit Entry' => 'Edit Entry',
+'Add Entry' => 'Add Entry',
+'Delete Entry' => 'Delete Entry',
+'Deleted Entries' => 'Deleted Entries',
+'Deleted Definitions' => 'Deleted Definitions',
+'Record has been updated' => 'Record has been updated',
 ];

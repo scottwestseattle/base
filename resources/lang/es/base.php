@@ -128,4 +128,13 @@ return [
 'Add Tag' => 'Agregar etiqueta',
 'Edit Tag' => 'Editar etiqueta',
 'Entry has been updated' => 'La entrada ha sido actualizada',
+'Publish Entry' => 'Publicar entrada',
+'Record status has been updated' => 'El estado ha sido actualizado',
+'Record has been deleted' => 'El registro ha sido eliminado',
+'Edit Entry' => 'Editar entrada',
+'Add Entry' => 'Agregar entrada',
+'Delete Entry' => 'Eliminar entrada',
+'Deleted Entries' => 'Entradas eliminadas',
+'Deleted Definitions' => 'Definiciones eliminadas',
+'Record has been updated' => 'Se actualizó el registro',
 ];

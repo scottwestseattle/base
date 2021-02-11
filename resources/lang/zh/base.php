@@ -128,4 +128,13 @@ return [
 'Add Tag' => '添加标签',
 'Edit Tag' => '编辑标签',
 'Entry has been updated' => '病毒时代的爱好',
+'Publish Entry' => '发布条目',
+'Record status has been updated' => '记录状态已更新',
+'Record has been deleted' => '记录已被删除',
+'Edit Entry' => '编辑条目',
+'Add Entry' => '添加条目',
+'Delete Entry' => '删除条目',
+'Deleted Entries' => '删除的条目',
+'Deleted Definitions' => '删除的定义',
+'Record has been updated' => '记录已更新',
 ];

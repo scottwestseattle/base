@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('ui.Edit') . ' ' . trans_choice('view.Entry', 1))
+@section('title', __('base.Edit Entry'))
 @section('menu-submenu')@component('entries.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Edit')}} {{trans_choice('view.Entry', 1)}}</h1>
+	<h1>{{__('base.Edit Entry')}}</h1>
 
 	<form method="POST" id="form-edit" action="/entries/update/{{$record->id}}">
 
@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('base.Description'):</label>
+			<label for="description" class="control-label">@LANG('ui.Description'):</label>
 			<textarea name="description" class="form-control">{{$record->description}}</textarea>
 		</div>
 

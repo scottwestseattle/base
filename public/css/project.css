@@ -756,3 +756,11 @@ h6 {
 	font-size: .8em;
  }
 
+/***********************************************************
+ Reader Light Styles
+************************************************************/
+.highlight-word {
+	background-color: gray;
+	border-radius: 8px;
+	padding: 0px 0;
+}

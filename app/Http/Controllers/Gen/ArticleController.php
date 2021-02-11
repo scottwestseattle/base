@@ -229,7 +229,7 @@ class ArticleController extends Controller
 		$record->source_link		= trimNull($request->source_link);
 		//todo: $record->display_date 		= Controller::getSelectedDate($request);
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
-		$record->type_flag 			= intval($request->type_flag);
+		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
 
 		$record->updateBookTag();

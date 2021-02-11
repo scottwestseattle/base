@@ -426,7 +426,7 @@ function resume()
 }
 
 _readPage = false;
-function readPage(readText = '')
+function readPage(readText = '', textId = '')
 {
     window.speechSynthesis.cancel();
 
@@ -448,7 +448,7 @@ function readPage(readText = '')
             readText = slide.description;
         }
 
-        read(readText, 0);
+        read(readText, 0, textId);
 
         $("#pause").show();
         $("#readPage").hide();
@@ -530,7 +530,7 @@ function playAudioFile(file)
 var _speechTimerId = null;
 var _clockTimerId = null;
 var _utter = null;
-function read(text, charIndex)
+function read(text, charIndex, textId = '#slideDescription')
 {
 	_cancelled = false;
 	clearTimeout(_speechTimerId);
@@ -555,7 +555,7 @@ function read(text, charIndex)
 		else if (_readPage)
 		{
 		    // clear the word highlight
-			$("#slideDescription span").removeClass("highlight-word");
+			$(textId + " span").removeClass("highlight-word");
     		_readPage = false; // finished reading page
 
             $("#pause").hide();
@@ -590,7 +590,6 @@ function read(text, charIndex)
 
 		if (event.name == "word")
 		{
-			//debug(event.charLength + ' / ' + event.wordLength, _debug);
 			var cases = -1;
 			if (typeof event.charLength !== 'undefined')
 			{
@@ -604,7 +603,8 @@ function read(text, charIndex)
 					var word = text.substring(start, end);
 					var before = (start > 0) ? text.substring(0, start) : "";
 					var after = text.substring(end);
-					$("#slideDescription").html(before + '<span class="highlight-word">' + word + '</span>' + after);
+					$(textId).html(before + '<span class="highlight-word">' + word + '</span>' + after);
+        			//console.log('charLength: ' + event.charLength);
 				}
 				else
 				{
@@ -631,7 +631,7 @@ function read(text, charIndex)
 					word = words[0];
 					var before = (start > 0) ? text.substring(0, start) : "";
 					var after = text.substring(start + word.length);
-					$("#slideDescription").html(before + '<span class="highlight-word">' + word + '</span>' + after);
+					$(textId).html(before + '<span class="highlight-word">' + word + '</span>' + after);
 				}
 			}
 

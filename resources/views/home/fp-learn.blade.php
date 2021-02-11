@@ -139,7 +139,7 @@
                             <div><i>Definición:</i> {{$wotd->definition}}</div>
                         @endif
                             <i>Ejemplo:</i><span class="mx-2">{{$wotd->examples}}</span>
-                            @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val())"])@endcomponent
+                            @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val());"])@endcomponent
                         </div>
                         <input type="hidden" id="wotd" value="{{$wotd->title . '. Definición: ' . $wotd->definition . '. Ejemplo: ' . $wotd->examples}}" />
                     @endif
@@ -157,8 +157,8 @@
                 </div>
                 <div class="card-body card-body-potd">
                     <div class="xl-thin-text">
-                        <span class="mr-2">{{$potd}}</span>
-                        @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#potd').val())"])@endcomponent
+                        <span id="potdVisible" class="slideDescription mr-2">{{$potd}}</span>
+                        @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#potd').val(), '#potdVisible')"])@endcomponent
                     </div>
                     <input type="hidden" id="potd" value="{{$potd}}" />
                 </div>

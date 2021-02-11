@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('ui.Add Entry'))
+@section('title', __('base.Add Entry'))
 @section('menu-submenu')@component('entries.menu-submenu', ['prefix' => 'entries'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.Add Entry')}}</h1>
+	<h1>{{__('base.Add Entry')}}</h1>
 	<form method="POST" action="/entries/create">
 
 		<div class="form-group">

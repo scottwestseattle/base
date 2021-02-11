@@ -160,7 +160,7 @@
 		<div id="buttonRecordGlyph" class="glyphReaderPlay mr-3"><a onclick="event.preventDefault(); startRecording()" href=""><span class="glyphicon glyphicon-record"></span></a></div>
 		<div id="resume" class="glyphReaderPlay mr-3"><a onclick="event.preventDefault(); resume()" href=""><span class="glyphicon glyphcircle glyphicon-play"></span></a></div>
 		<div id="pause"  class="glyphReaderPlay mr-3 mb-1"><a onclick="event.preventDefault(); pause()" href=""><span class="glyphicon glyphicon-pause"></span></a></div>
-		<div id="readPage" class="glyphReaderPlay mr-3"><a onclick="event.preventDefault(); readPage()" href=""><span class="glyphicon glyphicon-play-circle"></span></a></div>
+		<div id="readPage" class="glyphReaderPlay mr-3"><a onclick="event.preventDefault(); readPage('', '#slideDescription')" href=""><span class="glyphicon glyphicon-play-circle"></span></a></div>
 		<div class="glyphReaderMove"><a onclick="event.preventDefault(); next()" href=""><span class="glyphicon glyphicon-forward"></span></a></div>
 	</div>
 

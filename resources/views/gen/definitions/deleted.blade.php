@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('view.Deleted Definitions'))
+@section('title', __('base.Deleted Definitions'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('view.Deleted Definitions')}} ({{count($records)}})</h1>
+	<h1>{{__('base.Deleted Definitions')}} ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>
