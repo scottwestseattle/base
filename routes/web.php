@@ -62,11 +62,13 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 
-// Top level urls
-Route::get('/articles', [ArticleController::class, 'index']);
-
 // Articles
 Route::group(['prefix' => 'articles'], function () {
+
+    // index
+    Route::get('/', [ArticleController::class, 'index']);
+	Route::get('/view/{permalink}', [ArticleController::class, 'permalink']);
+	Route::get('/show/{entry}', [ArticleController::class, 'view']);
 
     // add / (create done in entries)
 	Route::get('/add/', [ArticleController::class, 'add']);
@@ -76,9 +78,6 @@ Route::group(['prefix' => 'articles'], function () {
     // edit / (update done in entries)
 	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);
 	Route::post('/update/{entry}', [ArticleController::class, 'update']);
-
-    // permalink
-	Route::get('/{permalink}', [ArticleController::class, 'view']);
 });
 
 // MVC
@@ -261,7 +260,7 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/undelete/{id}', [EntryController::class, 'undelete']);
 
     // custom
-    Route::get('/set-read-location/{entry}/{location}', 'EntryController@setReadLocationAjax');
+    Route::get('/set-read-location/{entry}/{location}', [EntryController::class, 'setReadLocationAjax']);
 
 	// permalink
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
@@ -418,12 +417,12 @@ Route::get('/dictionary', [DefinitionController::class, 'search']);
 Route::get('/practice', [DefinitionController::class, 'snippets']);
 Route::get('/favorites', [DefinitionController::class, 'favorites']);
 
-// Definitions
+// Dictionary
 Route::group(['prefix' => 'dictionary'], function () {
 	Route::get('/search/{sort}', [DefinitionController::class, 'search']);
 });
 
-// Definitions
+// Snippets
 Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/read', [DefinitionController::class, 'readSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);

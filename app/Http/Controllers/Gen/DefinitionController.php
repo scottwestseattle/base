@@ -11,6 +11,7 @@ use Config;
 use Cookie;
 use Log;
 
+use App\Entry;
 use App\Gen\Definition;
 use App\Gen\Spanish;
 use App\Quiz;

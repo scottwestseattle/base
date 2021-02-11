@@ -154,6 +154,165 @@ class Entry extends Model
 		return $rc;
 	}
 
+	//////////////////////////////////////////////////////////////////
+	// Definitions - many to many
+	//////////////////////////////////////////////////////////////////
+
+    public function definitions()
+    {
+		return $this->belongsToMany('App\Gen\Definition')->wherePivot('user_id', Auth::id())->orderBy('title');
+    }
+
+	public function getDefinitions($userId)
+	{
+		$userId = intval($userId);
+		$entryId = $this->id;
+		$records = DB::table('entries')
+			->join('definition_entry', function($join) use ($entryId, $userId) {
+				$join->on('definition_entry.entry_id', '=', 'entries.id');
+				$join->where('definition_entry.entry_id', $entryId);
+				$join->where('definition_entry.user_id', $userId);
+			})
+			->join('definitions', function($join) use ($entryId) {
+				$join->on('definitions.id', '=', 'definition_entry.definition_id');
+				$join->whereNull('definitions.deleted_at');
+			})
+			->select('definitions.*')
+			->where('entries.deleted_flag', 0)
+			->orderBy('definitions.title')
+			->get();
+
+		return $records;
+	}
+
+	static public function getDefinitionsUser()
+	{
+		$records = DB::table('entries')
+			->join('definition_entry', function($join) {
+				$join->on('definition_entry.entry_id', '=', 'entries.id');
+				$join->where('definition_entry.user_id', Auth::id());
+			})
+			->select(DB::raw('entries.id, entries.title, count(definition_entry.entry_id) as wc'))
+			->where('entries.deleted_flag', 0)
+			->whereIn('entries.type_flag', array(ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK))
+			->groupBy('entries.id', 'entries.title')
+			->orderBy('entries.title')
+			->get();
+
+		//dd($records);
+
+		return $records;
+	}
+
+    static public function addDefinitionUserStatic($entryId, $def)
+    {
+		$entryId = intval($entryId);
+		$userId = Auth::id();
+		$f = __FUNCTION__;
+
+		if ($entryId > 0)
+		{
+			if (isset($def))
+			{
+				$record = $record = Entry::select()
+					->where('deleted_flag', 0)
+					->where('id', $entryId)
+					->first();
+
+				if (isset($record))
+				{
+					$record->addDefinitionUser($def);
+				}
+				else
+				{
+					logError($f . ': entry not found', null, ['entryId' => $entryId]);
+				}
+			}
+			else
+			{
+				logError($f . ': def not set');
+			}
+		}
+		else
+		{
+			logError($f . ': entry id not set');
+		}
+	}
+
+    public function addDefinitionUser(Definition $def)
+    {
+		if (Auth::check())
+		{
+			$this->addDefinition($def, Auth::id());
+		}
+	}
+
+    public function addDefinition($def, $userId = null)
+    {
+		if (isset($def) && isset($userId))
+		{
+			$this->definitions()->detach($def->id); // if it's already tagged, remove it so it will by updated
+			$this->definitions()->attach($def->id, ['user_id' => $userId]);
+			Event::logAdd(LOG_MODEL_ENTRIES, $def->title, 'added definition to entry', $def->id);
+		}
+		else
+		{
+			$info = 'def or user not set, user id: ' . $userId;
+			Event::logError(LOG_MODEL_ENTRIES, LOG_ACTION_ADD, 'error adding definition for user, ' . $info);
+		}
+    }
+
+    public function removeDefinitionUser($defId)
+    {
+		$rc = '';
+
+		if (Auth::check())
+		{
+			$def = Definition::getById($defId);
+			if (isset($def))
+			{
+				$this->definitions()->detach($def->id, ['user_id' => Auth::id()]);
+				$rc = 'success';
+			}
+			else
+			{
+				$rc = 'definition not found';
+			}
+		}
+		else
+		{
+			$rc = 'not logged in';
+		}
+
+		return $rc;
+	}
+
+    public function removeDefinition(Definition $def)
+    {
+		$this->definitions()->detach($def->id);
+    }
+
+    public function removeDefinitions()
+    {
+		try
+		{
+			$cnt = 0;
+			foreach($this->definitions as $record)
+			{
+				$this->definitions()->detach($record->id);
+				$cnt++;
+			}
+
+			Event::logDelete(LOG_MODEL_ENTRIES, 'removeDefinitions - removed ' . $cnt . ' definitions from entry', $this->id);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error removing words from vocabulary list';
+			Event::logException(LOG_MODEL, LOG_ACTION_DELETE, 'removeDefinitions()', $msg, $e->getMessage());
+			Tools::flash('danger', $msg);
+		}
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Tag functions: recent tag and read location
@@ -349,7 +508,6 @@ class Entry extends Model
         return $records;
     }
 
-
 	static public function getRecentList($parms, $limit = PHP_INT_MAX)
 	{
 		$type = intval($parms['type']);
@@ -405,4 +563,6 @@ class Entry extends Model
             logException('countView', $e->getMessage(), $msg);
         }
 	}
+
+
 }

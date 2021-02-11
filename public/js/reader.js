@@ -959,7 +959,17 @@ function getSelectedText(clicks)
 		//_hotWords.push(text + ": ");
 		$('#selected-word').html(html);
 		$('#selected-word-definition').text('');
-		ajaxexec('/definitions/get/' + text + '/' + deck.contentId, '#selected-word-definition', false, translateCallback);
+
+		// check the dictionary for the selected text
+		if (deck.contentId > 0)
+		{
+            var url = '/definitions/get/' + text + '/' + deck.contentId;
+            ajaxexec(url, '#selected-word-definition', false, translateCallback);
+		}
+		else
+		{
+            console.log('content id not set: ' + deck.contentId);
+		}
 	}
 }
 

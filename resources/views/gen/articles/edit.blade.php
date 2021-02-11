@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('proj.Edit Article'))
-@section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'articles', 'record' => $record])@endcomponent @endsection
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">

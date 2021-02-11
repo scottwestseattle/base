@@ -60,7 +60,7 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function view(Request $request, $permalink)
+    public function permalink(Request $request, $permalink)
     {
  		$record = null;
 		$permalink = alphanum($permalink);
@@ -84,6 +84,12 @@ class ArticleController extends Controller
     		return redirect($this->redirectTo);
 		}
 
+		return $this->view($request, $record);
+	}
+
+    public function view(Request $request, Entry $entry)
+    {
+        $record = $entry;
 		$next = null;
 		$prev = null;
 		$options['wordCount'] = null;
@@ -101,7 +107,9 @@ class ArticleController extends Controller
 		}
 		else
 		{
-			return $this->pageNotFound404($permalink);
+		    $msg = 'record not set';
+		    logError(__FUNCTION__ . ': ' . $msg, $msg);
+    		return redirect($this->redirectTo);
 		}
 
         $options['backLink'] = '/articles';
@@ -176,35 +184,6 @@ class ArticleController extends Controller
 
 		return redirect($record->getRedirect()['view']);
     }
-
-    public function permalink(Request $request, $permalink)
-    {
-		$record = null;
-		$permalink = alphanum($permalink);
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
-
-		try
-		{
-			$record = Article::select()
-				//->where('site_id', SITE_ID)
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
-				->where('permalink', $permalink)
-				->first();
-
-			if (blank($record))
-			    throw new \Exception('permalink not found');
-		}
-		catch (\Exception $e)
-		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Record not found'), ['permalink' => $permalink]);
-    		return redirect($this->redirectTo);
-		}
-
-		return view(VIEWS . '.view', [
-			'record' => $record,
-			]);
-	}
 
 	public function edit(Entry $entry)
     {

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', $options['page_title'] )
-@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record, 'index' => 'index'])@endcomponent @endsection
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 
     <!------------------------------------>
@@ -42,7 +42,7 @@
         <!-- Stats -->
         <div class="mb-2">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >Open in Reader<span style="font-size:16px;" class="glyphCustom glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphCustom glyphicon glyphicon-volume-up white ml-2"></span></a>
             </div>
 
             <div class="small-text">
@@ -82,12 +82,18 @@
                 </div>
             </div>
 
-            @if (strlen(trim($record->source_credit)) > 0)
-                <p class="article-source">{{$record->source_credit}}</p>
+            <p>
+            @if (strlen($record->source) > 0)
+                <div class="small-thin-text">{{$record->source}}</div>
             @endif
 
-            @if (strlen(trim($record->source_link)) > 0)
-                <p class="article-source"><a target="_blank" href="{{$record->source_link}}">{{$record->source_link}}</a></p>
+            @if (strlen($record->source_credit) > 0)
+                <div class="small-thin-text">{{__('ui.Author')}} {{$record->source_credit}}</div>
+            @endif
+            </p>
+
+            @if (strlen($record->source_link) > 0)
+                <p class="small-thin-text"><a target="_blank" href="{{$record->source_link}}">{{$record->source_link}}</a></p>
             @endif
 
         </div>

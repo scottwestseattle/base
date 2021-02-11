@@ -31,4 +31,5 @@ return [
 'Flashcards' => '练习卡',
 'Practice Speaking' => '练习口语',
 'Latest Articles' => '最新的文章',
+'Start Reading' => '开始阅读',
 ];

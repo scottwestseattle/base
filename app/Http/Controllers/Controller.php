@@ -64,16 +64,14 @@ class Controller extends BaseController
     static public function reader(Entry $entry, $options)
     {
         $record = $entry;
-		$readLocation = $entry->tagRecent(); // tag it as recent for the user so it will move to the top of the list
-		Entry::countView($entry);
+		$readLocation = $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+		Entry::countView($record);
 
-		$record = $entry;
 		$lines = [];
 
 		$lines = Spanish::getSentences($record->title);
 		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
 		$lines = array_merge($lines, Spanish::getSentences($record->description));
-		//dd($lines);
 
     	return view('shared.reader', [
     	    'lines' => $lines,

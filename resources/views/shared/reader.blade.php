@@ -2,7 +2,7 @@
 @section('title', __('Reading') . ' ' . $title )
 @section('content')
 @php
-    $recordId = isset($record->id) ? $record->id : -1;
+    $recordId = isset($recordId) ? $recordId : -1;
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = count($lines);
 @endphp

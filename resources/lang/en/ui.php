@@ -131,4 +131,5 @@ return [
 'Favorite' => 'Favorite|Favorites',
 'Add New List' => 'Add New List',
 'Continue' => 'Continue',
+'Author' => 'by',
 ];

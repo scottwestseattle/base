@@ -294,8 +294,8 @@ Route::group(['prefix' => 'templates'], function () {
 	Route::get('/index', [TemplateController::class, 'index']);
 
 	// view
-	Route::get('/view/{template}', [TemplateController::class, 'view']);
-	Route::get('/show/{permalink}', [TemplateController::class, 'permalink']);
+	Route::get('/view/{permalink}', [TemplateController::class, 'permalink']);
+	Route::get('/show/{template}', [TemplateController::class, 'view']);
 
 	// add
 	Route::get('/add', [TemplateController::class, 'add']);

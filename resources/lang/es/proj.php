@@ -31,4 +31,5 @@ return [
 'Flashcards' => 'Tarjetas',
 'Practice Speaking' => 'Practicar el habla',
 'Latest Articles' => 'Últimos artículos',
+'Start Reading' => 'Empezar a leer',
 ];

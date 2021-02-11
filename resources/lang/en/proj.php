@@ -31,4 +31,5 @@ return [
 'Flashcards' => 'Flashcards',
 'Practice Speaking' => 'Practice Speaking',
 'Latest Articles' => 'Latest Articles',
+'Start Reading' => 'Start Reading',
 ];

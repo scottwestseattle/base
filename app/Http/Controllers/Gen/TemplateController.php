@@ -127,12 +127,10 @@ class TemplateController extends Controller
     		return redirect($this->redirectTo);
 		}
 
-		return view(VIEWS . '.view', [
-			'record' => $record,
-			]);
+		return $this->view($request, $record)
 	}
 
-	public function view(Template $template)
+	public function view(Request $request, Template $template)
     {
 		$record = $template;
 

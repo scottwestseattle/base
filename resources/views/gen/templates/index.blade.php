@@ -22,7 +22,7 @@
 				<td class="icon"><a href='/templates/publishupdate/{{$record->id}}'>@component('components.icon', ['svg' => 'lightning'])@endcomponent</a></td>
 				<td class="index-button">@component('components.button-release-status', ['record' => $record, 'views' => 'templates', 'class' => 'btn-xxs'])@endcomponent</td>
 @endif
-				<td><a href="/templates/{{ blank($record->permalink) ? 'view/' . $record->id : $record->permalink }}">{{$record->title}}</a></td>
+				<td><a href="/templates/{{ blank($record->permalink) ? 'show/' . $record->id : 'view/' . $record->permalink }}">{{$record->title}}</a></td>
 				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
 				<td>{{$record->created_at}}</td>
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/templates/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
