@@ -133,14 +133,20 @@
                 </div>
                 <div class="card-body card-body-potd">
                     @if(isset($wotd))
-                        <div><b>{{$wotd->title}}</b> - {{$wotd->translation_en}}</div>
-                        <div class="large-thin-text">
-                        @if (isset($wotd->definition))
-                            <div><i>Definición:</i> {{$wotd->definition}}</div>
-                        @endif
-                            <i>Ejemplo:</i><span class="mx-2">{{$wotd->examples}}</span>
+                        <span id="wotdv">
+                        <div>
                             @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val());"])@endcomponent
+                            <b><span id="wotdTitle" class="ml-2">{{$wotd->title}}</span></b> - {{$wotd->translation_en}}
                         </div>
+                        <div class="large-thin-text">
+                            <div>
+                                <i>Definición:</i> <span id="wotdDef">{{$wotd->definition}}</span>
+                            </div>
+                            <div>
+                                <i>Ejemplo:</i><span id="wotdEx" class="mx-2">{{$wotd->examples}}</span>
+                            </div>
+                        </div>
+                        </span>
                         <input type="hidden" id="wotd" value="{{$wotd->title . '. Definición: ' . $wotd->definition . '. Ejemplo: ' . $wotd->examples}}" />
                     @endif
                 </div>
@@ -157,8 +163,8 @@
                 </div>
                 <div class="card-body card-body-potd">
                     <div class="xl-thin-text">
-                        <span id="potdVisible" class="slideDescription mr-2">{{$potd}}</span>
                         @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#potd').val(), '#potdVisible')"])@endcomponent
+                        <span id="potdVisible" class="slideDescription ml-2">{{$potd}}</span>
                     </div>
                     <input type="hidden" id="potd" value="{{$potd}}" />
                 </div>

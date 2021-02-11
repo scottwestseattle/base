@@ -41,7 +41,9 @@
     <div>
         <!-- Stats -->
         <div class="vertical-align">
-            @component('components.icon-read', ['href' => "/books/read/$record->id"])@endcomponent
+            <div class="mb-2">
+                <a type="button" class="btn btn-primary" href="/books/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphCustom glyphicon glyphicon-volume-up white ml-2"></span></a>
+            </div>
             <div class="small-text">
                 <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                 <div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['wordCount']}} {{trans_choice('ui.Word', 2)}}</a></div>
