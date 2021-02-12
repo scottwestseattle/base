@@ -397,4 +397,51 @@ class EntryController extends Controller
 		return ($rc ? 'read location saved' : 'read location not saved - user id: ' . Auth::id());
 	}
 
+    public function getDefinitionsUserAjax(Request $request, Entry $entry)
+    {
+		$rc = '';
+
+		if (Auth::check())
+		{
+			try
+			{
+				$records = $entry->getDefinitions(Auth::id());
+				//$records = $entry->definitions; // this is the list created by the many to many relationship but it isn't by user
+				//throw new \Exception('test');
+			}
+			catch (\Exception $e)
+			{
+				$msg = 'error getting user definitions';
+				logException(__FUNCTION__ . ': ' . $msg, null, $e->getMessage(), ['id' => $entry->id]);
+				return $msg;
+			}
+
+			return view('entries.component-definitions', [
+				'records' => $records,
+				'entryId' => $entry->id,
+			]);
+		}
+		else
+		{
+			// not an error if they're not logged in, just return blank
+			$rc = 'Log in or create an account in order to see your vocabulary lists.';
+		}
+
+		return $rc;
+	}
+
+    public function removeDefinitionUserAjax(Request $request, Entry $entry, $defId)
+    {
+		$rc = $entry->removeDefinitionUser(intval($defId));
+
+		return ($rc);
+	}
+
+    public function removeDefinitionUser(Request $request, Entry $entry, $defId)
+    {
+		$rc = $entry->removeDefinitionUser(intval($defId));
+
+		return back();
+	}
+
 }

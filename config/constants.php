@@ -40,8 +40,8 @@ define('WORDTYPE_USERLIST_LIMIT',       20);
 define('DEFTYPE_NOTSET',        0);
 define('DEFTYPE_SNIPPET',       1);
 define('DEFTYPE_DICTIONARY',    10);
-define('DEFTYPE_USER',          11);
-define('DEFTYPE_OTHER',         100);
+define('DEFTYPE_USER',          100);
+define('DEFTYPE_OTHER',         200);
 
 define('DEF_HASH_LENGTH',        50);
 

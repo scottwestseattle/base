@@ -57,7 +57,7 @@ class DefinitionController extends Controller
 		{
 			$records = Definition::select()
 				//->where('type_flag', DEFTYPE_DICTIONARY)
-				->orderByRaw('id DESC')
+				->orderByRaw('type_flag, updated_at desc')
 				->get();
 		}
 		catch (\Exception $e)
@@ -857,7 +857,7 @@ class DefinitionController extends Controller
   	public function setFavoriteList(Request $request, Definition $definition, $tagFromId, $tagToId)
     {
 		$record = $definition;
-        $rc = '';
+        $rc = 'proj.Saved to favorite list';
 
         if (Auth::check())
         {
@@ -866,10 +866,11 @@ class DefinitionController extends Controller
         }
         else
         {
-			$rc = 'favorite not saved - you must log in';
+			$rc = 'proj.Favorite not saved - you must log in';
         }
 
-        logInfo('setFavoriteList', $rc, ['title' => $record->title, 'id' => $record->id]);
+        logInfo('setFavoriteList', __($rc), ['title' => $record->title, 'id' => $record->id]);
+
 		return back();
     }
 
@@ -1066,6 +1067,9 @@ class DefinitionController extends Controller
     {
 		// definitions favorites
 		$favorites = Definition::getUserFavoriteLists();
+
+        // user's words and phrases: DEFTYPE_USER
+        //todo $userWords = Definition::???
 
 		// articles/books look ups
 		//todo: $entries = Entry::getDefinitionsUser();

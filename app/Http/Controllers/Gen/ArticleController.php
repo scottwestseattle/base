@@ -17,6 +17,7 @@ use App\Site;
 use App\User;
 
 define('PREFIX', '/articles/');
+define('VIEW', '/articles/view/');
 define('VIEWS', 'gen.articles');
 define('LOG_CLASS', 'ArticleController');
 
@@ -182,7 +183,7 @@ class ArticleController extends Controller
 			return back();
 		}
 
-		return redirect($record->getRedirect()['view']);
+		return redirect(VIEW . $record->permalink);
     }
 
 	public function edit(Entry $entry)
@@ -235,7 +236,7 @@ class ArticleController extends Controller
 			return back();
 		}
 
-		return redirect(PREFIX . $record->permalink);
+		return redirect(VIEW . $record->permalink);
 	}
 
     public function confirmDelete(Article $article)

@@ -226,6 +226,8 @@ Route::group(['prefix' => 'comments'], function () {
 
 // Entries
 Route::group(['prefix' => 'entries'], function () {
+
+    // index
 	Route::get('/', [EntryController::class, 'index']);
 	Route::get('/index', [EntryController::class, 'index']);
 
@@ -261,6 +263,9 @@ Route::group(['prefix' => 'entries'], function () {
 
     // custom
     Route::get('/set-read-location/{entry}/{location}', [EntryController::class, 'setReadLocationAjax']);
+	Route::get('/get-definitions-user/{entry}', [EntryController::class, 'getDefinitionsUserAjax']);
+	Route::get('/remove-definition-user-ajax/{entry}/{defId}', [EntryController::class, 'removeDefinitionUserAjax']);
+	Route::get('/remove-definition-user/{entry}/{defId}', [EntryController::class, 'removeDefinitionUser']);
 
 	// permalink
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);

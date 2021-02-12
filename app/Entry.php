@@ -253,12 +253,11 @@ class Entry extends Model
 		{
 			$this->definitions()->detach($def->id); // if it's already tagged, remove it so it will by updated
 			$this->definitions()->attach($def->id, ['user_id' => $userId]);
-			Event::logAdd(LOG_MODEL_ENTRIES, $def->title, 'added definition to entry', $def->id);
+			logInfo('added: ' . $def->title, null, ['id' => $def->id]);
 		}
 		else
 		{
-			$info = 'def or user not set, user id: ' . $userId;
-			Event::logError(LOG_MODEL_ENTRIES, LOG_ACTION_ADD, 'error adding definition for user, ' . $info);
+			logError(__FUNCTION__ . ': ' . 'error adding definition for user', null, ['def' => '$def', 'userId' => $userId]);
 		}
     }
 

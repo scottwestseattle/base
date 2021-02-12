@@ -397,6 +397,9 @@ td.icon {
     width: 150px;
 }
 
+table.table-fat tr td {
+    max-width: 400px;
+}
 /***********************************************************
 
  Dropdown character menu
