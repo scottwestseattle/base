@@ -538,3 +538,75 @@ Route::group(['prefix' => 'books'], function () {
 	Route::get('/undelete/{id}', [BookController::class, 'undelete']);
 
 });
+
+// GENERATED for Course model
+use App\Http\Controllers\Gen\CourseController;
+
+// Courses
+Route::group(['prefix' => 'courses'], function () {
+	Route::get('/', [CourseController::class, 'index']);
+	Route::get('/admin', [CourseController::class, 'admin']);
+	Route::get('/index', [CourseController::class, 'index']);
+
+	// view
+	Route::get('/view/{permalink}', [CourseController::class, 'permalink']);
+	Route::get('/show/{course}', [CourseController::class, 'view']);
+
+	// add
+	Route::get('/add', [CourseController::class, 'add']);
+	Route::post('/create', [CourseController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{course}', [CourseController::class, 'edit']);
+	Route::post('/update/{course}', [CourseController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{course}', [CourseController::class, 'publish']);
+	Route::post('/publishupdate/{course}', [CourseController::class, 'updatePublish']);
+	Route::get('/publishupdate/{course}', [CourseController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{course}', [CourseController::class, 'confirmDelete']);
+	Route::post('/delete/{course}', [CourseController::class, 'delete']);
+	Route::get('/delete/{course}', [CourseController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [CourseController::class, 'deleted']);
+	Route::get('/undelete/{id}', [CourseController::class, 'undelete']);
+});
+
+// GENERATED for Lesson model
+use App\Http\Controllers\Gen\LessonController;
+
+// Lessons
+Route::group(['prefix' => 'lessons'], function () {
+	Route::get('/', [LessonController::class, 'index']);
+	Route::get('/admin', [LessonController::class, 'admin']);
+	Route::get('/index', [LessonController::class, 'index']);
+
+	// view
+	Route::get('/view/{permalink}', [LessonController::class, 'permalink']);
+	Route::get('/show/{lesson}', [LessonController::class, 'view']);
+
+	// add
+	Route::get('/add', [LessonController::class, 'add']);
+	Route::post('/create', [LessonController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{lesson}', [LessonController::class, 'edit']);
+	Route::post('/update/{lesson}', [LessonController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{lesson}', [LessonController::class, 'publish']);
+	Route::post('/publishupdate/{lesson}', [LessonController::class, 'updatePublish']);
+	Route::get('/publishupdate/{lesson}', [LessonController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{lesson}', [LessonController::class, 'confirmDelete']);
+	Route::post('/delete/{lesson}', [LessonController::class, 'delete']);
+	Route::get('/delete/{lesson}', [LessonController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [LessonController::class, 'deleted']);
+	Route::get('/undelete/{id}', [LessonController::class, 'undelete']);
+});

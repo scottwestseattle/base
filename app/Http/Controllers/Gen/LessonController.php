@@ -9,16 +9,15 @@ use Auth;
 use Config;
 use Log;
 
-use App\Gen\Template;
+use App\Gen\Lesson;
 use App\Site;
 use App\User;
 
-define('PREFIX', '/templates/');
-define('SHOW', '/templates/show/');
-define('VIEWS', 'gen.templates');
-define('LOG_CLASS', 'TemplateController');
+define('PREFIX', 'lessons');
+define('VIEWS', 'gen.lessons');
+define('LOG_CLASS', 'LessonController');
 
-class TemplateController extends Controller
+class LessonController extends Controller
 {
 	private $redirectTo = PREFIX;
 
@@ -37,7 +36,7 @@ class TemplateController extends Controller
 
 		try
 		{
-			$records = Template::select()
+			$records = Lesson::select()
 				->orderBy('id', 'DESC')
 				->get();
 		}
@@ -59,8 +58,8 @@ class TemplateController extends Controller
 
 		try
 		{
-			$records = Template::select()
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
+			$records = Lesson::select()
+				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->orderByRaw('type_flag, id DESC')
 				->get();
 		}
@@ -82,7 +81,7 @@ class TemplateController extends Controller
 
     public function create(Request $request)
     {
-		$record = new Template();
+		$record = new Lesson();
 
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
@@ -113,7 +112,7 @@ class TemplateController extends Controller
 
 		try
 		{
-			$record = Template::select()
+			$record = Lesson::select()
 				//->where('site_id', SITE_ID)
 				->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
@@ -131,27 +130,27 @@ class TemplateController extends Controller
 		return $this->view($request, $record);
 	}
 
-	public function view(Request $request, Template $template)
+	public function view(Request $request, Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
 		return view(VIEWS . '.view', [
 			'record' => $record,
 			]);
     }
 
-	public function edit(Template $template)
+	public function edit(Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			]);
     }
 
-    public function update(Request $request, Template $template)
+    public function update(Request $request, Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
 		$isDirty = false;
 		$changes = '';
@@ -177,21 +176,21 @@ class TemplateController extends Controller
 			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect(SHOW . $record->id);
+		return redirect('/' . PREFIX . '/view/' . $record->id);
 	}
 
-    public function confirmDelete(Template $template)
+    public function confirmDelete(Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,
 		]);
     }
 
-    public function delete(Request $request, Template $template)
+    public function delete(Request $request, Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
 		try
 		{
@@ -213,7 +212,7 @@ class TemplateController extends Controller
 
 		try
 		{
-			$record = Template::withTrashed()
+			$record = Lesson::withTrashed()
 				->where('id', $id)
 				->first();
 
@@ -235,7 +234,7 @@ class TemplateController extends Controller
 
 		try
 		{
-			$records = Template::withTrashed()
+			$records = Lesson::withTrashed()
 				->whereNotNull('deleted_at')
 				->get();
 		}
@@ -249,9 +248,9 @@ class TemplateController extends Controller
 		]);
     }
 
-    public function publish(Request $request, Template $template)
+    public function publish(Request $request, Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
 		return view(VIEWS . '.publish', [
 			'record' => $record,
@@ -260,9 +259,9 @@ class TemplateController extends Controller
 		]);
     }
 
-    public function updatePublish(Request $request, Template $template)
+    public function updatePublish(Request $request, Lesson $lesson)
     {
-		$record = $template;
+		$record = $lesson;
 
         if ($request->isMethod('get'))
         {
