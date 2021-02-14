@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
-use DB;
-
 use App\Gen\Definition;
+use App\Status;
 use App\Tag;
+use DB;
 
 class Entry extends Model
 {
@@ -94,12 +94,12 @@ class Entry extends Model
 
     public function isFinished()
     {
-		return ($this->wip_flag >= getConstant('wip_flag.finished'));
+		return Status::isFinished($this->wip_flag);
     }
 
     public function isPublic()
     {
-		return ($this->release_flag >= getConstant('release_flag.public'));
+		return Status::isPublic($this->release_flag);
     }
 
     public function getStatus()

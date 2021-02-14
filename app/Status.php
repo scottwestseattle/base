@@ -2,8 +2,9 @@
 
 namespace App;
 
-// Release Status
-
+//
+// Handles Release and WIP Status
+//
 class Status
 {
     static private $_releaseFlags = [
@@ -16,20 +17,21 @@ class Status
     ];
 
 	static private $_wipFlags = [
-		WIP_NOTSET => 'Not Set',
-		WIP_INACTIVE => 'Inactive',
-		WIP_DEV => 'Dev',
-		WIP_TEST => 'Test',
-		WIP_FINISHED => 'Finished',
+		WIP_NOTSET => 'ui.Not Set',
+		WIP_INACTIVE => 'ui.Inactive',
+		WIP_DEV => 'ui.Dev',
+		WIP_TEST => 'ui.Test',
+		WIP_FINISHED => 'ui.Finished',
 	];
 
     static public function isFinished($wip_flag)
     {
 		return ($wip_flag == WIP_FINISHED);
 	}
-    static public function isPublished($release_flag)
+
+    static public function isPublic($release_flag)
     {
-		return ($release_flag == RELEASE_PUBLIC);
+		return ($release_flag == RELEASEFLAG_PUBLIC);
 	}
 
     static public function getReleaseFlags()

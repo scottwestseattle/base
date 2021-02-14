@@ -42,7 +42,7 @@ class SampleController extends Controller
 		try
 		{
 			$siteId = SITE_ID;
-			$release_flag = RELEASE_PUBLIC;
+			$release_flag = RELEASEFLAG_PUBLIC;
 
 			if (Tools::isAdmin())
 			{

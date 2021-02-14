@@ -108,14 +108,10 @@ class LessonController extends Controller
     {
 		$record = null;
 		$permalink = alphanum($permalink);
-        //$releaseFlag = getReleaseFlagForUserLevel();
-        //$releaseFlagCondition = getConditionForUserLevel();
 
 		try
 		{
 			$record = Lesson::select()
-				//->where('site_id', SITE_ID)
-				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
 				->first();
 
