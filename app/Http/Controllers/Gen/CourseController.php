@@ -11,6 +11,7 @@ use Log;
 
 use App\Gen\Course;
 use App\Site;
+use App\Status;
 use App\User;
 
 define('PREFIX', 'courses');
@@ -53,8 +54,8 @@ class CourseController extends Controller
     public function index(Request $request)
     {
 		$records = [];
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{

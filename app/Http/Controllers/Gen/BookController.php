@@ -12,6 +12,7 @@ use Log;
 use App\Entry;
 use App\Gen\Book;
 use App\Site;
+use App\Status;
 use App\User;
 
 define('PREFIX', '/books/');
@@ -104,8 +105,8 @@ class BookController extends Controller
  		$record = null;
 		$permalink = alphanum($permalink);
 
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{

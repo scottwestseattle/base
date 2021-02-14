@@ -6,35 +6,21 @@ namespace App;
 
 class Status
 {
-	const RELEASE_NOTSET = 0;
-	const RELEASE_PRIVATE = 10;	// visible for owner only and can't be promoted until approved
-	const RELEASE_APPROVED = 20;	// visible for owner only and can be promoted
-	const RELEASE_PAID = 50; 	// visible for logged-in paid members
-	const RELEASE_MEMBER = 80; // visible for logged-in members
-	const RELEASE_PUBLIC = 100;	// visible for all
-
-	// Work in progress
-	const WIP_NOTSET = 0;
-	const WIP_INACTIVE = 10;
-	const WIP_DEV = 20;
-	const WIP_TEST = 30;
-	const WIP_FINISHED = 100;
-	
     static private $_releaseFlags = [
-		self::RELEASE_NOTSET => 'Not Set',
-		self::RELEASE_PRIVATE => 'Private',
-		self::RELEASE_APPROVED => 'Approved',
-		self::RELEASE_PAID => 'Premium',
-		self::RELEASE_MEMBER => 'Member',
-		self::RELEASE_PUBLIC => 'Public',
+		RELEASEFLAG_NOTSET => 'ui.Not Set',
+		RELEASEFLAG_PRIVATE => 'ui.Private',
+		RELEASEFLAG_APPROVED => 'ui.Approved',
+		RELEASEFLAG_PAID => 'ui.Premium',
+		RELEASEFLAG_MEMBER => 'ui.Member',
+		RELEASEFLAG_PUBLIC => 'ui.Public',
     ];
 
 	static private $_wipFlags = [
-		self::WIP_NOTSET => 'Not Set',
-		self::WIP_INACTIVE => 'Inactive',
-		self::WIP_DEV => 'Dev',
-		self::WIP_TEST => 'Test',
-		self::WIP_FINISHED => 'Finished',
+		WIP_NOTSET => 'Not Set',
+		WIP_INACTIVE => 'Inactive',
+		WIP_DEV => 'Dev',
+		WIP_TEST => 'Test',
+		WIP_FINISHED => 'Finished',
 	];
 
     static public function isFinished($wip_flag)
@@ -56,94 +42,49 @@ class Status
 		return self::$_wipFlags;
 	}
 
-    static public function getReleaseStatus($release_flag, $showPublic = false)
+    static public function getReleaseStatus($flag)
     {
-		$btn = '';
-		$text = Tools::safeArrayGetString(self::$_releaseFlags, $release_flag, 'Unknown Value: ' . $release_flag);
-		$done = false;
+        $class = [
+            RELEASEFLAG_NOTSET => 'btn-secondary',
+            RELEASEFLAG_PRIVATE => 'btn-secondary',
+            RELEASEFLAG_APPROVED => 'btn-secondary',
+            RELEASEFLAG_PAID => 'btn-primary',
+            RELEASEFLAG_MEMBER => 'btn-primary',
+            RELEASEFLAG_PUBLIC => 'btn-success',
+        ];
 
-		switch ($release_flag)
-		{
-			case RELEASE_NOTSET:
-				$btn = 'btn-danger';
-				break;
-			case RELEASE_PRIVATE:
-				$btn = 'btn-secondary';
-				break;
-			case RELEASE_APPROVED:
-				$btn = 'btn-warning';
-				break;
-			case RELEASE_PAID:
-				$btn = 'btn-info';
-				break;
-			case RELEASE_MEMBER:
-				$btn = 'btn-primary';
-				break;
-			case RELEASE_PUBLIC:
-			{
-				if ($showPublic)
-				{
-					$btn = 'btn-success';
-				}
-				else
-				{
-					// don't show anything for published records
-					$btn = '';
-					$text = '';
-					$done = true;
-				}
-				break;
-			}
-			default:
-				$btn = 'btn-danger';
-				$text = 'Not Set';
-				break;
-		}
+        $rc['label'] = self::$_releaseFlags[$flag];
+        $rc['class'] = $class[$flag];
 
-		return [
-				'btn' => $btn,
-				'text' => $text,
-				'done' => $done,
-			];
-	}
+        return $rc;
+    }
 
-    static public function getWipStatus($wip_flag)
+    static public function getWipStatus($flag)
     {
-		$btn = '';
-		$text = Tools::safeArrayGetString(self::$_wipFlags, $wip_flag, 'Unknown Value: ' . $wip_flag);
-        $done = false;
+        $class = [
+            WIP_NOTSET => 'btn-secondary',
+            WIP_INACTIVE => 'btn-secondary',
+            WIP_DEV => 'btn-secondary',
+            WIP_TEST => 'btn-primary',
+            WIP_FINISHED => 'btn-primary',
+            WIP_DEFAULT => 'btn-success',
+        ];
 
-		switch ($wip_flag)
-		{
-			case WIP_NOTSET:
-				$btn = 'btn-danger';
-				break;
-			case WIP_INACTIVE:
-				$btn = 'btn-info';
-				break;
-			case WIP_DEV:
-				$btn = 'btn-warning';
-				break;
-			case WIP_TEST:
-				$btn = 'btn-primary';
-				break;
-			case WIP_FINISHED:
-				// don't show anything for finished records
-				$btn = '';
-				$text = '';
-				$done = true;
-				break;
-			default:
-				$btn = 'btn-danger';
-				$text = 'Unknown Value';
-				break;
-		}
+        $rc['label'] = self::$_wipFlags[$flag];
+        $rc['class'] = $class[$flag];
+        $rc['done'] = $flag >= WIP_FINISHED;
 
-		return [
-				'btn' => $btn,
-				'text' => $text,
-				'done' => $done,
-			];
-	}
+        return $rc;
+    }
+
+    static public function getReleaseFlagForUserLevel()
+    {
+        return isAdmin() ? RELEASEFLAG_NOTSET : RELEASEFLAG_PUBLIC;
+    }
+
+    static public function getConditionForUserLevel()
+    {
+        return isAdmin() ? '>=' : '=';
+    }
 
 }

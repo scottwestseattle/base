@@ -13,6 +13,7 @@ use Log;
 use App\Entry;
 use App\Gen\Spanish;
 use App\Site;
+use App\Status;
 use App\User;
 
 define('PREFIX', 'entries');
@@ -123,8 +124,8 @@ class EntryController extends Controller
     {
  		$record = null;
 		$permalink = alphanum($permalink);
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{
@@ -281,8 +282,8 @@ class EntryController extends Controller
 
 		return view(PREFIX . '.publish', [
 			'record' => $record,
-			'release_flags' => Entry::getReleaseFlags(),
-			'wip_flags' => Entry::getWipFlags(),
+			'release_flags' => Status::getReleaseFlags(),
+			'wip_flags' => Status::getWipFlags(),
 		]);
     }
 

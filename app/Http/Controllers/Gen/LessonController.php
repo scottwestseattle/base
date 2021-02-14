@@ -11,6 +11,7 @@ use Log;
 
 use App\Gen\Lesson;
 use App\Site;
+use App\Status;
 use App\User;
 
 define('PREFIX', 'lessons');
@@ -53,8 +54,8 @@ class LessonController extends Controller
     public function index(Request $request)
     {
 		$records = [];
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{
@@ -107,14 +108,14 @@ class LessonController extends Controller
     {
 		$record = null;
 		$permalink = alphanum($permalink);
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        //$releaseFlag = getReleaseFlagForUserLevel();
+        //$releaseFlagCondition = getConditionForUserLevel();
 
 		try
 		{
 			$record = Lesson::select()
 				//->where('site_id', SITE_ID)
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
 				->first();
 

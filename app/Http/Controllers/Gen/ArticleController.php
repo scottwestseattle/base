@@ -14,6 +14,7 @@ use App\Gen\Article;
 
 use App\Entry;
 use App\Site;
+use App\Status;
 use App\User;
 
 define('PREFIX', '/articles/');
@@ -65,8 +66,8 @@ class ArticleController extends Controller
     {
  		$record = null;
 		$permalink = alphanum($permalink);
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{

@@ -11,6 +11,7 @@ use Log;
 
 use App\Gen\Template;
 use App\Site;
+use App\Status;
 use App\User;
 
 define('PREFIX', '/templates/');
@@ -54,8 +55,8 @@ class TemplateController extends Controller
     public function index(Request $request)
     {
 		$records = [];
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{

@@ -17,7 +17,7 @@
 				<td class="index-button"><a href='/words/undelete/{{$record->id}}'>{{__('ui.Undelete')}}</a></td>
 				<td>{{$record->title}}</td>
 				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
-				<td class="index-button">{{__(getReleaseStatus($record->release_flag)['label'])}}</td>
+				<td class="index-button">{{__(App\Status::getReleaseStatus($record->release_flag)['label'])}}</td>
 				<td>{{$record->created_at}}</td>
 			</tr>
 		@endforeach

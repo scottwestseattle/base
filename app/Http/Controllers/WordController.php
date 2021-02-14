@@ -13,6 +13,7 @@ use Lang;
 use Log;
 
 use App\Site;
+use App\Status;
 use App\Word;
 use App\User;
 
@@ -36,8 +37,8 @@ class WordController extends Controller
     public function index(Request $request)
     {
 		$records = [];
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{
