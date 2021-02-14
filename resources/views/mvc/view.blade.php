@@ -17,6 +17,14 @@
 		<li><a href="/{{$views}}/add">Add {{ucfirst($model)}}</a></li>
 	</ul>
 
+	<h3>Translations</h3>
+	<div class="text-sm"><a href="" onclick="event.preventDefault(); select('translations');">select</a></div>
+	<p id="translations">{!!nl2br($translations)!!}</p>
+
+	<h3>Permissions</h3>
+	<div class="text-sm"><a href="" onclick="event.preventDefault(); select('permissions');">select</a></div>
+	<p id="permissions">{!!nl2br($permissions)!!}</p>
+
 	<h3>MySQL {{__('base.Table Schema')}}</h3>
 	<div class="text-sm"><a href="" onclick="event.preventDefault(); select('schema');">select</a></div>
 	<p id="schema">{!!nl2br($schemaMysql)!!}</p>

@@ -39,16 +39,3 @@ How to add a Helper file
 =====================================================================
 return 404, page not found: abort(404)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-sudo chown scottwilkinson app/*.php;
-sudo chown scottwilkinson app/Gen/*.php;
-sudo chown scottwilkinson app/Http/Controllers/*.php;
-sudo chown scottwilkinson app/Http/Controllers/Gen/*.php;
-sudo chown scottwilkinson resources/views/gen/xxxxxxxx;
-sudo chown scottwilkinson resources/views/gen/xxxxxxxxx/*.php;
-
-sudo chmod 666 app/*.php;
-sudo chmod 666 app/Gen/*.php;
-sudo chmod 666 app/Http/Controllers/*.php;
-sudo chmod 666 app/Http/Controllers/Gen/*.php;
-sudo chmod 666 resources/views/xxxxxxxxx/*.php;
-sudo chmod 666 resources/views/gen/xxxxxxxxx/*.php;

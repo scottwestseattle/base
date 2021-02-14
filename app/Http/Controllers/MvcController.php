@@ -138,11 +138,22 @@ class MvcController extends Controller
 		$schemaMysql = self::genSchemaMysql($views, $paths);
         $routes = self::genRoutes($model, $views);
 
+        // translation helpers
+        $trx = trim(self::$translations);
+        $trx = str_replace('Templates', Str::plural($model), $trx);
+        $trx = str_replace('Template', $model, $trx);
+
+        // permission helpers
+        $permissions = trim(self::$permissions);
+        $permissions = str_replace('templates', $views, $permissions);
+
 		return view('mvc.view', [
 			'model' => $model,
 			'views' => $views,
 			'schemaMysql' => $schemaMysql,
 			'routes' => $routes,
+			'translations' => $trx,
+			'permissions' => $permissions,
 			'paths' => $paths,
 		]);
 	}
@@ -282,6 +293,31 @@ class MvcController extends Controller
 
 		file_put_contents($viewFileOut, $tpl);
 	}
+
+    static private $permissions = "
+sudo chown scottwilkinson app/*.php;
+sudo chown scottwilkinson app/Gen/*.php;
+sudo chown scottwilkinson app/Http/Controllers/*.php;
+sudo chown scottwilkinson app/Http/Controllers/Gen/*.php;
+sudo chown scottwilkinson resources/views/gen/templates;
+sudo chown scottwilkinson resources/views/gen/templates/*.php;
+sudo chmod 666 app/*.php;
+sudo chmod 666 app/Gen/*.php;
+sudo chmod 666 app/Http/Controllers/*.php;
+sudo chmod 666 app/Http/Controllers/Gen/*.php;
+sudo chmod 666 resources/views/templates/*.php;
+sudo chmod 666 resources/views/gen/templates/*.php;
+    ";
+
+    static private $translations = "
+Template|Templates
+Add Template
+Delete Template
+Deleted Templates
+Edit Template
+Publish Template
+View Template
+    ";
 
 	static private $routesTemplate = "
 // GENERATED for Template model

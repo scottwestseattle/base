@@ -90,8 +90,8 @@ class WordController extends Controller
     {
 		$record = null;
 		$permalink = alphanum($permalink);
-        $releaseFlag = getReleaseFlagForUserLevel();
-        $releaseFlagCondition = getConditionForUserLevel();
+        $releaseFlag = Status::getReleaseFlagForUserLevel();
+        $releaseFlagCondition = Status::getConditionForUserLevel();
 
 		try
 		{
