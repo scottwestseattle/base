@@ -3,7 +3,7 @@
     $prefix = 'gen.definitions';
 @endphp
 @extends('layouts.app')
-@section('title', trans_choice('proj.Find Definition', 1) . ' - ' . $title)
+@section('title', trans_choice('proj.View Definition', 1) . ' - ' . $title)
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
 @section('content')
 	@if (isset($fromDictionary))
@@ -94,8 +94,8 @@
 		@endif
 	</div>
 
-	@if (isset($record) && isset($record->forms))
-		<div class="small-thin-hdr mt-2 mb-1">Forms</div>
+	@if (Str::of($record->forms)->isNotEmpty())
+		<div class="small-thin-hdr mt-2 mb-1">{{__('proj.Forms')}}</div>
 		<div class="small-thin-text mt-2">{{App\Gen\Spanish::getFormsPretty($record->forms)}}</div>
 	@endif
 

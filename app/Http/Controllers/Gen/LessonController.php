@@ -133,6 +133,9 @@ class LessonController extends Controller
 
 		return view(VIEWS . '.view', [
 			'record' => $record,
+			'courseTitle' => 'The Course',
+			'prefix' => 'lessons',
+			'sentenceCount' => 0,
 			]);
     }
 
