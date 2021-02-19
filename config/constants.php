@@ -109,6 +109,8 @@ define('USER_ID_NOTSET', 0);
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 byetes for db overhead
 define('MS_YEAR', 525600); // milliseconds for one year
+define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
+define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
 
 return [
     'characters' => [

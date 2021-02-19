@@ -1,31 +1,33 @@
+@php
+    $prefix = 'lessons';
+@endphp
 @extends('layouts.app')
-@section('title', trans_choice('proj.Lesson', 2))
-@section('menu-submenu')@component('gen.lessons.menu-submenu')@endcomponent @endsection
+@section('title', trans_choice('proj.Lesson', 2) )
+@section('menu-submenu')@component('gen.lessons.menu-submenu', ['prefix' => $prefix])@endcomponent @endsection
 @section('content')
-<div>
-	<h1>{{trans_choice('proj.Lesson', 2)}} ({{count($records)}})</h1>
-	<div  class="table-responsive">
-	<table class="table">
-		<thead>
-			<tr>
-				<th></th><th>{{__('ui.Title')}}</th><th>{{__('ui.Type')}}</th><th>{{__('ui.Description')}}</th><th>{{__('ui.Created')}}</th><th></th>
-			</tr>
-		</thead>
-		<tbody>
+<div class="container page-normal">
+
+	<h1>@LANG('content.' . $titlePlural) ({{count($records)}})
+
+	@if (isAdmin())
+		<span style="font-size:.6em;"><a href="/{{$prefix}}/admin"><span class="glyphCustom glyphicon glyphicon-admin"></span></a></span>
+	@endif
+	</h1>
+
+	<div class="row" style="margin-bottom:10px;">
 		@foreach($records as $record)
-			<tr>
-				<td class="icon"><a href='/lessons/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
-				<td><a href="/lessons/{{ blank($record->permalink) ? 'show/' . $record->id : 'view/' . $record->permalink }}">{{$record->title}}</a></td>
-				<td>{{$record->type_flag}}</td>
-				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
-				<td class="date-sm">{{$record->created_at}}</td>
-				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/lessons/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
-				<!-- td class="icon"><a href='/lessons/confirmdelete/{{$record->id}}'>@component('components.icon', ['svg' => 'trash-fill'])@endcomponent</a></td -->
-			</tr>
+		@php
+            $status = App\Status::getWipStatus($record->wip_flag);
+        @endphp
+		<div style="padding:10px;" class="col-sm-4"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+			<div class="drop-box" style="height:200px;  background-color: #4993FD; color:white;" ><!-- inner col div -->
+                <a style="height:100%; width:100%;" class="btn {{$status['class']}} btn-lg" role="button" href="/{{$prefix}}/view/{{$record->id}}">
+                    {{$record->getDisplayNumber()}}&nbsp;{{$record->title}}<br/>{{ $record->description}}
+                </a>
+			</div><!-- inner col div -->
+		</div><!-- outer col div -->
 		@endforeach
-		</tbody>
-	</table>
-	</div>
+	</div><!-- row -->
 
 </div>
 

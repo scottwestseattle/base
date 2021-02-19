@@ -46,4 +46,8 @@ return [
 'Edit Lesson' => 'Editar lección',
 'Publish Lesson' => 'Publicar lección',
 'View Lesson' => 'Visualizar lección',
+'Back to Course List' => 'Volver a la lista de cursos',
+'Start at the beginning' => 'Empiece por el principio',
+'Back to' => 'Volver a',
+'Next Chapter' => 'Siguiente capítulo',
 ];

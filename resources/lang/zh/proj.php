@@ -46,4 +46,8 @@ return [
 'Edit Lesson' => '编辑课程',
 'Publish Lesson' => '发布课程',
 'View Lesson' => '查看课程',
+'Back to Course List' => '返回课程清单',
+'Start at the beginning' => '从头开始',
+'Back to' => '还给',
+'Next Chapter' => '下一章',
 ];

@@ -57,6 +57,7 @@ class Status
 
         $rc['label'] = self::$_releaseFlags[$flag];
         $rc['class'] = $class[$flag];
+        $rc['public'] = ($flag >= RELEASEFLAG_PUBLIC);
 
         return $rc;
     }
@@ -72,9 +73,18 @@ class Status
             WIP_DEFAULT => 'btn-success',
         ];
 
-        $rc['label'] = self::$_wipFlags[$flag];
-        $rc['class'] = $class[$flag];
-        $rc['done'] = $flag >= WIP_FINISHED;
+        if (isset($flag))
+        {
+            $rc['label'] = self::$_wipFlags[$flag];
+            $rc['class'] = $class[$flag];
+            $rc['done'] = $flag >= WIP_FINISHED;
+        }
+        else
+        {
+            $rc['label'] = '';
+            $rc['class'] = '';
+            $rc['done'] = false;
+        }
 
         return $rc;
     }

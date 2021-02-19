@@ -1,40 +1,46 @@
 @extends('layouts.app')
-@section('title', trans_choice('proj.Course', 2))
-@section('menu-submenu')@component('gen.courses.menu-submenu')@endcomponent @endsection
+@section('title', trans_choice('proj.Course', 2) )
+@section('menu-submenu')@component('gen.courses.menu-submenu', ['prefix' => 'courses'])@endcomponent @endsection
 @section('content')
-<div>
-	<h1>{{trans_choice('proj.Course', 2)}} ({{count($records)}})</h1>
-	<div  class="table-responsive">
-	<table class="table">
-		<thead>
-			<tr>
-@if (true)
-				<th></th><th></th><th>{{__('ui.Release')}}</th><th>{{__('ui.Title')}}</th><th>{{__('ui.Type')}}</th><th>{{__('ui.Description')}}</th><th>{{__('ui.Created')}}</th><th></th>
-@else
-				<th></th><th>{{__('ui.Title')}}</th><th>{{__('ui.Type')}}</th><th>{{__('ui.Description')}}</th><th>{{__('ui.Created')}}</th><th></th>
-@endif
-			</tr>
-		</thead>
-		<tbody>
-		@foreach($records as $record)
-			<tr>
-				<td class="icon"><a href='/courses/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
-@if (true)
-				<td class="icon"><a href='/courses/publishupdate/{{$record->id}}'>@component('components.icon', ['svg' => 'lightning'])@endcomponent</a></td>
-				<td class="index-button">@component('components.button-release-status', ['record' => $record, 'views' => 'courses', 'class' => 'btn-xxs'])@endcomponent</td>
-@endif
-				<td><a href="/courses/{{ blank($record->permalink) ? 'show/' . $record->id : 'view/' . $record->permalink }}">{{$record->title}}</a></td>
-				<td>{{$record->type_flag}}</td>
-				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
-				<td class="date-sm">{{$record->created_at}}</td>
-				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/courses/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
-				<!-- td class="icon"><a href='/courses/confirmdelete/{{$record->id}}'>@component('components.icon', ['svg' => 'trash-fill'])@endcomponent</a></td -->
-			</tr>
-		@endforeach
-		</tbody>
-	</table>
-	</div>
 
+<h1>{{trans_choice('proj.Course', 2)}} ({{count($public)}})</h1>
+
+<div class="row row-course">
+    @foreach($public as $record)
+    <div class="col-sm-12 col-lg-6 col-course"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+        <div class="card card-course {{$record->getCardColor()}} truncate">
+            <a href="/courses/view/{{$record->id}}">
+                <div class="card-header">
+                    <div>{{$record->title}}</div>
+                    @component('components.data-sitename', ['isAdmin' => isAdmin(), 'siteId' => $record->site_id])@endcomponent
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{$record->description}}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    @endforeach
 </div>
+
+@if (isAdmin())
+<h1>@LANG('proj.Courses Under Development') ({{count($private)}})</h1>
+
+<div class="row row-course">
+    @foreach($private as $record)
+    <div class="col-sm-12 col-lg-6 col-course"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+        <div class="card card-course {{$record->getCardColor()}} truncate">
+        <a href="/courses/view/{{$record->id}}">
+            <div class="card-header">
+                <div>{{$record->title}}</div>
+                @component('components.data-sitename', ['isAdmin' => isAdmin(), 'siteId' => $record->site_id])@endcomponent
+            </div>
+            <div class="card-body"><p class="card-text">{{$record->description}}</p></div>
+        </a>
+        </div>
+    </div>
+    @endforeach
+</div>
+@endif
 
 @endsection

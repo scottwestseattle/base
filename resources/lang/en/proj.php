@@ -46,4 +46,8 @@ return [
 'Edit Lesson' => 'Edit Lesson',
 'Publish Lesson' => 'Publish Lesson',
 'View Lesson' => 'View Lesson',
+'Back to Course List' => 'Back to Course List',
+'Start at the beginning' => 'Start at the beginning',
+'Back to' => 'Back to',
+'Next Chapter' => 'Next Chapter',
 ];

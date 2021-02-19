@@ -767,3 +767,222 @@ h6 {
 	border-radius: 8px;
 	padding: 0px 0;
 }
+
+/***********************************************************
+ Course/Lesson Styles
+************************************************************/
+
+.card-course, .card-course a {
+	height:200px;
+	color:white;
+	text-decoration:none;
+}
+
+.card-course-type0 { /* not set */
+	background-color: darkgray;
+}
+
+.card-course-type1 { /* English */
+	background-color: #f5746f; /* reddish */
+}
+
+.card-course-type2 { /* Spanish */
+	background-color: #4993FD; /* header blue */
+}
+
+.card-course-type3 { /* Tech */
+	background-color: #eaac10; /* darker amber */
+}
+
+.card-course-type4 { /* Other */
+	background-color: #9568ad; /* plumb */
+}
+
+.card-course-type40 { /* Planch */
+	background-color: #2AB455; /* green */
+}
+
+.card-course .card-header {
+	font-size:1.1em;
+}
+
+.row-course {
+	margin-bottom:10px;
+}
+
+.col-course {
+	padding:10px;
+}
+
+.btn-lesson-index {
+	color: black;
+	text-align:left;
+	margin-bottom:10px;
+	width:100%;
+	max-width:600px;
+}
+
+.table-lesson-list {
+	background-color: #dddddd;
+	width:576px;
+	max-width:100%;
+}
+
+.table-lesson-list td {
+	font-size: .7em;
+	padding: 5px;
+}
+
+.table-lesson-list td:first-child {
+	width:10px;
+}
+
+@media (max-width:576px) { /* small screen only */
+
+	.table-lesson-list {
+		width: 100%;
+	}
+}
+
+
+/* spacing for the lesson prev/next buttons */
+.page-nav-buttons {
+	margin: 10px 0;
+}
+
+.page-nav-buttons .glyphicon-circle-arrow-left,
+.page-nav-buttons .glyphicon-circle-arrow-up {
+	margin-right: 5px;
+}
+
+.page-nav-buttons .glyphicon-circle-arrow-right,
+.page-nav-buttons .glyphicon-circle-arrow-up,
+.page-nav-buttons .glyphicon-circle-arrow-down {
+	margin-left: 5px;
+}
+
+@media (max-width:576px) { /* small screen only */
+
+.btn-nav-top {
+    margin-top: 5px;
+}
+
+.page-nav-buttons {
+	margin: 5px 0;
+}
+
+.btn-nav-lesson {
+	width:49%;
+ }
+
+.btn-nav-lesson-sm {
+	margin-bottom:5px;
+ }
+
+}
+
+.lesson {
+	font-size: 1.2em;
+}
+
+.lesson td {
+	min-width:50px;
+}
+
+.lesson-page {
+	font-size: 1.2em;
+}
+
+.lesson h2, .lesson h3 {
+	margin-top: 20px;
+}
+
+.lesson-note {
+    padding: 20px;
+    margin: 20px 0;
+    border: 0px solid #5cb85c; /* original greenish */
+    border-left-width: 5px;
+    xborder-radius: 5px;
+    border-left-color: #FFEB3B;
+	background-color:#FFFFCC;
+	width:100%;
+	max-width:600px;
+}
+.lesson-note p:last-child {
+    margin-bottom: 0;
+}
+.lesson-note h4 {
+    color: #5cb85c;
+	color:#666;
+    margin-bottom:30px;
+}
+
+.lesson-examples {
+    padding: 10px 15px;
+    margin: 20px 0;
+	border-left: 5px solid #FF6900; /* orange */
+	border-left: 5px solid #218838;
+}
+
+.lesson-examples p:last-child {
+    margin-bottom: 0;
+}
+
+
+/************* this section just adds the border **************/
+
+.lesson-table {
+	margin: 15px 0 25px 0;
+}
+
+.lesson-table,
+.lesson-table td,
+.lesson-table th {
+    xborder: 1px solid #dee2e6;
+}
+
+.lesson-table thead td,
+.lesson-table thead th {
+    xborder-bottom-width: 2px;
+    background-color: #eff7f0;
+	text-align:left;
+}
+/**************************************************************/
+
+.lesson-table th {
+    background-color: #eff7f0;
+	font-weight: bold;
+	text-align: center;
+}
+
+.lesson-table, .lesson-table input
+{
+	width: 100%;
+}
+
+.lesson-table-sm {
+	max-width:400px;
+}
+
+.lesson-table, .lesson-table-xs {
+	max-width:300px;
+}
+
+.lesson-table, .lesson-table-md {
+	max-width:600px;
+}
+
+.lesson-table-lg {
+	max-width:800px;
+}
+
+.lesson-table-fancy th {
+	background-color: #5CB85C;
+	color:white;
+	padding:5px;
+	text-align:center;
+	font-weight:600;
+	border: 2px solid white;
+	border-radius:7px;
+}
+

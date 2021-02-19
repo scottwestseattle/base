@@ -548,8 +548,12 @@ Route::group(['prefix' => 'courses'], function () {
 	Route::get('/admin', [CourseController::class, 'admin']);
 	Route::get('/index', [CourseController::class, 'index']);
 
+	Route::get('/view/{course}', [CourseController::class, 'view']);
+	Route::get('/rss', [CourseController::class, 'rss']);
+	Route::get('/start', [CourseController::class, 'start']);
+
 	// view
-	Route::get('/view/{permalink}', [CourseController::class, 'permalink']);
+	//Route::get('/view/{permalink}', [CourseController::class, 'permalink']);
 	Route::get('/show/{course}', [CourseController::class, 'view']);
 
 	// add
@@ -581,32 +585,44 @@ use App\Http\Controllers\Gen\LessonController;
 // Lessons
 Route::group(['prefix' => 'lessons'], function () {
 	Route::get('/', [LessonController::class, 'index']);
-	Route::get('/admin', [LessonController::class, 'admin']);
-	Route::get('/index', [LessonController::class, 'index']);
 
-	// view
-	Route::get('/view/{permalink}', [LessonController::class, 'permalink']);
-	Route::get('/show/{lesson}', [LessonController::class, 'view']);
+	Route::get('/admin/{course_id?}', [LessonController::class, 'admin']);
+	Route::get('/view/{lesson}',[LessonController::class, 'view']);
+	Route::post('/view/{lesson}',[LessonController::class, 'view']); // just in case they hit enter on the ajax form
+	Route::get('/review-orig/{lesson}/{reviewType?}',[LessonController::class, 'reviewOrig']);
+	Route::get('/reviewmc/{lesson}/{reviewType?}',[LessonController::class, 'reviewmc']);
+	Route::get('/review/{lesson}/{reviewType?}',[LessonController::class, 'review']);
+	Route::get('/read/{lesson}',[LessonController::class, 'read']);
+	Route::get('/log-quiz/{lessonId}/{score}', [LessonController::class, 'logQuiz']);
+	Route::get('/start/{lesson}/', [LessonController::class, 'start']);
+	Route::get('/rss/{lesson}/', [LessonController::class, 'rss']);
 
-	// add
-	Route::get('/add', [LessonController::class, 'add']);
-	Route::post('/create', [LessonController::class, 'create']);
+	// add/create
+	Route::get('/add',[LessonController::class, 'add']);
+	Route::get('/add/{course}',[LessonController::class, 'add']);
+	Route::post('/create',[LessonController::class, 'create']);
 
-	// edit
-	Route::get('/edit/{lesson}', [LessonController::class, 'edit']);
-	Route::post('/update/{lesson}', [LessonController::class, 'update']);
-
-	// publish
-	Route::get('/publish/{lesson}', [LessonController::class, 'publish']);
-	Route::post('/publishupdate/{lesson}', [LessonController::class, 'updatePublish']);
-	Route::get('/publishupdate/{lesson}', [LessonController::class, 'updatePublish']);
+	// edit/update
+	Route::get('/edit/{lesson}',[LessonController::class, 'edit']);
+	Route::post('/update/{lesson}',[LessonController::class, 'update']);
+	Route::get('/edit2/{lesson}',[LessonController::class, 'edit2']);
+	Route::post('/update2/{lesson}',[LessonController::class, 'update2']);
 
 	// delete
-	Route::get('/confirmdelete/{lesson}', [LessonController::class, 'confirmDelete']);
-	Route::post('/delete/{lesson}', [LessonController::class, 'delete']);
-	Route::get('/delete/{lesson}', [LessonController::class, 'delete']);
-
-	// undelete
-	Route::get('/deleted', [LessonController::class, 'deleted']);
+	Route::get('/confirmdelete/{lesson}',[LessonController::class, 'confirmdelete']);
+	Route::post('/delete/{lesson}',[LessonController::class, 'delete']);
 	Route::get('/undelete/{id}', [LessonController::class, 'undelete']);
+
+	// add/create
+	Route::get('/publish/{lesson}',[LessonController::class, 'publish']);
+	Route::post('/publishupdate/{lesson}',[LessonController::class, 'publishupdate']);
+
+    // convert to list
+	Route::get('/convert-to-list/{lesson}',[LessonController::class, 'convertToList']);
+
+	// ajax
+	Route::get('/finished/{lesson}',[LessonController::class, 'toggleFinished']);
+
+    // catch all
+	Route::get('/{parent_id}', [LessonController::class, 'index']);
 });

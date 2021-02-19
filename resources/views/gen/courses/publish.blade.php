@@ -1,35 +1,37 @@
 @extends('layouts.app')
-@section('title', __('proj.Publish Course'))
-@section('menu-submenu')@component('gen.courses.menu-submenu', ['record' => $record])@endcomponent @endsection
+
 @section('content')
+
 <div class="container page-normal">
 
-	<h1>{{__('proj.Publish Course')}}</h1>
+	@component($prefix . '.menu-submenu', ['record' => $record, 'prefix' => $prefix, 'isAdmin' => $isAdmin])@endcomponent
 
-	<form method="POST" action="/courses/publishupdate/{{$record->id}}">
+	<h1>Publish {{$title}}</h1>
 
-		<h3 name="title" class="">{{$record->title}}</h3>
+	<form method="POST" action="/{{$prefix}}/publishupdate/{{ $record->id }}">
+
+		<h3 name="title" class="">{{$record->title }}</h3>
 
 		<div class="form-group">
-			<label for="wip_flag" class="control-label">@LANG('base.Work Status'):</label>
+			<label for="wip_flag" class="control-label">@LANG('content.Work Status'):</label>
 			<select name="wip_flag" class="form-control">
 				@foreach ($wip_flags as $key => $value)
 					<option value="{{$key}}" {{ $key == $record->wip_flag ? 'selected' : ''}}>{{$value}}</option>
 				@endforeach
 			</select>
 		</div>
-
+		
 		<div class="form-group">
-			<label for="release_flag" class="control-label">@LANG('base.Release Status'):</label>
+			<label for="release_flag" class="control-label">@LANG('content.Release Status'):</label>
 			<select name="release_flag" class="form-control">
 				@foreach ($release_flags as $key => $value)
 					<option value="{{$key}}" {{ $key == $record->release_flag ? 'selected' : ''}}>{{$value}}</option>
 				@endforeach
 			</select>
 		</div>
-
+		
 		<div class="submit-button">
-			<button type="submit" class="btn btn-primary">@LANG('ui.Update')</button>
+			<button type="submit" class="btn btn-primary">Update</button>
 		</div>
 	{{ csrf_field() }}
 	</form>
