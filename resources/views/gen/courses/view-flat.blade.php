@@ -31,8 +31,8 @@
 
 <h1 class="mt-1 mb-4">{{trans_choice('proj.Lesson', 2)}} ({{$displayCount}})
     @if (isAdmin())
-        <span><a href="/lessons/admin/{{$record->id}}"><span class="glyphCustom glyphicon glyphicon-admin"></span></a></span>
-        <span><a href="/lessons/add/{{$record->id}}"><span class="glyphCustom glyphicon glyphicon-add"></span></a></span>
+        <span><a href="/lessons/admin/{{$record->id}}"><span class="glyphicon glyphicon-cog glyphCustom"></span></a></span>
+        <span><a href="/lessons/add/{{$record->id}}"><span class="glyphicon glyphicon-plus-sign glyphCustom"></span></a></span>
     @endif
 </h1>
 

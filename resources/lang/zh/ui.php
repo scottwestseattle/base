@@ -132,4 +132,5 @@ return [
 'Add New List' => '新增清单',
 'Continue' => '继续',
 'Author' => '作者',
+'Language' => '语言|语言',
 ];

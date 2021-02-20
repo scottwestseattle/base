@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('ui.View') . ' ' . trans_choice('view.Site', 1))
+@section('title', __('proj.View Site'))
 @section('menu-submenu')@component('sites.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('ui.View')}} {{trans_choice('view.Site', 1)}}</h1>
+	<h1>{{__('proj.View Site')}}</h1>
 
 	<h3 name="title">{{$record->title }}</h3>
 

@@ -132,4 +132,5 @@ return [
 'Add New List' => 'Agregar Lista Nueva',
 'Continue' => 'Continuar',
 'Author' => 'por',
+'Language' => 'Idioma|Idiomas',
 ];

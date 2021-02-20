@@ -50,4 +50,13 @@ return [
 'Start at the beginning' => 'Start at the beginning',
 'Back to' => 'Back to',
 'Next Chapter' => 'Next Chapter',
+'View Site' => 'View Site',
+'Edit Site' => 'Edit Site',
+'Add Site' => 'Add Site',
+'Delete Site' => 'Delete Site',
+'Publish Site' => 'Publish Site',
+'Undelete Site' => 'Undelete Site',
+'Deleted Sites' => 'Deleted Sites',
+'Question' => 'Question|Questions',
+'Exercise' => 'Exercise|Exercises',
 ];

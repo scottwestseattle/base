@@ -12,6 +12,16 @@ class Site extends Model
 
     static private $_site = null;
 
+	static private $_sites = [
+		0 => 'localhost',
+		1 => 'language4.me',
+		2 => 'speakclearer.com',
+		3 => 'spanish50.com',
+		4 => 'codespace.us',
+		5 => 'english50.com',
+		6 => 'espdaily.com',
+	];
+
     public function user()
     {
     	return $this->belongsTo(User::class);
@@ -105,4 +115,25 @@ class Site extends Model
     {
 		return ($this->release_flag);
     }
+
+	static public function getSiteIds()
+	{
+		$ids = (self::$_sites);
+
+		return $ids;
+	}
+
+	static public function getSiteName($id)
+	{
+		$id = intval($id);
+		$rc = "not found";
+
+		$sites = (self::$_sites);
+		if (array_key_exists($id, $sites))
+		{
+			$rc = $sites[$id];
+		}
+
+		return $rc;
+	}
 }

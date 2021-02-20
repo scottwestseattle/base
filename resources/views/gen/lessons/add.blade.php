@@ -1,12 +1,13 @@
+@php
+    $prefix = 'lessons';
+    $isAdmin = isAdmin();
+@endphp
 @extends('layouts.app')
-
+@section('title', __('proj.Add Lesson'))
+@section('menu-submenu')@component('gen.lessons.menu-submenu', ['prefix' => $prefix])@endcomponent @endsection
 @section('content')
 
-<div class="container page-normal">
-
-	@component($prefix . '.menu-submenu', ['prefix' => $prefix, 'isAdmin' => $isAdmin])@endcomponent
-
-	<h1>@LANG('ui.Add') @LANG('content.' . $title)</h1>
+	<h1>@LANG('proj.Add Lesson')</h1>
 
 	<form method="POST" action="/{{$prefix}}/create">
 
@@ -16,9 +17,9 @@
             <input type="hidden" name="parent_id" id="parent_id" value="{{$course->id}}" />
         @else
             <div class="form-group">
-                <label for="parent_id" class="control-label">@LANG('content.Course'):</label>
+                <label for="parent_id" class="control-label">@LANG('proj.Course'):</label>
                 <select name="parent_id" class="form-control">
-                    <option value="0">(@LANG('content.Select Course'))</option>
+                    <option value="0">(@LANG('proj.Select Course'))</option>
                     @foreach ($courses as $record)
                         <option value="{{$record->id}}" {{ isset($course->id) && $record->id == $course->id ? 'selected' : ''}}>{{$record->title}}</option>
                     @endforeach
@@ -38,7 +39,7 @@
                 'isAdmin' => $isAdmin,
                 'prompt' => 'Lesson Type: ',
                 'empty' => 'Select Lesson Type',
-                'options' => App\Lesson::getTypes(),
+                'options' => App\Gen\Lesson::getTypes(),
                 'selected_option' => null,
                 'field_name' => 'type_flag',
                 'prompt_div' => true,
@@ -76,22 +77,22 @@
 		@endif
 
 		<div class="form-group">
-			<label for="title" class="control-label">@LANG('gen.Title'):</label>
+			<label for="title" class="control-label">@LANG('ui.Title'):</label>
 			<input type="text" name="title" id="title" class="form-control" onclick="setFocus($(this), '#accent-chars');" />
 		</div>
 
         @if ($course->isTimedSlides())
 			<div class="form-group">
-				<label for="seconds" class="control-label">@LANG('gen.Seconds'):</label>
+				<label for="seconds" class="control-label">@LANG('proj.Seconds'):</label>
 				<input type="number" name="seconds" id="seconds" class="form-control" value="{{TIMED_SLIDES_DEFAULT_SECONDS}}" />
-				@component('components.control-numinc', ['id' => 'seconds', 'multiple' => 5])@endcomponent			
+				@component('components.control-numinc', ['id' => 'seconds', 'multiple' => 5])@endcomponent
 			<div>
 
 			<div class="form-group">
-				<label for="break_seconds" class="control-label">@LANG('gen.Break Seconds'):</label>
+				<label for="break_seconds" class="control-label">@LANG('proj.Break Seconds'):</label>
 				<input type="number" name="break_seconds" id="break_seconds" class="form-control" value="{{TIMED_SLIDES_DEFAULT_BREAK_SECONDS}}" />
 				@component('components.control-numinc', ['id' => 'break_seconds', 'multiple' => 5])@endcomponent
-			<div>			
+			<div>
 
             <div class="form-group">
                 <div class="submit-button">
@@ -101,25 +102,25 @@
         @endif
 
 		<div class="form-group">
-			<label for="lesson_number" class="control-label">@LANG('content.Chapter'):</label>
+			<label for="lesson_number" class="control-label">@LANG('proj.Chapter'):</label>
 			<input type="number"  min="1" max="1000" step="1" name="lesson_number" id="lesson_number" class="form-control form-control-100" value="{{$chapter}}" />
             @component('components.control-numinc', ['id' => 'lesson_number', 'multiple' => 1])@endcomponent
 		</div>
 
 		<div class="form-group">
-			<label for="section_number" class="control-label">@LANG('content.Section'):</label>
+			<label for="section_number" class="control-label">@LANG('proj.Section'):</label>
 			<input type="number"  min="0" max="1000" step="1" name="section_number" id="section_number" class="form-control form-control-100" value="{{$section}}" />
             @component('components.control-numinc', ['id' => 'section_number', 'multiple' => 1])@endcomponent
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('gen.Description'):</label>
+			<label for="description" class="control-label">@LANG('ui.Description'):</label>
 			<textarea id="description" name="description" class="form-control" onclick="setFocus($(this), '#accent-chars');"></textarea>
 		<div>
 
 
 		<div class="form-group">
-			<label for="title_chapter" class="control-label">@LANG('gen.Chapter Title'):</label>
+			<label for="title_chapter" class="control-label">@LANG('proj.Chapter Title'):</label>
 			<input type="text" id="title_chapter" name="title_chapter" class="form-control" onclick="setFocus($(this), '#accent-chars');" />
 		<div>
 
@@ -129,7 +130,7 @@
 				<input type="number" name="reps" class="form-control" />
 			<div>
 		@endif
-		
+
 		<div class="form-group">
 			<div class="submit-button">
 				<button type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>
@@ -140,9 +141,7 @@
 
 	</form>
 
-	@component('lessons.comp-lesson-list', ['records' => $lessons])@endcomponent
-
-</div>
+	@component('gen.lessons.comp-lesson-list', ['records' => $lessons])@endcomponent
 
 @endsection
 

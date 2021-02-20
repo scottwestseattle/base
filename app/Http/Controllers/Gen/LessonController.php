@@ -11,7 +11,7 @@ use Config;
 use Log;
 
 use App\Gen\Lesson;
-use App\Course;
+use App\Gen\Course;
 use App\Entry;
 use App\Quiz;
 use App\User;
@@ -32,7 +32,7 @@ class LessonController extends Controller
 
 	public function __construct()
 	{
-        $this->middleware('is_admin')->except([
+        $this->middleware('admin')->except([
 			'index', 'review', 'reviewmc', 'read', 'view',
 			'start', 'permalink', 'logQuiz', 'rss', 'rssReader'
 		]);
@@ -108,7 +108,7 @@ class LessonController extends Controller
 
 		return view(VIEWS . '.add', [
 			'course' => $course,										// parent
-			'courses' => LessonController::getCourses(LOG_ACTION_ADD),	// for the course dropdown
+			'courses' => self::getCourses('add'),	// for the course dropdown
 			'chapter' => $chapter,
 			'section' => $section,
 			'lessons' => $lessons,
@@ -279,7 +279,7 @@ class LessonController extends Controller
     {
 		return view(VIEWS . '.edit', [
 			'record' => $lesson,
-			'courses' => LessonController::getCourses(LOG_ACTION_EDIT), // for the course dropdown
+			'courses' => self::getCourses('edit'), // for the course dropdown
 			'tinymce' => true,
 			'photoPath' => '/img/plancha/',
 			]);

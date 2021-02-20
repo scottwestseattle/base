@@ -50,4 +50,13 @@ return [
 'Start at the beginning' => '从头开始',
 'Back to' => '还给',
 'Next Chapter' => '下一章',
+'View Site' => '查看网站',
+'Edit Site' => '编辑网站',
+'Add Site' => '新增网站',
+'Delete Site' => '删除网站',
+'Publish Site' => '发布网站',
+'Undelete Site' => '取消删除网站',
+'Deleted Sites' => '删除的网站',
+'Question' => '问题|问题',
+'Exercise' => '锻炼|锻炼',
 ];

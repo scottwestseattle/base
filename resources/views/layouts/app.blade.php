@@ -57,6 +57,12 @@
 		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 		<script src="{{asset('js/project.js')}}"></script>
+
+        @if (isset($tinymce))
+            <script src="/js/tinymce/tinymce.min.js"></script>
+            <script src="/js/loadTinyMce.js"></script>
+        @endif
+
         @if (isset($options['loadSpeechModules']) && $options['loadSpeechModules'])
             <script src="{{ asset('js/recorder.js') }}"></script>
             <script src="{{ asset('js/reader.js') }}"></script>

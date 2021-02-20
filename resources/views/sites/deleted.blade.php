@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('view.Deleted Sites'))
+@section('title', __('proj.Deleted Sites'))
 @section('menu-submenu')@component('sites.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('view.Deleted Sites')}} ({{count($records)}})</h1>
+	<h1>{{__('proj.Deleted Sites')}} ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>

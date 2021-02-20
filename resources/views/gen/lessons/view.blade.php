@@ -73,10 +73,10 @@
 		@if (isAdmin())
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
-				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">@LANG('proj.Exercise')</a>
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><span class="nav-link-tab">{{trans_choice('proj.Exercise', 1)}}</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">@LANG('proj.Questions')&nbsp;({{$sentenceCount}})</a>
+				<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><span class="nav-link-tab">{{trans_choice('proj.Question', 2)}}</span>({{$sentenceCount}})</a>
 			</li>
 		</ul>
 		@endif

@@ -9,12 +9,12 @@
 			<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
 		</a></li>
 		@isset($record)
-		    @if (isset($record->permalink))
+		    @if (false && isset($record->permalink))
                 <li class="nav-item"><a class="nav-link" href="/lessons/view/{{$record->permalink}}">
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
                 </a></li>
 			@else
-                <li class="nav-item"><a class="nav-link" href="/lessons/show/{{$record->id}}">
+                <li class="nav-item"><a class="nav-link" href="/lessons/view/{{$record->id}}">
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
                 </a></li>
 			@endif

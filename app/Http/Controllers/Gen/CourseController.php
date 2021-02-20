@@ -30,7 +30,7 @@ class CourseController extends Controller
 
 	public function __construct ()
 	{
-        $this->middleware('is_admin')->except(['index', 'view', 'permalink', 'rss', 'rssReader', 'start']);
+        $this->middleware('admin')->except(['index', 'view', 'permalink', 'rss', 'rssReader', 'start']);
 
 		$this->prefix = PREFIX;
 		$this->title = TITLE;

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Site;
 use App\Status;
+use App\User;
 
 define('COURSETYPE_NOTSET', 0);
 define('COURSETYPE_ENGLISH', 10);
@@ -119,7 +120,7 @@ class Course extends Model
 		$siteIdCondition = '=';
 
 		$showAll = (array_search('all', $parms) !== false);
-		if ($showAll && Auth::isSuperAdmin())
+		if ($showAll || User::isSuperAdmin())
 		{
 			// super admins can see all sites
 			$siteId = 0;
@@ -131,7 +132,6 @@ class Course extends Model
 			if ($showAll)
 			{
 				$records = Course::select()
-					->where('deleted_flag', 0)
 					->where('site_id', $siteIdCondition, $siteId)
 					->where('wip_flag', '!=', WIP_INACTIVE)
 					->orderBy('type_flag')
@@ -142,7 +142,6 @@ class Course extends Model
 			else if (array_search('unfinished', $parms) !== false)
 			{
 				$records = Course::select()
-					->where('deleted_flag', 0)
 					->where('site_id', $siteIdCondition, $siteId)
 					->where('wip_flag', '!=', WIP_INACTIVE)
 					->where('wip_flag', '!=', WIP_FINISHED)
@@ -154,7 +153,6 @@ class Course extends Model
 			else if (array_search('private', $parms) !== false)
 			{
 				$records = Course::select()
-					->where('deleted_flag', 0)
 					->where('site_id', $siteIdCondition, $siteId)
 					->where('wip_flag', '!=', WIP_INACTIVE)
 					->where('release_flag', '!=', RELEASEFLAG_PUBLIC)
@@ -166,7 +164,6 @@ class Course extends Model
 			else
 			{
 				$records = Course::select()
-					->where('deleted_flag', 0)
 					->where('site_id', $siteIdCondition, $siteId)
 					->where('wip_flag', '!=', WIP_INACTIVE)
 					->orderBy('type_flag')
@@ -184,13 +181,11 @@ class Course extends Model
 		    else if ($language == LANGUAGE_EN)
 		        $typeFlag = COURSETYPE_ENGLISH;
 
-
 			// public
 			if ($typeFlag >= 0)
             {
                 // use type flag for Spanish and English sites
                 $records = Course::select()
-                    ->where('deleted_flag', 0)
                     ->where('type_flag', $typeFlag)
                     ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
                     ->orderBy('type_flag')
@@ -202,7 +197,6 @@ class Course extends Model
 			{
 			    // user site_id for the non-language sites
                 $records = Course::select()
-                    ->where('deleted_flag', 0)
                     ->where('site_id', $siteId)
                     ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
                     ->orderBy('type_flag')
