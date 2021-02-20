@@ -133,4 +133,6 @@ return [
 'Continue' => '继续',
 'Author' => '作者',
 'Language' => '语言|语言',
+'Text' => '文本',
+'Option' => '选项|选项',
 ];

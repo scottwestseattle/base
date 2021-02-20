@@ -133,4 +133,6 @@ return [
 'Continue' => 'Continue',
 'Author' => 'by',
 'Language' => 'Language|Languages',
+'Text' => 'Text',
+'Option' => 'Option|Options',
 ];

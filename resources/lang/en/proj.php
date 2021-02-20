@@ -59,4 +59,9 @@ return [
 'Deleted Sites' => 'Deleted Sites',
 'Question' => 'Question|Questions',
 'Exercise' => 'Exercise|Exercises',
+'Section' => 'Section|Sections',
+'Renumber All' => 'Renumber All',
+'Auto-format' => 'Auto-format',
+'Chapter Title' => 'Chapter Title',
+'Lesson Type' => 'Lesson Type',
 ];

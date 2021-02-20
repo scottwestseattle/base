@@ -125,7 +125,7 @@
 @if (isset($wotd) || isset($potd))
 	<div class="row row-course">
     @if (isset($wotd))
-		<div class="col-sm-12 col-lg-6 pb-2">
+		<div class="col-sm-12 col-lg-6 pb-2 px-3">
             <div class="card card-wotd truncate mt-1" style="">
                 <div class="card-header card-header-potd">
                     <div>@LANG('proj.Word of the day')</div>
@@ -155,8 +155,8 @@
     @endif
 
     @if (isset($potd))
-		<div class="col-sm-12 col-lg-6 col-course" style="">
-            <div class="card card-potd truncate mt-1" style="">
+		<div class="col-sm-12 col-lg-6 px-3">
+            <div class="card card-potd truncate mt-1">
                 <div class="card-header card-header-potd">
                     <div>@LANG('proj.Phrase of the day')</div>
                     <div class="small-thin-text">@LANG('proj.Practice this phrase out loud')</div>

@@ -59,4 +59,9 @@ return [
 'Deleted Sites' => '删除的网站',
 'Question' => '问题|问题',
 'Exercise' => '锻炼|锻炼',
+'Section' => '节|节',
+'Renumber All' => '全部重编号',
+'Auto-format' => '自动格式化',
+'Chapter Title' => '章节标题',
+'Lesson Type' => '课程类型',
 ];

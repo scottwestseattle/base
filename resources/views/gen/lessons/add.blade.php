@@ -17,7 +17,7 @@
             <input type="hidden" name="parent_id" id="parent_id" value="{{$course->id}}" />
         @else
             <div class="form-group">
-                <label for="parent_id" class="control-label">@LANG('proj.Course'):</label>
+                <label for="parent_id" class="control-label">{{trans_choice('proj.Course', 2)}}:</label>
                 <select name="parent_id" class="form-control">
                     <option value="0">(@LANG('proj.Select Course'))</option>
                     @foreach ($courses as $record)
@@ -37,7 +37,7 @@
             <div class="form-group">
             @component('components.control-dropdown-menu', ['record' => $course, 'prefix' => $prefix,
                 'isAdmin' => $isAdmin,
-                'prompt' => 'Lesson Type: ',
+                'prompt' => __('proj.Lesson Type') . ': ',
                 'empty' => 'Select Lesson Type',
                 'options' => App\Gen\Lesson::getTypes(),
                 'selected_option' => null,
@@ -102,13 +102,13 @@
         @endif
 
 		<div class="form-group">
-			<label for="lesson_number" class="control-label">@LANG('proj.Chapter'):</label>
+			<label for="lesson_number" class="control-label">{{trans_choice('proj.Chapter', 1)}}:</label>
 			<input type="number"  min="1" max="1000" step="1" name="lesson_number" id="lesson_number" class="form-control form-control-100" value="{{$chapter}}" />
             @component('components.control-numinc', ['id' => 'lesson_number', 'multiple' => 1])@endcomponent
 		</div>
 
 		<div class="form-group">
-			<label for="section_number" class="control-label">@LANG('proj.Section'):</label>
+			<label for="section_number" class="control-label">{{trans_choice('proj.Section', 1)}}:</label>
 			<input type="number"  min="0" max="1000" step="1" name="section_number" id="section_number" class="form-control form-control-100" value="{{$section}}" />
             @component('components.control-numinc', ['id' => 'section_number', 'multiple' => 1])@endcomponent
 		</div>

@@ -26,7 +26,7 @@ return [
 'Dictionary Search' => 'Buscar en el diccionario',
 'Vocabulary favorited from dictionary' => 'Vocabulario favorito del diccionario',
 'Latest Chapters Viewed' => 'Últimos capítulos vistos',
-'Chapter' => 'Capítulo | Capítulos',
+'Chapter' => 'Capítulo|Capítulos',
 'Back to Lists' => 'Volver a las listas',
 'Flashcards' => 'Tarjetas',
 'Practice Speaking' => 'Practicar el habla',
@@ -59,4 +59,9 @@ return [
 'Deleted Sites' => 'Sitios eliminados',
 'Question' => 'Pregunta|Preguntas',
 'Exercise' => 'Ejercicio|Ejercicios',
+'Section' => 'Sección|Secciones',
+'Renumber All' => 'Renumerar todo',
+'Auto-format' => 'Auto formato',
+'Chapter Title' => 'Título del capítulo',
+'Lesson Type' => 'Tipo de lección',
 ];

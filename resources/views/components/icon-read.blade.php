@@ -1,6 +1,7 @@
 @php
     $float = isset($float) ? $float : 'float-left';
     $color = isset($color) ? $color : '';
+    $size = isset($size) ? $size : '20';
 @endphp
 
 @if (!isset($nodiv) || !$nodiv)
@@ -12,7 +13,7 @@
 @else
 	<a href="" onclick='{{$onclick}}'  style="text-decoration:none;">
 @endif
-		<span style="font-size:20px;" class="glyphCustom glyphicon glyphicon-volume-up {{$color}}"></span>
+		<span style="font-size:{{$size}}px;" class="glyphicon glyphicon-volume-up {{$color}}"></span>
 	</a>
 
 @if (!isset($nodiv) || !$nodiv)

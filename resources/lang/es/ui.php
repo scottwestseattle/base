@@ -129,8 +129,10 @@ return [
 'Locale' => 'Lugar',
 'Unknown' => 'Desconocido',
 'Favorite' => 'Favorito|Favoritos',
-'Add New List' => 'Agregar Lista Nueva',
+'Add New List' => 'Agregar lista nueva',
 'Continue' => 'Continuar',
 'Author' => 'por',
 'Language' => 'Idioma|Idiomas',
+'Text' => 'Texto',
+'Option' => 'Opción|Opciones',
 ];

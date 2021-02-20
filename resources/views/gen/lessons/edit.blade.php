@@ -125,7 +125,7 @@
         </div>
 
         <div class="form-group">
-            <label for="section_number" class="control-label">@LANG('proj.Section'):</label>
+            <label for="section_number" class="control-label">{{trans_choice('proj.Section', 1)}}:</label>
             <input type="number" min="0" name="section_number" id="section_number" class="form-control form-control-100" value="{{$record->section_number}}" />
             @component('components.control-numinc', ['id' => 'section_number', 'multiple' => 1])@endcomponent
         </div>
@@ -159,14 +159,14 @@
         <!-- Options -->
         <!--------------------------------------------------------------------------->
         <div class="form-group">
-            <label for="options" class="control-label">@LANG('ui.Options'):</label>
+            <label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
             <input type="text" name="options" class="form-control" value="{{$record->options}}" />
         </div>
 
         @if ($record->isTimedSlides())
 
         <div class="form-group">
-            <label for="parent_id" class="control-label">@LANG('proj.Course'):</label>
+            <label for="parent_id" class="control-label">{{trans_choice('proj.Course', 1)}}:</label>
             <select name="parent_id" class="form-control">
                 <option value="0">(@LANG('proj.Select Course'))</option>
                 @foreach ($courses as $course)
