@@ -42,7 +42,7 @@
         <!-- Stats -->
         <div class="mb-2">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphCustom glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
             </div>
 
             <div class="small-text">

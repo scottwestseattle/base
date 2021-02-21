@@ -66,6 +66,27 @@ class LessonController extends Controller
 		]);
     }
 
+    public function admin(Request $request)
+    {
+		$records = []; // make this countable so view will always work
+
+		try
+		{
+            $records = Lesson::select()
+                ->orderByRaw('parent_id, lesson_number, section_number')
+                ->get();
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting lesson list';
+			logException(__FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		return view(VIEWS . '.admin', [
+			'records' => $records,
+		]);
+    }
+
     static public function getCourses($source)
     {
 		$records = []; // make this countable so view will always work

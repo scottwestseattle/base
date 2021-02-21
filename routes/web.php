@@ -586,7 +586,7 @@ use App\Http\Controllers\Gen\LessonController;
 Route::group(['prefix' => 'lessons'], function () {
 	Route::get('/', [LessonController::class, 'index']);
 
-	Route::get('/admin/{course_id?}', [LessonController::class, 'admin']);
+	Route::get('/admin', [LessonController::class, 'admin']);
 	Route::get('/view/{lesson}',[LessonController::class, 'view']);
 	Route::post('/view/{lesson}',[LessonController::class, 'view']); // just in case they hit enter on the ajax form
 	Route::get('/review-orig/{lesson}/{reviewType?}',[LessonController::class, 'reviewOrig']);
