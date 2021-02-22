@@ -88,7 +88,7 @@ class DefinitionController extends Controller
 		$record = Definition::get($title);
 		if (isset($record))
 		{
-			logFlash('danger', 'record already exists');
+			flash('danger', 'record already exists');
 			return redirect('/' . PREFIX . '/edit/' . $record->id);
 		}
 

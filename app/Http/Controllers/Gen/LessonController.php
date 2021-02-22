@@ -487,12 +487,12 @@ class LessonController extends Controller
 		try
 		{
 			$record->save();
-			$msg = 'Lesson status has been updated';
+			$msg = __('base.Status has been updated');
             logInfo(__FUNCTION__, $msg, ['id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			$msg = 'Error publishing lesson';
+			$msg = __('base.Error updating status');
    			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
 		}
 

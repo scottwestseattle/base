@@ -1,6 +1,7 @@
 DB Changes:
 
 2021-02:
+ALTER TABLE `lessons` ADD `release_flag` TINYINT NULL AFTER `break_seconds`, ADD `wip_flag` TINYINT NULL AFTER `release_flag`;
 ALTER TABLE `entries` ADD `options` VARCHAR(500) NULL AFTER `wip_flag`;
 ALTER TABLE `entries` CHANGE `display_order` `display_order` FLOAT(7,2) NULL DEFAULT NULL;
 

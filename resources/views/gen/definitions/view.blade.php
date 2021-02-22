@@ -72,6 +72,7 @@
 	<div class="">
 		<p style="font-size:1.2em;">{{__('proj.Not found in dictionary')}}</p>
 		<p><a target='_blank' href="/definitions/add/{{$word}}">{{__('ui.Add')}}</a></p>
+		<p><a target='_blank' href="https://dle.rae.es/{{$word}}">Real Academia Española: {{$word}}</a></p>
 		<p><a target='_blank' href="https://translate.google.com/#view=home&op=translate&sl=es&tl=en&text={{$word}}">Google Translate: {{$word}}</a></p>
 		<p><a target='_blank' href="https://www.spanishdict.com/translate/{{$word}}">Span¡shD!ct.com: {{$word}}</a></p>
 	</div>
@@ -94,7 +95,7 @@
 		@endif
 	</div>
 
-	@if (Str::of($record->forms)->isNotEmpty())
+	@if (isset($record->forms) && strlen($record->forms) > 0)
 		<div class="small-thin-hdr mt-2 mb-1">{{__('proj.Forms')}}</div>
 		<div class="small-thin-text mt-2">{{App\Gen\Spanish::getFormsPretty($record->forms)}}</div>
 	@endif

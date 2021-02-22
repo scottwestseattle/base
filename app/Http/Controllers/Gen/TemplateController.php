@@ -280,11 +280,11 @@ class TemplateController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, __('base.Record status has been updated'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Status has been updated'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record status'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating status'), ['record_id' => $record->id]);
 			return back();
 		}
 
