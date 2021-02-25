@@ -137,4 +137,7 @@ return [
 'Deleted Entries' => 'Deleted Entries',
 'Deleted Definitions' => 'Deleted Definitions',
 'Record has been updated' => 'Record has been updated',
+'No changes were made' => 'No changes were made',
+'Definition has been updated' => 'Definition has been updated',
+'Error updating record' => 'Error updating record',
 ];

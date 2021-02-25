@@ -70,4 +70,5 @@ return [
 '20 Random Verbs' => '20 verbos al azar',
 'Lists from the dictionary' => 'Listas del diccionario',
 'Review' => 'Revisar',
+'Saved to favorite list' => 'Guardado en la lista de favoritos',
 ];

@@ -70,4 +70,5 @@ return [
 '20 Random Verbs' => '20个随机动词',
 'Lists from the dictionary' => '字典中的清单',
 'Review' => '审查',
+'Saved to favorite list' => '保存到收藏夹列表',
 ];

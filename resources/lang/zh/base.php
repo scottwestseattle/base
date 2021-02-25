@@ -137,4 +137,7 @@ return [
 'Deleted Entries' => '删除的条目',
 'Deleted Definitions' => '删除的定义',
 'Record has been updated' => '记录已更新',
+'No changes were made' => '没有改变',
+'Definition has been updated' => '定义已更新',
+'Error updating record' => '更新记录时出错',
 ];

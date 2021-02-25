@@ -137,4 +137,7 @@ return [
 'Deleted Entries' => 'Entradas eliminadas',
 'Deleted Definitions' => 'Definiciones eliminadas',
 'Record has been updated' => 'Se actualizó el registro',
+'No changes were made' => 'No se hicieron cambios',
+'Definition has been updated' => 'Se actualizó la definición',
+'Error updating record' => 'Error al actualizar el registro',
 ];

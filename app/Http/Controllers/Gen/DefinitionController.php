@@ -88,7 +88,7 @@ class DefinitionController extends Controller
 		$record = Definition::get($title);
 		if (isset($record))
 		{
-			flash('danger', 'record already exists');
+			flash('danger', __('base.record already exists'));
 			return redirect('/' . PREFIX . '/edit/' . $record->id);
 		}
 
@@ -115,7 +115,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			$msg = 'Record not added: error getting conjugations';
+			$msg = __('proj.Record not added: error getting conjugations');
 			logException($f, $e->getMessage(), $msg);
 			return back();
 		}
@@ -124,12 +124,12 @@ class DefinitionController extends Controller
 		{
 			$record->save();
 
-			$msg = 'New record has been added';
+			$msg = __('base.New record has been added');
 			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			$msg = isset($msg) ? $msg : 'Error adding new definition';
+			$msg = isset($msg) ? $msg : __('proj.Error adding new definition');
 			logException($f, $e->getMessage(), $msg, ['title' => $record->title]);
 
 			return back();
@@ -236,7 +236,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			$msg = 'Changes not saved: error getting conjugations';
+			$msg = __('proj.Changes not saved: error getting conjugations');
 			logException($f, $msg, $e->getMessage());
 			return back();
 		}
@@ -246,17 +246,17 @@ class DefinitionController extends Controller
 			try
 			{
 				$record->save();
-				logInfo($f, 'Definition has been updated', ['title' => $record->title, 'id' => $record->id, 'changes' => $changes]);
+				logInfo($f, __('proj.Definition has been updated'), ['title' => $record->title, 'id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e)
 			{
-				$msg = "Error updating record";
+				$msg = __('base.Error updating record');
 				logException($f, $e->getMessage(), $msg);
 			}
 		}
 		else
 		{
-			logFlash('info', $f, 'No changes were made');
+			logFlash('info', $f, __('base.No changes were made'));
 		}
 
         $returnPath = '/definitions/view/' . $record->id;
