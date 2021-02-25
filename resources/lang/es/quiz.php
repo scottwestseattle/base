@@ -21,4 +21,5 @@ return [
 'Tap or click to continue' => 'Toque o haga clic para continuar',
 'End of Questions' => 'Fin de las preguntas',
 'Click below to restart' => 'Haga clic abajo para reiniciar',
+'Show Choices' => 'Mostrar opciones',
 ];

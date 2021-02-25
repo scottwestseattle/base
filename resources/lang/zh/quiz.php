@@ -21,4 +21,5 @@ return [
 'Tap or click to continue' => '点击或单击以继续',
 'End of Questions' => '问题结束',
 'Click below to restart' => '点击下面重启',
+'Show Choices' => '显示选择',
 ];

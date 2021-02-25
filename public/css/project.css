@@ -150,6 +150,10 @@ body {
 	word-wrap: break-word; /* IE 5+ */
 }
 
+a.nodec, .nodec a {
+    /* no link decoration */
+    text-decoration: none;
+}
 
 /***************************************************
  Navbar
@@ -583,7 +587,6 @@ Badges
 Cards
 **********************************************************/
 
-
 .middle {
 	display:inline-block;
 	vertical-align:middle;
@@ -692,6 +695,12 @@ h6 {
     font-weight: 300;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+@media (max-width:576px) { /* small screen only */
+    .col-sm-12 {
+        padding:0;
+    }
 }
 
 #textEdit::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -842,12 +851,10 @@ h6 {
 }
 
 @media (max-width:576px) { /* small screen only */
-
 	.table-lesson-list {
 		width: 100%;
 	}
 }
-
 
 /* spacing for the lesson prev/next buttons */
 .page-nav-buttons {

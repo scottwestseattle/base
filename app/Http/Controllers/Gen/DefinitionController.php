@@ -939,7 +939,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/definitions/list/' . $record->id . '',
+			'returnPath' => '/favorites',
 			'touchPath' => '',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
@@ -958,7 +958,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/vocabulary',
+			'returnPath' => '/favorites',
 			'touchPath' => '',
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
@@ -977,7 +977,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/vocabulary',
+			'returnPath' => '/favorites',
 			'touchPath' => '',
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
@@ -996,7 +996,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/vocabulary',
+			'returnPath' => '/favorites',
 			'touchPath' => '',
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
@@ -1015,7 +1015,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/vocabulary',
+			'returnPath' => '/favorites',
 			'touchPath' => '',
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
@@ -1075,9 +1075,12 @@ class DefinitionController extends Controller
 		// articles/books look ups
 		//todo: $entries = Entry::getDefinitionsUser();
 
+        // newest words
+        //$newest = Defintions::getNewest(20);
+
 		return view(VIEWS . '.favorites', [
 			'favorites' => $favorites,
-			//'newest' => true, // show the option for "New Dictionary Entries" review and flashcards
+			'newest' => true,
 		]);
     }
 

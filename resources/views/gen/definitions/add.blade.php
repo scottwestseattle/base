@@ -2,7 +2,6 @@
 @section('title', __('proj.Add Definition'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
 @section('content')
-
 <div class="container page-normal">
 
 	<h1>{{__('proj.Add Definition')}}</h2>

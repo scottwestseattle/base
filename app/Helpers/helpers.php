@@ -657,7 +657,7 @@ if (!function_exists('intOrNull')) {
 }
 
 if (!function_exists('getSentences')) {
-	function getSentences($string, $count)
+	function getSentences($string, $count = PHP_INT_MAX)
 	{
 	    $string = trim($string);
 	    $rc = null;
@@ -667,17 +667,15 @@ if (!function_exists('getSentences')) {
             $s = splitSentences($string);
             if (isset($s))
             {
-                for ($i = 0; $i < $count; $i++)
+                foreach($s as $key => $value)
                 {
-                    if (count($s) > $i)
-                    {
-                        if (isset($rc))
-                        {
-                            $rc .= "\r\n";
-                        }
+                    if ($key >= $count)
+                        break;
 
-                        $rc .= $s[$i];
-                    }
+                    if (isset($rc))
+                        $rc .= "\r\n";
+
+                    $rc .= $value;
                 }
             }
         }

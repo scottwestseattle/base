@@ -64,4 +64,10 @@ return [
 'Auto-format' => 'Auto formato',
 'Chapter Title' => 'Título del capítulo',
 'Lesson Type' => 'Tipo de lección',
+'20 Newest Words' => '20 palabras más nuevas',
+'20 Newest Verbs' => '20 verbos más nuevos',
+'20 Random Words' => '20 palabras al azar',
+'20 Random Verbs' => '20 verbos al azar',
+'Lists from the dictionary' => 'Listas del diccionario',
+'Review' => 'Revisar',
 ];

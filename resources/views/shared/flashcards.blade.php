@@ -1,5 +1,5 @@
 @extends('layouts.review')
-
+@section('title', __('proj.Flashcards'))
 @section('content')
 
 <!-------------------------------------------------------->

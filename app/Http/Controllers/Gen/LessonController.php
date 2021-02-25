@@ -10,8 +10,9 @@ use Auth;
 use Config;
 use Log;
 
-use App\Gen\Lesson;
 use App\Gen\Course;
+use App\Gen\Lesson;
+use App\Gen\Spanish;
 use App\Entry;
 use App\Quiz;
 use App\User;
@@ -693,23 +694,20 @@ class LessonController extends Controller
     public function read(Request $request, Lesson $lesson)
     {
 		$record = $lesson;
-		$text = [];
+		$lines = [];
+		$lines = str_replace("<br />", "\r\n", $record->text);
+		$lines = Spanish::getSentences($lines);
 
-		//$title = getSentences($record->title);
-		$text = str_replace("<br />", "\r\n", $record->text);
-		$text = getSentences($text);
-		//$text = array_merge($title, $text);
-		//dd($text);
-
-		$record['lines'] = $text;
         $languageCodes = getSpeechLanguage($record->language_flag);
+        $options['return'] = '/lessons/view/' . $record->id;
 
     	return view('shared.reader', [
-			'record' => $record,
-			'readLocation' => null,
-			'speechLanguage' => 'es-ES',
+    	    'lines' => $lines,
+    	    'title' => $record->title,
+			'recordId' => $record->id,
+			'options' => $options,
 			'contentType' => 'Lesson',
-			'languageCodes' => $languageCodes,
+			'languageCodes' => getSpeechLanguage($record->language_flag),
 		]);
     }
 

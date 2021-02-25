@@ -64,4 +64,10 @@ return [
 'Auto-format' => '自动格式化',
 'Chapter Title' => '章节标题',
 'Lesson Type' => '课程类型',
+'20 Newest Words' => '20个最新词',
+'20 Newest Verbs' => '20个最新动词',
+'20 Random Words' => '20个随机词',
+'20 Random Verbs' => '20个随机动词',
+'Lists from the dictionary' => '字典中的清单',
+'Review' => '审查',
 ];

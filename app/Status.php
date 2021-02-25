@@ -56,7 +56,9 @@ class Status
         ];
 
         $rc['label'] = self::$_releaseFlags[$flag];
+        $rc['text'] = self::$_releaseFlags[$flag]; //dupe for backwards compatibility
         $rc['class'] = $class[$flag];
+        $rc['btn'] = $class[$flag];
         $rc['public'] = ($flag >= RELEASEFLAG_PUBLIC);
 
         return $rc;
@@ -76,14 +78,18 @@ class Status
         if (isset($flag))
         {
             $rc['label'] = self::$_wipFlags[$flag];
+            $rc['text'] = self::$_wipFlags[$flag];
             $rc['class'] = $class[$flag];
             $rc['done'] = $flag >= WIP_FINISHED;
+            $rc['btn'] = $class[$flag];
         }
         else
         {
             $rc['label'] = '';
+            $rc['text'] = '';
             $rc['class'] = '';
             $rc['done'] = false;
+            $rc['btn'] = '';
         }
 
         return $rc;

@@ -1,8 +1,7 @@
-<?php
+@php
 $domainName = isset($domainName) ? $domainName : '';
-$siteTitle = isset($siteTitle) ? $siteTitle : App\Site::getTitle();
-$siteTitleLite = isset($siteTitleLite) ? $siteTitleLite : $siteTitle;
-?>
+$iconFolder = App\Site::getIconFolder();
+@endphp
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,7 +10,10 @@ $siteTitleLite = isset($siteTitleLite) ? $siteTitleLite : $siteTitle;
 	<meta name="description" content="">
 	<meta name="author" content="Learn Systems">
 	<meta name="generator" content="Jekyll v3.8.5">
-	<title>{{$siteTitle}}</title>
+	<title>{{appName()}} - @yield('title')</title>
+
+    <!-- Web Site Icon -->
+    @component('components.icons-load', ['iconFolder' => $iconFolder])@endComponent
 
     <!-- Scripts -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

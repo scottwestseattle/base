@@ -64,4 +64,10 @@ return [
 'Auto-format' => 'Auto-format',
 'Chapter Title' => 'Chapter Title',
 'Lesson Type' => 'Lesson Type',
+'20 Newest Words' => '20 Newest Words',
+'20 Newest Verbs' => '20 Newest Verbs',
+'20 Random Words' => '20 Random Words',
+'20 Random Verbs' => '20 Random Verbs',
+'Lists from the dictionary' => 'Lists from the dictionary',
+'Review' => 'Review',
 ];
