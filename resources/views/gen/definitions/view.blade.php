@@ -35,7 +35,7 @@
 		@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 		<h3>
 			<div class="middle">
-				<div class="float-left">{{$record->title}}@component('components.badge', ['text' => $record->view_count])@endcomponent</div>
+				<div class="float-left">{{$record->title}}@component('components.badge', ['text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent</div>
 			</div>
 
 			@if (App\User::isSuperAdmin())

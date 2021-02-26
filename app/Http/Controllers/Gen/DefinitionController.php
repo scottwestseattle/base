@@ -219,6 +219,7 @@ class DefinitionController extends Controller
 		$record->definition = copyDirty($record->definition, $request->definition, $isDirty, $changes);
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
+		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
 
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
@@ -950,6 +951,25 @@ class DefinitionController extends Controller
     {
 		$reviewType = intval($reviewType);
 		$records = Definition::getNewest(20);
+		$qna = Definition::makeQna($records); // splits text into questions and answers
+		$settings = Quiz::getSettings($reviewType);
+
+		return view($settings['view'], [
+			'sentenceCount' => count($qna),
+			'records' => $qna,
+			'canEdit' => true,
+			'isMc' => true,
+			'returnPath' => '/favorites',
+			'touchPath' => '',
+			'parentTitle' => 'Title Note Used',
+			'settings' => $settings,
+			]);
+    }
+
+    public function reviewRankedVerbs(Request $request, $reviewType = null)
+    {
+		$reviewType = intval($reviewType);
+		$records = Definition::getRankedVerbs(20);
 		$qna = Definition::makeQna($records); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 

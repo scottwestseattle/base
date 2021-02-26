@@ -71,4 +71,5 @@ return [
 'Lists from the dictionary' => 'Lists from the dictionary',
 'Review' => 'Review',
 'Saved to favorite list' => 'Saved to favorite list',
+'Definition has been updated' => 'Definition has been updated',
 ];

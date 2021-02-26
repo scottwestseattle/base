@@ -283,6 +283,16 @@ class Definition extends Model
 		return self::getIndex(DEFINITIONS_SEARCH_NEWEST_VERBS, $limit);
 	}
 
+	static public function getRanked($limit)
+	{
+		return self::getIndex(DEFINITIONS_SEARCH_RANKED, $limit);
+	}
+
+	static public function getRankedVerbs($limit)
+	{
+		return self::getIndex(DEFINITIONS_SEARCH_RANKED_VERBS, $limit);
+	}
+
 	static public function getRandomWords($limit)
 	{
 		$records = self::getIndex(DEFINITIONS_SEARCH_RANDOM_WORDS);
@@ -370,6 +380,13 @@ class Definition extends Model
 			case DEFINITIONS_SEARCH_RANDOM_VERBS:
 				$verbs = true;
 				break;
+			case DEFINITIONS_SEARCH_RANKED:
+                $orderBy = '`rank`';
+				break;
+			case DEFINITIONS_SEARCH_RANKED_VERBS:
+                $orderBy = '`rank`';
+				$verbs = true;
+				break;
 			case DEFINITIONS_SEARCH_VERBS:
 				$limit = PHP_INT_MAX;
 				$verbs = true;
@@ -389,6 +406,11 @@ class Definition extends Model
 		{
 			if ($verbs)
 			{
+			    $rankCondition = '>=';
+			    $rankValue = 0;
+    			if ($sort == DEFINITIONS_SEARCH_RANKED_VERBS)
+    			    $rankCondition = '>';
+
 				$records = Definition::select()
 					->whereNull('deleted_at')
     			    ->where('type_flag', DEFTYPE_DICTIONARY)
@@ -399,8 +421,9 @@ class Definition extends Model
 						;})
 					->whereNotNull('conjugations_search')
 					->whereNotNull('conjugations')
-					->orderByRaw($orderBy)
+					->where('rank', $rankCondition, $rankValue)
 					->limit($limit)
+					->orderByRaw($orderBy)
 					->get();
 			}
 			else if ($sort === DEFINITIONS_SEARCH_MISSING_TRANSLATION)
@@ -463,6 +486,16 @@ class Definition extends Model
 					->limit($limit)
 					->get();
 			}
+			else if ($sort == DEFINITIONS_SEARCH_RANKED)
+			{
+				$records = Definition::select()
+					->whereNull('deleted_at')
+        			->where('rank', '>', 0)
+        			->where('type_flag', DEFTYPE_DICTIONARY)
+					->orderByRaw($orderBy)
+					->limit($limit)
+					->get();
+			}
 			else
 			{
 				$records = Definition::select()
@@ -476,7 +509,7 @@ class Definition extends Model
 		catch (\Exception $e)
 		{
 			$msg = 'Error getting index';
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg, ['word' => $word]);
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg, ['sort' => $sort]);
 		}
 
 		return $records;

@@ -71,4 +71,5 @@ return [
 'Lists from the dictionary' => '字典中的清单',
 'Review' => '审查',
 'Saved to favorite list' => '保存到收藏夹列表',
+'Definition has been updated' => '定义已更新',
 ];

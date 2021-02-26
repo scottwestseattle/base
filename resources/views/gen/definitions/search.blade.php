@@ -11,6 +11,8 @@
 			<a class="ml-2" href="/dictionary/search/3">newest</a>
 			<a class="ml-2" href="/dictionary/search/4">recent</a>
 			<a class="ml-2" href="/dictionary/search/10">all</a>
+			<a class="ml-2" href="/dictionary/search/14">Ranked</a>
+			<a class="ml-2" href="/dictionary/search/15">Ranked Verbs</a>
 			@if (isAdmin())
 				<a class="ml-2" href="/dictionary/search/8">{{'not finished'}}</a>
 				<a class="ml-2" href="/dictionary/search/5">{{'missing translation'}}</a>

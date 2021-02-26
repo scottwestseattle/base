@@ -71,4 +71,5 @@ return [
 'Lists from the dictionary' => 'Listas del diccionario',
 'Review' => 'Revisar',
 'Saved to favorite list' => 'Guardado en la lista de favoritos',
+'Definition has been updated' => 'Se actualizó la definición',
 ];

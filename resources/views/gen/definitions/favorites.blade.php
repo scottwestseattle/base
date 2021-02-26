@@ -12,6 +12,22 @@
 <div class="mb-2 small-thin-text ml-1">@LANG('proj.Lists from the dictionary')</div>
 <div class="card-deck mb-4">
 
+    <div class="col-sm-12 col-lg-6 col-xl-4">
+        <div class="mb-3 mr-0">
+            <div class="card-body drop-box-ghost">
+                <h5 class="card-title">@LANG('proj.20 Most Common Verbs')</h5>
+                <p class="card-text">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs">
+                        @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
+                    </a>
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/1">
+                        @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">

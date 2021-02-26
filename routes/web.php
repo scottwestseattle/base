@@ -472,6 +472,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/review-newest-verbs/{reviewType?}', [DefinitionController::class, 'reviewNewestVerbs']);
 	Route::get('/review-random-words/{reviewType?}', [DefinitionController::class, 'reviewRandomWords']);
 	Route::get('/review-random-verbs/{reviewType?}', [DefinitionController::class, 'reviewRandomVerbs']);
+	Route::get('/review-top-20-verbs/{reviewType?}', [DefinitionController::class, 'reviewRankedVerbs']);
 
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);
