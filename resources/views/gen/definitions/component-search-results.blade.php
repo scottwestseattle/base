@@ -14,6 +14,10 @@
 							@component('gen.definitions.component-search-toolbar', ['record' => $record, 'id' => 2, 'lists' => $favoriteLists])@endcomponent
 						</div>
 
+                        @if (isset($record->pos_flag))
+							<div class="small-thin-text">{{strtolower($record->getPos())}}</div>
+                        @endif
+
 						@if (isset($record->definition))
 							<div class="medium-thin-text mb-2">{!!nl2br($record->definition)!!}</div>
 						@elseif (App\User::isSuperAdmin())

@@ -22,4 +22,8 @@ return [
 'End of Questions' => 'End of Questions',
 'Click below to restart' => 'Click below to restart',
 'Show Choices' => 'Show Choices',
+'Continue' => 'Continue',
+'Correct Answers' => 'Correct Answers',
+'End of Round' => 'End of Round',
+'Round' => 'Round',
 ];

@@ -36,6 +36,7 @@
 		<h3>
 			<div class="middle">
 				<div class="float-left">{{$record->title}}@component('components.badge', ['text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent</div>
+                <div class="small-thin-text">{{strtolower($record->getPos())}}</div>
 			</div>
 
 			@if (App\User::isSuperAdmin())

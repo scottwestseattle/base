@@ -72,4 +72,5 @@ return [
 'Review' => '审查',
 'Saved to favorite list' => '保存到收藏夹列表',
 'Definition has been updated' => '定义已更新',
+'20 Most Common Verbs' => '20个最常见的动词',
 ];

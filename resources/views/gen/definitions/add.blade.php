@@ -23,6 +23,17 @@
 		</div>
 
 		<div class="form-group">
+            @component('components.control-dropdown-menu', [
+                'prompt' => __('proj.Part of Speech') . ':',
+                'empty' => __('proj.Select Part of Speech'),
+                'options' => App\Gen\Definition::getPosOptions(),
+                'field_name' => 'pos_flag',
+                'prompt_div' => true,
+                'select_class' => 'form-control form-control-sm',
+            ])@endcomponent
+		</div>
+
+		<div class="form-group">
 			<label for="forms" class="control-label">@LANG('proj.Word Forms'): <span class="small-thin-text">(comma or semi-colon)</span></label>
 			<a onclick="wordFormsGen(event, '#title', '#forms', true);" href="" tabindex="-1" class="ml-2"><div class="middle mb-2"><b>+s</b></div></a>
 			<a onclick="wordFormsGen(event, '#title', '#forms');" href="" tabindex="-1" class="ml-2"><span class="glyphicon glyphicon-plus-sign" ></span></a>
@@ -52,6 +63,11 @@
 			<a onclick="event.preventDefault(); conjugationsGen('#title', '#conjugations');" href="" tabindex="-1" class="ml-2"><span id="button-increment-line" class="glyphicon glyphicon-plus-sign" ></span></a>
 			<a onclick="event.preventDefault(); $('#conjugations').val(''); $('#conjugations').focus();" href="" tabindex="-1" class="ml-2"><span id="button-clear" class="glyphicon glyphicon-remove" ></span></a>
 			<textarea rows="3" name="conjugations" id="conjugations" class="form-control" autocomplete="off" onfocus="setFocus($(this))" ></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="rank" class="control-label">@LANG('proj.Rank'):</label>
+			<input type="number" min="0" name="rank" id="rank" class="form-control" />
 		</div>
 
 		<div class="form-group mt-2">

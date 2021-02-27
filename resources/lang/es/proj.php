@@ -72,4 +72,5 @@ return [
 'Review' => 'Revisar',
 'Saved to favorite list' => 'Guardado en la lista de favoritos',
 'Definition has been updated' => 'Se actualizó la definición',
+'20 Most Common Verbs' => '20 verbos más comunes',
 ];

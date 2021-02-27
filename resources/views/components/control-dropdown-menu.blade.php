@@ -5,13 +5,13 @@
 		@if (isset($prompt_div))
 			<div>
 		@endif
-		
+
 		<label for="{{$field_name}}">{{$prompt}}</label>
-			
+
 		@if (isset($prompt_div))
 			</div>
 		@endif
-		
+
 	@endif
 
 	@if (isset($onchange))
@@ -21,7 +21,7 @@
 	@endif
 
 	@if (isset($empty))
-		<option value="0">({{$empty}})</option>	
+		<option value="0">({{$empty}})</option>
 	@endif
 
 	@foreach ($options as $key => $value)
@@ -31,7 +31,7 @@
 			<option value="{{$key}}">{{$value}}</option>
 		@endif
 	@endforeach
-		
+
 	</select>
 
 @endif

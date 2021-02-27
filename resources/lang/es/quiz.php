@@ -22,4 +22,8 @@ return [
 'End of Questions' => 'Fin de las preguntas',
 'Click below to restart' => 'Haga clic abajo para reiniciar',
 'Show Choices' => 'Mostrar opciones',
+'Continue' => 'Continuar',
+'Correct Answers' => 'Respuestas correctas',
+'End of Round' => 'Fin de ronda',
+'Round' => 'Ronda',
 ];

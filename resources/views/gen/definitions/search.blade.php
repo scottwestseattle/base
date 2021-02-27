@@ -7,12 +7,12 @@
 		<span style="" class="small-thin-text mb-2">
 			<a href="/dictionary/search/1">A-Z</a>
 			<a class="ml-2" href="/dictionary/search/2">Z-A</a>
-			<a class="ml-2" href="/dictionary/search/9">verbs</a>
-			<a class="ml-2" href="/dictionary/search/3">newest</a>
-			<a class="ml-2" href="/dictionary/search/4">recent</a>
-			<a class="ml-2" href="/dictionary/search/10">all</a>
-			<a class="ml-2" href="/dictionary/search/14">Ranked</a>
-			<a class="ml-2" href="/dictionary/search/15">Ranked Verbs</a>
+			<a class="ml-2" href="/dictionary/search/14">{{__('proj.Most Common')}}</a>
+			<a class="ml-2" href="/dictionary/search/9">{{__('proj.Verbs')}}</a>
+			<a class="ml-2" href="/dictionary/search/15">{{__('proj.Verbs (most common)')}}</a>
+			<a class="ml-2" href="/dictionary/search/3">{{__('proj.Newest')}}</a>
+			<a class="ml-2" href="/dictionary/search/4">{{__('proj.Recent')}}</a>
+			<a class="ml-2" href="/dictionary/search/10">{{__('proj.All')}}</a>
 			@if (isAdmin())
 				<a class="ml-2" href="/dictionary/search/8">{{'not finished'}}</a>
 				<a class="ml-2" href="/dictionary/search/5">{{'missing translation'}}</a>

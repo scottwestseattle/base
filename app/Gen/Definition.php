@@ -14,9 +14,52 @@ use App\Gen\Definition;
 use App\Entry;
 use App\User;
 
+// parts of speech
+define('DEFINITIONS_POS_NOTSET',        0);
+define('DEFINITIONS_POS_VERB',          1);
+define('DEFINITIONS_POS_NOUN',          2);
+define('DEFINITIONS_POS_ADJECTIVE',     3);
+define('DEFINITIONS_POS_ADVERB',        4);
+define('DEFINITIONS_POS_ARTICLE',       5);
+define('DEFINITIONS_POS_PREPOSITION',   6);
+define('DEFINITIONS_POS_CONJUNCTION',   7);
+define('DEFINITIONS_POS_PRONOUN',       8);
+define('DEFINITIONS_POS_PHRASE',        50);
+define('DEFINITIONS_POS_OTHER',         60);
+
 class Definition extends Model
 {
 	use SoftDeletes;
+
+    static private $_pos = [
+        DEFINITIONS_POS_NOTSET      => 'Not Set',
+        DEFINITIONS_POS_ADJECTIVE   => 'Adjective',
+        DEFINITIONS_POS_ADVERB      => 'Adverb',
+        DEFINITIONS_POS_ARTICLE     => 'Article',
+        DEFINITIONS_POS_CONJUNCTION => 'Conjunction',
+        DEFINITIONS_POS_NOUN        => 'Noun',
+        DEFINITIONS_POS_PREPOSITION => 'Preposition',
+        DEFINITIONS_POS_PRONOUN     => 'Pronoun',
+        DEFINITIONS_POS_VERB        => 'Verb',
+        //DEFINITIONS_POS_        => '',
+        DEFINITIONS_POS_PHRASE      => 'Phrase',
+        DEFINITIONS_POS_OTHER       => 'Other',
+    ];
+
+    static public function getPosOptions()
+    {
+        return self::$_pos;
+    }
+
+    public function getPos()
+    {
+        return self::getPosName($this->pos_flag);
+    }
+
+    static public function getPosName($pos)
+    {
+        return isset($pos) && $pos > DEFINITIONS_POS_NOTSET ? self::$_pos[$pos] : '';
+    }
 
 	//////////////////////////////////////////////////////////////////////
 	//

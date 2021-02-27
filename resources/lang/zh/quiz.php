@@ -22,4 +22,8 @@ return [
 'End of Questions' => '问题结束',
 'Click below to restart' => '点击下面重启',
 'Show Choices' => '显示选择',
+'Continue' => '接着说',
+'Correct Answers' => '正确答案',
+'End of Round' => '回合结束',
+'Round' => '圆形的',
 ];

@@ -72,4 +72,5 @@ return [
 'Review' => 'Review',
 'Saved to favorite list' => 'Saved to favorite list',
 'Definition has been updated' => 'Definition has been updated',
+'20 Most Common Verbs' => '20 Most Common Verbs',
 ];

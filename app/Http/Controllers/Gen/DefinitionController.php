@@ -104,7 +104,8 @@ class DefinitionController extends Controller
 		$record->examples		= $request->examples;
 		$record->permalink		= createPermalink($request->title);
 		$record->wip_flag		= WIP_DEFAULT;
-		//TODO: $record->rank   		= null;
+		$record->pos_flag   	= $request->pos_flag;
+		$record->rank   		= $request->rank;
 
 		try
 		{
@@ -220,6 +221,7 @@ class DefinitionController extends Controller
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
+		$record->pos_flag = copyDirty($record->pos_flag, intval($request->pos_flag), $isDirty, $changes);
 
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
