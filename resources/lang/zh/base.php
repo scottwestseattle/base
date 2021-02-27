@@ -140,4 +140,6 @@ return [
 'No changes were made' => '没有改变',
 'Definition has been updated' => '定义已更新',
 'Error updating record' => '更新记录时出错',
+'other' => '其他',
+'not set' => '没有设置',
 ];

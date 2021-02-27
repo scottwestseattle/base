@@ -32,18 +32,18 @@ class Definition extends Model
 	use SoftDeletes;
 
     static private $_pos = [
-        DEFINITIONS_POS_NOTSET      => 'Not Set',
-        DEFINITIONS_POS_ADJECTIVE   => 'Adjective',
-        DEFINITIONS_POS_ADVERB      => 'Adverb',
-        DEFINITIONS_POS_ARTICLE     => 'Article',
-        DEFINITIONS_POS_CONJUNCTION => 'Conjunction',
-        DEFINITIONS_POS_NOUN        => 'Noun',
-        DEFINITIONS_POS_PREPOSITION => 'Preposition',
-        DEFINITIONS_POS_PRONOUN     => 'Pronoun',
-        DEFINITIONS_POS_VERB        => 'Verb',
+        DEFINITIONS_POS_NOTSET      => 'base.not set',
+        DEFINITIONS_POS_ADJECTIVE   => 'proj.adjective',
+        DEFINITIONS_POS_ADVERB      => 'proj.adverb',
+        DEFINITIONS_POS_ARTICLE     => 'proj.article',
+        DEFINITIONS_POS_CONJUNCTION => 'proj.conjunction',
+        DEFINITIONS_POS_NOUN        => 'proj.noun',
+        DEFINITIONS_POS_PREPOSITION => 'proj.preposition',
+        DEFINITIONS_POS_PRONOUN     => 'proj.pronoun',
+        DEFINITIONS_POS_VERB        => 'proj.verb',
         //DEFINITIONS_POS_        => '',
-        DEFINITIONS_POS_PHRASE      => 'Phrase',
-        DEFINITIONS_POS_OTHER       => 'Other',
+        DEFINITIONS_POS_PHRASE      => 'proj.phrase',
+        DEFINITIONS_POS_OTHER       => 'base.other',
     ];
 
     static public function getPosOptions()

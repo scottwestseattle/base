@@ -140,4 +140,6 @@ return [
 'No changes were made' => 'No changes were made',
 'Definition has been updated' => 'Definition has been updated',
 'Error updating record' => 'Error updating record',
+'other' => 'other',
+'not set' => 'not set',
 ];

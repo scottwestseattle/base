@@ -8,7 +8,7 @@
 			<a href="/dictionary/search/1">A-Z</a>
 			<a class="ml-2" href="/dictionary/search/2">Z-A</a>
 			<a class="ml-2" href="/dictionary/search/14">{{__('proj.Most Common')}}</a>
-			<a class="ml-2" href="/dictionary/search/9">{{__('proj.Verbs')}}</a>
+			<a class="ml-2" href="/dictionary/search/9">{{trans_choice('proj.Verb', 2)}}</a>
 			<a class="ml-2" href="/dictionary/search/15">{{__('proj.Verbs (most common)')}}</a>
 			<a class="ml-2" href="/dictionary/search/3">{{__('proj.Newest')}}</a>
 			<a class="ml-2" href="/dictionary/search/4">{{__('proj.Recent')}}</a>

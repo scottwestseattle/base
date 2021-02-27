@@ -26,9 +26,9 @@
 
 	@foreach ($options as $key => $value)
 		@if (isset($selected_option) && $key == $selected_option)
-			<option value="{{$key}}" selected>{{$value}}</option>
+			<option value="{{$key}}" selected>{{__($value)}}</option>
 		@else
-			<option value="{{$key}}">{{$value}}</option>
+			<option value="{{$key}}">{{__($value)}}</option>
 		@endif
 	@endforeach
 

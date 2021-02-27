@@ -125,7 +125,7 @@ class DefinitionController extends Controller
 		{
 			$record->save();
 
-			$msg = __('base.New record has been added');
+			$msg = __('ui.New record has been added');
 			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
 		}
 		catch (\Exception $e)

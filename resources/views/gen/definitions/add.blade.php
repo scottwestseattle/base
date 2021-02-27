@@ -25,7 +25,6 @@
 		<div class="form-group">
             @component('components.control-dropdown-menu', [
                 'prompt' => __('proj.Part of Speech') . ':',
-                'empty' => __('proj.Select Part of Speech'),
                 'options' => App\Gen\Definition::getPosOptions(),
                 'field_name' => 'pos_flag',
                 'prompt_div' => true,

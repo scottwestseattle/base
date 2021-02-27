@@ -15,7 +15,7 @@
 						</div>
 
                         @if (isset($record->pos_flag))
-							<div class="small-thin-text">{{strtolower($record->getPos())}}</div>
+							<div class="small-thin-text">{{__(strtolower($record->getPos()))}}</div>
                         @endif
 
 						@if (isset($record->definition))
