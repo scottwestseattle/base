@@ -91,4 +91,7 @@ return [
 'Part of Speech' => 'Categoría gramatical',
 'Forms' => 'Formas',
 'Rank' => 'Posición',
+'Remove from List' => 'Quitar de la lista',
+'Private Articles' => 'Artículos privados',
+'Display Order' => 'Orden de visualización',
 ];

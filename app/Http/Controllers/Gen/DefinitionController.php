@@ -41,7 +41,7 @@ class DefinitionController extends Controller
 			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax',	'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
 			'setFavoriteList',
-			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs',
+			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs', 'reviewRankedVerbs',
 
 			'favorites',
 			'setSnippetCookie',

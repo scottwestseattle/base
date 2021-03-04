@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use App;
+use Auth;
 use Cookie;
 use Log;
 
@@ -176,15 +177,21 @@ class HomeController extends Controller
 		//
 		// get articles
 		//
-	    //$options['articles'] = Entry::getArticles($languageFlag, 5);
-
 		try
 		{
 		    $parms = Site::getLanguage();
 		    $parms['type'] = ENTRY_TYPE_ARTICLE;
 
-			//$records = Entry::getArticles();
-		    $options['articles'] = Entry::getRecentList($parms, 5);
+            // get public articles
+            $parms['release'] = 'public';
+    		$options['articlesPublic'] = Entry::getRecentList($parms, 5);
+
+            if (Auth::check())
+            {
+                // get private articles
+                $parms['release'] = 'private';
+                $options['articlesPrivate'] = Entry::getRecentList($parms, 5);
+            }
 		}
 		catch (\Exception $e)
 		{

@@ -435,7 +435,7 @@ class LessonController extends Controller
 
 		try
 		{
-			$record->deleteSafe();
+			$record->delete();
 			$msg = 'Lesson has been deleted';
             logInfo(__FUNCTION__, $msg, ['id' => $record->id]);
 		}

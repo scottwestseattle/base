@@ -135,4 +135,6 @@ return [
 'Language' => '语言|语言',
 'Text' => '文本',
 'Option' => '选项|选项',
+'Dev' => '发展',
+'Not Set' => '没有设置',
 ];

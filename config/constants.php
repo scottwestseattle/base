@@ -19,6 +19,7 @@ define('RELEASEFLAG_APPROVED',  20);
 define('RELEASEFLAG_PAID',      50);
 define('RELEASEFLAG_MEMBER',    80);
 define('RELEASEFLAG_PUBLIC',    100);
+define('RELEASEFLAG_DEFAULT',   RELEASEFLAG_PRIVATE);
 
 // Work in progress
 define('WIP_NOTSET', 0);

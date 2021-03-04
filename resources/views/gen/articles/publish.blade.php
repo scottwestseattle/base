@@ -2,36 +2,25 @@
 @section('title', __('proj.Publish Article'))
 @section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
-<div class="container page-normal">
 
-	<h1>{{__('proj.Publish Article')}}</h1>
+<h1>{{__('proj.Publish Article')}}</h1>
 
-	<form method="POST" action="/articles/publishupdate/{{$record->id}}">
+<form method="POST" action="/articles/publishupdate/{{$record->id}}">
 
-		<h3 name="title" class="">{{$record->title}}</h3>
+    <h3 name="title" class="">{{$record->title}}</h3>
 
-		<div class="form-group">
-			<label for="wip_flag" class="control-label">@LANG('base.Work Status'):</label>
-			<select name="wip_flag" class="form-control">
-				@foreach ($wip_flags as $key => $value)
-					<option value="{{$key}}" {{ $key == $record->wip_flag ? 'selected' : ''}}>{{$value}}</option>
-				@endforeach
-			</select>
-		</div>
+    <div class="form-group">
+        @component('components.control-dropdown-menu', ['options' => $wip_flags, 'field_name' => 'wip_flag', 'prompt' => 'base.Work Status'])@endcomponent
+    </div>
 
-		<div class="form-group">
-			<label for="release_flag" class="control-label">@LANG('base.Release Status'):</label>
-			<select name="release_flag" class="form-control">
-				@foreach ($release_flags as $key => $value)
-					<option value="{{$key}}" {{ $key == $record->release_flag ? 'selected' : ''}}>{{$value}}</option>
-				@endforeach
-			</select>
-		</div>
+    <div class="form-group">
+        @component('components.control-dropdown-menu', ['options' => $release_flags, 'field_name' => 'release_flag', 'prompt' => 'base.Release Status'])@endcomponent
+    </div>
 
-		<div class="submit-button">
-			<button type="submit" class="btn btn-primary">@LANG('ui.Update')</button>
-		</div>
-	{{ csrf_field() }}
-	</form>
-</div>
+	<div class="submit-button">
+		<button type="submit" class="btn btn-primary">@LANG('ui.Update')</button>
+	</div>
+    {{ csrf_field() }}
+</form>
+
 @endsection

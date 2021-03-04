@@ -91,4 +91,7 @@ return [
 'Part of Speech' => 'Part of Speech',
 'Forms' => 'Forms',
 'Rank' => 'Rank',
+'Remove from List' => 'Remove from List',
+'Private Articles' => 'Private Articles',
+'Display Order' => 'Display Order',
 ];

@@ -1,17 +1,17 @@
+@php
+    $prefix = 'courses';
+@endphp
 @extends('layouts.app')
-
+@section('title', __('ui.Admin') )
+@section('menu-submenu')@component('gen.courses.menu-submenu', ['prefix' => $prefix])@endcomponent @endsection
 @section('content')
 
-<div class="container page-normal">
-
-	@component($prefix . '.menu-submenu', ['prefix' => $prefix, 'isAdmin' => $isAdmin])@endcomponent
-
-	<h1>@LANG('content.' . $titlePlural) ({{count($records)}})</h1>
+	<h1>{{trans_choice('proj.Course', 2)}} ({{count($records)}})</h1>
 
 	<table class="table table-responsive">
 		<thead>
 			<tr>
-				<th></th><th></th><th>@LANG('gen.Title')</th><th>@LANG('gen.Description')</th><th></th><th></th>
+				<th></th><th></th><th>@LANG('ui.Title')</th><th>@LANG('ui.Description')</th><th></th><th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,11 +21,11 @@
 				<td><a href="/{{$prefix}}/publish/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-publish"></span></a></td>
 				<td><a href="/{{$prefix}}/view/{{$record->id}}">{{$record->title}}</a>
 				<div>
-					@if (!\App\Status::isFinished($record->wip_flag))
-						<a href="/{{$prefix}}/publish/{{$record->id}}"><button type="button" class="btn btn-xs {{App\Status::getWipStatus($record->wip_flag)['btn']}}">{{App\Status::getWipStatus($record->wip_flag)['text']}}</button></a>
+					@if (!$record->isFinished())
+						<a href="/{{$prefix}}/publish/{{$record->id}}"><button type="button" class="btn btn-xs {{App\Status::getWipStatus($record->wip_flag)['btn']}}">{{__(App\Status::getWipStatus($record->wip_flag)['text'])}}</button></a>
 					@endif
-					@if (!\App\Status::isPublished($record->release_flag))
-						<a href="/{{$prefix}}/publish/{{$record->id}}"><button type="button" class="btn btn-xs {{$record->getStatus()['btn']}}">{{$record->getStatus()['text']}}</button></a>
+					@if (!$record->isPublic())
+						<a href="/{{$prefix}}/publish/{{$record->id}}"><button type="button" class="btn btn-xs {{$record->getStatus()['btn']}}">{{__($record->getStatus()['text'])}}</button></a>
 					@endif
 				</div>
 				</td>

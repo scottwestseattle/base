@@ -135,4 +135,6 @@ return [
 'Language' => 'Language|Languages',
 'Text' => 'Text',
 'Option' => 'Option|Options',
+'Dev' => 'Dev',
+'Not Set' => 'Not Set',
 ];

@@ -1,18 +1,9 @@
-@if (isset($options['articles']))
-
-<h3 class="mt-2 nodec">@LANG('proj.Latest Articles')
-    <span style="font-size:.8em;">({{count($options['articles'])}})
-    @if (isAdmin())
-        <a href="/articles/add"><span>+</span></a>
-    @endif
-    </span>
-</h3>
-
+@if (isset($records))
 <div class="text-center mt-2">
     <div style="display: inline-block; width:100%">
         <table style="width:100%;">
         <?php $count = 0; ?>
-        @foreach($options['articles'] as $record)
+        @foreach($records as $record)
 
         <tr class="drop-box-ghost-small" style="vertical-align:middle;">
             <td style="color:default; text-align:left; padding:5px 10px;">
@@ -57,5 +48,4 @@
         <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/articles">@LANG('ui.Show All')</a></div>
     </div>
 </div>
-
 @endif

@@ -91,4 +91,7 @@ return [
 'Part of Speech' => '语法类别',
 'Forms' => '字词形式',
 'Rank' => '排行',
+'Remove from List' => '从清单中删除',
+'Private Articles' => '私人文章',
+'Display Order' => '显示顺序',
 ];

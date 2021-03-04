@@ -102,6 +102,11 @@ class Entry extends Model
 		return Status::isPublic($this->release_flag);
     }
 
+    public function isPrivate()
+    {
+		return Status::isPrivate($this->release_flag);
+    }
+
     public function getStatus()
     {
 		return ($this->release_flag);
@@ -487,10 +492,46 @@ class Entry extends Model
 		$records = [];
 		$tag = self::getRecentTag();
 
+		// release
+        $releaseFlag = self::getReleaseFlag();
+        $releaseCondition = '>=';
+        if (isset($parms['release']))
+        {
+            if (Auth::check())
+            {
+                if ($parms['release'] == 'private')
+                {
+                    $releaseFlag = RELEASEFLAG_APPROVED;
+                    $releaseCondition = '<=';
+                }
+                else if ($parms['release'] == 'public')
+                {
+                    $releaseFlag = RELEASEFLAG_PAID;
+                    $releaseCondition = '>=';
+                }
+            }
+            else
+            {
+                if ($parms['release'] == 'private')
+                {
+                    // make sure none match
+                    $releaseFlag = RELEASEFLAG_NOTSET;
+                    $releaseCondition = '<';
+                }
+                else if ($parms['release'] == 'public')
+                {
+                    $releaseFlag = RELEASEFLAG_PUBLIC;
+                    $releaseCondition = '>=';
+                }
+            }
+        }
+
 		if (isset($tag)) // should always exist
 		{
 			try
 			{
+			    $orderBy = 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
+
 				$records = DB::table('entries')
 					->leftJoin('entry_tag', function($join) use ($tag) {
 						$join->on('entry_tag.entry_id', '=', 'entries.id');
@@ -501,8 +542,8 @@ class Entry extends Model
 					->whereNull('entries.deleted_at')
 					->where('entries.language_flag', $parms['id'], $parms['condition'])
 					->where('entries.type_flag', $type)
-					->where('entries.release_flag', '>=', self::getReleaseFlag())
-					->orderByRaw('entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC')
+					->where('entries.release_flag', $releaseCondition, $releaseFlag)
+					->orderByRaw($orderBy)
 					->limit($limit)
 					->get();
 

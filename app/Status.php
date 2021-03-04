@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Auth;
+
 //
 // Handles Release and WIP Status
 //
@@ -32,6 +34,37 @@ class Status
     static public function isPublic($release_flag)
     {
 		return ($release_flag == RELEASEFLAG_PUBLIC);
+	}
+
+    static public function isPrivate($release_flag)
+    {
+		return ($release_flag == RELEASEFLAG_PRIVATE);
+	}
+
+    static public function canShow($release_flag, $release)
+    {
+        $rc = false;
+
+        if ($release == 'private')
+        {
+            if ($release_flag <= RELEASEFLAG_APPROVED)
+                $rc = true;
+        }
+        else if ($release == 'public')
+        {
+            if (Auth::check())
+            {
+                if ($release_flag >= RELEASEFLAG_PAID)
+                    $rc = true;
+            }
+            else
+            {
+                if ($release_flag >= RELEASEFLAG_PUBLIC)
+                    $rc = true;
+            }
+        }
+
+		return $rc;
 	}
 
     static public function getReleaseFlags()

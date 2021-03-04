@@ -791,6 +791,7 @@ function setFocus(obj, accentsId = null)
 	{
 		$(accentsId).insertBefore(obj);
 		$(accentsId).show();
+		console.log('here');
 	}
 
 	prevFocus = obj;
@@ -862,21 +863,20 @@ function setTab(event, tab)
 
 	if (tab == 1)
 	{
-		$('#tab-text').show();
-		$('#tab-title').hide();
+		$('#tab-tab1').show();
+		$('#tab-tab2').hide();
 
-		$('#nav-link-text').addClass('active');
-		$('#nav-link-title').removeClass('active');
+		$('#nav-link-tab1').addClass('active');
+		$('#nav-link-tab2').removeClass('active');
 	}
-	else
+	else if (tab == 2)
 	{
-		$('#tab-text').hide();
-		$('#tab-title').show();
+		$('#tab-tab1').hide();
+		$('#tab-tab2').show();
 
-		$('#nav-link-text').removeClass('active');
-		$('#nav-link-title').addClass('active');
+		$('#nav-link-tab1').removeClass('active');
+		$('#nav-link-tab2').addClass('active');
 	}
-
 }
 
 function setActiveTab(event, tabIdShow, tabBodyClass, tabLinkClass = null)

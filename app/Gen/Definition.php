@@ -25,6 +25,7 @@ define('DEFINITIONS_POS_PREPOSITION',   6);
 define('DEFINITIONS_POS_CONJUNCTION',   7);
 define('DEFINITIONS_POS_PRONOUN',       8);
 define('DEFINITIONS_POS_PHRASE',        50);
+define('DEFINITIONS_POS_SNIPPET',       51);
 define('DEFINITIONS_POS_OTHER',         60);
 
 class Definition extends Model
@@ -41,8 +42,8 @@ class Definition extends Model
         DEFINITIONS_POS_PREPOSITION => 'proj.preposition',
         DEFINITIONS_POS_PRONOUN     => 'proj.pronoun',
         DEFINITIONS_POS_VERB        => 'proj.verb',
-        //DEFINITIONS_POS_        => '',
         DEFINITIONS_POS_PHRASE      => 'proj.phrase',
+        DEFINITIONS_POS_SNIPPET     => 'proj.snippet',
         DEFINITIONS_POS_OTHER       => 'base.other',
     ];
 

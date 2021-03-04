@@ -1,13 +1,13 @@
-<?php
+@php
 	$id = isset($target) ? $target : 0;
 	$tinymce = isset($tinymce);
 	$flat = isset($flat) && $flat;
-	$hidden = $tinymce ? '' : 'hidden';
-?>
+	$hidden = isset($hidden) && $hidden ? 'hidden' : '';
+@endphp
 
 @if ($flat)
 
-	<div id="accent-chars" style="clear:both;" class="data-accent-chars flat-content mb-1 {{$hidden}}">
+	<div id="accent-chars" style="clear:both; visibility:{{$hidden}};" class="data-accent-chars flat-content mb-1">
 		<button tabindex="-1" onclick="event.preventDefault(); insertChar('á', '{{$id}}', '{{$tinymce}}')">á</button>
 		<button tabindex="-1" onclick="event.preventDefault(); insertChar('é', '{{$id}}', '{{$tinymce}}')">é</button>
 		<button tabindex="-1" onclick="event.preventDefault(); insertChar('í', '{{$id}}', '{{$tinymce}}')">í</button>

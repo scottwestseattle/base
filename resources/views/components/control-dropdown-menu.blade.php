@@ -1,3 +1,6 @@
+@php
+    $select_class = isset($select_class) ? $select_class : 'form-control';
+@endphp
 @if (isset($options) && count($options) > 0)
 
 	@if (isset($prompt))
@@ -6,7 +9,7 @@
 			<div>
 		@endif
 
-		<label for="{{$field_name}}">{{$prompt}}</label>
+		<label for="{{$field_name}}">{{__($prompt)}}</label>
 
 		@if (isset($prompt_div))
 			</div>

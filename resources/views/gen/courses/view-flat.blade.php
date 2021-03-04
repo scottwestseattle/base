@@ -15,10 +15,10 @@
 <h3 name="title" class="">{{$record->title }}
     @if (isAdmin())
         @if (!App\Status::isFinished($record->wip_flag))
-            <a class="btn {{($wip=\App\Status::getWipStatus($record->wip_flag))['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{$wip['text']}}</a>
+            <a class="btn {{($wip=\App\Status::getWipStatus($record->wip_flag))['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{__($wip['text'])}}</a>
         @endif
         @if (!App\Status::isPublic($record->release_flag))
-            <a class="btn {{($release=App\Status::getReleaseStatus($record->release_flag))['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{$release['text']}}</a>
+            <a class="btn {{($release=App\Status::getReleaseStatus($record->release_flag))['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{__($release['text'])}}</a>
         @endif
     @endif
 </h3>

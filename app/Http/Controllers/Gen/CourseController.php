@@ -120,7 +120,7 @@ class CourseController extends Controller
 		$record->title 			= $request->title;
 		$record->description	= $request->description;
 		$record->permalink		= createPermalink($request->title);
-		$record->release_flag	= RELEASE_DEFAULT;
+		$record->release_flag	= RELEASEFLAG_DEFAULT;
 		$record->wip_flag		= WIP_DEFAULT;
         $record->type_flag      = COURSETYPE_DEFAULT;
 
@@ -317,8 +317,8 @@ class CourseController extends Controller
 
 		try
 		{
-			$record->deleteSafe();
-			logInfo(__FUNCTION, 'Course has been deleted', ['id' => $course->id]);
+			$record->delete();
+			logInfo(__FUNCTION__, 'Course has been deleted', ['id' => $course->id]);
 		}
 		catch (\Exception $e)
 		{

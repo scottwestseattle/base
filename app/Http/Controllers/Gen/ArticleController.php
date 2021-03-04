@@ -10,9 +10,8 @@ use Auth;
 use Config;
 use Log;
 
-use App\Gen\Article;
-
 use App\Entry;
+use App\Gen\Article;
 use App\Site;
 use App\Status;
 use App\User;
@@ -42,20 +41,24 @@ class ArticleController extends Controller
 		$records = [];
 		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
 
+        $parms = Site::getLanguage();
+        $parms['type'] = ENTRY_TYPE_ARTICLE;
+
 		try
 		{
-		    $parms = Site::getLanguage();
-		    $parms['type'] = ENTRY_TYPE_ARTICLE;
+            // get public articles
+            $parms['release'] = 'public';
+    		$options['public'] = Entry::getRecentList($parms);
 
-			//$records = Entry::getArticles();
-		    $records = Entry::getRecentList($parms);
+            // get private articles
+            $parms['release'] = 'private';
+    		$options['private'] = Entry::getRecentList($parms);
 		}
 		catch (\Exception $e)
 		{
 			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting articles'));
 		}
 
-		$options['articles'] = $records;
 
 		return view(VIEWS . '.index', [
 			'options' => $options,
