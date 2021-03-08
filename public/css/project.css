@@ -502,8 +502,21 @@ Fancy Text
 .small-text, .small-thin-text {
 	font-size:12px;
 }
-.small-thin-text {
+.small-thin-text, .small-thin-hdr, .small-thin-h2 {
 	font-weight:200;
+}
+
+.small-thin-hdr, .small-thin-h2 {
+	font-weight:300;
+}
+
+.small-thin-hdr {
+    font-size:14px;
+}
+
+.small-thin-h2 {
+    font-size:13px;
+    /*font-weight:bold;*/
 }
 
 .medium-text, .medium-thin-text {

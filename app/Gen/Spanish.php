@@ -388,7 +388,7 @@ class Spanish
             }
 
 			$factor = 1;
-			$affirmRoot = trunc($words[$index + ($offset * $factor)], -1);
+			$affirmRoot = self::getVerbRoot($words[0], $words[$index + ($offset * $factor)]);
 			$conjugations[CONJ_IMP_NEGATIVE] = ';no ' . $affirmRoot . $s . ';no ' . $words[$index + ($offset * $factor)] . ';no ' . $words[$index + ($offset * $factor++)]. 'mos;no ' . $affirmRoot . $is . ';no ' . $words[$index + ($offset * ++$factor)] . ';';
 
 			$conj .= '|' . $conjugations[CONJ_IND_PRESENT]; // save the conjugation string
@@ -403,7 +403,7 @@ class Spanish
 			$conj .= '|' . $conjugations[CONJ_IMP_AFFIRMATIVE]; // save the conjugation string
 			$conj .= '|' . $conjugations[CONJ_IMP_NEGATIVE]; // save the conjugation string
 
-            //dd($conjugations);
+            //dd($conjugations[CONJ_IMP_NEGATIVE]);
 		}
 		else
 		{
@@ -413,6 +413,17 @@ class Spanish
 
 		$rc['full'] = $conj;
 		$rc['search'] = $search;
+
+		return $rc;
+	}
+
+    static public function getVerbRoot($verb, $conj)
+    {
+		$rc = trunc($conj, -1);
+		if (Str::endsWith($verb, 'ar') && Str::endsWith($rc, 'e'))
+		{
+		    $rc = trunc($rc, -1);
+		}
 
 		return $rc;
 	}

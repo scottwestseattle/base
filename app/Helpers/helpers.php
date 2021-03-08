@@ -728,13 +728,18 @@ if (!function_exists('splitSentences')) {
 if (!function_exists('trunc')) {
 	function trunc($string, $length, $ellipsis = null)
 	{
+	    $length = intval($length);
 	    $rc = trim($string);
-		$l = strlen($rc);
+		$l = mb_strlen($rc);
 
 	    if ($length < 0) // then subtract this number of chars
+	    {
 	        $length = $l + $length;
+	    }
 	    else
+	    {
 	        $length = $l - $length;
+	    }
 
 		if ($l > $length)
 		{

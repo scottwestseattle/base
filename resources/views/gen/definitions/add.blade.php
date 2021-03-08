@@ -37,7 +37,7 @@
 			<a onclick="wordFormsGen(event, '#title', '#forms', true);" href="" tabindex="-1" class="ml-2"><div class="middle mb-2"><b>+s</b></div></a>
 			<a onclick="wordFormsGen(event, '#title', '#forms');" href="" tabindex="-1" class="ml-2"><span class="glyphicon glyphicon-plus-sign" ></span></a>
 			<a onclick="event.preventDefault(); $('#forms').val(''); $('#forms').focus();" href="" tabindex="-1" class="ml-2"><span id="button-clear" class="glyphicon glyphicon-remove" ></span></a>
-			<input type="text" rows="3" name="forms" id="forms" class="form-control" autocomplete="off" onfocus="setFocus($(this), '#accent-chars')" />
+			<input type="text" name="forms" id="forms" class="form-control" autocomplete="off" onfocus="setFocus($(this), '#accent-chars')" />
 		</div>
 
 		<div class="form-group">
@@ -49,19 +49,19 @@
 
 		<div class="form-group">
 			<label for="translation_en" class="control-label">{{trans_choice('ui.Translation', 1)}}:</label>
-			<textarea rows="3" name="translation_en" id="translation_en" class="form-control" onfocus="setFocus($(this))" ></textarea>
+			<textarea rows="2" name="translation_en" id="translation_en" class="form-control" onfocus="setFocus($(this))" ></textarea>
 		</div>
 
 		<div class="form-group">
 			<label for="examples" class="control-label">@LANG('proj.Examples'):</label>
-			<textarea rows="5" name="examples" id="examples" class="form-control" onfocus="setFocus($(this), '#accent-chars')"></textarea>
+			<textarea rows="3" name="examples" id="examples" class="form-control" onfocus="setFocus($(this), '#accent-chars')"></textarea>
 		</div>
 
 		<div class="form-group">
-			<label for="conjugations" class="control-label mr-3">@LANG('proj.Conjugations'):</label></label>
+			<label for="conjugations" class="control-label mr-3">{{trans_choice('proj.Conjugation', 2)}}:</label></label>
 			<a onclick="event.preventDefault(); conjugationsGen('#title', '#conjugations');" href="" tabindex="-1" class="ml-2"><span id="button-increment-line" class="glyphicon glyphicon-plus-sign" ></span></a>
 			<a onclick="event.preventDefault(); $('#conjugations').val(''); $('#conjugations').focus();" href="" tabindex="-1" class="ml-2"><span id="button-clear" class="glyphicon glyphicon-remove" ></span></a>
-			<textarea rows="3" name="conjugations" id="conjugations" class="form-control" autocomplete="off" onfocus="setFocus($(this))" ></textarea>
+			<textarea rows="7" name="conjugations" id="conjugations" class="form-control" autocomplete="off" onfocus="setFocus($(this))" ></textarea>
 		</div>
 
 		<div class="form-group">
