@@ -615,9 +615,10 @@ class DefinitionController extends Controller
 		$scraped = Spanish::isIrregular($text);
 		if ($scraped['irregular'])
 		{
-			$forms = $scraped['conj']['full'];
-			//dump('scraped');
-			//dd($forms);
+		    if (isset($scraped['conj']['full']))
+			    $forms = $scraped['conj']['full'];
+			else
+			    $forms = $scraped['error'];
 		}
 		else
 		{
@@ -625,8 +626,6 @@ class DefinitionController extends Controller
 			if (isset($records))
 			{
 				$forms = $records['forms'];
-				//dump('gened');
-				//dd($forms);
 			}
 		}
 

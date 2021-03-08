@@ -684,6 +684,25 @@ if (!function_exists('getSentences')) {
     }
 }
 
+if (!function_exists('getWord')) {
+	function getWord($string, $index)
+	{
+	    $string = trim($string);
+	    $rc = null;
+
+        if (isset($string))
+        {
+            $s = explode(' ', $string);
+            if (isset($s) && count($s) >= $index)
+            {
+                $rc = $s[$index - 1];
+            }
+        }
+
+        return $rc;
+    }
+}
+
 if (!function_exists('splitSentences')) {
 	function splitSentences($string)
 	{
@@ -712,17 +731,22 @@ if (!function_exists('trunc')) {
 	    $rc = trim($string);
 		$l = strlen($rc);
 
+	    if ($length < 0) // then subtract this number of chars
+	        $length = $l + $length;
+	    else
+	        $length = $l - $length;
+
 		if ($l > $length)
 		{
 		    if (isset($ellipsis))
 		    {
 		        $l += strlen($ellipsis);
-    			$rc = mb_substr($rc, 0, $l - $length);
+    			$rc = mb_substr($rc, 0, $length);
     			$rc .= $ellipsis;
 		    }
 		    else
 		    {
-    			$rc = mb_substr($rc, 0, $l - $length);
+    			$rc = mb_substr($rc, 0, $length);
 		    }
 		}
 
@@ -762,5 +786,14 @@ if (!function_exists('isMobile')) {
 			substr($useragent,0,4)));
 
 		return $rc;
+	}
+}
+
+if (!function_exists('inc')) {
+    function inc(&$value, $amount)
+    {
+        $value += $amount;
+
+		return $value;
 	}
 }
