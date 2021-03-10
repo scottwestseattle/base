@@ -21,18 +21,24 @@ define('CONJ_IMP_NEGATIVE', 'imp_neg');
 class Spanish
 {
     static public $_verbConjugations = [
+
+        // indicative
         'Participles',
         'Present',
         'Past',
         'Past Perfect',
         'Conditional',
         'Future',
-        'Subjunctive Present',
-        'Subjunctive Imperfect',
-        'Subjunctive Imperfect 2',
-        'Subjunctive Future',
-        'Imperative',
-        'Imperative Negative',
+
+        // subjunctive
+        'Present',
+        'Imperfect',
+        'Imperfect 2',
+        'Future',
+
+        // imperative
+        'Positive',
+        'Negative',
     ];
 
 	static public $_lineSplitters = array('Mr.', 'Miss.', 'Sr.', 'Mrs.', 'Ms.', 'St.');
@@ -860,13 +866,17 @@ class Spanish
                 $parts = explode(',', $record);
                 if (count($parts) == $fullSize)
                 {
+                    $index = 0;
                     foreach($parts as $key => $part)
                     {
                         $part = trim($part);
                         if (strlen($part) > 0)
                         {
-                            $tenses[] = $pronouns[$key] . ' ' . $part;
+                            $tenses[$index]['pronoun'] = $pronouns[$key];
+                            $tenses[$index]['conj'] = $part;
                         }
+
+                        $index++;
                     }
                     $conj['tenses'][] = $tenses;
                 }
@@ -879,14 +889,18 @@ class Spanish
                         if (count($parts) == ($fullSize - 1))
                         {
                             // the imperatives only have 5 tenses
+                            $index = 0;
                             foreach($parts as $key => $part)
                             {
                                 $part = trim($part);
                                 if (strlen($part) > 0)
                                 {
                                     // start on 'tu'
-                                    $tenses[] = $pronouns[$key + 1] . ' ' . $part;
+                                    $tenses[$index]['pronoun'] = $pronouns[$key + 1];
+                                    $tenses[$index]['conj'] = $part;
                                 }
+
+                                $index++;
                             }
                             $conj['tenses'][] = $tenses;
                         }

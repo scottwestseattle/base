@@ -433,6 +433,9 @@ Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
 
+// Verbs
+Route::get('/verbs/conjugation/{verb}', [DefinitionController::class, 'verbs']);
+
 // Definitions
 Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/', [DefinitionController::class, 'index']);

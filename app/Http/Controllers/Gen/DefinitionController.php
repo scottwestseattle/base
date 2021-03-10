@@ -1054,12 +1054,13 @@ class DefinitionController extends Controller
 
 	public function verbs(Request $request, $verb)
     {
+        $verb = alpha($verb);
 		$record = Definition::get($verb);
 
 		if (isset($record->conjugations))
 			$record->conjugations = Spanish::getConjugationsFull($record->conjugations);
 
-		return view('definitions.verb', [
+		return view('gen.definitions.verb', [
 			'record' => $record,
 			'headers' => Spanish::$_verbConjugations,
 			]);

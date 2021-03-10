@@ -155,6 +155,10 @@ a.nodec, .nodec a {
     text-decoration: none;
 }
 
+.alignRight {
+  text-align: right;
+}
+
 /***************************************************
  Navbar
 ***************************************************/
@@ -651,6 +655,19 @@ h6 {
 	min-height:200px;
 	color:white;
 	text-decoration:none;
+}
+
+.card-verb-conj {
+	text-decoration:none;
+	border:none;
+    min-width: 200px;
+    xbackground: LightGray;
+    xmargin-right:20px;
+    xpadding-right:10px;
+}
+
+.col-verb-conj {
+    xbackground: LightBlue;
 }
 
 .card-blue {

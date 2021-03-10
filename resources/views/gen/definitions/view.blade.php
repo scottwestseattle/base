@@ -101,7 +101,10 @@
 		<div class="small-thin-text mt-2">{{App\Gen\Spanish::getFormsPretty($record->forms)}}</div>
 	@endif
 
-	@component($prefix . '.component-conjugations', ['record' => $record])@endcomponent
-
+    @if (true)
+	    @component($prefix . '.component-conjugations', ['record' => $record])@endcomponent
+    @else
+    	@component($prefix . '.component-conjugations-full', ['record' => $record])@endcomponent
+    @endif
 @endsection
 
