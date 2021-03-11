@@ -5,12 +5,12 @@
 				@foreach($records as $record)
 				<tr>
 					<td class="large-text hidden-xs">
-						<a class="float-left" href="/definitions/view/{{$record->id}}">{{$record->title}}</a>
+						<a class="float-left" href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
 						@component('gen.definitions.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 					</td>
 					<td>
 						<div class="large-text hidden-lg hidden-md hidden-sm">
-							<a class="float-left" href="/definitions/view/{{$record->id}}">{{$record->title}}</a>
+							<a class="float-left" href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
 							@component('gen.definitions.component-search-toolbar', ['record' => $record, 'id' => 2, 'lists' => $favoriteLists])@endcomponent
 						</div>
 
@@ -27,7 +27,7 @@
 						<div class="teal"><i>{!!nl2br($record->examples)!!}</i></div>
 
 						@if (isset($record->translation_en))
-							<div class="mt-2 steelblue">English: {!!nl2br($record->translation_en)!!}</div>
+							<div class="mt-2 steelblue">{{__('base.English')}}: {!!nl2br($record->translation_en)!!}</div>
 						@elseif (App\User::isSuperAdmin())
 							<a href="/definitions/edit/{{$record->id}}" class="small-thin-text danger">add translation</a>
 						@endif
@@ -41,7 +41,7 @@
 								@if (App\Gen\Spanish::fixConjugations($record))
 									<a href="/definitions/edit/{{$record->id}}" class="small-thin-text danger">conjugations</a>
 								@else
-									<span>conjugations preview</span>
+									<span>{{trans_choice('proj.Conjugation', 2)}}</span>
 								@endif
 							</a></div>
 							<div id="showconjugations-{{$record->id}}" class="hidden"></div>

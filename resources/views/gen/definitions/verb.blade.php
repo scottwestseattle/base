@@ -5,7 +5,7 @@
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
 @section('content')
 
-@component('gen.definitions.component-conjugations-full', ['record' => $record, 'headers' => $headers])@endcomponent
+@component('gen.definitions.component-conjugations-full', ['record' => $record, 'showTitle' => true])@endcomponent
 
 @endsection
 

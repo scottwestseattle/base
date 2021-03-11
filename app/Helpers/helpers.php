@@ -410,7 +410,9 @@ if (!function_exists('createPermalink')) {
 		$v = null;
 
 		if (blank($hash))
-		    $hash = timestamp();
+		{
+		    $hash = microtime(true);
+		}
 
 		if (isset($title))
 		{

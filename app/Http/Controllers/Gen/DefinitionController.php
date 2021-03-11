@@ -104,8 +104,8 @@ class DefinitionController extends Controller
 		$record->examples		= $request->examples;
 		$record->permalink		= createPermalink($request->title);
 		$record->wip_flag		= WIP_DEFAULT;
-		$record->pos_flag   	= $request->pos_flag;
 		$record->rank   		= $request->rank;
+		$record->pos_flag   	= $request->pos_flag;
 
 		try
 		{
@@ -113,6 +113,9 @@ class DefinitionController extends Controller
 			$conj = Spanish::getConjugations($request->conjugations);
 			$record->conjugations = $conj['full'];
 			$record->conjugations_search = $conj['search'];
+
+			if ($record->isConjugated())
+    		    $record->pos_flag = DEFINITIONS_POS_VERB;
 		}
 		catch (\Exception $e)
 		{
@@ -125,7 +128,7 @@ class DefinitionController extends Controller
 		{
 			$record->save();
 
-			$msg = __('ui.New record has been added');
+			$msg = __('base.New record has been added');
 			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
 		}
 		catch (\Exception $e)
@@ -136,7 +139,7 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect('/definitions/view/' . $record->id);
+		return redirect('/definitions/view/' . $record->permalink);
     }
 
     public function permalink(Request $request, $permalink)
@@ -155,12 +158,52 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('msgs.Record not found'), ['permalink' => $permalink]);
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Record not found'), ['permalink' => $permalink]);
     		return redirect($this->redirectTo);
 		}
 
 		return $this->view($record);
 	}
+
+    public function display(Request $request, $word)
+    {
+		$record = null;
+		$word = alpha($word);
+
+		try
+		{
+			$record = Definition::select()
+				->where('title', $word)
+				->first();
+
+			if (blank($record))
+			    throw new \Exception('definition not found');
+		}
+		catch (\Exception $e)
+		{
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Definition not found'), ['permalink' => $permalink]);
+    		return redirect($this->redirectTo);
+		}
+
+		return $this->view($record);
+	}
+
+	public function verbs(Request $request, $verb)
+    {
+        $verb = alpha($verb);
+		$record = Definition::get($verb);
+
+		if (isset($record->conjugations)) // if it's a verb
+		{
+			$record->conjugations = Spanish::getConjugationsFull($record->conjugations);
+			$record->conjugationHeaders = Spanish::$_verbConjugations;
+		}
+
+		return view('gen.definitions.verb', [
+			'record' => $record,
+			'showTitle' => true,
+			]);
+    }
 
 	public function view(Definition $definition)
     {
@@ -170,8 +213,12 @@ class DefinitionController extends Controller
 		$record->examples = splitSentences($record->examples);
 
         // format the conjugations
-		if (isset($record->conjugations))
-			$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
+		if ($record->isConjugated())
+		{
+			//$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
+			$record->conjugations = Spanish::getConjugationsFull($record->conjugations);
+			$record->conjugationHeaders = Spanish::$_verbConjugations;
+		}
 
         $lists = Definition::getUserFavoriteLists();
 
@@ -217,6 +264,15 @@ class DefinitionController extends Controller
 		$parent = null;
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
+		if ($isDirty)
+		{
+		    // only make new permalink if title changes
+		    $record->permalink = copyDirty($record->permalink, createPermalink($request->title), $isDirty, $changes);
+		}
+
+        // one time call to fix all records
+        //Definition::fixAll();
+
 		$record->definition = copyDirty($record->definition, $request->definition, $isDirty, $changes);
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
@@ -262,7 +318,7 @@ class DefinitionController extends Controller
 			logFlash('info', $f, __('base.No changes were made'));
 		}
 
-        $returnPath = '/definitions/view/' . $record->id;
+        $returnPath = '/definitions/view/' . $record->permalink;
 
 		return redirect($returnPath);
 	}
@@ -403,7 +459,7 @@ class DefinitionController extends Controller
             $record = Definition::getSnippet($snippet);
             if (isset($record))
             {
-                // if it already exists let usere or visitor update it
+                // if it already exists let user or visitor update it
                 $exists = true;
                 $record->visitor_id     = getVisitorInfo()['hash'];
             }
@@ -1051,20 +1107,6 @@ class DefinitionController extends Controller
 			'record' => $record,
 			]);
 	}
-
-	public function verbs(Request $request, $verb)
-    {
-        $verb = alpha($verb);
-		$record = Definition::get($verb);
-
-		if (isset($record->conjugations))
-			$record->conjugations = Spanish::getConjugationsFull($record->conjugations);
-
-		return view('gen.definitions.verb', [
-			'record' => $record,
-			'headers' => Spanish::$_verbConjugations,
-			]);
-    }
 
     public function list(Request $request, Tag $tag)
     {

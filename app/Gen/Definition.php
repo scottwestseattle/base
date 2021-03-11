@@ -54,6 +54,7 @@ class Definition extends Model
 
     public function getPos()
     {
+        //dump($this->pos_flag);
         return self::getPosName($this->pos_flag);
     }
 
@@ -458,11 +459,12 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
     			    ->where('type_flag', DEFTYPE_DICTIONARY)
-					->where(function ($query) {$query
-						->where('title', 'like', '%ar')
-						->orWhere('title', 'like', '%er')
-						->orWhere('title', 'like', '%ir')
-						;})
+    			    ->where('pos_flag', DEFINITIONS_POS_VERB)
+					//->where(function ($query) {$query
+					//	->where('title', 'like', '%ar')
+					//	->orWhere('title', 'like', '%er')
+					//	->orWhere('title', 'like', '%ir')
+					//	;})
 					->whereNotNull('conjugations_search')
 					->whereNotNull('conjugations')
 					->where('rank', $rankCondition, $rankValue)
@@ -496,11 +498,7 @@ class Definition extends Model
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
 					->where('wip_flag', '<', WIP_FINISHED)
-					->where(function ($query) {$query
-						->where('title', 'like', '%ar')
-						->orWhere('title', 'like', '%er')
-						->orWhere('title', 'like', '%ir')
-						;})
+					->where('pos_flag', DEFINITIONS_POS_VERB)
 					->where(function ($query) {$query
 						->whereNull('conjugations_search')
 						->orWhereRaw('LENGTH(conjugations) < 50')
@@ -864,5 +862,70 @@ class Definition extends Model
 		//dd($qna);
 
 		return $qna;
+	}
+
+	static public function fixAll()
+	{
+		try
+		{
+			$records = Definition::select()
+			    ->where('type_flag', '<>', DEFTYPE_SNIPPET)
+			    ->where('wip_flag', WIP_FINISHED)
+				->where(function ($query) {$query
+					->where('pos_flag', DEFINITIONS_POS_NOTSET)
+					->orWhereNull('pos_flag')
+					;})
+			    ->orderBy('id')
+				->get();
+
+            $index = 0;
+			foreach($records as $record)
+			{
+			    //dd($record);
+
+			    // reset permalink
+			    //$record->permalink = createPermalink($record->title);
+
+                // mark as not finished
+                $record->wip_flag = WIP_DEV;
+
+			    if ($record->isConjugated())
+			    {
+			        //$record->pos_flag = DEFINITIONS_POS_VERB;
+    			    //dd($record);
+			    }
+
+			    $record->save();
+
+                //if ($index++ > 10)
+                //    dd('stop');
+			}
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting practice text';
+            logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+	}
+
+	public function isConjugated()
+	{
+	    $rc = false;
+
+	    if (isset($this->conjugations))
+	    {
+	        if (is_array($this->conjugations))
+	        {
+	            if (count($this->conjugations) > 0)
+	                $rc = true;
+	        }
+	        else
+	        {
+                if (strlen($this->conjugations) > 0)
+                    $rc = true;
+	        }
+	    }
+
+	    return $rc;
 	}
 }

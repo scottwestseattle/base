@@ -494,7 +494,6 @@ table.table-fat tr td {
 	background: #efefef;
 }
 
-
 /***************************************************
 Fancy Text
 ***************************************************/
@@ -766,9 +765,7 @@ h6 {
 }
 
 /***********************************************************
-
  Quiz Styles
-
 ************************************************************/
 
 .quiz-panel {
@@ -969,7 +966,6 @@ h6 {
     margin-bottom: 0;
 }
 
-
 /************* this section just adds the border **************/
 
 .lesson-table {
@@ -1058,3 +1054,24 @@ Glyph Icons
 	color: #286090;
 }
 
+/****************************************
+Dictionary
+****************************************/
+
+.conjugations h4 {
+	font-weight:300;
+	font-size:18px;
+}
+
+.conjugations h5 {
+	font-weight:200;
+	font-size:16px;
+}
+
+.small-thin-text, .small-thin-hdr, .small-thin-h2 {
+	font-weight:200;
+}
+
+.small-thin-hdr, .small-thin-h2 {
+	font-weight:300;
+}

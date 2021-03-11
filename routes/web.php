@@ -435,6 +435,7 @@ Route::group(['prefix' => 'snippets'], function () {
 
 // Verbs
 Route::get('/verbs/conjugation/{verb}', [DefinitionController::class, 'verbs']);
+Route::get('/dictionary/definition/{word}', [DefinitionController::class, 'display']);
 
 // Definitions
 Route::group(['prefix' => 'definitions'], function () {
@@ -464,7 +465,8 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/undelete/{id}', [DefinitionController::class, 'undelete']);
 
 	// view
-	Route::get('/view/{definition}', [DefinitionController::class, 'view']);
+	Route::get('/show/{definition}', [DefinitionController::class, 'view']);
+	Route::get('/view/{permalink}', [DefinitionController::class, 'permalink']);
 
 	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
@@ -497,11 +499,6 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/conjugationsgen/{definition}', [DefinitionController::class, 'conjugationsGen']);
 	Route::get('/conjugationsgenajax/{text}', [DefinitionController::class, 'conjugationsGenAjax']);
 	Route::get('/conjugationscomponent/{definition}',[DefinitionController::class, 'conjugationsComponentAjax']);
-
-	//
-	// catch-all last
-	//
-	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 
 });
 

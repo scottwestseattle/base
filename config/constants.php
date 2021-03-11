@@ -63,14 +63,6 @@ define('DEFINITIONS_SEARCH_RANDOM_WORDS', 13);
 define('DEFINITIONS_SEARCH_RANKED', 14);
 define('DEFINITIONS_SEARCH_RANKED_VERBS', 15);
 
-// parts of speech
-define('POS_NOTSET',            0);
-define('POS_NOUN',              10);
-define('POS_VERB',              11);
-define('POS_ADJECTIVE',         12);
-define('POS_ADVERB',            13);
-define('POS_OTHER',             100);
-
 // entries
 define('ENTRY_TYPE_NOTSET', 	-1);
 define('ENTRY_TYPE_NOTUSED', 	0);

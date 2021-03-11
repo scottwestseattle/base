@@ -2,7 +2,9 @@
 	@php
 	    $i = 0;
 	@endphp
-	<div class="small-thin-hdr mt-2 mb-1"><a href="/verbs/conjugation/{{$record->title}}">{{trans_choice('proj.Conjugation', 2)}}</a></div>
+	@if (false)
+	    <div class="small-thin-hdr mt-2 mb-1"><a href="/verbs/conjugation/{{$record->title}}">{{trans_choice('proj.Conjugation', 2)}}</a></div>
+    @endif
 
 	<div class="small-thin-h2 mt-2 mb-1">{{trans_choice('proj.Participle', 2)}}</div>
 	<div class="small-thin-text mb-2">{{$record->conjugations[$i++]}}</div>

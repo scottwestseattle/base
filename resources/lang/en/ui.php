@@ -137,4 +137,5 @@ return [
 'Option' => 'Option|Options',
 'Dev' => 'Dev',
 'Not Set' => 'Not Set',
+'Not Found' => 'Not Found',
 ];

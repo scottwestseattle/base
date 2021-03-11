@@ -6,6 +6,7 @@
 @section('title', trans_choice('proj.View Definition', 1) . ' - ' . $title)
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
 @section('content')
+
 	@if (isset($fromDictionary))
 	<div class="page-nav-buttons">
 		<a class="btn btn-success btn-sm btn-nav-top" role="button" href="/{{$prefix}}/">
@@ -97,13 +98,11 @@
 	</div>
 
 	@if (isset($record->forms) && strlen($record->forms) > 0)
-		<div class="small-thin-hdr mt-2 mb-1">{{__('proj.Forms')}}</div>
-		<div class="small-thin-text mt-2">{{App\Gen\Spanish::getFormsPretty($record->forms)}}</div>
+		<div class="large-thin-text mt-2 mb-1">{{__('proj.Forms')}}</div>
+		<div class="medium-thin-text mt-2 mb-4">{{App\Gen\Spanish::getFormsPretty($record->forms)}}</div>
 	@endif
 
-    @if (true)
-	    @component($prefix . '.component-conjugations', ['record' => $record])@endcomponent
-    @else
+    @if ($record->isConjugated())
     	@component($prefix . '.component-conjugations-full', ['record' => $record])@endcomponent
     @endif
 @endsection

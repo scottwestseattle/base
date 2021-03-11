@@ -137,4 +137,5 @@ return [
 'Option' => '选项|选项',
 'Dev' => '发展',
 'Not Set' => '没有设置',
+'Not Found' => '未找到',
 ];

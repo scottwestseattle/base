@@ -105,4 +105,5 @@ return [
 'Future' => 'Futuro',
 'Imperfect' => 'Imperfecto',
 'Participle' => 'Participio|Participios',
+'Verb not found' => 'Verbo no encontrado',
 ];

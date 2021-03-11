@@ -105,4 +105,5 @@ return [
 'Future' => '未来',
 'Imperfect' => '不完善',
 'Participle' => '分词|分词',
+'Verb not found' => '找不到动词',
 ];
