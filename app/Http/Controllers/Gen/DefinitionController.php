@@ -510,7 +510,7 @@ class DefinitionController extends Controller
         Cookie::queue('snippetId', intval($id), MS_YEAR);
     }
 
-	public function snippets()
+	public function snippets($id = null)
     {
         //
         // all the stuff for the speak and record module
@@ -531,12 +531,10 @@ class DefinitionController extends Controller
         $snippets = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
         $options['records'] = $snippets;
 
-        // not implemented yet
-        $snippetId = intval(Cookie::get('snippetId'));
-        if (isset($snippetId) && $snippetId > 0)
-        {
-            $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $snippetId, 'id');
-        }
+        // command line supercedes cookie
+        $id = isset($id) ? intval($id) : intval(Cookie::get('snippetId'));
+        if ($id > 0)
+            $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $id, 'id');
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
 

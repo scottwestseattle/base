@@ -62,6 +62,10 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 
+// Search
+Route::get('/search', [HomeController::class, 'search']);
+Route::post('/search', [HomeController::class, 'search']);
+
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
@@ -419,7 +423,7 @@ Route::group(['prefix' => 'visitors'], function () {
 use App\Http\Controllers\Gen\DefinitionController;
 
 Route::get('/dictionary', [DefinitionController::class, 'search']);
-Route::get('/practice', [DefinitionController::class, 'snippets']);
+Route::get('/practice/{id?}', [DefinitionController::class, 'snippets']);
 Route::get('/favorites', [DefinitionController::class, 'favorites']);
 
 // Dictionary

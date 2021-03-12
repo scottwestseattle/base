@@ -1,6 +1,7 @@
 @php
     $title = isset($record->title) ? $record->title : __('ui.Not Found');
-    $cols = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 col-verb-conj';
+    $cols1 = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 col-verb-conj';
+    $cols2 = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 col-verb-conj';
     $tdClass = 'alignRight medium-thin-text';
     $headers = isset($record->conjugationHeaders) ? $record->conjugationHeaders : [];
     $showTitle = (isset($showTitle) && $showTitle);
@@ -26,9 +27,9 @@
     <div class="row">
     @foreach($record->conjugations['tenses'] as $r)
     @if ($loop->index >= 0 && $loop->index < 5)
-    <div class="{{$cols}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+    <div class="{{$cols1}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-verb-conj mt-4">
-            <h5 class="mb-3">{{$headers[$loop->index + 1]}}</h5>
+            <h5 class="mb-3">{{__($headers[$loop->index + 1])}}</h5>
             <table>
             @foreach($r as $key => $value)
                 <tr><td class="{{$tdClass}}"><i>{{$value['pronoun']}}</i></td><td style="width:10px;"></td><td>{{$value['conj']}}</td></tr>
@@ -46,9 +47,9 @@
     <div class="row">
     @foreach($record->conjugations['tenses'] as $r)
     @if ($loop->index >= 5 && $loop->index < 9)
-    <div class="{{$cols}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+    <div class="{{$cols2}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-verb-conj mt-4">
-            <h5 class="mb-3">{{$headers[$loop->index + 1]}}</h5>
+            <h5 class="mb-3">{{__($headers[$loop->index + 1])}}</h5>
             <table>
             @foreach($r as $key => $value)
                 <tr><td class="{{$tdClass}}"><i>{{$value['pronoun']}}</i></td><td style="width:10px;"></td><td>{{$value['conj']}}</td></tr>
@@ -66,9 +67,9 @@
     <div class="row">
     @foreach($record->conjugations['tenses'] as $r)
     @if ($loop->index >= 9)
-    <div class="{{$cols}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
+    <div class="{{$cols2}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-verb-conj mt-4">
-            <h5 class="mb-3">{{$headers[$loop->index + 1]}}</h5>
+            <h5 class="mb-3">{{__($headers[$loop->index + 1])}}</h5>
             <table>
             @foreach($r as $key => $value)
                 <tr><td class="{{$tdClass}}"><i>{{$value['pronoun']}}</i></td><td style="width:10px;"></td><td>{{$value['conj']}}</td></tr>

@@ -23,22 +23,22 @@ class Spanish
     static public $_verbConjugations = [
 
         // indicative
-        'Participles',
-        'Present',
-        'Past',
-        'Past Perfect',
-        'Conditional',
-        'Future',
+        'proj.Participles',
+        'proj.Present',
+        'proj.Preterite',
+        'proj.Imperfect',
+        'proj.Conditional',
+        'proj.Future',
 
         // subjunctive
-        'Present',
-        'Imperfect',
-        'Imperfect 2',
-        'Future',
+        'proj.Present',
+        'proj.Imperfect',
+        'proj.Imperfect 2',
+        'proj.Future',
 
         // imperative
-        'Positive',
-        'Negative',
+        'proj.Positive',
+        'proj.Negative',
     ];
 
 	static public $_lineSplitters = array('Mr.', 'Miss.', 'Sr.', 'Mrs.', 'Ms.', 'St.');

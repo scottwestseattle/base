@@ -13,11 +13,12 @@ use Log;
 use App\Entry;
 use App\Event;
 use App\Home;
+use App\Gen\Article;
+use App\Gen\Definition;
+use App\Gen\Lesson;
 use App\Site;
 use App\Tag;
 use App\User;
-
-use App\Gen\Definition;
 
 define('LOG_CLASS', 'HomeController');
 
@@ -328,4 +329,78 @@ class HomeController extends Controller
 		return $final;
 	}
 
+    public function search(Request $request)
+    {
+		$search = null;
+		$definitions = null;
+		$snippets = null;
+		$entries = null;
+		$lessons = null;
+		$words = null;
+		$wordsUser = null;
+		$isPost = $request->isMethod('post');
+		$count = 0;
+
+		if ($isPost)
+		{
+			// do the search
+
+			$search = alphanum($request->searchText);
+			if (strlen($search) > 1)
+			{
+				try
+				{
+					if ($search != $request->searchText)
+					{
+						throw new \Exception("dangerous search characters");
+					}
+
+					if (true)
+					{
+						$entries = Article::search($search);
+						$count += (isset($entries) ? count($entries) : 0);
+					}
+
+					if (true)
+					{
+						$definitions = Definition::searchDictionary($search);
+						$count += (isset($definitions) ? count($definitions) : 0);
+					}
+
+					if (true)
+					{
+						$snippets = Definition::searchSnippets($search);
+						$count += (isset($snippets) ? count($snippets) : 0);
+					}
+
+					if (false)
+					{
+						$lessons = Lesson::search($search);
+						$count += (isset($lessons) ? count($lessons) : 0);
+					}
+
+					if (false)
+					{
+						//todo: $words = Word::search($search);
+						//todo: $count += (isset($words) ? count($words) : 0);
+					}
+				}
+				catch (\Exception $e)
+				{
+					$msg = 'Search Internal Error';
+					logException('global search', $e->getMessage(), $msg, ['searchCleaned' => $search]);
+				}
+			}
+		}
+
+		return view('home.search', [
+			'lessons' => $lessons,
+			'definitions' => $definitions,
+			'snippets' => $snippets,
+			'entries' => $entries,
+			'isPost' => $isPost,
+			'count' => $count,
+			'search' => $search,
+		]);
+	}
 }

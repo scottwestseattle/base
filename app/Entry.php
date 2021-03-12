@@ -112,26 +112,6 @@ class Entry extends Model
 		return ($this->release_flag);
     }
 
-	static public function getReleaseFlag()
-	{
-		$rc = RELEASEFLAG_PUBLIC;
-
-		if (isAdmin()) // admin sees all
-		{
-			$rc = RELEASEFLAG_NOTSET;
-		}
-		//todo: else if (isPaid()) // paid member
-		//{
-		//	$rc = RELEASEFLAG_PAID;
-		//}
-		else if (Auth::check()) // member logged in_array
-		{
-			$rc = RELEASEFLAG_MEMBER;
-		}
-
-		return $rc;
-	}
-
 	//////////////////////////////////////////////////////////////////
 	// Definitions - many to many
 	//////////////////////////////////////////////////////////////////
@@ -432,7 +412,7 @@ class Entry extends Model
 
         // figure out which ones to show
         $records = [];
-        $userLevel = self::getReleaseFlag(); // get the user's level to see which books can be shown
+        $userLevel = Status::getReleaseFlag(); // get the user's level to see which books can be shown
         foreach($tags as $record)
         {
             foreach($record->books as $r)
@@ -493,7 +473,7 @@ class Entry extends Model
 		$tag = self::getRecentTag();
 
 		// release
-        $releaseFlag = self::getReleaseFlag();
+        $releaseFlag = Status::getReleaseFlag();
         $releaseCondition = '>=';
         if (isset($parms['release']))
         {
@@ -577,5 +557,24 @@ class Entry extends Model
         }
 	}
 
+	static public function search($string)
+	{
+		$string = alphanum($string);
+		$search = '%' . $string . '%';
+
+		$records = $record = Entry::select()
+				->where('entries.site_id', Site::getId())
+				//->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
+				->where('release_flag', '>=', Status::getReleaseFlag())
+				->where(function ($query) use($search) {$query
+					->where('title', 'like', $search)
+					->orWhere('description_short', 'like', $search)
+					->orWhere('description', 'like', $search)
+					;})
+				->orderByRaw('type_flag, title')
+				->get();
+
+		return $records;
+	}
 
 }

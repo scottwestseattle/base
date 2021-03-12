@@ -661,43 +661,59 @@ class Definition extends Model
 	}
 
 	// search checks title and forms
-    static public function searchGeneral($word)
+    static public function searchDictionary($word)
     {
 		$word = alpha($word);
 		$records = null;
 
-		if (!isset($word))
+		if (isset($word))
 		{
-			// show full list
-			return self::getIndex();
+            try
+            {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_DICTIONARY)
+                    ->where(function ($query) use ($word){$query
+                        ->where('title', 'LIKE', $word . '%')
+                        ->orWhere('forms', 'LIKE', '%' . $word . '%')
+                        ->orWhere('conjugations_search', 'LIKE', '%' . $word . '%')
+                        ->orWhere('translation_en', 'LIKE', '%' . $word . '%')
+                        ->orWhere('examples', 'LIKE', '%' . $word . '%')
+                        ;})
+                    ->orderBy('title')
+                    ->get();
+            }
+            catch (\Exception $e)
+            {
+                $msg = 'Error finding word: ' . $word;
+                logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+            }
 		}
 
-		try
-		{
-			$records = Definition::select()
-				->where('deleted_at', null)
-    			->where('type_flag', DEFTYPE_DICTIONARY)
-				->where(function ($query) use ($word){$query
-					->where('title', 'LIKE', $word . '%')
-					->orWhere('forms', 'LIKE', '%' . $word . '%')
-					->orWhere('conjugations_search', 'LIKE', '%' . $word . '%')
-					->orWhere('translation_en', 'LIKE', '%' . $word . '%')
-					;})
-				->orderBy('title')
-				->get();
+		return $records;
+	}
 
-			if (false && !isset($record)) // not yet
-			{
-				$record = self::searchDeeper($word);
-			}
-		}
-		catch (\Exception $e)
-		{
-			$msg = 'Error getting word: ' . $word;
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
-		}
+	// search checks title and forms
+    static public function searchSnippets($word)
+    {
+		$word = alpha($word);
+		$records = null;
 
-		//dd($records);
+		if (isset($word))
+		{
+            try
+            {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('examples', 'LIKE', '%' . $word . '%')
+                    ->orderBy('title')
+                    ->get();
+            }
+            catch (\Exception $e)
+            {
+                $msg = 'Error finding word: ' . $word;
+                logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+            }
+		}
 
 		return $records;
 	}

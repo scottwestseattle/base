@@ -67,6 +67,26 @@ class Status
 		return $rc;
 	}
 
+	static public function getReleaseFlag()
+	{
+		$rc = RELEASEFLAG_PUBLIC;
+
+		if (isAdmin()) // admin sees all
+		{
+			$rc = RELEASEFLAG_NOTSET;
+		}
+		//todo: else if (isPaid()) // paid member
+		//{
+		//	$rc = RELEASEFLAG_PAID;
+		//}
+		else if (Auth::check()) // member logged in_array
+		{
+			$rc = RELEASEFLAG_MEMBER;
+		}
+
+		return $rc;
+	}
+
     static public function getReleaseFlags()
     {
 		return self::$_releaseFlags;

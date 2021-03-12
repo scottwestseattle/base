@@ -27,7 +27,7 @@
 		</a>
 @endauth
 
-		<a class="navbar-item" href="/">
+		<a class="navbar-item" href="/search">
 			<div>
 				<svg class="" width="20" height="20" fill="currentColor" >
 					<use xlink:href="/img/bootstrap-icons.svg#search" />

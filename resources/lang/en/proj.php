@@ -106,4 +106,5 @@ return [
 'Imperfect' => 'Imperfect',
 'Participle' => 'Participle|Participles',
 'Verb not found' => 'Verb not found',
+'Imperfect 2' => 'Imperfect 2',
 ];
