@@ -29,7 +29,7 @@ class EntryController extends Controller
             //'index',
             'view',
             'permalink',
-            'articles', 'viewArticle', 'read',
+            'articles', 'viewArticle', 'read', 'stats',
         ]);
 
 		parent::__construct();

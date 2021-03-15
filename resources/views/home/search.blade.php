@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('proj.Search'))
+@section('title', __('ui.Search'))
 @section('content')
 
 <h1>@LANG('ui.Search'){{$isPost ? ' (' . $count . ')' : ''}}</h1>

@@ -82,21 +82,22 @@
                 </div>
             </div>
 
-            <p>
+        </div>
+
+        <div class="mt-4 small-thin-text">
             @if (strlen($record->source) > 0)
-                <div class="small-thin-text">{{$record->source}}</div>
+                <div class="mb-2">{{$record->source}}</div>
             @endif
 
             @if (strlen($record->source_credit) > 0)
-                <div class="small-thin-text">{{__('ui.Author')}} {{$record->source_credit}}</div>
+                 <div class="mb-2">{{__('ui.Author')}} {{$record->source_credit}}</div>
             @endif
-            </p>
 
             @if (strlen($record->source_link) > 0)
-                <p class="small-thin-text"><a target="_blank" href="{{$record->source_link}}">{{$record->source_link}}</a></p>
+                <div class="mb-2"><a target="_blank" href="{{$record->source_link}}">{{$record->source_link}}</a></div>
             @endif
+        <div>
 
-        </div>
     </div>
 
 	<!------------------------------------>

@@ -138,4 +138,6 @@ return [
 'Dev' => 'Dev',
 'Not Set' => 'Not Set',
 'Not Found' => 'Not Found',
+'Line' => 'Line|Lines',
+'Text Size' => 'Text Size',
 ];

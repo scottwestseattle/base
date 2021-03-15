@@ -1,4 +1,8 @@
 
+$(document).ready(function() {
+    console.log('project.js ready');
+});
+
 var isMobile = {
     Android: function() {
         return navigator.userAgent.match(/Android/i);
@@ -791,7 +795,7 @@ function setFocus(obj, accentsId = null)
 	{
 		$(accentsId).insertBefore(obj);
 		$(accentsId).show();
-		console.log('here');
+		//console.log('here');
 	}
 
 	prevFocus = obj;

@@ -27,13 +27,14 @@ class HomeController extends Controller
 	public function __construct ()
 	{
         $this->middleware('auth')->except([
-			'frontpage',
 			'about',
-			'sitemap',
+			'contact',
+			'frontpage',
 			'mvc',
 			'privacy',
+			'search',
+			'sitemap',
 			'terms',
-			'contact',
 		]);
 
 		parent::__construct();

@@ -13,6 +13,7 @@ use App\Entry;
 use App\Gen\Spanish;
 use App\Site;
 use Auth;
+use Lang;
 
 define('SITE_ID', 0);
 
@@ -73,6 +74,17 @@ class Controller extends BaseController
 		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
 		$lines = array_merge($lines, Spanish::getSentences($record->description));
 
+        $labels = [
+            'start' => Lang::get('proj.Start Reading'),
+            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
+            'continue' => Lang::get('proj.Continue reading from line'),
+            'locationDifferent' => Lang::get('proj.location form a different session'),
+            'line' => Lang::choice('ui.Line', 1),
+            'of' => Lang::get('ui.of'),
+            'readingTime' => Lang::get('proj.Reading Time'),
+        ];
+        //dump($labels);
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $record->title,
@@ -81,6 +93,7 @@ class Controller extends BaseController
 			'readLocation' => Auth::check() ? $readLocation : null,
 			'contentType' => 'Entry',
 			'languageCodes' => getSpeechLanguage($record->language_flag),
+			'labels' => $labels,
 		]);
     }
 }

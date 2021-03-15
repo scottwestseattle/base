@@ -107,4 +107,12 @@ return [
 'Participle' => '分词|分词',
 'Verb not found' => '找不到动词',
 'Imperfect 2' => '不完美2',
+'Positive' => '积极的',
+'Negative' => '消极的',
+'Start reading from the beginning' => '从头开始阅读',
+'Continue reading from line' => '继续在线阅读',
+'location form a different session' => '位置不同的会话',
+'Reading Time' => '阅读时间',
+'Vocabulary list is empty' => '词汇表为空',
+'Definition not found' => '找不到定义',
 ];

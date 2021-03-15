@@ -23,7 +23,7 @@
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
             <td style="width:100%;">
-                <a href="/definitions/view/{{$record->id}}">{{$record->title}}</a>
+                <a href="/definitions/show/{{$record->id}}">{{$record->title}}</a>
                 @if (isset($record->translation_en))
                     <div>{{$record->translation_en}}</div>
                 @else

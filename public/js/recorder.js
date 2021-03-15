@@ -10,6 +10,9 @@ var mainSection = null;
 let audioCtx = null;
 var canvasCtx = null;
 
+$(document).ready(function() {
+    console.log('recorder.js ready');
+});
 
 ///////////////////////////////////////////////////
 // main block for doing the audio recording

@@ -14,11 +14,11 @@
 						@foreach($records as $record)
 						<tr>
 							<td class="hidden-xs" style=""><!-- SM and higher -->
-								<a class="" href="/definitions/view/{{$record->id}}" target="_blank">{{$record->title}}</a>
+								<a class="" href="/definitions/show/{{$record->id}}" target="_blank">{{$record->title}}</a>
 							</td>
 							<td style="padding-top: 2px;"><!-- XS -->
 								<div class="hidden-lg hidden-md hidden-sm">
-									<a href="/definitions/view/{{$record->id}}" target="_blank">{{$record->title}}</a>
+									<a href="/definitions/show/{{$record->id}}" target="_blank">{{$record->title}}</a>
 								</div>
 
 								@if (isset($record->translation_en))
@@ -42,6 +42,6 @@
 		<!-- end of repeat block -->
 	</div>
 	@else
-		<div class="text-center">Vocabulary list is empty</div>
+		<div class="text-center">{{__('proj.Vocabulary list is empty')}}</div>
 	@endif
 </div>

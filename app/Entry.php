@@ -553,7 +553,7 @@ class Entry extends Model
         catch (\Exception $e)
         {
             $msg = 'Error updating count';
-            logException('countView', $e->getMessage(), $msg);
+            logException($msg, $e->getMessage());
         }
 	}
 

@@ -30,6 +30,18 @@
             <a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a>
         </div>
 
+        <hr />
+
+        <div>
+            <h1 class="">{{__('Ajax Links')}}</h1>
+
+            <div class="">
+                <div><a target="_blank" href="/definitions/scrape-definition/tener">Scrape Definition</a></div>
+                <div><a target="_blank" href="/definitions/conjugationsgenajax/tener">Scrape Conjugation</a></div>
+                <div><a target="_blank" href="/definitions/find/tener">Find Word</a></div>
+            </div>
+        </div>
+
         @php
             $emergency = intval($events['emergency']);
             $errors = intval($events['errors']);

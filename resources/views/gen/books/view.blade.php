@@ -42,7 +42,7 @@
         <!-- Stats -->
         <div class="vertical-align">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/books/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphCustom glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="/books/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
             </div>
             <div class="small-text">
                 <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
@@ -81,15 +81,22 @@
                 </div>
             </div>
 
-            @if (strlen(trim($record->source_credit)) > 0)
-                <p class="article-source">{{$record->source_credit}}</p>
-            @endif
-
-            @if (strlen(trim($record->source_link)) > 0)
-                <p class="article-source"><a target="_blank" href="{{$record->source_link}}">{{$record->source_link}}</a></p>
-            @endif
-
         </div>
+
+        <div class="mt-4 small-thin-text">
+            @if (strlen($record->source) > 0)
+                <div class="mb-2">{{$record->source}}</div>
+            @endif
+
+            @if (strlen($record->source_credit) > 0)
+                 <div class="mb-2">{{__('ui.Author')}} {{$record->source_credit}}</div>
+            @endif
+
+            @if (strlen($record->source_link) > 0)
+                <div class="mb-2"><a target="_blank" href="{{$record->source_link}}">{{$record->source_link}}</a></div>
+            @endif
+        <div>
+
     </div>
 
 	<!------------------------------------>

@@ -20,13 +20,13 @@ $iconFolder = App\Site::getIconFolder();
 	<script>window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 	<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 
-    <script src="{{ asset('js/project.js') }}"></script>
-	<!-- qnaBase.js is the base class with all the common logic -->
+    <script src="{{ asset('js/project.js?' . getVersionJs()) }}"></script>
 
+	<!-- qnaBase.js is the base class with all the common logic -->
 	@if (isset($settings['loadJs']))
 		<script src="{{ asset('js/qnaBase.js') }}"></script>
 		<!-- qna*.js is the custom class such as qnaFlashcards, qnaMultipleChoice, etc -->
-		<script src="{{ asset('js/' . $settings['loadJs'] . '') }}"></script>
+		<script src="{{ asset('js/' . $settings['loadJs'] . '?' . getVersionJs()) }}"></script>
 	@else
 		<!-- old way, not plugged in yet -->
 		<script src="{{ asset('js/review.js') }}"></script>

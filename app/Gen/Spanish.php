@@ -224,6 +224,7 @@ class Spanish
 		return $rc;
 	}
 
+    // this is the RAE conjugation format scraper
     static public function cleanConjugationsScraped($raw, $reflexive)
     {
 		$rc['full'] = null;	  // full conjugations
@@ -287,7 +288,6 @@ class Spanish
 						break;
 				}
 			}
-
             //dump($words);
 
 			// put the pre at the beginning
@@ -331,7 +331,9 @@ class Spanish
 				. ';';
 			$conj .= $conjugations[CONJ_PARTICIPLE]; // save the conjugation string
 
+            //
 			// indicative
+			//
 			$factor = 1;
 			inc($factor, 5);
 			$factor = 1;
@@ -357,7 +359,9 @@ class Spanish
 			$index += 15;
 			$conjugations[CONJ_IND_CONDITIONAL] =   ';' . $words[$index] . ';' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * ++$factor)] . ';' . $words[$index + ($offset * ++$factor)] . ';' . $words[$index + ($offset * ++$factor)] . ';';
 
+            //
 			// subjunctive
+			//
 			$offset = 2;
 			$factor = 1;
 			$index += 8;
@@ -370,17 +374,22 @@ class Spanish
 			$index += 15;
 			$factor = 1;
 			$offset = 1;
-			$conjugations[CONJ_SUB_IMPERFECT] = ';' . getWord($words[$index], 1) . ';' . getWord($words[$index + ($offset * $factor++)], 1) . ';' . getWord($words[$index + ($offset * $factor++)], 1) . ';' . getWord($words[$index + ($offset * ++$factor)], 1) . ';' . getWord($words[$index + ($offset * ++$factor)], 1) . ';' . getWord($words[$index + ($offset * ++$factor)], 1) . ';';
+            $delim = [' o ', ' u '];
+            $word = 1;
+			$conjugations[CONJ_SUB_IMPERFECT] = ';' . getWord($words[$index], $word, $delim) . ';' . getWord($words[$index + ($offset * $factor++)], $word, $delim) . ';' . getWord($words[$index + ($offset * $factor++)], $word, $delim) . ';' . getWord($words[$index + ($offset * ++$factor)], $word, $delim) . ';' . getWord($words[$index + ($offset * ++$factor)], $word, $delim) . ';' . getWord($words[$index + ($offset * ++$factor)], $word, $delim) . ';';
 
 			$factor = 1;
 			$offset = 1;
-			$conjugations[CONJ_SUB_IMPERFECT2] = ';' . getWord($words[$index], 3) . ';' . getWord($words[$index + ($offset * $factor++)], 3) . ';' . getWord($words[$index + ($offset * $factor++)], 3) . ';' . getWord($words[$index + ($offset * ++$factor)], 3) . ';' . getWord($words[$index + ($offset * ++$factor)], 3) . ';' . getWord($words[$index + ($offset * ++$factor)], 3) . ';';
+            $word = 2;
+			$conjugations[CONJ_SUB_IMPERFECT2] = ';' . getWord($words[$index], $word, $delim) . ';' . getWord($words[$index + ($offset * $factor++)], $word, $delim) . ';' . getWord($words[$index + ($offset * $factor++)], $word, $delim) . ';' . getWord($words[$index + ($offset * ++$factor)], $word, $delim) . ';' . getWord($words[$index + ($offset * ++$factor)], $word, $delim) . ';' . getWord($words[$index + ($offset * ++$factor)], $word, $delim) . ';';
 
+            //
 			// imperatives
+			//
 			$offset = 1;
 			$index += 8;
 			$factor = 1;
-			$conjugations[CONJ_IMP_AFFIRMATIVE] = ';' . getWord($words[$index], 1) . ';' . $words[$index + ($offset * $factor)] . ';'  . $words[$index + ($offset * $factor++)] . 'mos;' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * $factor++)] . ';';
+			$conjugations[CONJ_IMP_AFFIRMATIVE] = ';' . /*getWord*/($words[$index]) . ';' . $words[$index + ($offset * $factor)] . ';'  . $words[$index + ($offset * $factor++)] . 'mos;' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * $factor++)] . ';';
 
             if (Str::endsWith($words[0], 'ar'))
             {

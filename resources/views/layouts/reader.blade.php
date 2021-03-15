@@ -24,9 +24,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@latest/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js"></script>
 	@endif
 
-    <script src="{{ asset('/js/project.js') }}"></script>
-    <script src="{{ asset('/js/recorder.js') }}"></script>
-	<script src="{{ asset('/js/reader.js') }}"></script>
+    <script src="{{ asset('/js/project.js?' . getVersionJs()) }}"></script>
+    <script src="{{ asset('/js/recorder.js?' . getVersionJs()) }}"></script>
+	<script src="{{ asset('/js/reader.js?' . getVersionJs()) }}"></script>
 
 	<!-- Bootstrap core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">

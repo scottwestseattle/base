@@ -138,4 +138,6 @@ return [
 'Dev' => 'Des',
 'Not Set' => 'No establecido',
 'Not Found' => 'No encontrado',
+'Line' => 'Linea|Lineas',
+'Text Size' => 'Tamaño del texto',
 ];

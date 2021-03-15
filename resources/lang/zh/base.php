@@ -142,4 +142,6 @@ return [
 'Error updating record' => '更新记录时出错',
 'other' => '其他',
 'not set' => '没有设置',
+'Record not found' => '记录不存在',
+'New record has been added' => '新记录已添加',
 ];

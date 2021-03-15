@@ -27,6 +27,8 @@ define('LOG_CLASS', 'DefinitionController');
 class DefinitionController extends Controller
 {
 	private $redirectTo = PREFIX;
+    static private $_showLink = '/definitions/show/';
+    static private $_displayLink = '/dictionary/definition/';
 
 	public function __construct()
 	{
@@ -181,7 +183,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Definition not found'), ['permalink' => $permalink]);
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Definition not found'), ['word' => $word]);
     		return redirect($this->redirectTo);
 		}
 
@@ -204,6 +206,26 @@ class DefinitionController extends Controller
 			'showTitle' => true,
 			]);
     }
+
+	public function find(Request $request, $text)
+    {
+		$record = Definition::search($text);
+		if (isset($record))
+		{
+			// update the view timestamp so it will move to the back of the list
+			//todo: $record->updateLastViewedTime();
+
+    		return $this->view($record);
+		}
+		else
+		{
+			$word = alphanum($text, /* strict = */ true);
+		    $msg = trans('proj.Definition not found') . ': ' . "<a target='_blank' href='https://www.spanishdict.com/translate/" . $word . "'>" . $word . "</a>";
+		    logWarning(null, $msg, ['word' => $word]);
+		    return back();
+		}
+
+	}
 
 	public function view(Definition $definition)
     {
@@ -703,7 +725,6 @@ class DefinitionController extends Controller
 			]);
     }
 
-
     public function wordExistsAjax(Request $request, $text)
     {
 		$rc = '';
@@ -711,7 +732,7 @@ class DefinitionController extends Controller
 		$record = Definition::get($text);
 		if (isset($record))
 		{
-			$rc = "<a href='/definitions/view/" . $record->id . "'>" . $record->title . ": already in dictionary (show)</a>&nbsp;<a href='/definitions/edit/" . $record->id . "'>(edit)</a>";
+			$rc = "<a href='" . self::$_showLink . $record->id . "'>" . $record->title . ": already in dictionary (show)</a>&nbsp;<a href='/definitions/edit/" . $record->id . "'>(edit)</a>";
 		}
 
 		return $rc;
@@ -731,7 +752,7 @@ class DefinitionController extends Controller
 			$xlate = null;
 			if (!isset($record->translation_en))
 			{
-				$rc = "<a target='_blank' href='/definitions/view/$record->id'>$record->title</a>&nbsp;";
+				$rc = "<a target='_blank' href='self::$_displayLink$record->id'>$record->title</a>&nbsp;";
 				if (isAdmin())
 					$rc .= "<a target='_blank' href='/definitions/edit/$record->id'>(edit)</a>";
 
@@ -750,7 +771,7 @@ class DefinitionController extends Controller
 
 				$xlate = nl2br($record->translation_en);
 
-				$rc = "<a target='_blank' href='/definitions/view/$record->id'>$record->title</a><div>$xlate</div>";
+				$rc = "<a target='_blank' href='" . self::$_showLink . $record->id . "'>$record->title</a><div>$xlate</div>";
 			}
 		}
 		else
@@ -782,7 +803,7 @@ class DefinitionController extends Controller
 
 			if (isset($def))
 			{
-				$rc = "<a href='/definitions/view/$def->id/' target='_blank'>$def->title</a><div class='green mt-1'>$translation</div>";
+				$rc = "<a href='" . self::$_showLink . $def->id . "/' target='_blank'>$def->title</a><div class='green mt-1'>$translation</div>";
 			}
 			else
 			{
@@ -1165,26 +1186,5 @@ class DefinitionController extends Controller
 
 		return __('base.' . $msg);
     }
-
-	public function find(Request $request, $text)
-    {
-		$record = Definition::search($text);
-		if (isset($record))
-		{
-			// update the view timestamp so it will move to the back of the list
-			//todo: $record->updateLastViewedTime();
-
-			// format the examples to display as separate sentences
-			$record->examples = splitSentences($record->examples);
-
-			$record->conjugations = Spanish::getConjugationsPretty($record->conjugations);
-		}
-
-		return view(VIEWS . '.view', [
-			'record' => isset($record) ? $record : null,
-			'word' => alphanum($text, true),
-			'favoriteLists' => null,
-			]);
-	}
 
 }

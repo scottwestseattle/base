@@ -26,7 +26,8 @@ class BookController extends Controller
 	public function __construct()
 	{
         $this->middleware('admin')->except([
-            'index', 'view', 'permalink'
+            'index', 'view', 'permalink',
+            'read',
         ]);
 
 		parent::__construct();

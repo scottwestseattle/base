@@ -35,6 +35,8 @@ var _useKeyboard = true;
 
 $(document).ready(function() {
 
+    console.log('reader.js ready');
+
 	var fontSize = localStorage['readFontSize'];
 	if (!fontSize)
 		localStorage['readFontSize'] = _readFontSize;
@@ -59,7 +61,7 @@ $(document).ready(function() {
 	_bottomPanelHeight = $("#bottom-panel").outerHeight(); // needed for scrolling
 	//console.log("bottom panel height: " + _bottomPanelHeight);
 
-    console.log('page load ready');
+    //console.log('page load ready');
     if (typeof loadRecorder === "function") // if function is defined call it
 	    loadRecorder();
 	else
@@ -109,6 +111,14 @@ function deck() {
 	this.contentId 		 = 'contentIdNotSet';	// id of the content being read
 	this.readLocationTag = 'readLocation';		// readLocation session id tag
 	this.readLocationOtherDevice = 0;			// read location from another device for logged in user
+
+	// labels
+	this.labelStart = 'Start not set';
+	this.labelStartBeginning = 'Start beginning not set';
+	this.labelContinue = 'Continue not set';
+    this.labelLocationDifferent = 'Location different not set';
+	this.labelLine = 'Line not set';
+	this.labelOf = 'Of not set';
 
 	this.getId = function(index) {
 		return this.slides[this.slides[index].order].id;
@@ -223,7 +233,7 @@ function deck() {
 
 	this.showSlide = function() {
 	    var slide = deck.slides[curr];
-        $("#slideCount").text((curr+1) + " of " + deck.slides.length);
+        $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + deck.slides.length);
         $(".slideDescription").text(deck.slides[curr].description);
 		$('#selected-word').text('');
 		$('#selected-word-definition').text('');
@@ -325,6 +335,16 @@ function loadData()
         // use keyboard
 		_useKeyboard = parseInt(container.data('usekeyboard'), 10);
 		//console.log('keyboard: ' + _useKeyboard);
+
+		// labels
+		deck.labelStart = container.data('labelstart');
+		deck.labelStartBeginning = container.data('labelstartbeginning');
+		deck.labelContinue = container.data('labelcontinue');
+		deck.labelLocationDifferent = container.data('labellocationdifferent');
+		deck.labelLine = container.data('labelline');
+		deck.labelOf = container.data('labelof');
+		deck.labelReadingTime = container.data('labelreadingtime');
+		//console.log('start: ' + deck.labelStart);
     });
 }
 
@@ -368,10 +388,10 @@ function incLine(e, count)
 	else if (_incLine >= max)
 		_incLine = 0;
 
-	$('#button-start-reading').text("Start reading from the beginning");
-	$('#readCurrLine').text("Line " + (_incLine + 1));
+	$('#button-start-reading').text(deck.labelStartBeginning);//"Start reading from the beginning");
+	$('#readCurrLine').text(deck.labelLine + " " + (_incLine + 1));
 	$('#button-continue-reading').show();
-	$('#button-continue-reading').text("Continue reading from line " + (_incLine + 1));
+	$('#button-continue-reading').text(deck.labelContinue + " " + (_incLine + 1)); //"Continue reading from line "
 
 	curr = _incLine;
 }
@@ -833,7 +853,7 @@ function end()
 	deck.start();
 	$("#pause").show();
 	$("#resume").hide();
-	$('#readCurrLine').text("Line " + (curr + 1));
+	$('#readCurrLine').text(deck.labelLine + " " + (curr + 1));
 	showElapsedTime();
 	clearTimeout(_clockTimerId);
 }
@@ -1008,9 +1028,9 @@ function setFontSize()
 	$("#slideDescription").css("font-size", _readFontSize + "px");
 	$("#slideTitle").css("font-size", _readFontSize + "px");
 
-	$("#readFontSize").css("font-size", _readFontSize + "px");
+	$("#readFontSizeLabel").css("font-size", _readFontSize + "px");
 	$(".glyph-zoom-button").css("font-size", _readFontSize + "px");
-	$("#readFontSize").text("Text Size: " + _readFontSize);
+	$("#readFontSize").text(_readFontSize);
 }
 
 function saveReadLocation(location)
@@ -1019,7 +1039,7 @@ function saveReadLocation(location)
 	if (location == 0)
 	{
 		$('#button-continue-reading').hide();
-		$('#button-start-reading').text("Start Reading");
+		$('#button-start-reading').text(deck.labelStart); //"Start Reading");
 	}
 
     var recordId = parseInt(deck.contentId, 10);
@@ -1037,21 +1057,21 @@ function getReadLocation()
 
 	if (location > 0 && location < max)
 	{
-		$('#button-start-reading').text("Start reading from the beginning");
+		$('#button-start-reading').text(deck.labelStartBeginning); //"Start reading from the beginning"
 		$('#button-continue-reading').show();
-		$('#button-continue-reading').text("Continue reading from line " + (location + 1));
+		$('#button-continue-reading').text(deck.labelContinue + " " + (location + 1));
 	}
 
 	if (multipleLocations && deck.readLocationOtherDevice > 0 && deck.readLocationOtherDevice < max)
 	{
-		$('#button-start-reading').text("Start reading from the beginning");
-		$('#button-continue-reading').html("Continue reading from line " + (location + 1) + ""); // "<br/><span class='small-thin-text'>(location on this device)</span>");
+		$('#button-start-reading').text(deck.labelStartBeginning);
+		$('#button-continue-reading').html(deck.labelContinue + " " + (location + 1) + ""); // "<br/><span class='small-thin-text'>(location on this device)</span>");
 
 		$('#button-continue-reading-other').show();
-		$('#button-continue-reading-other').html("Continue reading from line " + (deck.readLocationOtherDevice + 1) + "<br/><span class='small-thin-text'>(location from a different session)</span>");
+		$('#button-continue-reading-other').html(deck.labelContinue + " " + (deck.readLocationOtherDevice + 1) + "<br/><span class='small-thin-text'>(" + deck.labelLocationDifferent + ")</span>");
 	}
 
-	$('#readCurrLine').text("Line " + (curr + 1));
+	$('#readCurrLine').text(deck.labelLine + " " + (curr + 1));
 	//debug("getReadLocation: " + location, _debug);
 }
 
@@ -1086,7 +1106,7 @@ function startClock()
 function showElapsedTime()
 {
 	var time = getElapsedTime();
-	$('#elapsedTime').text("Reading Time: " + time);
+	$('#elapsedTime').text(deck.labelReadingTime + ": " + time);
 	$('#clock').text(time);
 
 	clearTimeout(_clockTimerId);

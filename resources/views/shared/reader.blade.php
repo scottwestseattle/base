@@ -23,6 +23,13 @@
 	data-userid="{{Auth::id()}}"
 	data-readlocation="{{$readLocation}}"
 	data-useKeyboard="1"
+	data-labelstart="{{$labels['start']}}"
+	data-labelstartbeginning="{{$labels['startBeginning']}}"
+	data-labelcontinue="{{$labels['continue']}}"
+	data-labellocationdifferent="{{$labels['locationDifferent']}}"
+	data-labelline="{{$labels['line']}}"
+	data-labelof="{{$labels['of']}}"
+	data-labelreadingtime="{{$labels['readingTime']}}"
 ></div>
 
 	<!-------------------------------------------------------->
@@ -77,11 +84,11 @@
 		<div id="panel-start" class="slide-panel">
 
 			<div class="text-center">
-				<div class="small-thin-text">{{$count}} lines</div>
+				<div class="small-thin-text">{{$count}} {{strtolower(trans_choice('ui.Line', 2))}}</div>
 				<div id="slideTitle" style="font-size:18px" class="mb-2">{{$title}}</div>
-				<a onclick="event.preventDefault(); run()"  href="" class="btn btn-primary mb-3"  id="button-start-reading" role="button">Start Reading</a>
-				<div><a onclick="event.preventDefault(); runContinue()"  href="" class="btn btn-success mb-3" id="button-continue-reading" style="display:none;" role="button">Continue reading from line</a></div>
-				<div><a onclick="event.preventDefault(); runContinueOther()"  href="" class="btn btn-warning mb-3" id="button-continue-reading-other" style="display:none;" role="button">Continue reading from location on other device</a></div>
+				<a onclick="event.preventDefault(); run()"  href="" class="btn btn-primary mb-3"  id="button-start-reading" role="button">{{__('proj.Start Reading')}}</a>
+				<div><a onclick="event.preventDefault(); runContinue()"  href="" class="btn btn-success mb-3" id="button-continue-reading" style="display:none;" role="button">{{__('proj.Continue reading from line')}}</a></div>
+				<div><a onclick="event.preventDefault(); runContinueOther()"  href="" class="btn btn-warning mb-3" id="button-continue-reading-other" style="display:none;" role="button">{{__('proj.Continue reading from location on other device')}}</a></div>
 				<div>
 					<a onclick="incLine(event, -50)" href=""><span id="button-decrement-line" class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
 					<div id="readCurrLine" class="middle large-text mb-2" style="min-width:85px;">Line </div>
@@ -139,7 +146,7 @@
 
 			<div class="">
 				<div class="middle mr-1"><a onclick="zoom(event, -3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-out glyph-zoom-button"></span></a></div>
-				<div class="middle" id="readFontSize">Font Size: 18</div>
+				<div class="middle" id="readFontSizeLabel">{{__('ui.Text Size')}}: <span id="readFontSize">18</span></div>
 				<div class="middle ml-3"><a onclick="zoom(event, 3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-in glyph-zoom-button"></span></a></div>
 			</div>
 		</div>

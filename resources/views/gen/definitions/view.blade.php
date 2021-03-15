@@ -36,7 +36,14 @@
 		@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 		<h3>
 			<div class="middle">
-				<div class="float-left">{{$record->title}}@component('components.badge', ['text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent</div>
+				<div class="float-left">
+				    {{$record->title}}
+				    @component('components.badge', ['text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent
+				</div>
+			    <div class="ml-3 small-thin-text middle"><a target='_blank' href="https://dle.rae.es/{{$record->title}}">RAE</a></div>
+			    @if (isAdmin())
+			    <div class="ml-2 small-thin-text middle"><a target='_blank' href="https://www.spanishdict.com/translate/{{$record->title}}">SpanishDict</a></div>
+			    @endif
                 <div class="small-thin-text">{{__(strtolower($record->getPos()))}}</div>
 			</div>
 

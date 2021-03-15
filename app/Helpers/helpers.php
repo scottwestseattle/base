@@ -687,14 +687,30 @@ if (!function_exists('getSentences')) {
 }
 
 if (!function_exists('getWord')) {
-	function getWord($string, $index)
+	function getWord($string, $index, $delim = ' ')
 	{
 	    $string = trim($string);
 	    $rc = null;
 
         if (isset($string))
         {
-            $s = explode(' ', $string);
+            $s = null;
+            if (is_array($delim))
+            {
+                foreach($delim as $d)
+                {
+                    if (strpos($string, $d) != FALSE)
+                    {
+                        $s = explode($d, $string);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                $s = explode($delim, $string);
+            }
+
             if (isset($s) && count($s) >= $index)
             {
                 $rc = $s[$index - 1];
@@ -802,5 +818,12 @@ if (!function_exists('inc')) {
         $value += $amount;
 
 		return $value;
+	}
+}
+
+if (!function_exists('getVersionJs')) {
+    function getVersionJs()
+    {
+		return '1.0';
 	}
 }

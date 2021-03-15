@@ -107,4 +107,12 @@ return [
 'Participle' => 'Participle|Participles',
 'Verb not found' => 'Verb not found',
 'Imperfect 2' => 'Imperfect 2',
+'Positive' => 'Positive',
+'Negative' => 'Negative',
+'Start reading from the beginning' => 'Start reading from the beginning',
+'Continue reading from line' => 'Continue reading from line',
+'location form a different session' => 'location form a different session',
+'Reading Time' => 'Reading Time',
+'Vocabulary list is empty' => 'Vocabulary list is empty',
+'Definition not found' => 'Definition not found',
 ];

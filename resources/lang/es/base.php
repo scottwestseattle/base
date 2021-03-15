@@ -142,4 +142,6 @@ return [
 'Error updating record' => 'Error al actualizar el registro',
 'other' => 'otro',
 'not set' => 'no establecido',
+'Record not found' => 'Registro no encontrado',
+'New record has been added' => 'Se ha agregado un nuevo registro',
 ];
