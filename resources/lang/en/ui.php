@@ -140,4 +140,5 @@ return [
 'Not Found' => 'Not Found',
 'Line' => 'Line|Lines',
 'Text Size' => 'Text Size',
+'or' => 'or',
 ];

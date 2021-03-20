@@ -115,4 +115,12 @@ return [
 'Reading Time' => 'Reading Time',
 'Vocabulary list is empty' => 'Vocabulary list is empty',
 'Definition not found' => 'Definition not found',
+'total words' => ':count total words',
+'unique words' => ':count unique words',
+'Most Common Words' => 'Most Common Words',
+'Possible Verbs' => 'Possible Verbs',
+'Alphabetical Order' => 'Alphabetical Order',
+'Most Commonly Used' => 'Most Commonly Used',
+'Text has invalid characters' => 'Text has invalid characters',
+'Register to create lists' => 'Register to create lists',
 ];

@@ -144,4 +144,5 @@ return [
 'not set' => '没有设置',
 'Record not found' => '记录不存在',
 'New record has been added' => '新记录已添加',
+'Add List' => '新增清单',
 ];

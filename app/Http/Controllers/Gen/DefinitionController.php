@@ -38,7 +38,7 @@ class DefinitionController extends Controller
             'snippets', 'createSnippet', 'readSnippets',
 
             // copied
-			'find', 'search', 'list',
+			'find', 'search', 'list-tag',
 			'conjugationsGen', 'conjugationsGenAjax', 'conjugationsComponentAjax', 'verbs',
 			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax',	'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
@@ -471,7 +471,7 @@ class DefinitionController extends Controller
             if (strlen($snippet) != strlen($raw))
             {
                 $msg = __("proj.$tag has invalid characters");
-    			logError(__FUNCTION__, $msg);
+    			logError(__FUNCTION__, $msg, ['snippet' => $snippet, 'raw' => $raw]);
 		        throw new \Exception($msg); // nope!
             }
 
@@ -1025,8 +1025,26 @@ class DefinitionController extends Controller
 
     public function reviewNewest(Request $request, $reviewType = null)
     {
-		$reviewType = intval($reviewType);
-		$records = Definition::getNewest(20);
+        $records = Definition::getNewest(20);
+        return $this->doList('proj.20 Newest Words', $reviewType, $records);
+    }
+
+    public function doList($name, $reviewType, $records)
+    {
+        $reviewType = alphanum($reviewType);
+//dump($reviewType);
+        if (Quiz::isQuiz($reviewType))
+        {
+            return $this->doReview($records, $reviewType);
+        }
+        else
+        {
+            return $this->list(trans($name), $records);
+        }
+    }
+
+    public function doReview($records, $reviewType)
+    {
 		$qna = Definition::makeQna($records); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 
@@ -1040,82 +1058,39 @@ class DefinitionController extends Controller
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
 			]);
+    }
+
+    private function list($name, $records)
+    {
+		return view(VIEWS . '.list', [
+		    'name' => $name,
+			'records' => $records,
+		]);
     }
 
     public function reviewRankedVerbs(Request $request, $reviewType = null)
     {
-		$reviewType = intval($reviewType);
-		$records = Definition::getRankedVerbs(20);
-		$qna = Definition::makeQna($records); // splits text into questions and answers
-		$settings = Quiz::getSettings($reviewType);
-
-		return view($settings['view'], [
-			'sentenceCount' => count($qna),
-			'records' => $qna,
-			'canEdit' => true,
-			'isMc' => true,
-			'returnPath' => '/favorites',
-			'touchPath' => '',
-			'parentTitle' => 'Title Note Used',
-			'settings' => $settings,
-			]);
+    //dd($_SERVER);
+        $records = Definition::getRankedVerbs(20);
+        return $this->doList('proj.20 Most Common Verbs', $reviewType, $records);
     }
 
     public function reviewNewestVerbs(Request $request, $reviewType = null)
     {
-		$reviewType = intval($reviewType);
 		$records = Definition::getNewestVerbs(20);
-		$qna = Definition::makeQna($records); // splits text into questions and answers
-		$settings = Quiz::getSettings($reviewType);
-
-		return view($settings['view'], [
-			'sentenceCount' => count($qna),
-			'records' => $qna,
-			'canEdit' => true,
-			'isMc' => true,
-			'returnPath' => '/favorites',
-			'touchPath' => '',
-			'parentTitle' => 'Title Note Used',
-			'settings' => $settings,
-			]);
+        return $this->doList('proj.20 Newest Verbs', $reviewType, $records);
     }
 
     public function reviewRandomWords(Request $request, $reviewType = null)
     {
-		$reviewType = intval($reviewType);
 		$records = Definition::getRandomWords(20);
-		$qna = Definition::makeQna($records); // splits text into questions and answers
-		$settings = Quiz::getSettings($reviewType);
-
-		return view($settings['view'], [
-			'sentenceCount' => count($qna),
-			'records' => $qna,
-			'canEdit' => true,
-			'isMc' => true,
-			'returnPath' => '/favorites',
-			'touchPath' => '',
-			'parentTitle' => 'Title Note Used',
-			'settings' => $settings,
-			]);
+        return $this->doList('proj.20 Random Words', $reviewType, $records);
     }
 
 	public function reviewRandomVerbs(Request $request, $reviewType = null)
     {
-		$reviewType = intval($reviewType);
 		$records = Definition::getRandomVerbs(20);
-		$qna = Definition::makeQna($records); // splits text into questions and answers
-		$settings = Quiz::getSettings($reviewType);
-
-		return view($settings['view'], [
-			'sentenceCount' => count($qna),
-			'records' => $qna,
-			'canEdit' => true,
-			'isMc' => true,
-			'returnPath' => '/favorites',
-			'touchPath' => '',
-			'parentTitle' => 'Title Note Used',
-			'settings' => $settings,
-			]);
+        return $this->doList('proj.20 Random Verbs', $reviewType, $records);
     }
 
     public function getRandomWordAjax(Request $request)
@@ -1127,7 +1102,7 @@ class DefinitionController extends Controller
 			]);
 	}
 
-    public function list(Request $request, Tag $tag)
+    public function listTag(Request $request, Tag $tag)
     {
 		$records = []; // make this countable so view will always work
 		try

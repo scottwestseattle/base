@@ -86,6 +86,25 @@ class Entry extends Model
 		return($this->type_flag == ENTRY_TYPE_BOOK);
 	}
 
+	public function isArticle()
+	{
+		return($this->type_flag == ENTRY_TYPE_ARTICLE);
+	}
+
+	public function getViewLink()
+	{
+	    $rc = '';
+
+	    if ($this->isArticle())
+		    $rc = '/articles/view/' . $this->permalink;
+	    else if ($this->isBook())
+		    $rc = '/books/view/' . $this->id;
+        else
+		    $rc = '/entries/view/' . $this->id;
+
+		return $rc;
+	}
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Release status

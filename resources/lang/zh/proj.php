@@ -115,4 +115,12 @@ return [
 'Reading Time' => '阅读时间',
 'Vocabulary list is empty' => '词汇表为空',
 'Definition not found' => '找不到定义',
+'total words' => '总共:count个字',
+'unique words' => ':count个独特的词',
+'Most Common Words' => '最常见的词',
+'Possible Verbs' => '可能的动词',
+'Alphabetical Order' => '按字母顺序',
+'Most Commonly Used' => '最常用的',
+'Text has invalid characters' => '文字包含无效字符',
+'Register to create lists' => '注册以创建列表',
 ];

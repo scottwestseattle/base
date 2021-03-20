@@ -8,33 +8,33 @@
 	<div class="mb-5">
 
 		@if (isset($record))
-			<h2 name="title" class="">{{$record->title}}</h2>
+   			<h2 name="title" class=""><a href="{{$record->getViewLink()}}">{{$record->title}}</a></h2>
 		@endif
 
 		@if (isset($articleCount))
 		<h3><b>{{$articleCount}}</b> articles</h3>
 		@endif
 
-		<h3><b>{{$stats['wordCount']}}</b> total words</h3>
-		<h3><b>{{$stats['uniqueCount']}}</b> unique words</h3>
+		<h4>{{__('proj.total words', ['count' => $stats['wordCount']])}}</h4>
+		<h4>{{__('proj.unique words', ['count' => $stats['uniqueCount']])}}</h4>
 
 		<div>
 
 		@if ($stats['uniqueCount'] <= 300)
 
-			<h3>Most Commonly Used</h3>
+			<h3 class="mt-3">{{__('proj.Most Commonly Used')}}</h3>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
 			@endforeach
 
-			<h3>Alphabetical Order</h3>
+			<h3 class="mt-3">{{__('proj.Alphabetical Order')}}</h3>
 			@foreach($stats['sortAlpha'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
 			@endforeach
 
 		@elseif (isset($articleCount))
 
-			<h3>Most Common Words</h3>
+			<h3 class="mt-3">{{__('proj.Most Common Words')}}</h3>
 			<?php $i = 0; $max = 500; ?>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
@@ -42,7 +42,7 @@
 			@endforeach
 
 			<?php $i = 0; ?>
-			<h3>Alphabetical Order</h3>
+			<h3 class="mt-3">{{__('proj.Alphabetical Order')}}</h3>
 			@foreach($stats['sortAlpha'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
 				<?php if ($i++ > $max) break; ?>
@@ -50,7 +50,7 @@
 
 		@else
 
-			<h3>Most Common Words</h3>
+			<h3 class="mt-3">{{__('proj.Most Common Words')}}</h3>
 			<?php $i = 0; $max = 200; ?>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
@@ -59,17 +59,19 @@
 
 		@endif
 
-		<h3>Possible Verbs ({{$possibleVerbs}})</h3>
+        <div class="mt-3">
+            <h3>{{__('proj.Possible Verbs')}} ({{$possibleVerbs}})</h3>
 
-		@foreach($stats['sortCount'] as $key => $value)
-			@if (Str::endsWith($key, ['ar', 'er', 'ir']))
-@if (false)
-			<div><a href="/definitions/find/{{$key}}">{{$key}}</a></div>
-@else
-			<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>&nbsp;<span class="" style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
-@endif
-			@endif
-		@endforeach
+            @foreach($stats['sortCount'] as $key => $value)
+                @if (Str::endsWith($key, ['ar', 'er', 'ir']))
+    @if (false)
+                <div><a href="/definitions/find/{{$key}}">{{$key}}</a></div>
+    @else
+                <span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>&nbsp;<span class="" style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
+    @endif
+                @endif
+            @endforeach
+        </div>
 
 		</div>
 

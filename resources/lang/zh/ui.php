@@ -140,4 +140,5 @@ return [
 'Not Found' => '未找到',
 'Line' => '线|线',
 'Text Size' => '字体大小',
+'or' => '或者',
 ];

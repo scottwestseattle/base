@@ -140,4 +140,5 @@ return [
 'Not Found' => 'No encontrado',
 'Line' => 'Linea|Lineas',
 'Text Size' => 'Tamaño del texto',
+'or' => 'o',
 ];

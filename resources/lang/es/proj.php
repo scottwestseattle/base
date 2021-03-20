@@ -115,4 +115,12 @@ return [
 'Reading Time' => 'Tiempo de leer',
 'Vocabulary list is empty' => 'La lista de vocabulario está vacía',
 'Definition not found' => 'Definición no encontrada',
+'total words' => ':count palabras en total',
+'unique words' => ':count palabras únicas',
+'Most Common Words' => 'Palabras más comunes',
+'Possible Verbs' => 'Posibles verbos',
+'Alphabetical Order' => 'Orden alfabetico',
+'Most Commonly Used' => 'Más comúnmente utilizado',
+'Text has invalid characters' => 'El texto tiene caracteres no válidos',
+'Register to create lists' => 'Regístrese para crear listas',
 ];

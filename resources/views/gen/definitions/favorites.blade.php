@@ -15,12 +15,12 @@
     <div class="col-sm-12 col-lg-6 col-xl-4">
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title">@LANG('proj.20 Most Common Verbs')</h5>
+                <h5 class="card-title"><a href="/definitions/review-top-20-verbs">@LANG('proj.20 Most Common Verbs')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/1">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
                 </p>
@@ -31,12 +31,12 @@
     <div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title">@LANG('proj.20 Newest Words')</h5>
+                <h5 class="card-title"><a href="/definitions/review-newest">@LANG('proj.20 Newest Words')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/1">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
                 </p>
@@ -47,12 +47,12 @@
     <div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title">@LANG('proj.20 Newest Verbs')</h5>
+                <h5 class="card-title"><a href="/definitions/review-newest-verbs">@LANG('proj.20 Newest Verbs')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/1">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
                 </p>
@@ -63,12 +63,12 @@
     <div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title">@LANG('proj.20 Random Words')</h5>
+                <h5 class="card-title"><a href="/definitions/review-random-words">@LANG('proj.20 Random Words')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/1">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
                 </p>
@@ -79,12 +79,12 @@
     <div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title">@LANG('proj.20 Random Verbs')</h5>
+                <h5 class="card-title"><a href="/definitions/review-random-verbs">@LANG('proj.20 Random Verbs')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/1">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
                 </p>
@@ -114,7 +114,7 @@
     <div class="mb-3 mr-0">
         <div class="card-body drop-box-ghost">
             <h5 class="card-title">
-                <a href="/definitions/list/{{$record->id}}">{{$record->name}}</a>@component('components.badge', ['text' => $record->wc])@endcomponent
+                <a href="/definitions/list-tag/{{$record->id}}">{{$record->name}}</a>@component('components.badge', ['text' => $record->wc])@endcomponent
             </h5>
             <p class="card-text">
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">
@@ -132,7 +132,7 @@
     @if (Auth::check())
         <div class="medium-thin-text mb-5 ml-3">@LANG('proj.No lists')</div>
     @else
-        <div class="medium-thin-text mb-5 ml-3"><a href="/login">@LANG('ui.Login')</a> @LANG('ui.or') <a href="/register">@LANG('ui.Register')</a> @LANG('proj.to create lists')</div>
+        <div class="medium-thin-text mb-5 ml-3"><a href="/login">@LANG('ui.Login')</a> @LANG('ui.or') <a href="/register">@LANG('proj.Register to create lists')</a></div>
     @endif
 @endif
 @endif

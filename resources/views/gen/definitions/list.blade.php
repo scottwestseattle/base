@@ -1,3 +1,6 @@
+@php
+    $name = isset($name) ? $name : (isset($tag) ? $tag->name : 'name not set');
+@endphp
 @extends('layouts.app')
 @section('title', trans_choice('ui.List', 2))
 @section('menu-submenu')@component('tags.menu-submenu')@endcomponent @endsection
@@ -7,22 +10,31 @@
     <a class="btn btn-success btn-sm btn-nav-top" role="button" href="/favorites">
         @LANG('proj.Back to Lists')<span class="glyphicon glyphicon-button-back-to"></span>
     </a>
+    @if (isset($tag))
     <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
         @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
     </a>
     <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}/1">
         @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
     </a>
+    @else
+    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/quiz">
+        @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
+    </a>
+    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/flashcards">
+        @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
+    </a>
+    @endif
 </div>
 
-<h3 name="" class="" style="margin-bottom:10px;">{{$tag->name}}@component('components.badge', ['text' => count($records)])@endcomponent</h3>
+<h3 name="" class="" style="margin-bottom:10px;">{{$name}}@component('components.badge', ['text' => count($records)])@endcomponent</h3>
 <div id="removeStatus"></div>
 
 <table style="width:100%;" class="table xtable-striped">
     <tbody>
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
-            <td style="width:100%;">
+            <td style="">
                 <a href="/definitions/show/{{$record->id}}">{{$record->title}}</a>
                 @if (isset($record->translation_en))
                     <div>{{$record->translation_en}}</div>
@@ -31,9 +43,12 @@
                 @endif
             </td>
 
-            <td>{{$record->updated_at}}</td>
+            @if (isAdmin())
+            <td class="small-thin-text" style="width:100px;">{{$record->updated_at}}</td>
+            @endif
 
-            @if (count($lists) > 1)
+            @if (isset($tag))
+            @if (false && count($lists) > 1)
             <td class="icon mr-2">
                 <div class="dropdown" >
                     <!-- removed 'dropdown-toggle' class to remove the down arrow graphic -->
@@ -63,6 +78,7 @@
                     </ul>
                 </div>
             </td>
+            @endif
 
         </tr>
     @endforeach

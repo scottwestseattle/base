@@ -13,8 +13,8 @@
         <p>{{ipAddress()}}</p>
         <p>Hash: {{getVisitorInfo()['hash']}}</p>
     	<p>{{__('ui.Locale')}}: {{App::getLocale()}}</p>
+    	<p>Snippet:&nbsp;{{Cookie::get('snippetId')}}</p>
 	@endif
-	<p><strong>Snippet:&nbsp;</strong>{{Cookie::get('snippetId')}}</p>
 @endif
 
 	<p><strong>{{__('base.Info')}}</strong>: {{Config::get('constants.email.info')}}</p>

@@ -474,7 +474,7 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
-	Route::get('/list/{tag}', [DefinitionController::class, 'list']);
+	Route::get('/list-tag/{tag}', [DefinitionController::class, 'listTag']);
 	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);
 	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review']);
 	Route::get('/review-newest/{reviewType?}', [DefinitionController::class, 'reviewNewest']);
