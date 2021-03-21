@@ -85,7 +85,10 @@ class HomeController extends Controller
         if ($siteLanguage == LANGUAGE_ALL)
             $options = self::getOptionsLanguage($options);
         else
+        {
+            // get articles, banner and other options according to the language
             $options = self::getOptions($options, $siteLanguage);
+        }
 
         //
         // get the snippets for the appropriate langauge
@@ -113,6 +116,7 @@ class HomeController extends Controller
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
         $options['loadSpeechModules'] = true; // this loads js and css
+        // dump($options);
 
 		return view($view, [
 		    'options' => $options,
@@ -174,6 +178,11 @@ class HomeController extends Controller
                     $options['potd'] = $record->examples;
                 }
             }
+
+            //
+            // get random words
+            //
+            $options['randomWords'] = Definition::getRandomWords(5);
         }
 
 		//

@@ -229,7 +229,7 @@ class Quiz
 	    return (self::getReviewTypeFlag($reviewType) > REVIEWTYPE_NOTSET);
     }
 
-    // reviewType can either be a string or an int of
+    // reviewType can either be a string or an int of type REVIEWTYPE_*
 	static public function getSettings($reviewType)
 	{
 		$loadJs = 'qnaReview.js';

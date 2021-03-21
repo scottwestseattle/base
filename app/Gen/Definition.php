@@ -343,7 +343,7 @@ class Definition extends Model
 		$records = self::getIndex(DEFINITIONS_SEARCH_RANDOM_WORDS);
 
 		// get random indexes
-		$random = self::getRandomIndexes(20, count($records));
+		$random = self::getRandomIndexes($limit, count($records));
 		$recs = [];
 
 		// copy words using random indexes
@@ -359,7 +359,7 @@ class Definition extends Model
 		$records = self::getIndex(DEFINITIONS_SEARCH_RANDOM_VERBS);
 
 		// get random indexes
-		$random = self::getRandomIndexes(20, count($records));
+		$random = self::getRandomIndexes($limit, count($records));
 		$recs = [];
 
 		// copy words using random indexes

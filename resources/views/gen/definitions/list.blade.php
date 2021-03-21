@@ -30,12 +30,12 @@
 <h3 name="" class="" style="margin-bottom:10px;">{{$name}}@component('components.badge', ['text' => count($records)])@endcomponent</h3>
 <div id="removeStatus"></div>
 
-<table style="width:100%;" class="table xtable-striped">
+<table style="width:100%;" class="table">
     <tbody>
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
             <td style="">
-                <a href="/definitions/show/{{$record->id}}">{{$record->title}}</a>
+                <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
                 @if (isset($record->translation_en))
                     <div>{{$record->translation_en}}</div>
                 @else

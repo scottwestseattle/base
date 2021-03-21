@@ -966,15 +966,19 @@ class DefinitionController extends Controller
             }
             else
             {
-                $rc = 'not favorited: update failed';
+                $rc = 'proj.not favorited: update failed';
             }
         }
         else
         {
-			$rc = 'favorite not saved - you must log in';
+			$rc = 'proj.Favorite not saved - you must log in';
         }
 
         logInfo('heartAjax', $rc, null, ['title' => $record->title, 'id' => $record->id]);
+
+        if (strlen($rc) > 0)
+            $rc = __($rc);
+
 		return $rc;
     }
 
@@ -1032,7 +1036,7 @@ class DefinitionController extends Controller
     public function doList($name, $reviewType, $records)
     {
         $reviewType = alphanum($reviewType);
-//dump($reviewType);
+
         if (Quiz::isQuiz($reviewType))
         {
             return $this->doReview($records, $reviewType);

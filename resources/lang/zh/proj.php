@@ -123,4 +123,6 @@ return [
 'Most Commonly Used' => '最常用的',
 'Text has invalid characters' => '文字包含无效字符',
 'Register to create lists' => '注册以创建列表',
+'Favorite not saved - you must log in' => '收藏夹未保存-您必须登录',
+'Random Words' => '随机词',
 ];

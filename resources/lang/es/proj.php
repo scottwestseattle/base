@@ -123,4 +123,6 @@ return [
 'Most Commonly Used' => 'Más comúnmente utilizado',
 'Text has invalid characters' => 'El texto tiene caracteres no válidos',
 'Register to create lists' => 'Regístrese para crear listas',
+'Favorite not saved - you must log in' => 'Favorito no guardado - debe iniciar sesión',
+'Random Words' => 'Palabras aleatorias',
 ];

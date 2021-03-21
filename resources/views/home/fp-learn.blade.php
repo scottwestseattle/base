@@ -14,6 +14,7 @@
     $articles = isset($options['articles']) ? $options['articles'] : null;
     $wotd = isset($options['wotd']) ? $options['wotd'] : null;
     $potd = isset($options['potd']) ? $options['potd'] : null;
+    $randomWords = isset($options['randomWords']) ? $options['randomWords'] : null;
 @endphp
 
 <!--------------------------------------------------------------------------------------->
@@ -218,6 +219,48 @@
 @if ($showTabs)
 <div style="display:none" id="tab-tab2">
     @component('shared.articles', ['records' => $options['articlesPrivate'], 'release' => 'private'])@endcomponent
+</div>
+@endif
+
+<!--------------------------------------------------------------------------------------->
+<!-- RANDOM WORDS -->
+<!--------------------------------------------------------------------------------------->
+
+
+
+@if (isset($randomWords))
+<h3>{{__('proj.Random Words')}} ({{count($randomWords)}})</h3>
+<div class="text-center mt-2" style="">
+    <div style="display: inline-block; width:100%">
+        <table style="width:100%;">
+        @foreach($randomWords as $record)
+        <tr class="drop-box-ghost-small" style="vertical-align:middle;">
+            <td style="color:default; text-align:left; padding:5px 10px;">
+                <table>
+                <tbody>
+                    <tr>
+                        <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
+                            <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
+                            @if (isset($record->definition))
+                                <div><span class="medium-thin-text"><i>{{trans_choice('proj.Definition', 1)}}:</i></span> {{$record->definition}}</div>
+                            @endif
+
+                            @if (isset($record->translation_en))
+                                <div><span class="medium-thin-text"><i>{{__('base.English')}}:</i></span> {{$record->translation_en}}</div>
+                            @else
+                                <div>{{$record->examples}}</div>
+                            @endif
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr style="" class=""><td colspan="2"><div style="height:15px;">&nbsp;</div></td></tr>
+        @endforeach
+        </table>
+        <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/dictionary">@LANG('proj.Dictionary')</a></div>
+    </div>
 </div>
 @endif
 
