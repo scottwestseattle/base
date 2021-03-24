@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Auth;
+use DB;
 use Config;
 use Log;
 
+use App\Entry;
 use App\Site;
 use App\Status;
 use App\Tools;
@@ -24,7 +26,12 @@ class SiteController extends Controller
 
 	public function __construct ()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except([
+            'index',
+            'view',
+            'permalink',
+            'sitemap',
+        ]);
 
 		parent::__construct();
 	}
@@ -40,7 +47,7 @@ class SiteController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
 		}
 
 		return view(VIEWS . '.index', [
@@ -68,11 +75,11 @@ class SiteController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.New record has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error adding new record'));
 			return back();
 		}
 
@@ -140,16 +147,16 @@ class SiteController extends Controller
 			try
 			{
 				$record->save();
-				logInfo(LOG_CLASS, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
+				logInfo(LOG_CLASS, __('base.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e)
 			{
-				logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
+				logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record'), ['record_id' => $record->id]);
 			}
 		}
 		else
 		{
-			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
 		return redirect('/' . PREFIX . '/view/' . $record->id);
@@ -171,11 +178,11 @@ class SiteController extends Controller
 		try
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -193,11 +200,11 @@ class SiteController extends Controller
 				->first();
 
 			$record->restore();
-			logInfo(LOG_CLASS, __('msgs.Record has been undeleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record has been undeleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error undeleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error undeleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -216,7 +223,7 @@ class SiteController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting deleted records'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting deleted records'));
 		}
 
 		return view(VIEWS . '.deleted', [
@@ -254,15 +261,227 @@ class SiteController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, __('msgs.Record status has been updated'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record status has been updated'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}
 
 		return redirect($this->redirectTo);
     }
+
+
+	public function sitemapTRAVEL(Request $request)
+	{
+		return view('home.sitemap');
+	}
+
+    public function sitemap(Request $request)
+    {
+		$sites = [
+			['https://', 'espdaily.com'],
+//			['http://', 'english50.com'],
+		];
+
+		$siteMaps = [];
+
+		foreach($sites as $site)
+		{
+			$siteMap = $this->makeSiteMap($site);
+
+			if (isset($siteMap))
+				$siteMaps[] = $siteMap;
+		}
+
+        $view = isAdmin() ? 'sitemap-admin' : 'sitemap';
+
+		return view('sites.' . $view, [
+			'siteMaps' => $siteMaps,
+			//'records' => $siteMap['sitemap'],
+			//'server' => $siteMap['server'],
+			//'filename' => $siteMap['filename'],
+			'executed' => null,
+			'sitemap' => true,
+		]);
+	}
+
+    protected function makeSiteMap($sites)
+    {
+    	$http = $sites[0];
+    	$domainName = $sites[1];
+
+		$filename = 'sitemap-' . $domainName . '.txt';
+
+		$urls = [
+			'/',
+			'/login',
+			'/about',
+		];
+
+		$site = Site::site($domainName);
+
+		if (!isset($site->id))
+		{
+			$siteMap['sitemap'] = null; // no records
+			$siteMap['server'] = $domainName;
+			$siteMap['filename'] = $filename;
+
+			return $siteMap;
+		}
+
+		if (true)
+		{
+			$urls[] = '/articles';
+			$urls = array_merge($urls, self::getSiteMapEntries(ENTRY_TYPE_ARTICLE, 'articles/view'));
+		}
+
+		if (false)
+		{
+		    $prefix = 'practice';
+			$urls[] = '/' . $prefix;
+			$urls = array_merge($urls, self::getSiteMapDefinitions(DEFTYPE_SNIPPET, $prefix));
+		}
+
+		if (false)
+		{
+			//$urls[] = '/definitions';
+			//$urls = array_merge($urls, self::getSiteMapEntries());
+		}
+
+		if (false)
+		{
+			$urls[] = '/comments';
+		}
+
+		if (isset($urls))
+		{
+			// write the sitemap file
+			$siteMap = [];
+
+			$server = $domainName;
+
+            try
+            {
+                $myFile = null;
+                if (isAdmin())
+                {
+                    // file name looks like: sitemap-domain.com.txt
+                    $myfile = fopen($filename, "w") or die("Unable to open file!");
+                }
+
+                $server = $http . $server;
+
+                foreach($urls as $url)
+                {
+                    $line = $server . $url;
+                    $siteMap[] = $line;
+
+                    if (isset($myFile))
+                        fwrite($myfile, utf8_encode($line . PHP_EOL));
+                }
+
+                if (isset($myFile))
+                    fclose($myfile);
+            }
+            catch (\Exception $e)
+            {
+                logException(LOG_CLASS, $e->getMessage(), __('base.Error writing sitemap file'));
+            }
+		}
+
+		$rc = [];
+		$rc['sitemap'] = $siteMap;
+		$rc['filename'] = $filename;
+		$rc['server'] = $server;
+
+		return $rc;
+	}
+
+    protected function getSiteMapEntries($type_flag, $prefix)
+    {
+		$urls = [];
+
+        $siteLanguage = Site::getLanguage();
+
+        $records = Entry::select()
+            ->where('type_flag', $type_flag)
+            ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+            ->where('language_flag', $siteLanguage['condition'], $siteLanguage['id'])
+            ->get();
+
+		if (isset($records))
+		{
+			foreach($records as $record)
+			{
+			    $urls[] = '/' . $prefix . '/' . $record->permalink;
+			}
+		}
+
+		return $urls;
+	}
+
+    protected function getSiteMapSliders()
+    {
+		$urls = [];
+
+		$q = '
+			SELECT *
+			FROM photos
+			WHERE 1=1
+				AND site_id = ?
+				AND deleted_flag = 0
+				AND parent_id = 0
+			ORDER by id DESC
+		';
+
+		$records = DB::select($q, [SITE_ID]);
+
+		if (isset($records))
+		{
+			foreach($records as $record)
+			{
+				//$urls[] = '/photos/view/' . $record->id;
+
+				$record = Photo::setPermalink($record);
+				$urls[] = '/photos/' . $record->permalink . '/' . $record->id;
+			}
+		}
+
+		return $urls;
+	}
+
+    protected function getSiteMapPhotos()
+    {
+		$urls = [];
+
+		$q = '
+SELECT entries.id, photos.filename, photos.id FROM entries
+LEFT JOIN photos
+	ON photos.parent_id = entries.id AND photos.deleted_flag = 0
+			WHERE 1=1
+				AND entries.site_id = 1
+				AND entries.deleted_flag = 0
+				AND entries.type_flag = 8
+                AND entries.published_flag = 1
+                And entries.approved_flag = 1
+                AND photos.gallery_flag = 1
+			ORDER by entries.id ASC;
+		';
+
+		$records = DB::select($q, [SITE_ID]);
+
+		if (isset($records))
+		{
+			foreach($records as $record)
+			{
+				$record = Photo::setPermalink($record);
+				$urls[] = '/photos/' . $record->permalink . '/' . $record->id;
+			}
+		}
+
+		return $urls;
+	}
 
 }

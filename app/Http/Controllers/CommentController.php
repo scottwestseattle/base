@@ -40,7 +40,7 @@ class CommentController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
 		}
 
 		return view(VIEWS . '.index', [
@@ -65,11 +65,11 @@ class CommentController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.New record has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error adding new record'));
 			return back();
 		}
 
@@ -134,16 +134,16 @@ class CommentController extends Controller
 			try
 			{
 				$record->save();
-				logInfo(LOG_CLASS, __('msgs.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
+				logInfo(LOG_CLASS, __('base.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e)
 			{
-				logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record'), ['record_id' => $record->id]);
+				logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record'), ['record_id' => $record->id]);
 			}
 		}
 		else
 		{
-			logInfo(LOG_CLASS, __('msgs.No changes made'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
 		return redirect('/' . PREFIX . '/view/' . $record->id);
@@ -165,11 +165,11 @@ class CommentController extends Controller
 		try
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -187,11 +187,11 @@ class CommentController extends Controller
 				->first();
 
 			$record->restore();
-			logInfo(LOG_CLASS, __('msgs.Record has been undeleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record has been undeleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error undeleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error undeleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -210,7 +210,7 @@ class CommentController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting deleted records'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting deleted records'));
 		}
 
 		return view(VIEWS . '.deleted', [
@@ -248,11 +248,11 @@ class CommentController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, __('msgs.Record status has been updated'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record status has been updated'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}
 

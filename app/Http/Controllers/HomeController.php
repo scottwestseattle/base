@@ -33,7 +33,6 @@ class HomeController extends Controller
 			'mvc',
 			'privacy',
 			'search',
-			'sitemap',
 			'terms',
 		]);
 
@@ -73,7 +72,7 @@ class HomeController extends Controller
 		catch (\Exception $e)
 		{
     	    $dn = domainName();
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $dn]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error loading site'), ['domain' => $dn]);
 		}
 
         $options['loadSpeechModules'] = false; // this loads js and css
@@ -206,7 +205,7 @@ class HomeController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting articles'));
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error getting articles'));
 		}
 
         return $options;
@@ -224,11 +223,6 @@ class HomeController extends Controller
 	public function about(Request $request)
 	{
 		return view('home.about');
-	}
-
-	public function sitemap(Request $request)
-	{
-		return view('home.sitemap');
 	}
 
 	public function privacy(Request $request)

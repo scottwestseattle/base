@@ -122,7 +122,7 @@ class BookController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Book not found'), ['permalink' => $permalink]);
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Book not found'), ['permalink' => $permalink]);
     		return redirect($this->redirectTo);
 		}
 

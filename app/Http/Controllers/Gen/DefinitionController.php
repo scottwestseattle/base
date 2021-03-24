@@ -65,7 +65,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('msgs.Error getting record list'));
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting record list'));
 		}
 
 		return view(VIEWS . '.index', [
@@ -362,11 +362,11 @@ class DefinitionController extends Controller
 		try
 		{
 			$record->delete();
-			logInfo($f, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
+			logInfo($f, __('base.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException($f, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
+			logException($f, $e->getMessage(), __('base.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -385,11 +385,11 @@ class DefinitionController extends Controller
 				->first();
 
 			$record->restore();
-			logInfo($f, __('msgs.Record has been undeleted'), ['record_id' => $record->id]);
+			logInfo($f, __('base.Record has been undeleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException($f, $e->getMessage(), __('msgs.Error undeleting record'), ['record_id' => $record->id]);
+			logException($f, $e->getMessage(), __('base.Error undeleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -408,7 +408,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('msgs.Error getting deleted records'));
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting deleted records'));
 		}
 
 		return view(VIEWS . '.deleted', [
@@ -447,11 +447,11 @@ class DefinitionController extends Controller
 		try
 		{
 			$record->save();
-			logInfo($f, __('msgs.Record status has been updated'), ['record_id' => $record->id]);
+			logInfo($f, __('base.Record status has been updated'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException($f, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
+			logException($f, $e->getMessage(), __('base.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -1115,7 +1115,7 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('msgs.Error getting list'));
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting list'));
 		}
 
 		return view(VIEWS . '.list', [

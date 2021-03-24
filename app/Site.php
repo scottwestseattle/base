@@ -77,12 +77,13 @@ class Site extends Model
         return self::site()->id;
     }
 
-    static public function get()
+    static public function get($domain = null)
     {
 	    //
 	    // Get the site info for the current domain
 	    //
-	    $domain = domainName();
+	    if (!isset($domain))
+	        $domain = domainName();
 
 		try
 		{
@@ -95,7 +96,7 @@ class Site extends Model
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error loading site'), ['domain' => $domain]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error loading site'), ['domain' => $domain]);
 		}
 
 		return $record;

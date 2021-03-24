@@ -12,6 +12,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MvcController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 
@@ -48,13 +49,13 @@ Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'ro
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/language/{locale}', [Controller::class, 'language']);
-Route::get('/sitemap', [HomeController::class, 'sitemap']);
 Route::get('/about', [HomeController::class, 'about']);
 Route::get('/terms', [HomeController::class, 'terms']);
 Route::get('/privacy', [HomeController::class, 'privacy']);
 Route::get('/contact', [HomeController::class, 'contact']);
 Route::get('/hash', [HomeController::class, 'hash']);
 Route::post('/hash', [HomeController::class, 'hash']);
+Route::get('/sitemap', [SiteController::class, 'sitemap']);
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -276,7 +277,6 @@ Route::group(['prefix' => 'entries'], function () {
 });
 
 // GENERATED for Site model
-use App\Http\Controllers\SiteController;
 
 // Sites
 Route::group(['prefix' => 'sites'], function () {

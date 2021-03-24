@@ -478,7 +478,7 @@ class Entry extends Model
 		}
 		catch (\Exception $e)
 		{
-			logException(__FUNCTION__, $e->getMessage(), __('msgs.Error getting articles'));
+			logException(__FUNCTION__, $e->getMessage(), __('proj.Error getting articles'));
 		}
 
         return $records;

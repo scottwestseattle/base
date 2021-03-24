@@ -52,7 +52,7 @@ class TranslationController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error with translation folder'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error with translation folder'));
 		}
 
 		try
@@ -207,7 +207,7 @@ class TranslationController extends Controller
 		$this->save('zh', $filename, $array[2]);
 
 		Log::info('Translations updated', ['id' => Auth::id()]);
-		flash('success', __('msgs.Translation file has been updated'));
+		flash('success', __('base.Translation file has been updated'));
 
 		return redirect('/translations');
     }
@@ -239,7 +239,7 @@ class TranslationController extends Controller
 		catch (\Exception $e)
 		{
 			//Event::logException(LOG_CLASS, LOG_ACTION_EDIT, 'Error accessing translation file: ' . $path, null, $e->getMessage());
-            $msg = __('msgs.Error accessing translation file');
+            $msg = __('base.Error accessing translation file');
 			logException(LOG_CLASS, $e->getMessage(), $msg . ': ' . $path);
             flash('danger', $msg);
 

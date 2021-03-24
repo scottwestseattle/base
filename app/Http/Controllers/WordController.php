@@ -48,7 +48,7 @@ class WordController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting record list'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
 		}
 
 		return view(VIEWS . '.index', [
@@ -75,11 +75,11 @@ class WordController extends Controller
 		{
 			$record->save();
 
-			logInfo(LOG_CLASS, __('msgs.New record has been added'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.New record has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error adding new record'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error adding new record'));
 			return back();
 		}
 

@@ -56,7 +56,7 @@ class ArticleController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting articles'));
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error getting articles'));
 		}
 
 
@@ -85,7 +85,7 @@ class ArticleController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Article not found'), ['permalink' => $permalink]);
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Article not found'), ['permalink' => $permalink]);
     		return redirect($this->redirectTo);
 		}
 
@@ -259,11 +259,11 @@ class ArticleController extends Controller
 		try
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, __('msgs.Record has been deleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('proj.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error deleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -281,11 +281,11 @@ class ArticleController extends Controller
 				->first();
 
 			$record->restore();
-			logInfo(LOG_CLASS, __('msgs.Record has been undeleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('proj.Record has been undeleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error undeleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error undeleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 
@@ -304,7 +304,7 @@ class ArticleController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error getting deleted records'));
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error getting deleted records'));
 		}
 
 		return view(VIEWS . '.deleted', [
@@ -342,11 +342,11 @@ class ArticleController extends Controller
 		try
 		{
 			$record->save();
-			logInfo(LOG_CLASS, __('msgs.Record status has been updated'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('proj.Record status has been updated'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('msgs.Error updating record status'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error updating record status'), ['record_id' => $record->id]);
 			return back();
 		}
 
