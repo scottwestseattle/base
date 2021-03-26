@@ -186,18 +186,28 @@ if (!function_exists('logWarning')) {
 }
 
 if (!function_exists('domainName')) {
-	function domainName()
+	function domainName($full = false)
 	{
 		$v = null;
 
-		if (array_key_exists("SERVER_NAME", $_SERVER))
-		{
-			$v = strtolower($_SERVER["SERVER_NAME"]);
+        if ($full)
+        {
+            if (array_key_exists("APP_URL", $_SERVER))
+            {
+                $v = strtolower($_SERVER["APP_URL"]);
+            }
+        }
+        else
+        {
+            if (array_key_exists("SERVER_NAME", $_SERVER))
+            {
+                $v = strtolower($_SERVER["SERVER_NAME"]);
 
-			// trim the duba duba duba
-			if (Str::startsWith($v, 'www.'))
-				$v = substr($v, 4);
-		}
+                // trim the duba duba duba
+                if (Str::startsWith($v, 'www.'))
+                    $v = substr($v, 4);
+            }
+        }
 
 		return $v;
 	}
@@ -714,6 +724,55 @@ if (!function_exists('getWord')) {
             if (isset($s) && count($s) >= $index)
             {
                 $rc = $s[$index - 1];
+            }
+        }
+
+        return $rc;
+    }
+}
+
+if (!function_exists('getWords')) {
+	function getWords($string, $count, $delim = ' ')
+	{
+	    $string = trim($string);
+	    $rc = null;
+
+        if (isset($string))
+        {
+            $s = null;
+            if (is_array($delim))
+            {
+                foreach($delim as $d)
+                {
+                    if (strpos($string, $d) != FALSE)
+                    {
+                        $s = explode($d, $string);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                $s = explode($delim, $string);
+            }
+
+            if (isset($s))
+            {
+                if (count($s) >= $count)
+                {
+                    // return $count words
+                    for($i = 0; $i < $count; $i++)
+                    {
+                        $rc .= $s[$i] . ' ';
+                    }
+
+                    $rc = trim($rc);
+                }
+                else
+                {
+                    // return all the words
+                    $rc = $string;
+                }
             }
         }
 

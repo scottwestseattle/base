@@ -11,6 +11,7 @@ use Config;
 use Log;
 
 use App\Entry;
+use App\Gen\Definition;
 use App\Site;
 use App\Status;
 use App\Tools;
@@ -280,10 +281,18 @@ class SiteController extends Controller
 
     public function sitemap(Request $request)
     {
-		$sites = [
-			['https://', 'espdaily.com'],
-//			['http://', 'english50.com'],
-		];
+        if (domainName() != 'localhost')
+        {
+            $sites = [
+                ['https://', 'espdaily.com'],
+    		];
+        }
+        else
+        {
+            $sites = [
+    			['http://', 'localhost'],
+    		];
+        }
 
 		$siteMaps = [];
 
@@ -318,6 +327,9 @@ class SiteController extends Controller
 			'/',
 			'/login',
 			'/about',
+			'/dictionary',
+			'/favorites',
+			'/books',
 		];
 
 		$site = Site::site($domainName);
@@ -331,20 +343,25 @@ class SiteController extends Controller
 			return $siteMap;
 		}
 
-		if (true)
+		if (true) // articles
 		{
 			$urls[] = '/articles';
 			$urls = array_merge($urls, self::getSiteMapEntries(ENTRY_TYPE_ARTICLE, 'articles/view'));
 		}
 
-		if (false)
+		if (false) // snippets
 		{
-		    $prefix = 'practice';
-			$urls[] = '/' . $prefix;
-			$urls = array_merge($urls, self::getSiteMapDefinitions(DEFTYPE_SNIPPET, $prefix));
+			$urls[] = '/practice';
+			$urls = array_merge($urls, self::getSiteMapDefinitions(DEFTYPE_SNIPPET, 'practice/view'));
 		}
 
-		if (false)
+		if (true) // dictionary
+		{
+			$urls[] = '/dictionary';
+			$urls = array_merge($urls, self::getSiteMapDefinitions(DEFTYPE_DICTIONARY, 'definitions/view'));
+		}
+
+		if (false) // favorites
 		{
 			//$urls[] = '/definitions';
 			//$urls = array_merge($urls, self::getSiteMapEntries());
@@ -399,14 +416,14 @@ class SiteController extends Controller
 		return $rc;
 	}
 
-    protected function getSiteMapEntries($type_flag, $prefix)
+    protected function getSiteMapEntries($type, $prefix)
     {
 		$urls = [];
 
         $siteLanguage = Site::getLanguage();
 
         $records = Entry::select()
-            ->where('type_flag', $type_flag)
+            ->where('type_flag', $type)
             ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
             ->where('language_flag', $siteLanguage['condition'], $siteLanguage['id'])
             ->get();
@@ -422,62 +439,25 @@ class SiteController extends Controller
 		return $urls;
 	}
 
-    protected function getSiteMapSliders()
+    protected function getSiteMapDefinitions($type, $prefix)
     {
 		$urls = [];
 
-		$q = '
-			SELECT *
-			FROM photos
-			WHERE 1=1
-				AND site_id = ?
-				AND deleted_flag = 0
-				AND parent_id = 0
-			ORDER by id DESC
-		';
+        $siteLanguage = Site::getLanguage();
 
-		$records = DB::select($q, [SITE_ID]);
+        $records = Definition::select()
+            ->where('type_flag', $type)
+            ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+            ->where('language_flag', $siteLanguage['condition'], $siteLanguage['id'])
+            ->orderByRaw('title ' . COLLATE_ACCENTS . ' ASC')
+            ->get();
 
 		if (isset($records))
 		{
 			foreach($records as $record)
 			{
-				//$urls[] = '/photos/view/' . $record->id;
-
-				$record = Photo::setPermalink($record);
-				$urls[] = '/photos/' . $record->permalink . '/' . $record->id;
-			}
-		}
-
-		return $urls;
-	}
-
-    protected function getSiteMapPhotos()
-    {
-		$urls = [];
-
-		$q = '
-SELECT entries.id, photos.filename, photos.id FROM entries
-LEFT JOIN photos
-	ON photos.parent_id = entries.id AND photos.deleted_flag = 0
-			WHERE 1=1
-				AND entries.site_id = 1
-				AND entries.deleted_flag = 0
-				AND entries.type_flag = 8
-                AND entries.published_flag = 1
-                And entries.approved_flag = 1
-                AND photos.gallery_flag = 1
-			ORDER by entries.id ASC;
-		';
-
-		$records = DB::select($q, [SITE_ID]);
-
-		if (isset($records))
-		{
-			foreach($records as $record)
-			{
-				$record = Photo::setPermalink($record);
-				$urls[] = '/photos/' . $record->permalink . '/' . $record->id;
+				$urls[] = '/' . $prefix . '/' . $record->permalink;
+				//dd($record);
 			}
 		}
 

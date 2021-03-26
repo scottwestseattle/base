@@ -28,6 +28,8 @@ define('DEFINITIONS_POS_PHRASE',        50);
 define('DEFINITIONS_POS_SNIPPET',       51);
 define('DEFINITIONS_POS_OTHER',         60);
 
+define('COLLATE_ACCENTS', 'COLLATE utf8mb4_unicode_ci');
+
 class Definition extends Model
 {
 	use SoftDeletes;
@@ -265,6 +267,29 @@ class Definition extends Model
 		{
 			$msg = 'Error getting record';
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg, ['value' => $value]);
+		}
+
+		return $record;
+	}
+
+    static public function getPermalink($permalink)
+    {
+		$permalink = alphanum($permalink, /* strict = */ true);
+		$record = null;
+
+		try
+		{
+			$record = Definition::select()
+				->where('permalink', $permalink)
+				->first();
+
+			//dd($record);
+		}
+		catch (\Exception $e)
+		{
+			//dd($e);
+			$msg = 'Error getting record: ' . $permalink;
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg, ['permalink' => $permalink]);
 		}
 
 		return $record;

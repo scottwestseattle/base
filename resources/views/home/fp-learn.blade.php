@@ -226,8 +226,6 @@
 <!-- RANDOM WORDS -->
 <!--------------------------------------------------------------------------------------->
 
-
-
 @if (isset($randomWords))
 <h3>{{__('proj.Random Words')}} ({{count($randomWords)}})</h3>
 <div class="text-center mt-2" style="">
@@ -244,11 +242,11 @@
                             @if (isset($record->definition))
                                 <div><span class="medium-thin-text"><i>{{trans_choice('proj.Definition', 1)}}:</i></span> {{$record->definition}}</div>
                             @endif
-
                             @if (isset($record->translation_en))
                                 <div><span class="medium-thin-text"><i>{{__('base.English')}}:</i></span> {{$record->translation_en}}</div>
-                            @else
-                                <div>{{$record->examples}}</div>
+                            @endif
+                            @if (isset($record->examples))
+                                <div><span class="medium-thin-text"><i>{{trans_choice('proj.Example', 1)}}:</i></span> {{getSentences($record->examples, 1)}}</div>
                             @endif
                         </td>
                     </tr>

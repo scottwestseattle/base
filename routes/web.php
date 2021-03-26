@@ -424,6 +424,7 @@ use App\Http\Controllers\Gen\DefinitionController;
 
 Route::get('/dictionary', [DefinitionController::class, 'search']);
 Route::get('/practice/{id?}', [DefinitionController::class, 'snippets']);
+Route::get('/practice/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
 Route::get('/favorites', [DefinitionController::class, 'favorites']);
 
 // Dictionary

@@ -35,7 +35,7 @@ class DefinitionController extends Controller
         $this->middleware('admin')->except([
             //'index',
             'view', 'permalink',
-            'snippets', 'createSnippet', 'readSnippets',
+            'snippets', 'createSnippet', 'readSnippets', 'viewSnippet',
 
             // copied
 			'find', 'search', 'list-tag',
@@ -286,10 +286,14 @@ class DefinitionController extends Controller
 		$parent = null;
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
+		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
+		$type = (Str::startsWith($record->title, 'snippet')) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+
 		if ($isDirty)
 		{
 		    // only make new permalink if title changes
-		    $record->permalink = copyDirty($record->permalink, createPermalink($request->title), $isDirty, $changes);
+		    $permalink = ($type == DEFTYPE_SNIPPET) ? getWords($record->examples, DEF_PERMALINK_WORDS) : $record->title;
+		    $record->permalink = copyDirty($record->permalink, createPermalink($permalink), $isDirty, $changes);
 		}
 
         // one time call to fix all records
@@ -304,7 +308,6 @@ class DefinitionController extends Controller
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
 
-		$type = (Str::startsWith($record->title, 'snippet')) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
 		$record->type_flag = copyDirty($record->type_flag, $type, $isDirty, $changes);
 
 		try
@@ -489,12 +492,15 @@ class DefinitionController extends Controller
             {
                 $record = new Definition();
                 $record->title 			= 'snippet-' . timestamp();
-                $record->permalink		= createPermalink('snippet');
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
                 $record->release_flag   = RELEASEFLAG_PUBLIC;
                 $record->examples	    = Str::limit($snippet, 500);
                 $record->visitor_id     = getVisitorInfo()['hash'];
+
+                // make the permalink from the example text since the title says 'snippet-'
+                $text = getWords($record->examples, DEF_PERMALINK_WORDS); // only use the first X words
+                $record->permalink		= createPermalink($text);
             }
 
             $record->language_flag  = $request->language_flag;
@@ -530,6 +536,20 @@ class DefinitionController extends Controller
 	static public function setSnippetCookie($id)
     {
         Cookie::queue('snippetId', intval($id), MS_YEAR);
+    }
+
+	public function viewSnippet($permalink)
+    {
+		$permalink = alphanum($permalink, /* strict = */ true);
+		$record = Definition::getPermalink($permalink);
+		if (isset($record))
+		{
+		    return $this->snippets($record->id);
+        }
+        else
+        {
+            return back();
+        }
     }
 
 	public function snippets($id = null)

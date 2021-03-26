@@ -45,6 +45,7 @@ define('DEFTYPE_USER',          100);
 define('DEFTYPE_OTHER',         200);
 
 define('DEF_HASH_LENGTH',        50);
+define('DEF_PERMALINK_WORDS',     6);
 
 define('DEFINITIONS_SEARCH_NOTSET', 0);
 define('DEFINITIONS_SEARCH_ALPHA', 1);
