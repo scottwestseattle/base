@@ -141,4 +141,6 @@ return [
 'Line' => '线|线',
 'Text Size' => '字体大小',
 'or' => '或者',
+'URL' => '网址',
+'Front Page' => '首页',
 ];

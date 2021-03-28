@@ -240,7 +240,7 @@
                         <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
                             <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
                             @if (isset($record->definition))
-                                <div><span class="medium-thin-text"><i>{{trans_choice('proj.Definition', 1)}}:</i></span> {{$record->definition}}</div>
+                                <div><span class="medium-thin-text"><i>{{trans_choice('proj.Definition', 1)}}:</i></span> {{getSentences($record->definition, 1)}}</div>
                             @endif
                             @if (isset($record->translation_en))
                                 <div><span class="medium-thin-text"><i>{{__('base.English')}}:</i></span> {{$record->translation_en}}</div>

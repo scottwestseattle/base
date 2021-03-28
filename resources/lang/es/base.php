@@ -145,4 +145,5 @@ return [
 'Record not found' => 'Registro no encontrado',
 'New record has been added' => 'Se ha agregado un nuevo registro',
 'Add List' => 'Agregar Lista',
+'Edit Site' => 'Editar sitio',
 ];

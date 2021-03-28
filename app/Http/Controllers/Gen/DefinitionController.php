@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Auth;
 use Config;
 use Cookie;
+use Lang;
 use Log;
 
 use App\Entry;
@@ -604,12 +605,23 @@ class DefinitionController extends Controller
 
         $options['return'] = '/practice';
 
+        $labels = [
+            'start' => Lang::get('proj.Start Reading'),
+            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
+            'continue' => Lang::get('proj.Continue reading from line'),
+            'locationDifferent' => Lang::get('proj.location form a different session'),
+            'line' => Lang::choice('ui.Line', 1),
+            'of' => Lang::get('ui.of'),
+            'readingTime' => Lang::get('proj.Reading Time'),
+        ];
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => 'Practice Text',
     	    'options' => $options,
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
+			'labels' => $labels,
 		]);
     }
 

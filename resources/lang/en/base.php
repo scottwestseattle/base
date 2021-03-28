@@ -145,4 +145,5 @@ return [
 'Record not found' => 'Record not found',
 'New record has been added' => 'New record has been added',
 'Add List' => 'Add List',
+'Edit Site' => 'Edit Site',
 ];

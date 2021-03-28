@@ -141,4 +141,6 @@ return [
 'Line' => 'Linea|Lineas',
 'Text Size' => 'Tamaño del texto',
 'or' => 'o',
+'URL' => 'URL',
+'Front Page' => 'Página principal',
 ];
