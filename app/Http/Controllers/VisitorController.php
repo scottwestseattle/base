@@ -32,15 +32,18 @@ class VisitorController extends Controller
     public function index(Request $request)
     {
 		$records = [];
-        $releaseFlag = Status::getReleaseFlagForUserLevel();
-        $releaseFlagCondition = Status::getConditionForUserLevel();
+        $count = 0;
 
 		try
 		{
 			$records = Visitor::select()
-				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				//->where('robot_flag', 0)
 				->orderByRaw('id DESC')
+				->limit(100)
 				->get();
+
+			$count = Visitor::select()
+				->count();
 		}
 		catch (\Exception $e)
 		{
@@ -49,6 +52,7 @@ class VisitorController extends Controller
 
 		return view(VIEWS . '.index', [
 			'records' => $records,
+			'count' => $count,
 		]);
     }
 

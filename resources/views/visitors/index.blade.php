@@ -3,7 +3,7 @@
 @section('menu-submenu')@component('visitors.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{trans_choice('ui.Visitor', 2)}} ({{count($records)}})</h1>
+	<h1>{{trans_choice('ui.Visitor', 2)}} ({{count($records)}} {{__('ui.of')}} {{$count}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>
