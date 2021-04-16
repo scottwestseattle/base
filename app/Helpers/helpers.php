@@ -697,7 +697,7 @@ if (!function_exists('getSentences')) {
 }
 
 if (!function_exists('getWord')) {
-	function getWord($string, $index, $delim = ' ')
+	function getWord($string, $index = 1, $delim = ' ')
 	{
 	    $string = trim($string);
 	    $rc = null;

@@ -340,7 +340,7 @@ class Spanish
 
             $neg = 1; // this is the negative adjument needed after removing the duplicates.
 			//                                            tengo: 3               tienes: 3 + (2 * 1) = 5                        tiene: 3 + (2 * 2) = 7                         tenemos: 3 + (2 * 4) = 11                      teneis: 3 + (2 * 5) = 13                       tienen: 3 + (2 * 6) = 15
-			$conjugations[CONJ_IND_PRESENT] =       ';' . $words[$index] . ';' . getWord($words[$index + ($offset * $factor++)], 1) . ';' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * ++$factor)] . ';' . $words[$index + ($offset * ++$factor)] . ';' . $words[$index + ($offset * ++$factor)] . ';';
+			$conjugations[CONJ_IND_PRESENT] =       ';' . getWord($words[$index]) . ';' . getWord($words[$index + ($offset * $factor++)]) . ';' . getWord($words[$index + ($offset * $factor++)]) . ';' . getWord($words[$index + ($offset * ++$factor)]) . ';' . getWord($words[$index + ($offset * ++$factor)]) . ';' . getWord($words[$index + ($offset * ++$factor)]) . ';';
 
 			$factor = 1;
 			$index++;
@@ -365,7 +365,13 @@ class Spanish
 			$offset = 2;
 			$factor = 1;
 			$index += 8;
-			$conjugations[CONJ_SUB_PRESENT] = ';' . $words[$index] . ';' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * ++$factor)] . ';' . $words[$index + ($offset * ++$factor)] . ';' . $words[$index + ($offset * ++$factor)] . ';';
+			// save for imperative negative below
+			$subj1 = getWord($words[$index + ($offset * $factor++)]);
+			$subj2 = getWord($words[$index + ($offset * $factor++)]);
+			$subj3 = getWord($words[$index + ($offset * ++$factor)]);
+			$subj4 = getWord($words[$index + ($offset * ++$factor)]);
+			$subj5 = getWord($words[$index + ($offset * ++$factor)]);
+			$conjugations[CONJ_SUB_PRESENT] = ';' . getWord($words[$index]) . ';' . $subj1 . ';' . $subj2 . ';' . $subj3 . ';' . $subj4 . ';' . $subj5 . ';';
 
 			$factor = 1;
 			$index++;
@@ -389,22 +395,13 @@ class Spanish
 			$offset = 1;
 			$index += 8;
 			$factor = 1;
-			$conjugations[CONJ_IMP_AFFIRMATIVE] = ';' . /*getWord*/($words[$index]) . ';' . $words[$index + ($offset * $factor)] . ';'  . $words[$index + ($offset * $factor++)] . 'mos;' . $words[$index + ($offset * $factor++)] . ';' . $words[$index + ($offset * $factor++)] . ';';
+			$conjugations[CONJ_IMP_AFFIRMATIVE] = ';' . getWord($words[$index], 1) . ';' . getWord($words[$index + ($offset * $factor)]) . ';'  . getWord($words[$index + ($offset * $factor++)]) . 'mos;' . getWord($words[$index + ($offset * $factor++)]) . ';' . getWord($words[$index + ($offset * $factor++)]) . ';';
 
-            if (Str::endsWith($words[0], 'ar'))
-            {
-                $is = 'éis';
-                $s = 'es';
-            }
-            else
-            {
-                $is = 'áis';
-                $s = 'as';
-            }
 
-			$factor = 1;
-			$affirmRoot = self::getVerbRoot($words[0], $words[$index + ($offset * $factor)]);
-			$conjugations[CONJ_IMP_NEGATIVE] = ';no ' . $affirmRoot . $s . ';no ' . $words[$index + ($offset * $factor)] . ';no ' . $words[$index + ($offset * $factor++)]. 'mos;no ' . $affirmRoot . $is . ';no ' . $words[$index + ($offset * ++$factor)] . ';';
+            // imperative negative: just add 'no' to subjunctive present
+			$conjugations[CONJ_IMP_NEGATIVE] = ';no ' . $subj1 . ';no ' . $subj2 . ';no ' . $subj3 . ';no ' . $subj4 . ';no ' . $subj5 . ';';
+
+            //dd($conjugations);
 
 			$conj .= '|' . $conjugations[CONJ_IND_PRESENT]; // save the conjugation string
 			$conj .= '|' . $conjugations[CONJ_IND_PRETERITE]; // save the conjugation string
