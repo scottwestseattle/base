@@ -192,6 +192,10 @@ class EntryController extends Controller
 			try
 			{
 				$record->save();
+
+                // set up the book tag (if it's a book).  has to be done after the entry is created and has an id
+                $record->updateBookTag();
+
 				logInfo(LOG_CLASS, __('base.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e)

@@ -28,4 +28,70 @@ class Book extends Model
     {
 		return ($this->release_flag);
     }
+
+    static protected function getBook($entry)
+	{
+	    $record = null;
+
+		if (isset($entry))
+		{
+            foreach($entry->tags as $tag)
+            {
+                if ($tag->type_flag == TAG_TYPE_BOOK)
+                {
+                    $record = $tag;
+                }
+            }
+        }
+
+        return $record;
+    }
+
+    static protected function getNextChapter($entry, $next = true)
+	{
+		$record = null;
+		if (isset($entry) && isset($entry->display_date))
+		{
+            foreach($entry->tags as $tag)
+            {
+                if ($tag->type_flag == TAG_TYPE_BOOK)
+                {
+                    $found = false;
+                    $prev = null;
+                    foreach($tag->books as $chapter)
+                    {
+                        if ($found)
+                        {
+                            // looking for next, return this chapter
+                            $record = $chapter;
+
+                            break;
+                        }
+
+                        // stop on the next loop
+                        if ($chapter->id == $entry->id)
+                        {
+                            if ($next)
+                            {
+                                $found = true;
+                            }
+                            else
+                            {
+                                // looking for prev, we already have it so break
+                                $record = $prev;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            $prev = $chapter;
+                        }
+                    }
+                }
+            }
+		}
+
+		return $record;
+	}
+
 }

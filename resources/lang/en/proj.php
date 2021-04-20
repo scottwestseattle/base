@@ -125,4 +125,8 @@ return [
 'Register to create lists' => 'Register to create lists',
 'Favorite not saved - you must log in' => 'Favorite not saved - you must log in',
 'Random Words' => 'Random Words',
+'Add Chapter' => 'Add Chapter',
+'Edit Chapter' => 'Edit Chapter',
+'Delete Chapter' => 'Delete Chapter',
+'Publish Chapter' => 'Publish Chapter',
 ];

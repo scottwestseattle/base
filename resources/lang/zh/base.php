@@ -146,4 +146,5 @@ return [
 'New record has been added' => '新记录已添加',
 'Add List' => '新增清单',
 'Edit Site' => '编辑网站',
+'Translation file has been updated' => '翻译已更新',
 ];

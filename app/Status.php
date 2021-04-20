@@ -21,7 +21,7 @@ class Status
 	static private $_wipFlags = [
 		WIP_NOTSET => 'ui.Not Set',
 		WIP_INACTIVE => 'ui.Inactive',
-		WIP_DEV => 'ui.Dev',
+		WIP_DEV => 'ui.Development',
 		WIP_TEST => 'ui.Test',
 		WIP_FINISHED => 'ui.Finished',
 	];

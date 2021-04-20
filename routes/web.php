@@ -526,18 +526,18 @@ Route::group(['prefix' => 'books'], function () {
 	Route::post('/create', [BookController::class, 'create']);
 
 	// edit
-	Route::get('/edit/{book}', [BookController::class, 'edit']);
-	Route::post('/update/{book}', [BookController::class, 'update']);
+	Route::get('/edit/{entry}', [BookController::class, 'edit']);
+	Route::post('/update/{entry}', [BookController::class, 'update']);
 
 	// publish
-	Route::get('/publish/{book}', [BookController::class, 'publish']);
-	Route::post('/publishupdate/{book}', [BookController::class, 'updatePublish']);
-	Route::get('/publishupdate/{book}', [BookController::class, 'updatePublish']);
+	Route::get('/publish/{entry}', [BookController::class, 'publish']);
+	Route::post('/publishupdate/{entry}', [BookController::class, 'updatePublish']);
+	Route::get('/publishupdate/{entry}', [BookController::class, 'updatePublish']);
 
 	// delete
-	Route::get('/confirmdelete/{book}', [BookController::class, 'confirmDelete']);
-	Route::post('/delete/{book}', [BookController::class, 'delete']);
-	Route::get('/delete/{book}', [BookController::class, 'delete']);
+	Route::get('/confirmdelete/{entry}', [BookController::class, 'confirmDelete']);
+	Route::post('/delete/{entry}', [BookController::class, 'delete']);
+	Route::get('/delete/{entry}', [BookController::class, 'delete']);
 
 	// undelete
 	Route::get('/deleted', [BookController::class, 'deleted']);

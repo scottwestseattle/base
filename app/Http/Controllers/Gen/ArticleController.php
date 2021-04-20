@@ -168,9 +168,6 @@ class ArticleController extends Controller
 
 			$record->save();
 
-			// set up the book tag (if it's a book).  has to be done after the entry is created and has an id
-			$record->updateBookTag();
-
 			$msg = 'Entry has been added';
 			$status = 'success';
 			if (strlen($request->description) > MAX_DB_TEXT_COLUMN_LENGTH)
@@ -215,8 +212,6 @@ class ArticleController extends Controller
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
-
-		$record->updateBookTag();
 
 		try
 		{

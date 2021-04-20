@@ -135,7 +135,7 @@ return [
 'Language' => 'Language|Languages',
 'Text' => 'Text',
 'Option' => 'Option',
-'Dev' => 'Dev',
+'Development' => 'Development',
 'Not Set' => 'Not Set',
 'Not Found' => 'Not Found',
 'Line' => 'Line|Lines',
@@ -143,4 +143,7 @@ return [
 'or' => 'or',
 'URL' => 'URL',
 'Front Page' => 'Front Page',
+'Finished' => 'Finished',
+'Inactive' => 'Inactive',
+'Test' => 'Test',
 ];

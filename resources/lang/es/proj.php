@@ -125,4 +125,8 @@ return [
 'Register to create lists' => 'Regístrese para crear listas',
 'Favorite not saved - you must log in' => 'Favorito no guardado - debe iniciar sesión',
 'Random Words' => 'Palabras aleatorias',
+'Add Chapter' => 'Agregar capítulo',
+'Edit Chapter' => 'Editar capítulo',
+'Delete Chapter' => 'Eliminar capítulo',
+'Publish Chapter' => 'Publicar capítulo',
 ];

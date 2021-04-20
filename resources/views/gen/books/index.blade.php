@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', trans_choice('proj.Book', 2))
-@section('menu-submenu')@component('tags.menu-submenu', ['index' => 'books', 'isIndex' => true])@endcomponent @endsection
+@section('menu-submenu')@component('gen.books.menu-submenu', ['index' => 'books', 'isIndex' => true])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">

@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('proj.Delete Book'))
+@section('title', __('proj.Delete Chapter'))
 @section('menu-submenu')@component('gen.books.menu-submenu', ['record' => $record]) @endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('proj.Delete Book')}}</h1>
+	<h1>{{__('proj.Delete Chapter')}}</h1>
 	<form method="POST" action="/books/delete/{{ $record->id }}">
 
 		<h4>{{$record->title}}</h4>

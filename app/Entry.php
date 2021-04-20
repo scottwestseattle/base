@@ -595,5 +595,4 @@ class Entry extends Model
 
 		return $records;
 	}
-
 }

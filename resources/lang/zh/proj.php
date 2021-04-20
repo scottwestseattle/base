@@ -125,4 +125,8 @@ return [
 'Register to create lists' => '注册以创建列表',
 'Favorite not saved - you must log in' => '收藏夹未保存-您必须登录',
 'Random Words' => '随机词',
+'Add Chapter' => '添加章节',
+'Edit Chapter' => '编辑章节',
+'Delete Chapter' => '删除章节',
+'Publish Chapter' => '发布章节',
 ];

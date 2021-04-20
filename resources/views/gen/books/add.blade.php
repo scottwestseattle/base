@@ -1,31 +1,80 @@
 @extends('layouts.app')
-@section('title', __('proj.Add Book'))
-@section('menu-submenu')@component('gen.books.menu-submenu', ['prefix' => 'books'])@endcomponent @endsection
+@section('title', __('proj.Add Chapter'))
+@section('menu-submenu')@component('gen.articles.menu-submenu')@endcomponent @endsection
 @section('content')
-<div class="">
-	<h1>{{__('proj.Add Book')}}</h1>
+
+<div class="container page-normal">
+
+	<h1>{{__('proj.Add Chapter')}}</h1>
+
 	<form method="POST" action="/books/create">
+		<div class="form-control-big">
 
-		<div class="form-group">
-			<label for="title" class="control-label">@LANG('base.Title'):</label>
-			<input type="text" name="title" class="form-control @error('model') is-invalid @enderror" required autofocus />
-			@error('title')
-				<span class="invalid-feedback" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-			@enderror
+			@if (isset($parent_id))
+				<input type="hidden" name="parent_id" value="{{$parent_id}}">
+			@endif
+
+
+			@if (isset($type_flag) && $type_flag == ENTRY_TYPE_LESSON)
+			@else
+			    @if (false)
+				    @component('components.control-dropdown-date', ['div' => true,
+				        'months' => $dates['months'],
+				        'years' => $dates['years'],
+				        'days' => $dates['days'],
+				        'filter' => $filter
+				    ])@endcomponent
+                @endif
+			@endif
+
+			<div class="entry-title-div mb-3 mt-2">
+				<input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
+			</div>
+
+			<div class="entry-title-div mb-3">
+				<input tabindex="-1" type="text" id="permalink" name="permalink" class="form-control"  placeholder="Permalink" />
+			</div>
+
+			<div class="entry-title-div mb-3">
+				<input type="text" id="source" name="source" placeholder="Book (has to match to link this chapter)" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
+			</div>
+
+			<div class="entry-title-div mb-3">
+				<input type="text" id="source_credit" name="source_credit" placeholder="Author" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
+			</div>
+
+			<div class="entry-title-div mb-3">
+				<input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" />
+			</div>
+
+			<div class="entry-description-div mb-3">
+				<textarea rows="3" id="description_short" name="description_short" class="form-control" placeholder="Summary" onfocus="setFocus($(this), '#accent-chars')"></textarea>
+			</div>
+
+			<div class="mt-3 mb-3">
+				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">Add</button>
+			</div>
+
+			<div class="entry-description-div mb-3">
+				<textarea rows="12" id="description" name="description" class="form-control" placeholder="Description" onfocus="setFocus($(this), '#accent-chars')"></textarea>
+			</div>
+
+            @if (isset($languageOptions))
+                @component('components.control-dropdown-language', [
+                    'options' => $languageOptions,
+                    'field_name' => 'language_flag',
+                    'select_class' => 'mt-1 mb-3',
+                ])@endcomponent
+            @endif
+
+			<div style="margin:20px 0;">
+				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">Add</button>
+			</div>
+
+			{{ csrf_field() }}
 		</div>
-
-		<div class="form-group">
-			<label for="description" class="control-label">@LANG('base.Description'):</label>
-			<textarea name="description" class="form-control"></textarea>
-		<div>
-
-		<div class="form-group">
-			<button type="submit" name="update" class="mt-3 btn btn-primary">@LANG('base.Add')</button>
-		</div>
-
-		{{ csrf_field() }}
 	</form>
+
 </div>
 @endsection
+

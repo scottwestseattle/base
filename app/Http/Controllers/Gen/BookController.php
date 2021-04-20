@@ -4,18 +4,22 @@ namespace App\Http\Controllers\Gen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Auth;
 use Config;
+use Lang;
 use Log;
 
 use App\Entry;
 use App\Gen\Book;
+use App\Gen\Spanish;
 use App\Site;
 use App\Status;
 use App\User;
 
 define('PREFIX', '/books/');
+define('VIEW', '/books/view/');
 define('VIEWS', 'gen.books');
 define('LOG_CLASS', 'BookController');
 
@@ -78,19 +82,43 @@ class BookController extends Controller
 
     public function create(Request $request)
     {
-		$record = new Book();
+		$record = new Entry();
 
-        die('not implemented yet');
-		$record->user_id 		= Auth::id();
-		$record->title 			= trimNull($request->title);
-		$record->description	= trimNull($request->description);
-        $record->permalink      = createPermalink($record->title);
+		$record->site_id             = Site::getId();
+		$record->user_id             = Auth::id();
+		$record->title 				= trimNull($request->title);
+		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$record->source				= trimNull($request->source);
+		$record->source_credit		= trimNull($request->source_credit);
+		$record->source_link		= trimNull($request->source_link);
+		$record->display_date 		= timestamp();
+		$record->release_flag 		= RELEASEFLAG_PUBLIC;
+		$record->wip_flag 			= WIP_FINISHED;
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
+		$record->type_flag 			= ENTRY_TYPE_BOOK;
+		$record->permalink          = createPermalink($record->title, $record->created_at);
 
 		try
 		{
+			if (!isset($record->title))
+				throw new \Exception('Title not set');
+			if (!isset($record->display_date))
+				throw new \Exception('Date not set');
+
 			$record->save();
 
-			logInfo(LOG_CLASS, __('base.New record has been added'), ['record_id' => $record->id]);
+			// set up the book tag.  has to be done after the entry is created and has an id
+			$record->updateBookTag();
+
+			$msg = 'Entry has been added';
+			$status = 'success';
+			if (strlen($request->description) > MAX_DB_TEXT_COLUMN_LENGTH)
+			{
+				$msg .= ' - DESCRIPTION TOO LONG, TRUNCATED';
+				$status = 'danger';
+			}
+
+			logInfo(LOG_CLASS, __('base.New entry has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
@@ -98,6 +126,7 @@ class BookController extends Controller
 			return back();
 		}
 
+		return redirect($record->getRedirect()['view']);
 		return redirect($this->redirectTo . '/view/' . $record->id);
     }
 
@@ -153,21 +182,19 @@ class BookController extends Controller
 			return $this->pageNotFound404($permalink);
 		}
 
-        $options['backLink'] = '/articles';
-        $options['index'] = 'articles';
+        $options['backLink'] = '/books';
+        $options['index'] = 'books';
         $options['backLinkText'] = __('ui.Back to List');
-        $options['page_title'] = trans_choice('proj.Article', 1) . ' - ' . $record->title;
+        $options['page_title'] = trans_choice('proj.Chapter', 1) . ' - ' . $record->title;
 
-        //todo: $next = Entry::getNextPrevEntry($record);
-        //todo: $prev = Entry::getNextPrevEntry($record, /* next = */ false);
+        $next = Book::getNextChapter($record);
+        $prev = Book::getNextChapter($record, /* next = */ false);
 
 		return view(VIEWS . '.view', [
 			'options' => $options,
 			'record' => $record,
-			]);
-
-		return view(VIEWS . '.view', [
-			'record' => $record,
+			'next' => $next,
+			'prev' => $prev,
 			]);
     }
 
@@ -183,32 +210,45 @@ class BookController extends Controller
     public function update(Request $request, Entry $entry)
     {
 		$record = $entry;
+		$prevTitle = $record->title;
 
-		$isDirty = false;
-		$changes = '';
+		$record->site_id 			= Site::getId();
+		$record->title 				= trimNull($request->title);
+		$record->description_short	= trimNull($request->description_short);
+		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$record->source				= trimNull($request->source);
+		$record->source_credit		= trimNull($request->source_credit);
+		$record->source_link		= trimNull($request->source_link);
+		//todo: $record->display_date 		= Controller::getSelectedDate($request);
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
+		$record->type_flag 			= ENTRY_TYPE_BOOK;
+		$record->permalink          = createPermalink($record->title, $record->created_at);
 
-		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
-		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
-        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
-
-		if ($isDirty)
+		try
 		{
-			try
+			$record->save();
+			logInfo('update book', null, ['title' => $record->title, 'id' => $record->id, 'prevTitle' => $prevTitle, 'title' => $record->title]);
+
+            // set up the book tag.  has to be done after the entry is created and has an id
+            $record->updateBookTag();
+
+			$msg = 'Book has been updated';
+			$status = 'success';
+			if (strlen($request->description) > MAX_DB_TEXT_COLUMN_LENGTH)
 			{
-				$record->save();
-				logInfo(LOG_CLASS, __('base.Record has been updated'), ['record_id' => $record->id, 'changes' => $changes]);
+				$msg .= ' - DESCRIPTION TOO LONG, TRUNCATED';
+				$status = 'danger';
 			}
-			catch (\Exception $e)
-			{
-				logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record'), ['record_id' => $record->id]);
-			}
+
+			logInfo(LOG_CLASS, __('base.' . $msg), ['record_id' => $record->id]);
 		}
-		else
+		catch (\Exception $e)
 		{
-			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating book'));
+			return back();
 		}
 
-		return redirect(PREFIX . 'view/' . $record->id);
+		return redirect('/books/show/' . $record->permalink);
 	}
 
     public function confirmDelete(Entry $entry)
@@ -323,7 +363,53 @@ class BookController extends Controller
 
     public function read(Request $request, Entry $entry)
     {
-        return $this->reader($entry, ['return' => PREFIX]);
+        //return $this->reader($entry, ['return' => PREFIX]);
+
+        $record = $entry;
+		$readLocation = $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
+		Entry::countView($record);
+
+        $options = ['return' => PREFIX];
+		$lines = [];
+
+        // get all lines for all chapters
+        $book = Book::getBook($record);
+        foreach($book->books as $chapter)
+        {
+            $lines = self::getLines($chapter, $lines);
+//dd($lines);
+        }
+
+        $labels = [
+            'start' => Lang::get('proj.Start Reading'),
+            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
+            'continue' => Lang::get('proj.Continue reading from line'),
+            'locationDifferent' => Lang::get('proj.location form a different session'),
+            'line' => Lang::choice('ui.Line', 1),
+            'of' => Lang::get('ui.of'),
+            'readingTime' => Lang::get('proj.Reading Time'),
+        ];
+        //dump($labels);
+
+    	return view('shared.reader', [
+    	    'lines' => $lines,
+    	    'title' => $record->title,
+			'recordId' => $record->id,
+			'options' => $options,
+			'readLocation' => Auth::check() ? $readLocation : null,
+			'contentType' => 'Entry',
+			'languageCodes' => getSpeechLanguage($record->language_flag),
+			'labels' => $labels,
+		]);
+    }
+
+    static public function getLines(Entry $record, $lines)
+    {
+		$lines = array_merge($lines, Spanish::getSentences($record->title));
+		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
+		$lines = array_merge($lines, Spanish::getSentences($record->description));
+
+		return $lines;
     }
 
 }

@@ -135,7 +135,7 @@ return [
 'Language' => '语言|语言',
 'Text' => '文本',
 'Option' => '选项|选项',
-'Dev' => '发展',
+'Development' => '发展',
 'Not Set' => '没有设置',
 'Not Found' => '未找到',
 'Line' => '线|线',
@@ -143,4 +143,7 @@ return [
 'or' => '或者',
 'URL' => '网址',
 'Front Page' => '首页',
+'Finished' => '完成的',
+'Inactive' => '不活跃',
+'Test' => '测验',
 ];

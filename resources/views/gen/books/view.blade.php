@@ -1,37 +1,24 @@
+@php
+$prefix = 'books';
+$showPrevNext = (isset($prev) || isset($next));
+@endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
-@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record, 'index' => 'index'])@endcomponent @endsection
+@section('menu-submenu')@component('gen.' . $prefix . '.menu-submenu', ['record' => $record, 'index' => 'index'])@endcomponent @endsection
 @section('content')
 
     <!------------------------------------>
     <!-- Top Navigation Buttons -->
     <!------------------------------------>
-
-    @if (false)
-
-    @if (isset($prev) || isset($record->parent_id) || isset($next))
+    @if ($showPrevNext)
     <div style="margin-top: 10px;">
         @if (isset($prev))
-            <a href="/entries/{{$prev->permalink}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
+            <a href="/{{$prefix}}/show/{{$prev->permalink}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
         @endif
-
-        <a href="{{$backLink}}"><button type="button" class="btn btn-blog-nav">@LANG($backLinkText)<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-up"></span></button></a>
-
         @if (isset($next))
-            <a href="/entries/{{$next->permalink}}"><button type="button" class="btn btn-blog-nav">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
+            <a href="/{{$prefix}}/show/{{$next->permalink}}"><button type="button" class="btn btn-blog-nav">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
         @endif
-
     </div>
-    @elseif (isset($backLink) && isset($backLinkText) && !((Auth::user() && (Auth::user()->user_type >= 1000))))
-    <div style="margin-top: 10px;">
-        <a href="{{$backLink}}">
-            <button type="button" class="btn btn-blog-nav">{{$backLinkText}}
-                <span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>
-            </button>
-        </a>
-    </div>
-    @endif
-
     @endif
 
     <!------------------------------------>
@@ -102,22 +89,16 @@
 	<!------------------------------------>
 	<!-- Bottom Navigation Buttons -->
 	<!------------------------------------>
+    @if ($showPrevNext)
+    <div style="margin-top: 10px;">
+        @if (isset($prev))
+            <a href="/{{$prefix}}/show/{{$prev->permalink}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
+        @endif
+        @if (isset($next))
+            <a href="/{{$prefix}}/show/{{$next->permalink}}"><button type="button" class="btn btn-blog-nav">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
+        @endif
+    </div>
+    @endif
 
-	@if (false)
-
-	<div class="trim-text" style="max-width:100%; margin-top: 30px;">
-		@if (isset($prev))
-			<div class="" style="float:left; margin: 0 5px 5px 0;" >
-				<a href="/entries/{{$prev->permalink}}"><button type="button" class="btn btn-nav-bottom"><span class="glyph-nav-bottom glyphicon glyphicon-circle-arrow-left"></span>{{$prev->title}}</button></a>
-			</div>
-		@endif
-		@if (isset($next))
-			<div style="float:left;">
-				<a href="/entries/{{$next->permalink}}"><button type="button" class="btn btn-nav-bottom"><span class="glyph-nav-bottom glyphicon glyphicon-circle-arrow-right"></span>{{$next->title}}</button></a>
-			</div>
-		@endif
-	</div>
-
-	@endif
 
 @endsection

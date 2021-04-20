@@ -146,4 +146,5 @@ return [
 'New record has been added' => 'Se ha agregado un nuevo registro',
 'Add List' => 'Agregar Lista',
 'Edit Site' => 'Editar sitio',
+'Translation file has been updated' => 'Se actualizó la traducción',
 ];
