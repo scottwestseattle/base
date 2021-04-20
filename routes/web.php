@@ -518,8 +518,11 @@ Route::group(['prefix' => 'books'], function () {
 
 	// view
 	Route::get('/view/{entry}', [BookController::class, 'view']);
-	Route::get('/read/{entry}', [BookController::class, 'read']);
 	Route::get('/show/{permalink}', [BookController::class, 'permalink']);
+
+	// read
+	Route::get('/read/{entry}', [BookController::class, 'read']);
+	Route::get('/read-book/{tag}', [BookController::class, 'readBook']);
 
 	// add
 	Route::get('/add', [BookController::class, 'add']);

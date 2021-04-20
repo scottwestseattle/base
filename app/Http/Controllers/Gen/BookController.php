@@ -16,6 +16,7 @@ use App\Gen\Book;
 use App\Gen\Spanish;
 use App\Site;
 use App\Status;
+use App\Tag;
 use App\User;
 
 define('PREFIX', '/books/');
@@ -31,7 +32,7 @@ class BookController extends Controller
 	{
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
-            'read',
+            'read', 'readBook',
         ]);
 
 		parent::__construct();
@@ -361,24 +362,49 @@ class BookController extends Controller
 		return redirect($this->redirectTo);
     }
 
+    // this is read book
+    public function readBook(Request $request, Tag $tag)
+    {
+		$lines = [];
+        $languageFlag = null;
+        $recordId = null;
+        $readLocation = null;
+
+        // get all lines from all chapters
+        foreach($tag->books as $chapter)
+        {
+            if (!isset($languageFlag))
+                $languageFlag = $chapter->language_flag;
+
+            if (!isset($recordId))
+                $recordId = $chapter->id;
+
+            if (!isset($readLocation))
+                $readLocation = $chapter->tagRecent();
+
+            $lines = self::getLines($chapter, $lines);
+        }
+
+		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag);
+    }
+
+    // this is read chapter
     public function read(Request $request, Entry $entry)
     {
-        //return $this->reader($entry, ['return' => PREFIX]);
-
         $record = $entry;
 		$readLocation = $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
 		Entry::countView($record);
 
-        $options = ['return' => PREFIX];
 		$lines = [];
+		$lines = self::getLines($record, $lines);
 
-        // get all lines for all chapters
-        $book = Book::getBook($record);
-        foreach($book->books as $chapter)
-        {
-            $lines = self::getLines($chapter, $lines);
-//dd($lines);
-        }
+		return $this->doRead($lines, $record->title, $record->id, $readLocation, $record->language_flag);
+    }
+
+
+    public function doRead($lines, $title, $recordId, $readLocation, $language)
+    {
+        $options = ['return' => PREFIX];
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),
@@ -393,12 +419,12 @@ class BookController extends Controller
 
     	return view('shared.reader', [
     	    'lines' => $lines,
-    	    'title' => $record->title,
-			'recordId' => $record->id,
+    	    'title' => $title,
+			'recordId' => $recordId,
 			'options' => $options,
 			'readLocation' => Auth::check() ? $readLocation : null,
 			'contentType' => 'Entry',
-			'languageCodes' => getSpeechLanguage($record->language_flag),
+			'languageCodes' => getSpeechLanguage($language),
 			'labels' => $labels,
 		]);
     }

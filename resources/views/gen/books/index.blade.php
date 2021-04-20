@@ -11,7 +11,11 @@
 	@foreach($books as $record)
 	<div class="drop-box-ghost mb-4" style="padding:10px;">
 		<div style="font-size:1.3em; font-weight:normal;">
-			<a href=""  onclick="event.preventDefault(); $('#parts{{$record->id}}').toggle();">{{$record->name}} ({{count($record->books)}} {{strtolower(trans_choice('proj.Chapter', 2))}})</a>
+
+			<a href=""  onclick="event.preventDefault(); $('#parts{{$record->id}}').toggle();">
+			    {{$record->name}} ({{count($record->books)}} {{strtolower(trans_choice('proj.Chapter', 2))}})
+			</a>&nbsp;@component('components.icon-read', ['href' => "/books/read-book/$record->id", 'color' => '', 'nodiv' => true])@endcomponent
+
 			<!-- The chapters are hidden until clicked on -->
 			<div id="parts{{$record->id}}" class="mt-2 hidden">
 			@foreach($record->books as $r)
