@@ -120,6 +120,9 @@
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">
                     @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                 </a>
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}/1">
+                    @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
+                </a>
                 <a href='/tags/edit/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
                 <a href='/tags/confirm-user-favorite-list-delete/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-delete"></span></a>
             </p>

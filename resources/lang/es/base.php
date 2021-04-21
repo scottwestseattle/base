@@ -147,4 +147,7 @@ return [
 'Add List' => 'Agregar Lista',
 'Edit Site' => 'Editar sitio',
 'Translation file has been updated' => 'Se actualizó la traducción',
+'View Tag' => 'Visualizar etiqueta',
+'Delete Tag' => 'Eliminar etiqueta',
+'Publish Tag' => 'Publicar etiqueta',
 ];

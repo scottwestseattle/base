@@ -147,4 +147,7 @@ return [
 'Add List' => '新增清单',
 'Edit Site' => '编辑网站',
 'Translation file has been updated' => '翻译已更新',
+'View Tag' => '查看标签',
+'Delete Tag' => '删除标签',
+'Publish Tag' => '发布标签',
 ];

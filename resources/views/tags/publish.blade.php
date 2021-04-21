@@ -14,7 +14,7 @@
 			<label for="wip_flag" class="control-label">@LANG('base.Work Status'):</label>
 			<select name="wip_flag" class="form-control">
 				@foreach ($wip_flags as $key => $value)
-					<option value="{{$key}}" {{ $key == $record->wip_flag ? 'selected' : ''}}>{{$value}}</option>
+					<option value="{{$key}}" {{ $key == $record->wip_flag ? 'selected' : ''}}>{{__($value)}}</option>
 				@endforeach
 			</select>
 		</div>
@@ -23,7 +23,7 @@
 			<label for="release_flag" class="control-label">@LANG('base.Release Status'):</label>
 			<select name="release_flag" class="form-control">
 				@foreach ($release_flags as $key => $value)
-					<option value="{{$key}}" {{ $key == $record->release_flag ? 'selected' : ''}}>{{$value}}</option>
+					<option value="{{$key}}" {{ $key == $record->release_flag ? 'selected' : ''}}>{{__($value)}}</option>
 				@endforeach
 			</select>
 		</div>

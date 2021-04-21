@@ -147,4 +147,7 @@ return [
 'Add List' => 'Add List',
 'Edit Site' => 'Edit Site',
 'Translation file has been updated' => 'Translation has been updated',
+'View Tag' => 'View Tag',
+'Delete Tag' => 'Delete Tag',
+'Publish Tag' => 'Publish Tag',
 ];
