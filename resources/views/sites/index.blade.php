@@ -13,8 +13,8 @@
 				<th>@LANG('ui.Release')</th>
 				<th>@LANG('ui.Title')</th>
 				<th>{{trans_choice('ui.Language', 2)}}</th>
+				<th>{{trans_choice('ui.Template', 1)}}</th>
 				<th>@LANG('ui.Description')</th>
-				<th>@LANG('ui.Created')</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -26,8 +26,8 @@
 				<td class="index-button">@component('components.button-release-status', ['record' => $record, 'views' => 'sites'])@endcomponent</td>
 				<td><a href="/sites/view/{{ $record->id }}">{{$record->title}}</a></td>
 				<td>{{getLanguageName($record->language_flag)}}</td>
+				<td>{{$record->frontpage}}</td>
 				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
-				<td>{{$record->created_at}}</td>
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/sites/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
 				<!-- td class="icon"><a href='/sites/confirmdelete/{{$record->id}}'>@component('components.icon', ['svg' => 'trash-fill'])@endcomponent</a></td -->
 			</tr>

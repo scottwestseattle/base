@@ -80,12 +80,18 @@ class HomeController extends Controller
         $options['showAllButton'] = true;
         $options['snippetLanguages'] = getLanguageOptions();
         $options['returnUrl'] = '/';
+        $options['articlesPublic'] = [];
+        $options['articlesPrivate'] = [];
 
+        //
+        // get articles, banner and other options according to the language
+        //
         if ($siteLanguage == LANGUAGE_ALL)
+        {
             $options = self::getOptionsLanguage($options);
+        }
         else
         {
-            // get articles, banner and other options according to the language
             $options = self::getOptions($options, $siteLanguage);
         }
 
@@ -179,9 +185,10 @@ class HomeController extends Controller
             }
 
             //
-            // get random words
+            // get word lists to show
             //
             $options['randomWords'] = Definition::getRandomWords(5);
+            $options['newestWords'] = Definition::getNewest(5);
         }
 
 		//

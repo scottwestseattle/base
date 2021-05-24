@@ -15,6 +15,7 @@
     $wotd = isset($options['wotd']) ? $options['wotd'] : null;
     $potd = isset($options['potd']) ? $options['potd'] : null;
     $randomWords = isset($options['randomWords']) ? $options['randomWords'] : null;
+    $newestWords = isset($options['newestWords']) ? $options['newestWords'] : null;
 @endphp
 
 <!--------------------------------------------------------------------------------------->
@@ -223,15 +224,15 @@
 @endif
 
 <!--------------------------------------------------------------------------------------->
-<!-- RANDOM WORDS -->
+<!-- NEWEST WORDS -->
 <!--------------------------------------------------------------------------------------->
 
-@if (isset($randomWords))
-<h3>{{__('proj.Random Words')}} ({{count($randomWords)}})</h3>
+@if (isset($newestWords))
+<h3>{{__('proj.Newest Words')}} ({{count($newestWords)}})</h3>
 <div class="text-center mt-2" style="">
     <div style="display: inline-block; width:100%">
         <table style="width:100%;">
-        @foreach($randomWords as $record)
+        @foreach($newestWords as $record)
         <tr class="drop-box-ghost-small" style="vertical-align:middle;">
             <td style="color:default; text-align:left; padding:5px 10px;">
                 <table>
