@@ -82,6 +82,7 @@ class HomeController extends Controller
         $options['returnUrl'] = '/';
         $options['articlesPublic'] = [];
         $options['articlesPrivate'] = [];
+        $options['showLanguages'] = true;
 
         //
         // get articles, banner and other options according to the language
@@ -89,6 +90,7 @@ class HomeController extends Controller
         if ($siteLanguage == LANGUAGE_ALL)
         {
             $options = self::getOptionsLanguage($options);
+            $options['showLanguages'] = false;
         }
         else
         {
@@ -121,7 +123,7 @@ class HomeController extends Controller
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
         $options['loadSpeechModules'] = true; // this loads js and css
-        // dump($options);
+        //dump($options);
 
 		return view($view, [
 		    'options' => $options,

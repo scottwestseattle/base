@@ -26,4 +26,5 @@ return [
 'Correct Answers' => 'Correct Answers',
 'End of Round' => 'End of Round',
 'Round' => 'Round',
+'All questions answered correctly.' => 'All questions answered correctly.',
 ];

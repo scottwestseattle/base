@@ -146,4 +146,5 @@ return [
 'Finished' => 'Finished',
 'Inactive' => 'Inactive',
 'Test' => 'Test',
+'Voice' => 'Voice|Voices',
 ];

@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
-@section('content')
-
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
@@ -9,6 +7,32 @@
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
+
+<!--------------------------------------------------------------------------------------->
+<!-- Banner -->
+<!--------------------------------------------------------------------------------------->
+@section('header')
+<div class="bright-blue">
+    <div class="container page-normal">
+        <span class='mini-menu'>
+            @component('components.control-dropdown-language', [
+                'record' => isset($options['snippet']) ? $options['snippet'] : null,
+                'options' => $options['snippetLanguages'],
+                'selected_option' => $options['language'],
+                'field_name' => 'language_flag',
+                'select_class' => 'mini-border mt-1 mr-2',
+                'label' => trans_choice('ui.Voice', 1) . ':',
+            ])@endcomponent
+            <select class="mini-border" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
+        </span>
+    </div>
+</div>
+@stop
+
+<!--------------------------------------------------------------------------------------->
+<!-- Body Content -->
+<!--------------------------------------------------------------------------------------->
+@section('content')
 
 <div class="container page-normal mt-1 bg-none">
 
@@ -61,5 +85,5 @@
 </div>
 @endif
 
-@endsection
+@stop
 

@@ -26,4 +26,5 @@ return [
 'Correct Answers' => 'Respuestas correctas',
 'End of Round' => 'Fin de ronda',
 'Round' => 'Ronda',
+'All questions answered correctly.' => 'Todas las preguntas respondidas correctamente.',
 ];

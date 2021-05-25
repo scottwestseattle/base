@@ -183,4 +183,5 @@ return [
 'Korean' => '韩语',
 'Japanese' => '日本',
 'Portuguese' => '葡萄牙语',
+'All' => '全部',
 ];

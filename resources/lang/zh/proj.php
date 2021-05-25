@@ -129,4 +129,5 @@ return [
 'Edit Chapter' => '编辑章节',
 'Delete Chapter' => '删除章节',
 'Publish Chapter' => '发布章节',
+'Newest Words' => '最新词汇',
 ];

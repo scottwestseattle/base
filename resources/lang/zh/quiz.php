@@ -26,4 +26,5 @@ return [
 'Correct Answers' => '正确答案',
 'End of Round' => '回合结束',
 'Round' => '圆形的',
+'All questions answered correctly.' => '所有问题均正确回答。',
 ];

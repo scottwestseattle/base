@@ -183,4 +183,5 @@ return [
 'Korean' => 'Coreano',
 'Japanese' => 'Japonés',
 'Portuguese' => 'Portugués',
+'All' => 'Todos',
 ];

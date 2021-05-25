@@ -129,4 +129,5 @@ return [
 'Edit Chapter' => 'Edit Chapter',
 'Delete Chapter' => 'Delete Chapter',
 'Publish Chapter' => 'Publish Chapter',
+'Newest Words' => 'Newest Words',
 ];

@@ -129,4 +129,5 @@ return [
 'Edit Chapter' => 'Editar capítulo',
 'Delete Chapter' => 'Eliminar capítulo',
 'Publish Chapter' => 'Publicar capítulo',
+'Newest Words' => 'Palabras más nuevas',
 ];

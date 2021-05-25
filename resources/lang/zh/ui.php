@@ -146,4 +146,5 @@ return [
 'Finished' => '完成的',
 'Inactive' => '不活跃',
 'Test' => '测验',
+'Voice' => '语音|语音',
 ];
