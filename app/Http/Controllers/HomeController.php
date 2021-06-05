@@ -46,7 +46,7 @@ class HomeController extends Controller
 	    //
 	    // Get the site info for the current domain
 	    //
-	    $siteLanguage = LANGUAGE_ALL;
+	    $siteLanguage = getLanguageId();
         $options = [];
 		try
 		{
@@ -62,8 +62,9 @@ class HomeController extends Controller
             if (!file_exists($viewFile))
                 throw new \Exception('Site frontpage file not found: ' . $viewFile);
 
-            if (isset($record->language_flag))
-                $siteLanguage = $record->language_flag;
+            // don't set the site language by default
+            //if (isset($record->language_flag))
+            //    $siteLanguage = $record->language_flag;
 
             $options['title'] = $record->description;
 
@@ -75,10 +76,10 @@ class HomeController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('base.Error loading site'), ['domain' => $dn]);
 		}
 
-        $options['loadSpeechModules'] = false; // this loads js and css
+        $options['loadReader'] = false; // this loads js and css
         $options['languageCodes'] = getSpeechLanguage($siteLanguage);
         $options['showAllButton'] = true;
-        $options['snippetLanguages'] = getLanguageOptions();
+        $options['snippetLanguages'] = getLanguageOptions(true);
         $options['returnUrl'] = '/';
         $options['articlesPublic'] = [];
         $options['articlesPrivate'] = [];
@@ -115,15 +116,19 @@ class HomeController extends Controller
         ]);
         $options['records'] = $snippets;
 
+        //$options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
+        $options['language'] = $siteLanguage;
+        $options['loadReader'] = true; // this loads js and css
+        //dump($options);
+
+        $options['snippet'] = null;
         $snippetId = intval(Cookie::get('snippetId'));
         if (isset($snippetId) && $snippetId > 0)
         {
-            $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $snippetId, 'id');
+            $snippet = Definition::getByType(DEFTYPE_SNIPPET, $snippetId, 'id');
+            if ($snippet->language_flag == $siteLanguage)
+                $options['snippet'] = $snippet;
         }
-
-        $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
-        $options['loadSpeechModules'] = true; // this loads js and css
-        //dump($options);
 
 		return view($view, [
 		    'options' => $options,

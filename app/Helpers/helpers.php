@@ -2,7 +2,6 @@
 
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-
 use App\User;
 
 if (!function_exists('obj_count')) {
@@ -513,6 +512,16 @@ if (!function_exists('convertAccentChars')) {
         $v = preg_replace("/Ÿÿ/ui", "y", $v);
 
         return $v;
+    }
+}
+
+if (!function_exists('getLanguageId')) {
+	function getLanguageId()
+	{
+        $language = Cookie::get('languageId');
+        $language = isset($language) ? $language : LANGUAGE_ALL;
+
+        return intval($language);
     }
 }
 

@@ -64,7 +64,8 @@ class Site extends Model
 
 	static public function getLanguage()
 	{
-        $rc = self::site()->language_flag;
+        //orig: $rc = self::site()->language_flag;
+        $rc = getLanguageId();
         $id = isset($rc) ? $rc : LANGUAGE_ALL;
         $rc = getSpeechLanguage($id);
         $rc['condition'] = ($rc['id'] == LANGUAGE_ALL) ? '>=' : '=';

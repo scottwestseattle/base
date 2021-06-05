@@ -62,6 +62,7 @@
             @if (isset($languageOptions))
                 @component('components.control-dropdown-language', [
                     'options' => $languageOptions,
+                    'selected_option' => $selectedOption,
                     'field_name' => 'language_flag',
                     'select_class' => 'mt-1 mb-3',
                 ])@endcomponent

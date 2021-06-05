@@ -59,7 +59,6 @@ class ArticleController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('proj.Error getting articles'));
 		}
 
-
 		return view(VIEWS . '.index', [
 			'options' => $options,
 		]);
@@ -134,6 +133,8 @@ class ArticleController extends Controller
     public function add()
     {
 		return view(VIEWS . '.add', [
+			'languageOptions' => getLanguageOptions(),
+			'selectedOption' => getLanguageId(),
 			]);
 	}
 
@@ -193,6 +194,7 @@ class ArticleController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
+			'languageOptions' => getLanguageOptions(),
 			]);
     }
 

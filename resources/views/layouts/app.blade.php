@@ -1,5 +1,6 @@
 @php
     $iconFolder = App\Site::getIconFolder();
+    $loadReader = isset($options['loadReader']) && $options['loadReader'];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -30,7 +31,7 @@
 		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/glyphicons.css') }}" rel="stylesheet" />
 		<link href="{{ asset('css/project.css') }}" rel="stylesheet" />
-        @if (isset($options['loadSpeechModules']) && $options['loadSpeechModules'])
+        @if ($loadReader)
             <link href="{{ asset('css/recorder.css')}}" rel="stylesheet">
         @endif
 
@@ -39,13 +40,14 @@
 		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 
 		<script src="{{asset('js/project.js?ver=' . getVersionJs())}}"></script>
+		<script src="{{asset('js/speech.js?ver=' . getVersionJs())}}"></script>
 
         @if (isset($tinymce))
             <script src="/js/tinymce/tinymce.min.js"></script>
             <script src="/js/loadTinyMce.js"></script>
         @endif
 
-        @if (isset($options['loadSpeechModules']) && $options['loadSpeechModules'])
+        @if ($loadReader)
             <script src="{{ asset('js/recorder.js?ver=' . getVersionJs()) }}"></script>
             <script src="{{ asset('js/reader.js?ver=' . getVersionJs()) }}"></script>
         @endif
@@ -55,6 +57,9 @@
 
 		<!-- Show the Main Menu -->
 		@component('layouts.menu-main')@endcomponent
+
+		<!-- Show the Language Menu -->
+		@component('layouts.language')@endcomponent
 
 		<!-- Show the admin submenu -->
         @section('menu-submenu')@show

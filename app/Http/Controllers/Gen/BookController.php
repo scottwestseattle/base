@@ -78,6 +78,8 @@ class BookController extends Controller
     public function add()
     {
 		return view(VIEWS . '.add', [
+			'languageOptions' => getLanguageOptions(),
+			'selectedOption' => getLanguageId(),
 			]);
 	}
 
@@ -205,6 +207,7 @@ class BookController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
+			'languageOptions' => getLanguageOptions(),
 			]);
     }
 

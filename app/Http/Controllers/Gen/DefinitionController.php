@@ -349,6 +349,51 @@ class DefinitionController extends Controller
 		return redirect($returnPath);
 	}
 
+	public function editSnippet(Definition $definition)
+    {
+		$record = $definition;
+		$forms = null;
+
+		return view(VIEWS . '.edit-snippets', [
+			'record' => $record,
+			'favoriteLists' => Definition::getUserFavoriteLists(),
+		]);
+    }
+
+    public function updateSnippet(Request $request, Definition $definition)
+    {
+        $f = __CLASS__ . ':' . __FUNCTION__;
+		$record = $definition;
+		$isDirty = false;
+		$changes = '';
+		$parent = null;
+
+		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
+		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
+
+		if ($isDirty)
+		{
+			try
+			{
+				$record->save();
+				logInfo($f, __('proj.Practice Text has been updated'), ['title' => $record->title, 'id' => $record->id, 'changes' => $changes]);
+			}
+			catch (\Exception $e)
+			{
+				$msg = __('base.Error updating record');
+				logException($f, $e->getMessage(), $msg);
+			}
+		}
+		else
+		{
+			logFlash('info', $f, __('base.No changes were made'));
+		}
+
+        $returnPath = '/practice';
+
+		return redirect($returnPath);
+	}
+
     public function confirmDelete(Definition $definition)
     {
 		$record = $definition;
@@ -505,6 +550,7 @@ class DefinitionController extends Controller
             }
 
             $record->language_flag  = $request->language_flag;
+            if (isset($record->language_flag))
 
 		    if (strlen($snippet) < 10)
                 $msg = __("proj.$tag is too short");
@@ -562,7 +608,7 @@ class DefinitionController extends Controller
 
         $options = [];
         $options['showAllButton'] = false;
-        $options['loadSpeechModules'] = true;
+        $options['loadReader'] = true;
         $options['siteLanguage'] = $siteLanguage;
         $options['records'] = Definition::getSnippets();
         $options['snippetLanguages'] = getLanguageOptions();
@@ -580,6 +626,7 @@ class DefinitionController extends Controller
             $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $id, 'id');
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
+        //dump($options);
 
 		return view('gen.definitions.snippets', [
 		    'options' => $options,

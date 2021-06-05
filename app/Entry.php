@@ -539,7 +539,7 @@ class Entry extends Model
 					})
 					->select('entries.*')
 					->whereNull('entries.deleted_at')
-					->where('entries.language_flag', $parms['id'], $parms['condition'])
+					->where('entries.language_flag', $parms['condition'], $parms['id'])
 					->where('entries.type_flag', $type)
 					->where('entries.release_flag', $releaseCondition, $releaseFlag)
 					->orderByRaw($orderBy)

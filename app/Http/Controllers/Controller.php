@@ -13,6 +13,7 @@ use App\Entry;
 use App\Gen\Spanish;
 use App\Site;
 use Auth;
+use Cookie;
 use Lang;
 
 define('SITE_ID', 0);
@@ -61,6 +62,11 @@ class Controller extends BaseController
 		session(['locale' => $locale]);
 		App::setLocale($locale);
 	}
+
+	static function setLanguage($languageId)
+	{
+        Cookie::queue('languageId', intval($languageId), MS_YEAR);
+    }
 
     static public function reader(Entry $entry, $options)
     {

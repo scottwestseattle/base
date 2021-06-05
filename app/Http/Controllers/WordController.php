@@ -348,7 +348,7 @@ class WordController extends Controller
 
         $options = [];
         $options['showAllButton'] = false;
-        $options['loadSpeechModules'] = true;
+        $options['loadReader'] = true;
         $options['siteLanguage'] = $siteLanguage;
         $options['records'] = Word::getSnippets();
         $options['snippetLanguages'] = getLanguageOptions();

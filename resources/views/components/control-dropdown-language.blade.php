@@ -1,6 +1,8 @@
 @php
 $label_class = isset($label_class) ? $label_class : null;
 $select_class = isset($select_class) ? $select_class : null;
+$onchange = isset($onchange) ? $onchange : null;
+$selected_option = isset($selected_option) ? $selected_option : null;
 @endphp
 @if (isset($options) && count($options) > 0)
 
@@ -18,7 +20,7 @@ $select_class = isset($select_class) ? $select_class : null;
 
 	@endif
 
-	<select class="{{$select_class}}" id="{{$field_name}}" name="{{$field_name}}">
+	<select class="{{$select_class}}" id="{{$field_name}}" name="{{$field_name}}" onchange="{{$onchange}}">
 
 	@if (isset($empty))
 		<option value="0">({{$empty}})</option>

@@ -11,6 +11,7 @@
 <!--------------------------------------------------------------------------------------->
 <!-- Banner -->
 <!--------------------------------------------------------------------------------------->
+@if (false)
 @section('header')
 <div class="bright-blue">
     <div class="container page-normal">
@@ -21,13 +22,15 @@
                 'selected_option' => $options['language'],
                 'field_name' => 'language_flag',
                 'select_class' => 'mini-border mt-1 mr-2',
-                'label' => trans_choice('ui.Voice', 1) . ':',
+                'label' => trans_choice('ui.Language', 1) . ':',
+                'onchange' => 'setLanguageGlobal()',
             ])@endcomponent
             <select class="mini-border" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
         </span>
     </div>
 </div>
 @stop
+@endif
 
 <!--------------------------------------------------------------------------------------->
 <!-- Body Content -->

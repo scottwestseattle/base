@@ -67,6 +67,9 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 Route::get('/search', [HomeController::class, 'search']);
 Route::post('/search', [HomeController::class, 'search']);
 
+// Global
+Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
+
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
@@ -423,9 +426,15 @@ Route::group(['prefix' => 'visitors'], function () {
 use App\Http\Controllers\Gen\DefinitionController;
 
 Route::get('/dictionary', [DefinitionController::class, 'search']);
-Route::get('/practice/{id?}', [DefinitionController::class, 'snippets']);
-Route::get('/practice/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
 Route::get('/favorites', [DefinitionController::class, 'favorites']);
+
+// Practice text (Snippets)
+Route::group(['prefix' => 'practice'], function () {
+    Route::get('/{id?}', [DefinitionController::class, 'snippets']);
+    Route::get('/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
+    Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
+    Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
+});
 
 // Dictionary
 Route::group(['prefix' => 'dictionary'], function () {

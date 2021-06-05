@@ -759,6 +759,11 @@ h6 {
     border-radius: 4px;
 }
 
+.mini-menu, .mini-menu a, .mini-menu a:hover {
+    font-size: 12px;
+    text-decoration: none;
+}
+
 .data-accent-chars {
 	font-size:.8em;
 	display: inline;

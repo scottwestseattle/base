@@ -683,7 +683,12 @@ function onCategoryChange(id)
 	xhttp.send();
 }
 
-function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = null)
+function ajaxexecreload(url)
+{
+    ajaxexec(url, '', false, null, /* reload = */ true)
+}
+
+function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = null, reload = false)
 {
 	var xhttp = new XMLHttpRequest();
 	var debugOn = false;
@@ -739,6 +744,9 @@ function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = n
 					resultsCallback(this.responseText);
 
 				//debug(this.responseText);
+
+				if (reload)
+				    location.reload();
 			}
 			else
 			{

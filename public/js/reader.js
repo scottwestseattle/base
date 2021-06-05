@@ -21,8 +21,6 @@ var _debug = false;
 var _mute = false;
 var _paused = false;
 var _lastCharIndex = 0;
-var _voices = null;
-var _voicesLoadAttempts = 0;
 var _cancelled = false;
 var _readFontSize = 18;
 var _maxFontSize = 99;
@@ -48,8 +46,6 @@ $(document).ready(function() {
 	}
 	setFontSize();
 
-	window.speechSynthesis.cancel();
-	setTimeout(loadVoices, 500);
 	loadData();
 	getReadLocation();
 	deck.start();
@@ -710,133 +706,16 @@ function tts(text)
     }
 }
 
-function loadVoices()
+function loadVoicesDeck()
 {
-	_voices = window.speechSynthesis.getVoices();
+    loadVoices(deck.language, deck.languageLong);
 
 	if (_voices.length == 0 && _voicesLoadAttempts++ < 10)
 	{
 		console.log("loading voices...not ready");
-		setTimeout(loadVoices, 500);
+		setTimeout(loadVoicesDeck, 500);
 		return;
 	}
-
-	//tts('ready with ' + _voices.length + ' voices');
-
-	var voiceSelect = document.querySelector('#selectVoice');
-	var found = 0;
-
-	if (_voices.length > 0)
-	{
-	    var langCodeSize = 2;
-	    var deckLang = deck.language.substring(0, langCodeSize);
-
-	    // figure out how the voices are formatted, either 'en-US' or 'eng-USA', 'es-ES' or 'spa-ESP'
-	    if (_voices.length > 0 && _voices[0].lang.length > 5)
-	    {
-	        // using 3 letter language and country codes: 'spa-ESP'
-	        langCodeSize = 3;
-    	    deckLang = deck.languageLong.substring(0, langCodeSize);
-	    }
-
-        // quick check to see if there are any matches
-        var showAll = true;
-		for(i = 0; i < _voices.length ; i++)
-		{
-            var lang = _voices[i].lang.substring(0, langCodeSize);
-            if (deckLang == lang)
-            {
-                // if at least one found, bail out
-                showAll = false;
-                break;
-            }
-		}
-
-		for(i = 0; i < _voices.length ; i++)
-		{
-			var option = document.createElement('option');
-			option.textContent = _voices[i].name + ' (' + _voices[i].lang + ')';
-			option.value = i;
-
-			if(_voices[i].default) {
-			  option.textContent += ' (default)';
-			}
-
-			option.setAttribute('data-lang', _voices[i].lang);
-			option.setAttribute('data-name', _voices[i].name);
-
-            var lang = _voices[i].lang.substring(0, langCodeSize);
-            //console.log('looking for: ' + deckLang + ', voice: ' + lang);
-
-            if (showAll || deckLang == lang)
-            {
-                if (found == 0)
-                {
-                    found++;
-                }
-
-                voiceSelect.appendChild(option);
-            }
-		}
-	}
-	else
-	{
-		var option = document.createElement('option');
-		option.textContent = "Default voice set: " + deck.language;
-		voiceSelect.appendChild(option);
-	}
-
-	//
-	// set the active voice from the select dropdown
-	//
-	if (found)
-	{
-		setSelectedVoice(voiceSelect);
-		changeVoice();
-	}
-	else
-	{
-		msg = "Language not found: " + deck.language + ", text can't be read correctly.";
-		$("#language").text(msg);
-		$("#languages").show();
-	}
-}
-
-function saveSelectedVoice(voiceIndex)
-{
-	localStorage['readVoiceIndex'] = voiceIndex;
-	//debug("set readVoiceIndex: " + voiceIndex, _debug);
-}
-
-function setSelectedVoice(voiceSelect)
-{
-	var voiceIndex = localStorage['readVoiceIndex'];
-	if (!voiceIndex)
-	{
-		localStorage['readVoiceIndex'] = 0;
-		voiceIndex = 0;
-	}
-
-	voiceSelect.selectedIndex = (voiceIndex < voiceSelect.options.length) ? voiceIndex : 0;
-	//debug("get: readVoiceIndex: " + voiceIndex, _debug);
-}
-
-function changeVoice()
-{
-	var index = $("#selectVoice")[0].selectedIndex;
-	saveSelectedVoice(index);
-
-	var voice = $("#selectVoice").children("option:selected").val();
-	deck.voice = _voices[voice];
-	if (_utter != null)
-	{
-		_utter.voice = deck.voice;
-		//debug(deck.voice.name, _debug);
-		//window.speechSynthesis.pause();
-		//window.speechSynthesis.resume();
-	}
-
-	//$("#language").text("Language: " + deck.voice.lang + ", voice: " + deck.voice.name);
 }
 
 function showSeconds(text = null)
