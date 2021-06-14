@@ -1,7 +1,6 @@
 <?php
 
 // language flag
-define('LANGUAGE_ALL', -1);
 define('LANGUAGE_EN', 0);
 define('LANGUAGE_ES', 1);
 define('LANGUAGE_FR', 2);
@@ -11,6 +10,7 @@ define('LANGUAGE_PT', 5);
 define('LANGUAGE_RU', 6);
 define('LANGUAGE_ZH', 7);
 define('LANGUAGE_KO', 8);
+define('LANGUAGE_ALL', 100);
 
 // release flag options
 define('RELEASEFLAG_NOTSET',    0);

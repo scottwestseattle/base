@@ -126,7 +126,7 @@ class HomeController extends Controller
         if (isset($snippetId) && $snippetId > 0)
         {
             $snippet = Definition::getByType(DEFTYPE_SNIPPET, $snippetId, 'id');
-            if ($snippet->language_flag == $siteLanguage)
+            if (isset($snippet) && $snippet->language_flag == $siteLanguage)
                 $options['snippet'] = $snippet;
         }
 

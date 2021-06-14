@@ -37,7 +37,9 @@ $(document).ready(function() {
 
 	var fontSize = localStorage['readFontSize'];
 	if (!fontSize)
+	{
 		localStorage['readFontSize'] = _readFontSize;
+	}
 	else
 	{
 		_readFontSize = parseInt(fontSize, 10);
@@ -556,6 +558,7 @@ function read(text, charIndex, textId = '#slideDescription')
 
 	if (deck.voice != null)
 	{
+        console.log('reading: ' + deck.voice.lang);
 		_utter.voice = deck.voice;  // if voices for language were found, then use the one we saved on start-up
 		_utter.lang = deck.voice.lang;
 	}
@@ -563,6 +566,19 @@ function read(text, charIndex, textId = '#slideDescription')
 	{
 		_utter.lang = deck.language; // if voice not found, try to the language from the web site
 	}
+
+    if (false) // new
+    {
+        if (_voiceIndex < _voices.length)
+        {
+            _utter.voice = _voices[_voiceIndex];
+            console.log('reading: voice = ' + _utter.voice);
+        }
+        else
+        {
+            console.log('reading voices not loaded');
+        }
+    }
 
 	_utter.text = text.substring(charIndex);
 	_utter.onend = function(event) {

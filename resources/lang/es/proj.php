@@ -130,4 +130,6 @@ return [
 'Delete Chapter' => 'Eliminar capítulo',
 'Publish Chapter' => 'Publicar capítulo',
 'Newest Words' => 'Palabras más nuevas',
+'Edit Practice Text' => 'Editar texto de práctica',
+'Practice Text has been updated' => 'El texto ha sido actualizado',
 ];

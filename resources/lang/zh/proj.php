@@ -130,4 +130,6 @@ return [
 'Delete Chapter' => '删除章节',
 'Publish Chapter' => '发布章节',
 'Newest Words' => '最新词汇',
+'Edit Practice Text' => '编辑实践文本',
+'Practice Text has been updated' => '练习文本已被更新',
 ];

@@ -130,4 +130,6 @@ return [
 'Delete Chapter' => 'Delete Chapter',
 'Publish Chapter' => 'Publish Chapter',
 'Newest Words' => 'Newest Words',
+'Edit Practice Text' => 'Edit Practice Text',
+'Practice Text has been updated' => 'Practice Text has been updated',
 ];

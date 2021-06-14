@@ -61,7 +61,7 @@ class DefinitionController extends Controller
 		{
 			$records = Definition::select()
 				//->where('type_flag', DEFTYPE_DICTIONARY)
-				->orderByRaw('type_flag, updated_at desc')
+				->orderByRaw('type_flag, created_at desc')
 				->get();
 		}
 		catch (\Exception $e)

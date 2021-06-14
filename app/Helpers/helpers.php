@@ -610,7 +610,9 @@ if (!function_exists('getLanguageOptions')) {
 if (!function_exists('getLanguageName')) {
 	function getLanguageName($languageFlag)
 	{
-	    return isset($languageFlag) ? getLanguageOptions(true)[$languageFlag] : '';
+	    return (isset($languageFlag) && $languageFlag >= 0)
+	        ? getLanguageOptions(true)[$languageFlag]
+	        : '';
 	}
 }
 

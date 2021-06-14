@@ -27,6 +27,7 @@
     <script src="{{ asset('/js/project.js?' . getVersionJs()) }}"></script>
     <script src="{{ asset('/js/recorder.js?' . getVersionJs()) }}"></script>
 	<script src="{{ asset('/js/reader.js?' . getVersionJs()) }}"></script>
+	<script src="{{ asset('/js/speech.js?' . getVersionJs()) }}"></script>
 
 	<!-- Bootstrap core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
