@@ -147,4 +147,9 @@ return [
 'Inactive' => 'Inactive',
 'Test' => 'Test',
 'Voice' => 'Voice|Voices',
+'one' => 'one',
+'two' => 'two',
+'three' => 'three',
+'four' => 'four',
+'five' => 'five',
 ];

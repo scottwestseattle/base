@@ -345,12 +345,32 @@ class Definition extends Model
 
 	static public function getNewest($limit)
 	{
-		return self::getIndex(DEFINITIONS_SEARCH_NEWEST, $limit);
+		$records = self::getIndex(DEFINITIONS_SEARCH_NEWEST, $limit);
+
+		// get random indexes
+		$random = self::getRandomIndexes($limit, count($records));
+		$recs = [];
+
+		// copy words using random indexes
+		foreach($random as $a)
+			$recs[] = $records[$a];
+
+        return $recs;
 	}
 
 	static public function getNewestVerbs($limit)
 	{
-		return self::getIndex(DEFINITIONS_SEARCH_NEWEST_VERBS, $limit);
+		$records = self::getIndex(DEFINITIONS_SEARCH_NEWEST_VERBS, $limit);
+
+		// get random indexes
+		$random = self::getRandomIndexes($limit, count($records));
+		$recs = [];
+
+		// copy words using random indexes
+		foreach($random as $a)
+			$recs[] = $records[$a];
+
+        return $recs;
 	}
 
 	static public function getRanked($limit)

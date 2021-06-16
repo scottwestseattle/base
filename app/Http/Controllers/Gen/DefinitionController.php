@@ -549,8 +549,11 @@ class DefinitionController extends Controller
                 $record->permalink		= createPermalink($text);
             }
 
-            $record->language_flag  = $request->language_flag;
-            if (isset($record->language_flag))
+            $record->language_flag = getLanguageId();
+
+            $siteLanguage = Site::getLanguage()['id'];
+            if ($record->language_flag != $siteLanguage)
+                $msg = __("Language does not match: " . $record->language_flag);
 
 		    if (strlen($snippet) < 10)
                 $msg = __("proj.$tag is too short");
@@ -574,7 +577,7 @@ class DefinitionController extends Controller
 		    //dump($record);
             //dd($e->getMessage());
 			$msg = isset($msg) ? $msg : "Error adding new $tag";
-            logException($f, $e->getMessage(), null, ['msg' => $msg]);
+            logException($f, $e->getMessage(), $msg, ['msg' => $msg]);
 		}
 
 		return back();
@@ -630,45 +633,6 @@ class DefinitionController extends Controller
 
 		return view('gen.definitions.snippets', [
 		    'options' => $options,
-		]);
-    }
-
-	public function readSnippets()
-    {
-        $siteLanguage = Site::getLanguage()['id'];
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
-
-        $records = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
-
-        $lines = [];
-        $languageFlag = null;
-        foreach($records as $record)
-        {
-    		$text = Spanish::getSentences($record->examples);
-    		$lines = array_merge($lines, $text);
-    		if (!isset($languageFlag))
-    		    $languageFlag = $record->language_flag;
-        }
-
-        $options['return'] = '/practice';
-
-        $labels = [
-            'start' => Lang::get('proj.Start Reading'),
-            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
-            'continue' => Lang::get('proj.Continue reading from line'),
-            'locationDifferent' => Lang::get('proj.location form a different session'),
-            'line' => Lang::choice('ui.Line', 1),
-            'of' => Lang::get('ui.of'),
-            'readingTime' => Lang::get('proj.Reading Time'),
-        ];
-
-    	return view('shared.reader', [
-    	    'lines' => $lines,
-    	    'title' => 'Practice Text',
-    	    'options' => $options,
-			'contentType' => 'Snippet',
-			'languageCodes' => getSpeechLanguage($languageFlag),
-			'labels' => $labels,
 		]);
     }
 
@@ -1106,12 +1070,6 @@ class DefinitionController extends Controller
 			]);
     }
 
-    public function reviewNewest(Request $request, $reviewType = null)
-    {
-        $records = Definition::getNewest(20);
-        return $this->doList('proj.20 Newest Words', $reviewType, $records);
-    }
-
     public function doList($name, $reviewType, $records)
     {
         $reviewType = alphanum($reviewType);
@@ -1122,7 +1080,7 @@ class DefinitionController extends Controller
         }
         else
         {
-            return $this->list(trans($name), $records);
+            return $this->list($name, $records);
         }
     }
 
@@ -1151,29 +1109,54 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function reviewRankedVerbs(Request $request, $reviewType = null)
+    public function reviewNewest(Request $request, $reviewType = null, $count = 20)
     {
-    //dd($_SERVER);
-        $records = Definition::getRankedVerbs(20);
-        return $this->doList('proj.20 Most Common Verbs', $reviewType, $records);
+        $records = Definition::getNewest(intval($count));
+        $title = trans('proj.:count Newest Words', ['count' => $count]);
+
+		return ($reviewType == 'reader')
+		    ? $this->readWords($title, $records)
+		    : $this->doList($title, $reviewType, $records);
     }
 
-    public function reviewNewestVerbs(Request $request, $reviewType = null)
+    public function reviewRankedVerbs(Request $request, $reviewType = null, $count = 20)
     {
-		$records = Definition::getNewestVerbs(20);
-        return $this->doList('proj.20 Newest Verbs', $reviewType, $records);
+        $records = Definition::getRankedVerbs(intval($count));
+        $title = trans('proj.:count Most Common Verbs', ['count' => $count]);
+
+		return ($reviewType == 'reader')
+		    ? $this->readWords($title, $records)
+		    : $this->doList($title, $reviewType, $records);
     }
 
-    public function reviewRandomWords(Request $request, $reviewType = null)
+    public function reviewNewestVerbs(Request $request, $reviewType = null, $count = 20)
     {
-		$records = Definition::getRandomWords(20);
-        return $this->doList('proj.20 Random Words', $reviewType, $records);
+		$records = Definition::getNewestVerbs(intval($count));
+        $title = trans('proj.:count Newest Verbs', ['count' => $count]);
+
+		return ($reviewType == 'reader')
+		    ? $this->readWords($title, $records)
+		    : $this->doList($title, $reviewType, $records);
     }
 
-	public function reviewRandomVerbs(Request $request, $reviewType = null)
+    public function reviewRandomWords(Request $request, $reviewType = null, $count = 20)
     {
-		$records = Definition::getRandomVerbs(20);
-        return $this->doList('proj.20 Random Verbs', $reviewType, $records);
+		$records = Definition::getRandomWords(intval($count));
+        $title = trans('proj.:count Random Words', ['count' => $count]);
+
+		return ($reviewType == 'reader')
+		    ? $this->readWords($title, $records)
+		    : $this->doList($title, $reviewType, $records);
+    }
+
+	public function reviewRandomVerbs(Request $request, $reviewType = null, $count = 20)
+    {
+		$records = Definition::getRandomVerbs(intval($count));
+        $title = trans('proj.:count Random Verbs', ['count' => $count]);
+
+		return ($reviewType == 'reader')
+		    ? $this->readWords($title, $records)
+		    : $this->doList($title, $reviewType, $records);
     }
 
     public function getRandomWordAjax(Request $request)
@@ -1203,6 +1186,190 @@ class DefinitionController extends Controller
 			'lists' => Definition::getUserFavoriteLists(),
 //			'favoriteListsOptions' => Definition::getUserFavoriteListsOptions(),
 		]);
+    }
+
+	public function readSnippets()
+    {
+        $siteLanguage = Site::getLanguage()['id'];
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+
+        $records = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+
+        $r = (count($records) > 0) ? $records[0] : LANGUAGE_EN;
+        $languageFlag = (count($records) > 0) ? $languageFlag = $r->language_flag : LANGUAGE_FLAG;
+
+        $lines = [];
+        foreach($records as $record)
+        {
+    		$text = Spanish::getSentences($record->examples);
+    		$lines = array_merge($lines, $text);
+        }
+
+        $options['return'] = '/practice';
+
+        $labels = [
+            'start' => Lang::get('proj.Start Reading'),
+            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
+            'continue' => Lang::get('proj.Continue reading from line'),
+            'locationDifferent' => Lang::get('proj.location form a different session'),
+            'line' => Lang::choice('ui.Line', 1),
+            'of' => Lang::get('ui.of'),
+            'readingTime' => Lang::get('proj.Reading Time'),
+        ];
+
+    	return view('shared.reader', [
+    	    'lines' => $lines,
+    	    'title' => 'Practice Text',
+    	    'options' => $options,
+			'contentType' => 'Snippet',
+			'languageCodes' => getSpeechLanguage($languageFlag),
+			'labels' => $labels,
+		]);
+    }
+
+    public function readList(Request $request, Tag $tag)
+    {
+        $siteLanguage = Site::getLanguage()['id'];
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+		$languageFlag = LANGUAGE_EN;
+        $type = DEFTYPE_DICTIONARY;
+
+		$records = []; // make this countable so view will always work
+		try
+		{
+			$records = $tag->definitionsUser()->get();
+            if (count($records) > 0)
+            {
+                $r = $records[0];
+                $languageFlag = $r->language_flag;
+                $type = $r->type_flag;
+            }
+		}
+		catch (\Exception $e)
+		{
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting list'));
+		}
+
+        $lines = [];
+        if ($type == DEFTYPE_DICTIONARY)
+        {
+		    $lines = self::formatDefinitions($records);
+        }
+		else
+		{
+            foreach($records as $record)
+            {
+                $text = Spanish::getSentences($record->examples);
+                $lines = array_merge($lines, $text);
+            }
+		}
+
+	    $options['return'] = '/favorites';
+
+        $labels = [
+            'start' => Lang::get('proj.Start Reading'),
+            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
+            'continue' => Lang::get('proj.Continue reading from line'),
+            'locationDifferent' => Lang::get('proj.location form a different session'),
+            'line' => Lang::choice('ui.Line', 1),
+            'of' => Lang::get('ui.of'),
+            'readingTime' => Lang::get('proj.Reading Time'),
+        ];
+
+    	return view('shared.reader', [
+    	    'lines' => $lines,
+    	    'title' => $tag->name,
+    	    'options' => $options,
+			'contentType' => 'Snippet',
+			'languageCodes' => getSpeechLanguage($languageFlag),
+			'labels' => $labels,
+		]);
+    }
+
+    public function readWords($title, $records)
+    {
+        $siteLanguage = Site::getLanguage()['id'];
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+
+		$lines = self::formatDefinitions($records);
+        $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
+	    $options['return'] = '/favorites';
+
+        $labels = [
+            'start' => Lang::get('proj.Start Reading'),
+            'startBeginning' => Lang::get('proj.Start reading from the beginning'),
+            'continue' => Lang::get('proj.Continue reading from line'),
+            'locationDifferent' => Lang::get('proj.location form a different session'),
+            'line' => Lang::choice('ui.Line', 1),
+            'of' => Lang::get('ui.of'),
+            'readingTime' => Lang::get('proj.Reading Time'),
+        ];
+
+    	return view('shared.reader', [
+    	    'lines' => $lines,
+    	    'title' => $title,
+    	    'options' => $options,
+			'contentType' => 'Snippet',
+			'languageCodes' => getSpeechLanguage($languageFlag),
+			'labels' => $labels,
+		]);
+    }
+
+    static public function formatDefinitions($records)
+    {
+        $labelDefinition = trans_choice('proj.Definition', 1);
+        $labelExamples = trans_choice('proj.Example', 2);
+        $label1 = ' ' . ucfirst(trans('ui.one')) . ':';
+        $label2 = ' ' . ucfirst(trans('ui.two')) . ':';
+        $label3 = ' ' . ucfirst(trans('ui.three')) . ':';
+        $label4 = ' ' . ucfirst(trans('ui.four')) . ':';
+        $label5 = ' ' . ucfirst(trans('ui.five')) . ':';
+        $count = count($records);
+        $end = ' '. trans_choice('proj.End of the list of :count items.', $count);
+
+        $lines = [];
+        foreach($records as $record)
+        {
+            // add the word
+            $text = $labelDefinition . ':  ';
+            $text .= ucfirst($record->title);
+            $text .= '.  ' . ucfirst($record->title);
+
+            // add the definition
+            $d = $record->definition;
+            $d = str_replace('1.', $label1, $d);
+            $d = str_replace('2.', $label2, $d);
+            $d = str_replace('3.', $label3, $d);
+            $d = str_replace('4.', $label4, $d);
+            $d = str_replace('5.', $label5, $d);
+
+            $text .= '. ' . ucfirst($d);
+
+            // say the word again
+            if (!Str::endsWith($text, '.'))
+                $text .= '.';
+            $text .= '  ' . ucfirst($record->title) . '.';
+
+            // add the examples
+            if (isset($record->examples))
+            {
+                if (!Str::endsWith($text, '.'))
+                    $text .= '.';
+
+                $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
+
+                // repeat the word one more time
+                if (!Str::endsWith($text, '.'))
+                    $text .= '.';
+                $text .= '  ' . ucfirst($record->title) . '.';
+            }
+
+            $lines[] = $text;
+        }
+
+        $lines[] = $end;
+
+        return $lines;
     }
 
     public function favorites(Request $request)

@@ -147,4 +147,9 @@ return [
 'Inactive' => '不活跃',
 'Test' => '测验',
 'Voice' => '语音|语音',
+'one' => '一',
+'two' => '二',
+'three' => '三',
+'four' => '四',
+'five' => '五',
 ];

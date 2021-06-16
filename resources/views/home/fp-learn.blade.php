@@ -30,7 +30,7 @@
 <!--------------------------------------------------------------------------------------->
 <!-- Banner Photo -->
 <!--------------------------------------------------------------------------------------->
-@if (isset($banner) )
+@if (false && isset($banner) )
     <div class="" style="background-image: url(/img/spanish/banners/{{$banner}}); background-size: 100%; background-repeat: no-repeat;">
         <a href="/"><img src="/img/spanish/{{App::getLocale()}}-spacer.png" style="width:100%;" /></a>
     </div>
@@ -134,7 +134,6 @@
                     <div class="small-thin-text">@LANG('proj.A new word to learn every day')</div>
                 </div>
                 <div class="card-body card-body-potd">
-                    @if(isset($wotd))
                         <span id="wotdv">
                         <div>
                             @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#wotd').val());"])@endcomponent
@@ -150,7 +149,6 @@
                         </div>
                         </span>
                         <input type="hidden" id="wotd" value="{{$wotd->title . '. Definición: ' . $wotd->definition . '. Ejemplo: ' . $wotd->examples}}" />
-                    @endif
                 </div>
             </div>
 		</div>

@@ -434,6 +434,8 @@ Route::group(['prefix' => 'practice'], function () {
     Route::get('/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
     Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
+	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
 
 // Dictionary
@@ -485,13 +487,16 @@ Route::group(['prefix' => 'definitions'], function () {
 	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
 	Route::get('/list-tag/{tag}', [DefinitionController::class, 'listTag']);
+	Route::get('/read-list/{tag}', [DefinitionController::class, 'readList']);
+	Route::get('/read-random-words/{count?}', [DefinitionController::class, 'readRandomWords']);
 	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);
 	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review']);
-	Route::get('/review-newest/{reviewType?}', [DefinitionController::class, 'reviewNewest']);
-	Route::get('/review-newest-verbs/{reviewType?}', [DefinitionController::class, 'reviewNewestVerbs']);
-	Route::get('/review-random-words/{reviewType?}', [DefinitionController::class, 'reviewRandomWords']);
-	Route::get('/review-random-verbs/{reviewType?}', [DefinitionController::class, 'reviewRandomVerbs']);
-	Route::get('/review-top-20-verbs/{reviewType?}', [DefinitionController::class, 'reviewRankedVerbs']);
+	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
+	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);
+	Route::get('/review-random-words/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomWords']);
+	Route::get('/review-random-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomVerbs']);
+	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs']);
+
 
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);
