@@ -54,12 +54,22 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-		<li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('proj.Article', 2)}}</a></li>
-		<li class="nav-item"><a class="nav-link" href="{{lurl('books')}}">{{trans_choice('proj.Book', 2)}}</a></li>
-		<li class="nav-item"><a class="nav-link" href="{{lurl('dictionary')}}">{{__('proj.Dictionary')}}</a></li>
-		<li class="nav-item"><a class="nav-link" href="{{lurl('favorites')}}">{{trans_choice('ui.List', 2)}}</a></li>
+        @if (\App\Site::site()->hasOption('articles'))
+		    <li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('proj.Article', 2)}}</a></li>
+		@endif
+        @if (\App\Site::site()->hasOption('books'))
+    		<li class="nav-item"><a class="nav-link" href="{{lurl('books')}}">{{trans_choice('proj.Book', 2)}}</a></li>
+		@endif
+        @if (\App\Site::site()->hasOption('dictionary'))
+	    	<li class="nav-item"><a class="nav-link" href="{{lurl('dictionary')}}">{{__('proj.Dictionary')}}</a></li>
+		@endif
+        @if (\App\Site::site()->hasOption('lists'))
+		    <li class="nav-item"><a class="nav-link" href="{{lurl('favorites')}}">{{trans_choice('ui.List', 2)}}</a></li>
+        @endif
 	@if (isAdmin())
-		<li class="nav-item"><a class="nav-link" href="{{lurl('courses')}}">{{trans_choice('proj.Course', 2)}}</a></li>
+        @if (\App\Site::site()->hasOption('lists'))
+    		<li class="nav-item"><a class="nav-link" href="{{lurl('courses')}}">{{trans_choice('proj.Course', 2)}}</a></li>
+    	@endif
 	@endif
 	@auth
 		<li class="nav-item dropdown">

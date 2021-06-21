@@ -1,12 +1,13 @@
 DB Changes:
 
-2021-02:
+NEW:
+ALTER TABLE `sites` ADD `options` VARCHAR(255) NOT NULL COMMENT 'key=value;' AFTER `frontpage`;
+
+Done:
 update `definitions` set `rank` = 0 where 1 and `definitions`.`rank` is null
 ALTER TABLE `lessons` ADD `release_flag` TINYINT NULL AFTER `break_seconds`, ADD `wip_flag` TINYINT NULL AFTER `release_flag`;
 ALTER TABLE `entries` ADD `options` VARCHAR(500) NULL AFTER `wip_flag`;
 ALTER TABLE `entries` CHANGE `display_order` `display_order` FLOAT(7,2) NULL DEFAULT NULL;
-
-Done:
 ALTER TABLE `lessons` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
 ALTER TABLE `courses` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
 ALTER TABLE `definitions` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `wip_flag`;

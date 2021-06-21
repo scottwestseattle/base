@@ -78,6 +78,22 @@ class Site extends Model
         return self::site()->id;
     }
 
+    static public function hasOption($key)
+    {
+        $rc = false;
+
+        if (isset(self::$_site->options) && strlen(self::$_site->options) > 0)
+        {
+            $options = self::$_site->options;
+            if (stristr($options, $key) != NULL)
+            {
+                $rc = true;
+            }
+        }
+
+        return $rc;
+    }
+
     static public function get($domain = null)
     {
 	    //

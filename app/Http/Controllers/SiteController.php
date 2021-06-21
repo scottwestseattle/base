@@ -142,6 +142,7 @@ class SiteController extends Controller
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
 		$record->frontpage = copyDirty($record->frontpage, $request->frontpage, $isDirty, $changes);
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
+		$record->options = copyDirty($record->options, $request->options, $isDirty, $changes);
 
 		if ($isDirty)
 		{

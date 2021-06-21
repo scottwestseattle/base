@@ -555,7 +555,9 @@ function read(text, charIndex, textId = '#slideDescription')
 
 	_utter = new SpeechSynthesisUtterance();
 	_utter.volume = 1; // range is 0-1
-	_utter.rate = 1;  // range is 0-1, todo: make setable
+
+	_utter.rate = .75;  // range is 0-1, todo: make setable
+    _utter.rate = 1.0;
 
 	if (deck.voice != null)
 	{
