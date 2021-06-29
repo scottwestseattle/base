@@ -43,6 +43,11 @@ $prefix = 'books';
 				</div>
 
 				<div class="entry-title-div mb-3">
+					<label class="tiny">Chapter</label>
+					<input type="text" id="display_order" name="display_order" placeholder="Chapter" class="form-control" value="{{$record->display_order}}" />
+				</div>
+
+				<div class="entry-title-div mb-3">
 					<label class="tiny">Book (has to match to link chapter)</label>
 					<input type="text" id="source" name="source" placeholder="Source" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source}}" />
 				</div>

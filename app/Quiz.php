@@ -17,6 +17,7 @@ define('REVIEWTYPE_FIB', 2);
 define('REVIEWTYPE_MC_RANDOM', 3);
 define('REVIEWTYPE_MC_FIXED', 4);
 define('REVIEWTYPE_MC_MIXED', 5);
+define('REVIEWTYPE_WHEELOFFORTUNE', 6);
 define('REVIEWTYPE_DEFAULT', REVIEWTYPE_MC_RANDOM);
 
 class Quiz
@@ -259,6 +260,12 @@ class Quiz
 		{
 			$options['prompt'] = 'Tap or click to continue';
 			$view = 'shared.flashcards';
+			$loadJs = 'qnaFlashcards.js';
+		}
+		else if ($type == REVIEWTYPE_WHEELOFFORTUNE)
+		{
+			$options['prompt'] = 'Tap or click to continue';
+			$view = 'shared.wheeloffortune';
 			$loadJs = 'qnaFlashcards.js';
 		}
 

@@ -63,7 +63,7 @@ class BookController extends Controller
     {
 		//todo: $this->saveVisitor(LOG_MODEL_BOOKS, LOG_PAGE_INDEX);
 
-		$records = Entry::getRecentList(ENTRY_TYPE_BOOK, 5);
+		$records = Entry::getRecentList(['type' => ENTRY_TYPE_BOOK, 'id' => getLanguageId()], 5);
 		$books = Entry::getBookTags();
 
     	return view(VIEWS . '.index', [
@@ -223,7 +223,7 @@ class BookController extends Controller
 		$record->source				= trimNull($request->source);
 		$record->source_credit		= trimNull($request->source_credit);
 		$record->source_link		= trimNull($request->source_link);
-		//todo: $record->display_date 		= Controller::getSelectedDate($request);
+		$record->display_order 		= floatval($request->display_order);
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_BOOK;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
@@ -244,7 +244,7 @@ class BookController extends Controller
 				$status = 'danger';
 			}
 
-			logInfo(LOG_CLASS, __('base.' . $msg), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('proj.' . $msg), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{

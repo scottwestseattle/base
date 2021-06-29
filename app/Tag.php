@@ -58,7 +58,7 @@ class Tag extends Model
     public function books()
     {
 		// many to many
-        return $this->belongsToMany('App\Entry')->orderBy('display_date');
+        return $this->belongsToMany('App\Entry')->orderBy('display_order');
     }
 
     public function definitions()

@@ -488,6 +488,7 @@ class Entry extends Model
 	{
 		$type = intval($parms['type']);
 		$languageFlag = $parms['id'];
+		$languageCondition = '=';
 		$records = [];
 		$tag = self::getRecentTag();
 
@@ -539,7 +540,7 @@ class Entry extends Model
 					})
 					->select('entries.*')
 					->whereNull('entries.deleted_at')
-					->where('entries.language_flag', $parms['condition'], $parms['id'])
+					->where('entries.language_flag', $languageCondition, $languageFlag)
 					->where('entries.type_flag', $type)
 					->where('entries.release_flag', $releaseCondition, $releaseFlag)
 					->orderByRaw($orderBy)

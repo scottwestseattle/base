@@ -135,4 +135,5 @@ return [
 'Reader' => 'Reader',
 'End of the list of :count items.' => 'End of the list of :count items.',
 'Text is too short' => 'Text is too short',
+'Book has been updated' => 'Book has been updated',
 ];

@@ -904,9 +904,18 @@ class Definition extends Model
 		$cnt = 0;
 		foreach($records as $record)
 		{
-			$question = $record->title;
-			$translation = getOrSetString($record->translation_en, $question . ': translation not set');
-			$definition = getOrSetString($record->definition, $question . ': definition not set');
+		    if ($record->type_flag == DEFTYPE_SNIPPET)
+		    {
+                $question = 'Scenario'; // . ($cnt + 1); // it's going to be randomized
+                $translation = getOrSetString($record->examples, $question . ': examples not set');
+                $definition = getOrSetString($record->definition, $question . ': definition not set');
+		    }
+		    else
+		    {
+                $question = $record->title;
+                $translation = getOrSetString($record->translation_en, $question . ': translation not set');
+                $definition = getOrSetString($record->definition, $question . ': definition not set');
+		    }
 
             $qna[$cnt]['q'] = $question;
             $qna[$cnt]['a'] = $translation;
