@@ -388,7 +388,7 @@ class BookController extends Controller
             $lines = self::getLines($chapter, $lines);
         }
 
-		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag);
+		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, '/books');
     }
 
     // this is read chapter
@@ -401,13 +401,15 @@ class BookController extends Controller
 		$lines = [];
 		$lines = self::getLines($record, $lines);
 
-		return $this->doRead($lines, $record->title, $record->id, $readLocation, $record->language_flag);
+		$backLink = '/books/show/' . $record->permalink;
+
+		return $this->doRead($lines, $record->title, $record->id, $readLocation, $record->language_flag, $backLink);
     }
 
 
-    public function doRead($lines, $title, $recordId, $readLocation, $language)
+    public function doRead($lines, $title, $recordId, $readLocation, $language, $backLink)
     {
-        $options = ['return' => PREFIX];
+        $options = ['return' => $backLink];
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),

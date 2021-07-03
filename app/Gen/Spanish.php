@@ -1510,6 +1510,7 @@ class Spanish
 	{
 		$lines = [];
 
+        // split by separate lines
 		$paragraphs = explode("\r\n", strip_tags(html_entity_decode($text)));
 		foreach($paragraphs as $p)
 		{
@@ -1520,16 +1521,22 @@ class Spanish
 
 			// sentences end with: ". " or "'. " or "\". " or "? " or "! "
 			if (true) // split on more characters because the lines are too long
+			{
+			    // try to format embedded periods so lines don't get split on them, like 1. 100. or 200.
+			    $p = preg_replace('/[0-9.]\./', '$0::', $p); //new and lightly tested
+
 				$sentences = preg_split('/(\. |\.\' |\.\" |\? |\! )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+			}
 			else
 				// the original to avoid splitting on conversation
 				$sentences = preg_split('/(\. |\.\' |\.\" )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
 
-			//$sentences = explode($eos, $p);
 			for($i = 0; $i < count($sentences); $i++)
 			{
 				// get the sentence text
 				$s = self::formatForReading($sentences[$i]);
+
+			    $s = str_replace('.::', '.', $s); //new and lightly tested
 
 				// get the delimiter which is stored in the next array entry
 				$i++;
