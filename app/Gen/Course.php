@@ -28,7 +28,7 @@ class Course extends Model
 
     public function lessons()
     {
-    	return $this->hasMany('App\Lesson', 'parent_id', 'id')->where('lessons.deleted_flag', 0)->orderBy('lesson_number');
+    	return $this->hasMany('App\Gen\Lesson', 'parent_id', 'id')->where('lessons.deleted_flag', 0)->orderBy('lesson_number');
     }
 
     public function isFinished()

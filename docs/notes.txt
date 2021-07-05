@@ -45,3 +45,7 @@ How to add a Helper file
 =====================================================================
 return 404, page not found: abort(404)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*** LINUS COMMANDS ***
+Find and redirect errors
+sudo find / -name RssReader.java 2>/dev/null
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -68,6 +68,11 @@ class Controller extends BaseController
         Cookie::queue('languageId', intval($languageId), MS_YEAR);
     }
 
+	static function historyRss()
+	{
+        return '';
+    }
+
     static public function reader(Entry $entry, $options)
     {
         $record = $entry;

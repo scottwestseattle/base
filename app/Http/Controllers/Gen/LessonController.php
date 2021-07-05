@@ -13,6 +13,7 @@ use Log;
 use App\Gen\Course;
 use App\Gen\Lesson;
 use App\Gen\Spanish;
+use App\Image;
 use App\Entry;
 use App\Quiz;
 use App\User;
@@ -751,7 +752,12 @@ class LessonController extends Controller
 
 	public function start(Lesson $lesson)
     {
-		Lesson::setCurrentLocation($lesson->id);
+		$prev = Lesson::getPrev($lesson);
+		$next = Lesson::getNext($lesson);
+		$nextChapter = $lesson->getNextChapter();
+
+        $lastLesson = (!isset($next) && !isset($nextChapter)); // if on last lesson
+		Lesson::setCurrentLocation($lesson->parent_id, $lesson->id, $lastLesson);
 
 		$records = Lesson::getIndex($lesson->parent_id, $lesson->lesson_number);
 
@@ -770,6 +776,16 @@ class LessonController extends Controller
 				}
 			}
 		}
+
+        //todo sbw: hardcode the seconds until we can edit them
+        if (true)
+        {
+            foreach($records as $record)
+            {
+                $record->seconds = 30;
+                $record->break_seconds = 15;
+            }
+        }
 
 		$times = Lesson::getTimes($records);
 

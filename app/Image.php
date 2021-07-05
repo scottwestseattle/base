@@ -31,7 +31,7 @@ class Image
                 catch (\Exception $e)
                 {
                     // ignore the read errors
-                    dd('file type: ' . $e);
+                    //dd('file type: ' . $e);
                 }
 
             }

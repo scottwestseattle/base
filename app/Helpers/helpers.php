@@ -212,6 +212,18 @@ if (!function_exists('domainName')) {
 	}
 }
 
+if (!function_exists('isLocalhost')) {
+	function isLocalhost()
+	{
+	    $rc = false;
+
+		if (domainName() == 'localhost')
+		    $rc = true;
+
+		return $rc;
+	}
+}
+
 if (!function_exists('appName')) {
 	function appName()
 	{

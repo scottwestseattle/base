@@ -26,7 +26,7 @@
 	    data-photo="{{$r->main_photo}}"
 	    data-seconds="{{$r->getTime()['runSeconds']}}"
 	    data-between="{{$r->getTime()['breakSeconds']}}"
-	    data-countdown="{{App\Tools::isLocalhost() ? '1' : '10'}}"
+	    data-countdown="{{isLocalhost() ? '1' : '10'}}"
 	>
 	</div>
 @endforeach
@@ -52,7 +52,7 @@
 		<!-- Top Row Buttons -->
 		<!-------------------------------------------------------->
 		<div style="margin: 0 5px 0 0;">
-			<span style="font-size:1.3em; margin-right:10px;" class=""><a class="" role="" href="/{{$returnPath}}/{{$record->parent_id}}"><span class="glyphicon glyphicon-button-back-to"></span></a></span>
+			<span style="font-size:1.3em; margin-right:10px;" class=""><a class="" role="" href="/{{$returnPath}}/{{$record->parent_id}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a></span>
 			<span style="font-size:1.3em; margin-right:10px;" class=""><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
 			<span style="font-size:1.3em; margin-right:10px;" class=""><a onclick="event.preventDefault(); pause()" href=""><span id="button-pause" class="glyphicon glyphicon-pause"></span></a></span>
 			<span style="font-size:1.3em; margin-right:10px;" class=""><a onclick="event.preventDefault(); skip()" href=""><span id="button-skip" class="glyphicon glyphicon-step-forward"></span></a></span>

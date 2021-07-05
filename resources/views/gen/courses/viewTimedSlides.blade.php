@@ -1,23 +1,26 @@
-@extends('layouts.app')
+@php
+    $prefix = isset($prefix) ? $prefix : 'gen.courses';
+@endphp
 
+@extends('layouts.app')
+@section('title', __('proj.View Course') )
+@section('menu-submenu')@component('gen.courses.menu-submenu', ['prefix' => $prefix])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">
 
-	@component($prefix . '.menu-submenu', ['record' => $record, 'prefix' => $prefix, 'isAdmin' => $isAdmin])@endcomponent
-
 	<div class="page-nav-buttons">
 		<a class="btn btn-success btn-md" role="button" href="/{{$prefix}}/">
-		    @LANG('content.Back to Course List')<span class="glyphicon glyphicon-button-back-to"></span>
+		    @LANG('proj.Back to Course List')<span class="glyphicon glyphicon-button-back-to"></span>
 		</a>
 	</div>
 
 	<h3 name="title" class="">{{$record->title }}
-		@if ($isAdmin)
-			@if (!\App\Status::isFinished($record->wip_flag))
+		@if (isAdmin())
+			@if (!$record->isFinished())
 				<a class="btn {{($wip=\App\Status::getWipStatus($record->wip_flag))['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{$wip['text']}}</a>
 			@endif
-			@if (!\App\Status::isPublished($record->release_flag))
+			@if (!$record->isPublic())
 				<a class="btn {{($release=\App\Status::getReleaseStatus($record->release_flag))['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{$release['text']}}</a>
 			@endif
 		@endif

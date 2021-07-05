@@ -48,7 +48,7 @@
             'prefix' => $prefix,
             'prompt' => 'Select Exercise',
             'empty' => 'Select Main Photo',
-            'options' => App\Tools::getPhotos($photoPath),
+            'options' => App\Image::getPhotos($photoPath),
             'selected_option' => $record->main_photo,
             'field_name' => 'main_photo',
             'prompt_div' => true,

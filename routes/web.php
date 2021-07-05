@@ -69,6 +69,7 @@ Route::post('/search', [HomeController::class, 'search']);
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
+Route::get('/history/rss', [Controller::class, 'historyRss']);
 
 // Articles
 Route::group(['prefix' => 'articles'], function () {
@@ -573,6 +574,7 @@ Route::group(['prefix' => 'courses'], function () {
 
 	Route::get('/view/{course}', [CourseController::class, 'view']);
 	Route::get('/rss', [CourseController::class, 'rss']);
+	Route::get('/rss-reader', [CourseController::class, 'rssReader']);
 	Route::get('/start', [CourseController::class, 'start']);
 
 	// view
@@ -619,6 +621,7 @@ Route::group(['prefix' => 'lessons'], function () {
 	Route::get('/log-quiz/{lessonId}/{score}', [LessonController::class, 'logQuiz']);
 	Route::get('/start/{lesson}/', [LessonController::class, 'start']);
 	Route::get('/rss/{lesson}/', [LessonController::class, 'rss']);
+	Route::get('/rss-reader/{lesson}', [LessonController::class, 'rssReader']);
 
 	// add/create
 	Route::get('/add',[LessonController::class, 'add']);
