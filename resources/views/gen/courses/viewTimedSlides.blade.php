@@ -10,7 +10,7 @@
 <div class="container page-normal">
 
 	<div class="page-nav-buttons">
-		<a class="btn btn-success btn-md" role="button" href="/{{$prefix}}/">
+		<a class="btn btn-success btn-md" role="button" href="/courses/admin/">
 		    @LANG('proj.Back to Course List')<span class="glyphicon glyphicon-button-back-to"></span>
 		</a>
 	</div>

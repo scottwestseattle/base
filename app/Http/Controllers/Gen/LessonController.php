@@ -111,7 +111,7 @@ class LessonController extends Controller
         'leg-lift' => 'Lay flat on your back with arms by your sides and lift both legs about one foot into the air while keeping them straight.',
     ];
 
-    public function add(Course $course)
+    public function add(Course $course = null)
     {
 		$lessons = null;
 		$chapter = 1;
@@ -433,6 +433,7 @@ class LessonController extends Controller
     public function delete(Request $request, Lesson $lesson)
     {
 		$record = $lesson;
+        $courseId = $record->parent_id;
 
 		try
 		{
@@ -446,7 +447,7 @@ class LessonController extends Controller
    			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
 		}
 
-		return redirect(REDIRECT_ADMIN);
+		return redirect('/courses/view/' . $courseId);
     }
 
     public function undelete()
@@ -778,7 +779,7 @@ class LessonController extends Controller
 		}
 
         //todo sbw: hardcode the seconds until we can edit them
-        if (true)
+        if (false)
         {
             foreach($records as $record)
             {

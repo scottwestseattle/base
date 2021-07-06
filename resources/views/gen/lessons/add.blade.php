@@ -13,10 +13,12 @@
 
 		@component('components.control-accent-chars-esp', ['flat' => true])@endcomponent
 
-        @if ($course->isTimedSlides())
-            <input type="hidden" name="parent_id" id="parent_id" value="{{$course->id}}" />
-        @else
-            <div class="form-group">
+        <div class="form-group">
+
+            @if ($course->isTimedSlides())
+                <input type="hidden" name="parent_id" id="parent_id" value="{{$course->id}}" />
+                <h3>{{trans_choice('proj.Course', 1)}}: {{$course->title}}</h3>
+            @else
                 <label for="parent_id" class="control-label">{{trans_choice('proj.Course', 2)}}:</label>
                 <select name="parent_id" class="form-control">
                     <option value="0">(@LANG('proj.Select Course'))</option>
@@ -24,8 +26,9 @@
                         <option value="{{$record->id}}" {{ isset($course->id) && $record->id == $course->id ? 'selected' : ''}}>{{$record->title}}</option>
                     @endforeach
                 </select>
-            </div>
-        @endif
+            @endif
+
+        </div>
 
         <!--------------------------------------------------------------------------->
         <!-- Lesson Type Dropdown -->
@@ -62,9 +65,9 @@
 
 			<div class="form-group">
 			@component('components.control-dropdown-photos', [
-				'prompt' => 'Select Exercise',
-				'empty' => 'Select Main Photo',
-				'options' => App\Tools::getPhotos($photoPath),
+				'prompt' => __('proj.Select Exercise'),
+				'empty' => __('proj.Select Main Photo'),
+                'options' => App\Image::getPhotos($photoPath),
 				'selected_option' => null,
 				'field_name' => 'main_photo',
 				'prompt_div' => true,
@@ -83,7 +86,7 @@
 
         @if ($course->isTimedSlides())
 			<div class="form-group">
-				<label for="seconds" class="control-label">@LANG('proj.Seconds'):</label>
+				<label for="seconds" class="control-label">{{trans_choice('ui.Second', 2)}}:</label>
 				<input type="number" name="seconds" id="seconds" class="form-control" value="{{TIMED_SLIDES_DEFAULT_SECONDS}}" />
 				@component('components.control-numinc', ['id' => 'seconds', 'multiple' => 5])@endcomponent
 			<div>
@@ -126,7 +129,7 @@
 
         @if ($course->isTimedSlides())
 			<div class="form-group">
-				<label for="reps" class="control-label">@LANG('gen.Reps'):</label>
+				<label for="reps" class="control-label">@LANG('proj.Repititions'):</label>
 				<input type="number" name="reps" class="form-control" />
 			<div>
 		@endif

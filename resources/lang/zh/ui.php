@@ -152,4 +152,5 @@ return [
 'three' => '三',
 'four' => '四',
 'five' => '五',
+'Second' => '秒|秒',
 ];

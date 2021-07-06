@@ -136,4 +136,8 @@ return [
 'End of the list of :count items.' => ':count个项目的清单结束。',
 'Text is too short' => '文本太短',
 'Book has been updated' => '书籍已被更新',
+'Courses Under Development' => '正在开发的课程',
+'Break Seconds' => '破秒',
+'Select Exercise' => '选择运动',
+'Repititions' => '重复',
 ];

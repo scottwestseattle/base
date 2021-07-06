@@ -152,4 +152,5 @@ return [
 'three' => 'three',
 'four' => 'four',
 'five' => 'five',
+'Second' => 'Second|Seconds',
 ];

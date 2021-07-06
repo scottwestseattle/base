@@ -46,8 +46,8 @@
         @component('components.control-dropdown-photos', [
             'record' => $record,
             'prefix' => $prefix,
-            'prompt' => 'Select Exercise',
-            'empty' => 'Select Main Photo',
+            'prompt' => __('proj.Select Exercise'),
+            'empty' => __('proj.Select Main Photo'),
             'options' => App\Image::getPhotos($photoPath),
             'selected_option' => $record->main_photo,
             'field_name' => 'main_photo',
@@ -71,7 +71,7 @@
 
         <!-- Seconds -->
         <div class="form-group">
-            <label for="seconds" class="control-label">@LANG('proj.Seconds'):</label>
+            <label for="seconds" class="control-label">{{trans_choice('ui.Second', 2)}}:</label>
             <input type="number" min="0" step="5" name="seconds" id="seconds" class="form-control form-control-100"  value="{{$record->seconds}}" />
             @component('components.control-numinc', ['id' => 'seconds', 'multiple' => 5])@endcomponent
         </div>
@@ -86,7 +86,7 @@
         @if (false)
         <!-- Reps -->
         <div class="form-group">
-            <label for="reps" class="control-label">@LANG('proj.Reps'):</label>
+			<label for="reps" class="control-label">@LANG('proj.Repitions'):</label>
             <input type="number" name="reps" class="form-control" value="{{$record->reps}}" />
         </div>
         @endif
@@ -223,7 +223,6 @@
 
 @endsection
 
-@if (false)
 <script>
 
 function showMainPhoto(id)
@@ -232,4 +231,4 @@ function showMainPhoto(id)
 }
 
 </script>
-@endif
+

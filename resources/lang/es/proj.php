@@ -136,4 +136,8 @@ return [
 'End of the list of :count items.' => 'Fin de la lista de :count elementos.',
 'Text is too short' => 'El texto es demasiado corto',
 'Book has been updated' => 'El libro ha sido actualizado',
+'Courses Under Development' => 'Cursos en desarrollo',
+'Break Seconds' => 'Segundos de descanso',
+'Select Exercise' => 'Seleccionar ejercicio',
+'Repititions' => 'Repeticiones',
 ];

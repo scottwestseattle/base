@@ -624,8 +624,7 @@ Route::group(['prefix' => 'lessons'], function () {
 	Route::get('/rss-reader/{lesson}', [LessonController::class, 'rssReader']);
 
 	// add/create
-	Route::get('/add',[LessonController::class, 'add']);
-	Route::get('/add/{course}',[LessonController::class, 'add']);
+	Route::get('/add/{course?}',[LessonController::class, 'add']);
 	Route::post('/create',[LessonController::class, 'create']);
 
 	// edit/update
