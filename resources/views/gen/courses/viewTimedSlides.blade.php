@@ -13,6 +13,9 @@
 		<a class="btn btn-success btn-md" role="button" href="/courses/admin/">
 		    @LANG('proj.Back to Course List')<span class="glyphicon glyphicon-button-back-to"></span>
 		</a>
+		<a class="btn btn-primary btn-md" role="button" href="/history/">
+		    @LANG('ui.History')<span class="glyphicon glyphicon-button-back-to"></span>
+		</a>
 	</div>
 
 	<h3 name="title" class="">{{$record->title }}

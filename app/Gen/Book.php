@@ -47,6 +47,10 @@ class Book extends Model
         return $record;
     }
 
+    static protected function getChapterCount()
+	{
+	}
+
     static protected function getNextChapter($entry, $next = true)
 	{
 		$record = null;

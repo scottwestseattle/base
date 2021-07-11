@@ -7,25 +7,19 @@
 
 	<h1>{{__('proj.Add Chapter')}}</h1>
 
+    @if (isset($book))
+    	<h2>{{$book->name}}</h2>
+    @endif
 	<form method="POST" action="/books/create">
 		<div class="form-control-big">
 
 			@if (isset($parent_id))
 				<input type="hidden" name="parent_id" value="{{$parent_id}}">
 			@endif
-
-
-			@if (isset($type_flag) && $type_flag == ENTRY_TYPE_LESSON)
-			@else
-			    @if (false)
-				    @component('components.control-dropdown-date', ['div' => true,
-				        'months' => $dates['months'],
-				        'years' => $dates['years'],
-				        'days' => $dates['days'],
-				        'filter' => $filter
-				    ])@endcomponent
-                @endif
-			@endif
+            @if (isset($book))
+                <input type="hidden" name="book_id" id="book_id" value="{{$book->id}}" />
+                <input type="hidden" name="source" id="source" value="{{$book->name}}" />
+            @endif
 
 			<div class="entry-title-div mb-3 mt-2">
 				<input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
@@ -35,9 +29,16 @@
 				<input tabindex="-1" type="text" id="permalink" name="permalink" class="form-control"  placeholder="Permalink" />
 			</div>
 
+            <div class="entry-title-div mb-3">
+                <input type="text" id="display_order" name="display_order" placeholder="Chapter" class="form-control" value="{{isset($chapter) ? $chapter : ''}}"
+                />
+            </div>
+
+            @if (!isset($book))
 			<div class="entry-title-div mb-3">
 				<input type="text" id="source" name="source" placeholder="Book (has to match to link this chapter)" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
 			</div>
+			@endif
 
 			<div class="entry-title-div mb-3">
 				<input type="text" id="source_credit" name="source_credit" placeholder="Author" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />

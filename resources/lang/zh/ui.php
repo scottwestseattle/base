@@ -153,4 +153,6 @@ return [
 'four' => '四',
 'five' => '五',
 'Second' => '秒|秒',
+'History' => '历史',
+'Session' => '会议',
 ];

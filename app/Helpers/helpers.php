@@ -909,3 +909,22 @@ if (!function_exists('getVersionJs')) {
 		return '1.0';
 	}
 }
+
+if (!function_exists('secondsToTime')) {
+	function secondsToTime($seconds)
+	{
+	    $seconds = intval($seconds);
+	    $time = '';
+
+        $hours = floor($seconds / 3600);
+        $mins = floor($seconds / 60 % 60);
+        $secs = floor($seconds % 60);
+
+        if ($hours > 0)
+            $time = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
+        else
+            $time = sprintf('%02d:%02d', $mins, $secs);
+
+        return $time;
+    }
+}

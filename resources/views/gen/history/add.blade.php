@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('proj.Add Template'))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['prefix' => 'templates'])@endcomponent @endsection
+@section('title', __('proj.Add History'))
+@section('menu-submenu')@component('gen.history.menu-submenu', ['prefix' => 'histories'])@endcomponent @endsection
 @section('content')
 <div class="">
-	<h1>{{__('proj.Add Template')}}</h1>
-	<form method="POST" action="/templates/create">
+	<h1>{{__('proj.Add History')}}</h1>
+	<form method="POST" action="/histories/create">
 
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

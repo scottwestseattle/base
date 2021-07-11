@@ -153,4 +153,6 @@ return [
 'four' => 'four',
 'five' => 'five',
 'Second' => 'Second|Seconds',
+'History' => 'History',
+'Session' => 'Session',
 ];

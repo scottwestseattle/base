@@ -1079,10 +1079,10 @@ class Lesson extends Model
 		$breakSeconds = isset($this->break_seconds) ? intval($this->break_seconds) : TIMED_SLIDES_DEFAULT_BREAK_SECONDS;
 
         $rc['runSeconds'] = $seconds;
-        $rc['runTime'] = self::secondsToTime($seconds);
+        $rc['runTime'] = secondsToTime($seconds);
 
         $rc['breakSeconds'] = $breakSeconds;
-        $rc['breakTime'] = self::secondsToTime($breakSeconds);
+        $rc['breakTime'] = secondsToTime($breakSeconds);
 
 		return $rc;
 	}
@@ -1101,8 +1101,8 @@ class Lesson extends Model
 		$rc['seconds'] = $seconds;
 		$rc['breakSeconds'] = $breakSeconds;
 
-		$rc['timeSeconds'] = self::secondsToTime($seconds);
-		$rc['timeTotal'] = self::secondsToTime($seconds + $breakSeconds);
+		$rc['timeSeconds'] = secondsToTime($seconds);
+		$rc['timeTotal'] = secondsToTime($seconds + $breakSeconds);
 
 		return $rc;
 	}
@@ -1123,23 +1123,4 @@ class Lesson extends Model
 
 		return $button;
 	}
-
-
-	static public function secondsToTime($seconds)
-	{
-	    $seconds = intval($seconds);
-	    $time = '';
-
-        $hours = floor($seconds / 3600);
-        $mins = floor($seconds / 60 % 60);
-        $secs = floor($seconds % 60);
-
-        if ($hours > 0)
-            $time = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
-        else
-            $time = sprintf('%02d:%02d', $mins, $secs);
-
-        return $time;
-    }
-
 }

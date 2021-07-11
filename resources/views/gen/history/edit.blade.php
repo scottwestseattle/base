@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', __('proj.Edit Template'))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('title', __('proj.Edit History'))
+@section('menu-submenu')@component('gen.history.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('proj.Edit Template')}}</h1>
+	<h1>{{__('proj.Edit History')}}</h1>
 
-	<form method="POST" id="form-edit" action="/templates/update/{{$record->id}}">
+	<form method="POST" id="form-edit" action="/histories/update/{{$record->id}}">
 
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

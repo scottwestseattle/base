@@ -140,4 +140,5 @@ return [
 'Break Seconds' => 'Break Seconds',
 'Select Exercise' => 'Select Exercise',
 'Repititions' => 'Repititions',
+'Program' => 'Program',
 ];

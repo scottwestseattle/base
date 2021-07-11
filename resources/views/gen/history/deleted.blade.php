@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', __('proj.Deleted Templates'))
-@section('menu-submenu')@component('gen.templates.menu-submenu')@endcomponent @endsection
+@section('title', __('proj.Deleted Historys'))
+@section('menu-submenu')@component('gen.history.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{__('proj.Deleted Templates')}} ({{count($records)}})</h1>
+	<h1>{{__('proj.Deleted Historys')}} ({{count($records)}})</h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>
@@ -14,7 +14,7 @@
 		<tbody>
 		@foreach($records as $record)
 			<tr>
-				<td class="index-button"><a href='/templates/undelete/{{$record->id}}'>{{__('ui.Undelete')}}</a></td>
+				<td class="index-button"><a href='/histories/undelete/{{$record->id}}'>{{__('ui.Undelete')}}</a></td>
 				<td>{{$record->title}}</td>
 				<td>{{Str::limit($record->description, DESCRIPTION_LIMIT_LENGTH)}}</td>
 				<td class="index-button">{{__(App\Status::getReleaseStatus($record->release_flag)['label'])}}</td>

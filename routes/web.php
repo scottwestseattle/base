@@ -69,7 +69,6 @@ Route::post('/search', [HomeController::class, 'search']);
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
-Route::get('/history/rss', [Controller::class, 'historyRss']);
 
 // Articles
 Route::group(['prefix' => 'articles'], function () {
@@ -541,6 +540,7 @@ Route::group(['prefix' => 'books'], function () {
 
 	// add
 	Route::get('/add', [BookController::class, 'add']);
+	Route::get('/add-chapter/{tag}', [BookController::class, 'addChapter']);
 	Route::post('/create', [BookController::class, 'create']);
 
 	// edit
@@ -650,4 +650,37 @@ Route::group(['prefix' => 'lessons'], function () {
 
     // catch all
 	Route::get('/{parent_id}', [LessonController::class, 'index']);
+});
+
+// GENERATED for History model
+use App\Http\Controllers\Gen\HistoryController;
+
+// Histories
+Route::group(['prefix' => 'history'], function () {
+	Route::get('/', [HistoryController::class, 'index']);
+	Route::get('/admin', [HistoryController::class, 'admin']);
+	Route::get('/index', [HistoryController::class, 'index']);
+    Route::get('/rss', [HistoryController::class, 'rss']);
+
+	// view
+	Route::get('/show/{history}', [HistoryController::class, 'view']);
+
+	// add
+	Route::get('/add', [HistoryController::class, 'add']);
+	Route::get('/add-public/{programName}/{programId}/{sessionName}/{sessionId}/{seconds}', [HistoryController::class, 'addPublic']);
+
+	Route::post('/create', [HistoryController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{history}', [HistoryController::class, 'edit']);
+	Route::post('/update/{history}', [HistoryController::class, 'update']);
+
+	// delete
+	Route::get('/confirmdelete/{history}', [HistoryController::class, 'confirmDelete']);
+	Route::post('/delete/{history}', [HistoryController::class, 'delete']);
+	Route::get('/delete/{history}', [HistoryController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [HistoryController::class, 'deleted']);
+	Route::get('/undelete/{id}', [HistoryController::class, 'undelete']);
 });

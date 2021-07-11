@@ -140,4 +140,5 @@ return [
 'Break Seconds' => '破秒',
 'Select Exercise' => '选择运动',
 'Repititions' => '重复',
+'Program' => '程序',
 ];

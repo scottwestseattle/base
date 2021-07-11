@@ -83,6 +83,19 @@ class BookController extends Controller
 			]);
 	}
 
+    public function addChapter(Tag $tag)
+    {
+        $book = $tag;
+        $chapter = count($book->entries) + 1;
+
+		return view(VIEWS . '.add', [
+			'languageOptions' => getLanguageOptions(),
+			'selectedOption' => getLanguageId(),
+			'chapter' => $chapter,
+			'book' => $book,
+			]);
+	}
+
     public function create(Request $request)
     {
 		$record = new Entry();
@@ -95,6 +108,7 @@ class BookController extends Controller
 		$record->source_credit		= trimNull($request->source_credit);
 		$record->source_link		= trimNull($request->source_link);
 		$record->display_date 		= timestamp();
+		$record->display_order 		= $request->display_order;
 		$record->release_flag 		= RELEASEFLAG_PUBLIC;
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
@@ -189,6 +203,7 @@ class BookController extends Controller
         $options['index'] = 'books';
         $options['backLinkText'] = __('ui.Back to List');
         $options['page_title'] = trans_choice('proj.Chapter', 1) . ' - ' . $record->title;
+        $options['book'] = Book::getBook($record);
 
         $next = Book::getNextChapter($record);
         $prev = Book::getNextChapter($record, /* next = */ false);

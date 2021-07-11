@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', __('proj.Publish Template'))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('title', __('proj.Publish History'))
+@section('menu-submenu')@component('gen.history.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
 
-<h1>{{__('proj.Publish Template')}}</h1>
+<h1>{{__('proj.Publish History')}}</h1>
 
-<form method="POST" action="/templates/publishupdate/{{$record->id}}">
+<form method="POST" action="/histories/publishupdate/{{$record->id}}">
 
     <h3 name="title" class="">{{$record->title}}</h3>
 

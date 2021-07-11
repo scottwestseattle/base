@@ -38,6 +38,9 @@ $showPrevNext = (isset($prev) || isset($next));
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true])@endcomponent
                 </span>
+                @if (isset($options['book']))
+                    <div style="margin-right:15px; float:left;"><a href="/books/add-chapter/{{$options['book']->id}}">Add Chapter</a></div>
+                @endif
                 @endif
                 @if (isset($record->definitions) && count($record->definitions) > 0)
                     <div class="mr-2 float-left">

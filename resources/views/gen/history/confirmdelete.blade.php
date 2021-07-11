@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', __('proj.Delete Template'))
-@section('menu-submenu')@component('gen.templates.menu-submenu', ['record' => $record]) @endcomponent @endsection
+@section('title', __('proj.Delete History'))
+@section('menu-submenu')@component('gen.history.menu-submenu', ['record' => $record]) @endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('proj.Delete Template')}}</h1>
-	<form method="POST" action="/templates/delete/{{ $record->id }}">
+	<h1>{{__('proj.Delete History')}}</h1>
+	<form method="POST" action="/histories/delete/{{ $record->id }}">
 
 		<h4>{{$record->title}}</h4>
 

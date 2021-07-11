@@ -4,6 +4,7 @@
 DB Changes:
 
 NEW:
+ALTER TABLE `histories` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
 ALTER TABLE `sites` ADD `options` VARCHAR(255) NOT NULL COMMENT 'key=value;' AFTER `frontpage`;
 
 Done:
@@ -25,6 +26,17 @@ UPDATE `definitions` set language_flag = 1 WHERE 1;
 UPDATE `definitions` set type_flag = 10 WHERE 1;
 
 =====================================================================
+== Switching lochost projects on MacBook
+
+cd /etc/apache2
+sudo vi httpd.conf
+# look for DocumentRoot and <Directory ...>
+
+# restart apache service
+sudo  apachectl restart
+
+=====================================================================
+
 How to add a Helper file
 - create helper.php in app\Helpers
 - use if (!function_exists('ip_address')) { function() };
