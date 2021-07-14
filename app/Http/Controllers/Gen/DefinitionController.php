@@ -368,7 +368,8 @@ class DefinitionController extends Controller
 		$changes = '';
 		$parent = null;
 
-		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
+		$record->title_long = copyDirty($record->title_long, $request->title_long, $isDirty, $changes);
+		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
 
 		if ($isDirty)
@@ -541,11 +542,11 @@ class DefinitionController extends Controller
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
                 $record->release_flag   = RELEASEFLAG_PUBLIC;
-                $record->examples	    = Str::limit($snippet, 500);
+                $record->title_long	    = Str::limit($snippet, 500);
                 $record->visitor_id     = getVisitorInfo()['hash'];
 
                 // make the permalink from the example text since the title says 'snippet-'
-                $text = getWords($record->examples, DEF_PERMALINK_WORDS); // only use the first X words
+                $text = getWords($record->title_long, DEF_PERMALINK_WORDS); // only use the first X words
                 $record->permalink		= createPermalink($text);
             }
 
@@ -1201,7 +1202,7 @@ class DefinitionController extends Controller
         $lines = [];
         foreach($records as $record)
         {
-    		$text = Spanish::getSentences($record->examples);
+    		$text = Spanish::getSentences($record->title_long);
     		$lines = array_merge($lines, $text);
         }
 
@@ -1253,13 +1254,15 @@ class DefinitionController extends Controller
         $lines = [];
         if ($type == DEFTYPE_DICTIONARY)
         {
+            // regular definition
 		    $lines = self::formatDefinitions($records);
         }
 		else
 		{
+		    // snippets?
             foreach($records as $record)
             {
-                $text = Spanish::getSentences($record->examples);
+                $text = Spanish::getSentences($record->title_long);
                 $lines = array_merge($lines, $text);
             }
 		}

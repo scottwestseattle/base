@@ -16,8 +16,13 @@
     <tbody>
     @foreach($records as $record)
         <tr>
-            <td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
-            <td><a href="/definitions/{{ blank($record->permalink) ? 'view/' . $record->id : $record->permalink }}">{{$record->title}}</a></td>
+            @if ($record->isSnippet())
+                <td class="icon"><a href='/practice/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
+                <td><a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title_long, 30)}}</a></td>
+            @else
+                <td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
+                <td><a href="/definitions/{{ blank($record->permalink) ? 'view/' . $record->id : $record->permalink }}">{{$record->title}}</a></td>
+            @endif
             <td class="">{{$record->type_flag}}</td>
             @if (isset($record->definition))
                 <td>{{Str::limit($record->definition, 200)}}</td>

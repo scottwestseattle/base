@@ -50,7 +50,7 @@
                 placeholder="{{__('proj.Enter text to read')}}"
                 rows="7"
                 style="font-size:18px;"
-            >{{isset($options['snippet']) ? $options['snippet']->examples : ''}}</textarea>
+            >{{isset($options['snippet']) ? $options['snippet']->title_long : ''}}</textarea>
             </div>
         </div>
 
@@ -113,8 +113,8 @@
                     <tbody>
                         <tr>
                             <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
-                                <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->examples, 200)}}</a>
-                                <input id="{{$record->id}}" type="hidden" value="{{$record->examples}}" />
+                                <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title_long, 200)}}</a>
+                                <input id="{{$record->id}}" type="hidden" value="{{$record->title_long}}" />
                             </td>
                         </tr>
                         <tr>
@@ -123,7 +123,7 @@
                                     <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
                                 </div>
                                 <div class="float-left" style="margin-top:2px; margin-right: 10px;">
-                                    <div class=""><a href="/definitions/stats/{{$record->id}}">{{str_word_count($record->examples)}} {{trans_choice('ui.Word', 2)}}</a></div>
+                                    <div class=""><a href="/definitions/stats/{{$record->id}}">{{str_word_count($record->title_long)}} {{trans_choice('ui.Word', 2)}}</a></div>
                                 </div>
                                 <div style="float:left;">
                                     @if (App\User::isAdmin())

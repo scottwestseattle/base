@@ -738,32 +738,6 @@ class Definition extends Model
 	}
 
 	// search checks title and forms
-    static public function searchSnippets($word)
-    {
-		$word = alpha($word);
-		$records = null;
-
-		if (isset($word))
-		{
-            try
-            {
-                $records = Definition::select()
-                    ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where('examples', 'LIKE', '%' . $word . '%')
-                    ->orderBy('title')
-                    ->get();
-            }
-            catch (\Exception $e)
-            {
-                $msg = 'Error finding word: ' . $word;
-                logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
-            }
-		}
-
-		return $records;
-	}
-
-	// search checks title and forms
     static public function search($word)
     {
 		$word = alphanum($word, /* strict = */ true);
@@ -851,6 +825,45 @@ class Definition extends Model
 	//
 	//////////////////////////////////////////////////////////////////////
 
+	// search checks title and forms
+    public function isSnippet()
+    {
+        $rc = false;
+
+		if ($this->type_flag == 1)
+		{
+            $rc = true;
+		}
+
+		return $rc;
+	}
+
+	// search checks title and forms
+    static public function searchSnippets($word)
+    {
+		$word = alpha($word);
+		$records = null;
+
+		if (isset($word))
+		{
+            try
+            {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('examples', 'LIKE', '%' . $word . '%')
+                    ->orderBy('title')
+                    ->get();
+            }
+            catch (\Exception $e)
+            {
+                $msg = 'Error finding word: ' . $word;
+                logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+            }
+		}
+
+		return $records;
+	}
+
 	static public function getSnippet($value)
 	{
 		$record = null;
@@ -906,9 +919,9 @@ class Definition extends Model
 		{
 		    if ($record->type_flag == DEFTYPE_SNIPPET)
 		    {
-                $question = 'Scenario'; // . ($cnt + 1); // it's going to be randomized
-                $translation = getOrSetString($record->examples, $question . ': examples not set');
-                $definition = getOrSetString($record->definition, $question . ': definition not set');
+                $question = getOrSetString($record->title_long, 'snippet not set');
+                $translation = getOrSetString($record->translation_en, 'translation not set');
+                $definition = getOrSetString($record->definition, 'definition not set');
 		    }
 		    else
 		    {

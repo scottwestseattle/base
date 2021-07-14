@@ -12,7 +12,13 @@
 <form method="POST" id="form-edit" action="/practice/update/{{$record->id}}">
 
     <div class="form-group mt-3">
-        <textarea rows="5" name="examples" id="examples" class="form-control" autocomplete="off" onfocus="setFocus($(this))">{{$record->examples}}</textarea>
+        <label for="title_long">@LANG('proj.Practice Text'):</label>
+        <textarea rows="5" name="title_long" id="title_long" class="form-control" autocomplete="off" onfocus="setFocus($(this))">{{$record->title_long}}</textarea>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="translation_en">{{trans_choice('ui.Translation', 1)}}:</label>
+        <textarea rows="5" name="translation_en" id="translation_en" class="form-control" autocomplete="off" onfocus="setFocus($(this))">{{$record->translation_en}}</textarea>
     </div>
 
     <div class="form-group">

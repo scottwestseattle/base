@@ -3,7 +3,7 @@ $prefix = 'books';
 @endphp
 @extends('layouts.app')
 @section('title', __('proj.Edit Chapter'))
-@section('menu-submenu')@component('gen.' . $prefix . '.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('menu-submenu')@component('gen.' . $prefix . '.menu-submenu', ['record' => $record, 'bookId' => $book->id])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">

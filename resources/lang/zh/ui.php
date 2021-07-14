@@ -155,4 +155,5 @@ return [
 'Second' => '秒|秒',
 'History' => '历史',
 'Session' => '会议',
+'Back to the List' => '回到列表中去',
 ];

@@ -155,4 +155,5 @@ return [
 'Second' => 'Segundo|Segundos',
 'History' => 'Historia',
 'Session' => 'Sesión',
+'Back to the List' => 'Volver a la lista',
 ];

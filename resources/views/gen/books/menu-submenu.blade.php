@@ -1,6 +1,7 @@
 @if (isAdmin())
 @php
     $prefix = 'books';
+    $bookId = isset($bookId) ? $bookId : null;
 @endphp
 <nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
@@ -8,7 +9,7 @@
 		<li class="nav-item"><a class="nav-link" href="/{{$prefix}}">
 			<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
 		</a></li>
-		<li class="nav-item"><a class="nav-link" href="/{{$prefix}}/add">
+		<li class="nav-item"><a class="nav-link" href="/{{$prefix}}/{{isset($bookId) ? 'add-chapter/' . $bookId : 'add'}}">
 			<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
 		</a></li>
 		@isset($record)
@@ -25,7 +26,7 @@
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
 			</a></li>
 		@else
-			<li class="nav-item"><a class="nav-link" href="/entries/deleted">
+			<li class="nav-item"><a class="nav-link" href="/books/deleted">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>
 			</a></li>
 		@endisset

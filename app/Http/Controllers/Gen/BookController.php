@@ -223,6 +223,7 @@ class BookController extends Controller
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			'languageOptions' => getLanguageOptions(),
+			'book' => Book::getBook($record),
 			]);
     }
 
@@ -276,6 +277,7 @@ class BookController extends Controller
 
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,
+			'book' => Book::getBook($record),
 		]);
     }
 
@@ -326,7 +328,9 @@ class BookController extends Controller
 		try
 		{
 			$records = Entry::withTrashed()
+				->where('type_flag', ENTRY_TYPE_BOOK)
 				->whereNotNull('deleted_at')
+				->orderBy('id', 'DESC')
 				->get();
 		}
 		catch (\Exception $e)
@@ -347,6 +351,7 @@ class BookController extends Controller
 			'record' => $record,
 			'release_flags' => Status::getReleaseFlags(),
 			'wip_flags' => Status::getWipFlags(),
+			'book' => Book::getBook($record),
 		]);
     }
 

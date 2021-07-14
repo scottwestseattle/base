@@ -1,10 +1,11 @@
 @php
 $prefix = 'books';
 $showPrevNext = (isset($prev) || isset($next));
+$bookId = isset($options['book']) ? $options['book']->id : null;
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
-@section('menu-submenu')@component('gen.' . $prefix . '.menu-submenu', ['record' => $record, 'index' => 'index'])@endcomponent @endsection
+@section('menu-submenu')@component('gen.' . $prefix . '.menu-submenu', ['record' => $record, 'index' => 'index', 'bookId' => $bookId])@endcomponent @endsection
 @section('content')
 
     <!------------------------------------>
@@ -15,6 +16,7 @@ $showPrevNext = (isset($prev) || isset($next));
         @if (isset($prev))
             <a href="/{{$prefix}}/show/{{$prev->permalink}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
         @endif
+            <a href="/{{$prefix}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>@LANG('ui.Back to the List')</button></button></a>
         @if (isset($next))
             <a href="/{{$prefix}}/show/{{$next->permalink}}"><button type="button" class="btn btn-blog-nav">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
         @endif
@@ -38,9 +40,6 @@ $showPrevNext = (isset($prev) || isset($next));
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true])@endcomponent
                 </span>
-                @if (isset($options['book']))
-                    <div style="margin-right:15px; float:left;"><a href="/books/add-chapter/{{$options['book']->id}}">Add Chapter</a></div>
-                @endif
                 @endif
                 @if (isset($record->definitions) && count($record->definitions) > 0)
                     <div class="mr-2 float-left">

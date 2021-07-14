@@ -34,8 +34,17 @@
     <tbody>
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
+            @if (isAdmin())
+                <td class="" style=""><a href="/practice/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a></td>
+            @endif
             <td style="">
-                <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
+
+                @if ($record->isSnippet())
+                    <a href="/definitions/view/{{$record->permalink}}">{{$record->title_long}}</a>
+                @else
+                    <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
+                @endif
+
                 @if (isset($record->translation_en))
                     <div>{{$record->translation_en}}</div>
                 @else

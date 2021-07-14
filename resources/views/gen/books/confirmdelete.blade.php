@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('proj.Delete Chapter'))
-@section('menu-submenu')@component('gen.books.menu-submenu', ['record' => $record]) @endcomponent @endsection
+@section('menu-submenu')@component('gen.books.menu-submenu', ['record' => $record, 'bookId' => $book->id]) @endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
