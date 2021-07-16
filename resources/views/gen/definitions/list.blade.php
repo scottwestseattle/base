@@ -11,19 +11,22 @@
         @LANG('proj.Back to Lists')<span class="glyphicon glyphicon-button-back-to"></span>
     </a>
     @if (isset($tag))
-    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
-        @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
-    </a>
-    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}/1">
-        @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
-    </a>
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
+            @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
+        </a>
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}/1">
+            @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
+        </a>
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/read-list/{{$tag->id}}">
+            @LANG('proj.Reader')<span class="ml-1 glyphicon glyphicon-volume-up"></span>
+        </a>
     @else
-    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/quiz">
-        @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
-    </a>
-    <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/flashcards">
-        @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
-    </a>
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/quiz">
+            @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
+        </a>
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/flashcards">
+            @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
+        </a>
     @endif
 </div>
 

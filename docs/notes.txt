@@ -4,16 +4,14 @@
 
 DB Changes:
 
-
 NEW:
-UPDATE `definitions` SET title_long = examples WHERE 1 AND TYPE_FLAG = 1 AND examples is NOT NULL
-UPDATE `definitions` SET examples = NULL WHERE 1 AND TYPE_FLAG = 1
 
+Done:
+UPDATE `definitions` SET examples = NULL WHERE 1 AND TYPE_FLAG = 1
+UPDATE `definitions` SET title_long = examples WHERE 1 AND TYPE_FLAG = 1 AND examples is NOT NULL
 ALTER TABLE `definitions` ADD `title_long` VARCHAR(512) NULL COMMENT 'for snippets' AFTER `title`;
 ALTER TABLE `histories` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
 ALTER TABLE `sites` ADD `options` VARCHAR(255) NOT NULL COMMENT 'key=value;' AFTER `frontpage`;
-
-Done:
 update `definitions` set `rank` = 0 where 1 and `definitions`.`rank` is null
 ALTER TABLE `lessons` ADD `release_flag` TINYINT NULL AFTER `break_seconds`, ADD `wip_flag` TINYINT NULL AFTER `release_flag`;
 ALTER TABLE `entries` ADD `options` VARCHAR(500) NULL AFTER `wip_flag`;

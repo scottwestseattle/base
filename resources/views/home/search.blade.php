@@ -31,7 +31,7 @@
                 @foreach($snippets as $record)
                     <tr>
                         <td>@LANG('proj.Practice Text')</td>
-                        <td><a href="/practice/{{$record->id}}" target="_blank">{{$record->examples}}</a></td>
+                        <td><a href="/definitions/view/{{$record->permalink}}" target="_blank">{{$record->title_long}}</a></td>
                     </tr>
                 @endforeach
             @endif

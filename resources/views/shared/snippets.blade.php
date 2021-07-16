@@ -98,6 +98,7 @@
 @if (isset($options['records']) && count($options['records']) > 0)
     <h3 class="mt-2">@LANG('proj.Practice Text') <span style="font-size:.8em;">({{count($options['records'])}})&nbsp;&nbsp;
          @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'inline-block'])@endcomponent
+         &nbsp;&nbsp;<span style="font-size:.5em;"><a href="/snippets/review">Flashcards</a></span>
     </span></h3>
     <div class="text-center mt-2" style="">
         <div style="display: inline-block; width:100%">

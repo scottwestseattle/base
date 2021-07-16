@@ -35,7 +35,7 @@
 	<div>
 		@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 		<h3>
-			<div class="middle">
+ 			<div class="middle">
 			    @if ($record->isSnippet())
                     {{$record->title_long}}
 			    @else

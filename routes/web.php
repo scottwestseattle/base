@@ -430,12 +430,13 @@ Route::get('/favorites', [DefinitionController::class, 'favorites']);
 
 // Practice text (Snippets)
 Route::group(['prefix' => 'practice'], function () {
-    Route::get('/{id?}', [DefinitionController::class, 'snippets']);
     Route::get('/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
+    Route::get('/show/{definition}', [DefinitionController::class, 'showSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
     Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
 	Route::get('/read', [DefinitionController::class, 'readSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
+    Route::get('/{id?}', [DefinitionController::class, 'snippets']);
 });
 
 // Dictionary
@@ -446,6 +447,7 @@ Route::group(['prefix' => 'dictionary'], function () {
 // Snippets
 Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+	Route::get('/review', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
 

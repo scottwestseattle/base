@@ -850,7 +850,7 @@ class Definition extends Model
             {
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where('examples', 'LIKE', '%' . $word . '%')
+                    ->where('title_long', 'LIKE', '%' . $word . '%')
                     ->orderBy('title')
                     ->get();
             }
@@ -871,7 +871,7 @@ class Definition extends Model
 		try
 		{
 			$record = Definition::select()
-				->where('examples', $value)
+				->where('title_long', $value)
 				->where('type_flag', DEFTYPE_SNIPPET)
 				->first();
 		}
@@ -900,6 +900,31 @@ class Definition extends Model
 				->where('language_flag', $languageFlagCondition, $languageId)
 				->orderByRaw($orderBy)
 				->limit($limit)
+				->get();
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting practice text';
+            logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+
+		return $records;
+	}
+
+	static public function getSnippetsReview($options)
+	{
+		$records = [];
+
+		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
+		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
+
+		try
+		{
+			$records = Definition::select()
+				->where('type_flag', DEFTYPE_SNIPPET)
+				->where('language_flag', $languageFlagCondition, $languageId)
+				->whereNotNull('translation_en')
+				->limit($options['limit'])
 				->get();
 		}
 		catch (\Exception $e)

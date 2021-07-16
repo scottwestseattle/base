@@ -1133,7 +1133,8 @@ class Spanish
 				$msg .= ' - 401 Unauthorized';
 			}
 
-			Event::logException(LOG_MODEL, LOG_ACTION_TRANSLATE, $msg, null, $e->getMessage());
+			logException(__FUNCTION__, $e->getMessage(), $msg, ['word' => $word]);
+
 			//$result = $msg;
 			//$rc['error'] = $msg;
 			//$rc['found'] = $found;
@@ -1228,7 +1229,7 @@ class Spanish
 				$msg .= ' - 401 Unauthorized';
 			}
 
-			Event::logException(LOG_MODEL, LOG_ACTION_TRANSLATE, $msg, null, $e->getMessage());
+			logException(__FUNCTION__, $e->getMessage(), $msg, ['word' => $word]);
 			$rc = $word . ': error getting definition, check event log';
 		}
 

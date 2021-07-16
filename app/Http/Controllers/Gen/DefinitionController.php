@@ -603,6 +603,20 @@ class DefinitionController extends Controller
         }
     }
 
+	public function showSnippet(Definition $definition)
+    {
+		$record = $definition;
+
+		if (isset($record))
+		{
+		    return $this->snippets($record->id);
+        }
+        else
+        {
+            return back();
+        }
+    }
+
 	public function snippets($id = null)
     {
         //
@@ -1158,6 +1172,17 @@ class DefinitionController extends Controller
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
 		    : $this->doList($title, $reviewType, $records);
+    }
+
+	public function reviewSnippets(Request $request, $reviewType = null, $count = PHP_INT_MAX)
+    {
+        $siteLanguage = Site::getLanguage()['id'];
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+
+        $records = Definition::getSnippetsReview(['limit' => intval($count), 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+        $title = trans('proj.:count Snippets', ['count' => $count]);
+
+		return $this->doList($title, 'flashcards', $records);
     }
 
     public function getRandomWordAjax(Request $request)

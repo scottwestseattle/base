@@ -19,7 +19,7 @@
 				<span id="{{$wipId}}" class="glyphCustom-md glyphicon glyphicon-{{$finished}}"></span>
 			</a>
 		</div>
-		<div class="middle ml-2"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom-md glyphicon glyphicon-edit"></span></a></div>
+		<div class="middle ml-2"><a href='/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}'><span class="glyphCustom-md glyphicon glyphicon-edit"></span></a></div>
 		<div class="middle ml-2"><a href='/definitions/confirmdelete/{{$record->id}}'><span class="glyphCustom-md glyphicon glyphicon-delete"></span></a></div>
 	@endif
     @if ($record->rank > 0)
