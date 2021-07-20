@@ -56,7 +56,7 @@
             </td>
 
             @if (isAdmin())
-            <td class="small-thin-text" style="width:100px;">{{$record->updated_at}}</td>
+                <td class="small-thin-text" style="width:100px;">{{$record->updated_at}}</td>
             @endif
 
             @if (isset($tag))
@@ -86,7 +86,7 @@
                     </a>
 
                     <ul class="small-thin-text dropdown-menu dropdown-menu-right">
-                        <li><a class="dropdown-item" href="" onclick="unheartDefinition(event, {{$record->id}}, '#removeStatus'); $('#row{{$record->id}}').hide();">@LANG('proj.Remove from List')</a></li>
+                        <li><a class="dropdown-item" href="/definitions/set-favorite-list/{{$record->id}}/{{$tag->id}}/0">@LANG('proj.Remove from List')</a></li>
                     </ul>
                 </div>
             </td>

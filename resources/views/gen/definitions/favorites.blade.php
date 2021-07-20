@@ -144,7 +144,7 @@
     <div class="mb-3 mr-0">
         <div class="card-body drop-box-ghost">
             <h5 class="card-title">
-                <a href="/definitions/list-tag/{{$record->id}}">{{$record->name}}</a>@component('components.badge', ['text' => $record->wc])@endcomponent
+                <a href="/definitions/list-tag/{{$record->id}}">{{$record->name}}</a>@component('components.badge', ['text' => count($record->definitions)])@endcomponent
             </h5>
             <p class="card-text">
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">

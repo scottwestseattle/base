@@ -1159,7 +1159,31 @@ class Spanish
 
 		try
 		{
-			$raw = file_get_contents($url, false, $contexto);
+		    $raw = '';
+
+		    if (true) // original way: doesn't work anymore
+		    {
+			    $raw = file_get_contents($url, false, $contexto);
+		    }
+		    else // new way with curl, only returns javascript
+		    {
+                // create curl resource
+                $ch = curl_init();
+
+                // set url
+                curl_setopt($ch, CURLOPT_URL, $url);
+
+                //return the transfer as a string
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+                // $output contains the output string
+                $raw = curl_exec($ch);
+
+                // close curl resource to free up system resources
+                curl_close($ch);
+		    }
+
 			$prefix = '<meta name="description" content=';
 			$pos = mb_strpos($raw, $prefix);
 			if ($pos !== false)

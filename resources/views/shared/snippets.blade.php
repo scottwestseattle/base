@@ -1,5 +1,6 @@
 @php
     $showLanguages = (isset($options['showLanguages'])) ? $options['showLanguages'] : false;
+    $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
 @endphp
 
 <!-------------------------------------------------------->
@@ -130,6 +131,7 @@
                                     @if (App\User::isAdmin())
                                     <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
                                     <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
+                                    @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
                                     @endif
                                 </div>
                             </td>

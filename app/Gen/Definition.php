@@ -13,6 +13,7 @@ use Auth;
 use App\Gen\Definition;
 use App\Entry;
 use App\User;
+use App\Tag;
 
 // parts of speech
 define('DEFINITIONS_POS_NOTSET',        0);
@@ -129,6 +130,7 @@ class Definition extends Model
 		{
 			$name = 'Favorites';
 			$tag = Tag::get($name, TAG_TYPE_DEF_FAVORITE, Auth::id());
+
 			if (isset($tag))
 			{
 				$this->tags()->detach($tag->id);
@@ -176,17 +178,28 @@ class Definition extends Model
 
 		try
 		{
-			$records = DB::table('tags')
-				->leftJoin('definition_tag', function($join) {
-					$join->on('definition_tag.tag_id', '=', 'tags.id');
-					$join->where('definition_tag.user_id', Auth::id());
-				})
-				->select(DB::raw('tags.id, tags.name, tags.user_id, count(definition_tag.tag_id) as wc'))
-				->where('tags.deleted_at', null)
-				->where('tags.user_id', Auth::id())
-				->where('type_flag', TAG_TYPE_DEF_FAVORITE)
-				->groupBy('tags.id', 'tags.name', 'tags.user_id')
-				->get();
+		    if (false)
+		    {
+		        // first way, all this just to get the count???
+                $records = DB::table('tags')
+                    ->leftJoin('definition_tag', function($join) {
+                        $join->on('definition_tag.tag_id', '=', 'tags.id');
+                        $join->where('definition_tag.user_id', Auth::id());
+                    })
+                    ->select(DB::raw('tags.id, tags.name, tags.user_id, count(definition_tag.tag_id) as wc'))
+                        ->whereNull('tags.deleted_at')
+                        ->where('tags.user_id', Auth::id())
+                        ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
+                        ->groupBy('tags.id', 'tags.name', 'tags.user_id')
+                        ->get();
+            }
+            else
+            {
+                $records = Tag::select()
+                    ->where('tags.user_id', Auth::id())
+                    ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
+                    ->get();
+            }
 		}
 		catch (\Exception $e)
 		{

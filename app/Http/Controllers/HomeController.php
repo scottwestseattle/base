@@ -116,6 +116,9 @@ class HomeController extends Controller
         ]);
         $options['records'] = $snippets;
 
+        // get the favorite lists so the entries can be favorited
+        $options['favoriteLists'] = Definition::getUserFavoriteLists();
+
         //$options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
         $options['language'] = $siteLanguage;
         $options['loadReader'] = true; // this loads js and css

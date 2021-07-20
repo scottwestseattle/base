@@ -24,7 +24,7 @@ class CommentController extends Controller
 
 	public function __construct ()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except(['index', 'view', 'permalink', 'add', 'create']);
 
 		parent::__construct();
 	}

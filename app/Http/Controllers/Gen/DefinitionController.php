@@ -39,12 +39,12 @@ class DefinitionController extends Controller
             'snippets', 'createSnippet', 'readSnippets', 'viewSnippet',
 
             // copied
-			'find', 'search', 'list-tag',
+			'find', 'search', 'listTag',
 			'conjugationsGen', 'conjugationsGenAjax', 'conjugationsComponentAjax', 'verbs',
 			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax',	'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
 			'setFavoriteList',
-			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs', 'reviewRankedVerbs',
+			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs', 'reviewRankedVerbs', 'reviewSnippets',
 
 			'favorites',
 			'setSnippetCookie',
@@ -646,6 +646,9 @@ class DefinitionController extends Controller
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
         //dump($options);
 
+        // get the favorite lists so the entries can be favorited
+        $options['favoriteLists'] = Definition::getUserFavoriteLists();
+
 		return view('gen.definitions.snippets', [
 		    'options' => $options,
 		]);
@@ -1091,10 +1094,12 @@ class DefinitionController extends Controller
 
         if (Quiz::isQuiz($reviewType))
         {
+            // flashcards or multiple choice
             return $this->doReview($records, $reviewType);
         }
         else
         {
+            // show the list
             return $this->list($name, $records);
         }
     }

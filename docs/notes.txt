@@ -1,6 +1,5 @@
 403 Error:
-2021-06-30 10:39:22.416247 [INFO] [11477] [T0] [73.109.62.208:25612-H3:0D7B43E23954C533-36#APVH_espdaily.codespace.us:443] File not found
-[/home/codespace/public_html/public/403.shtml]
+2021-07-19 15:47:46.611990 [INFO] [35736] [T0] [73.83.234.194:49812:HTTP2-1#APVH_espdaily.codespace.us:443] File not found [/home/codespace/public_html/public/403.shtml]
 
 DB Changes:
 

@@ -107,21 +107,29 @@ class Tag extends Model
 		$record = null;
 		$name = alphanum($name, true);
 
-		if (isset($userId))
-		{
-			$record = $record = Tag::select()
-					->where('name', $name)
-					->where('type_flag', $type)
-					->where('user_id', $userId)
-					->first();
-		}
-		else
-		{
-			$record = $record = Tag::select()
-					->where('name', $name)
-					->where('type_flag', $type)
-					->first();
-		}
+        try
+        {
+            if (isset($userId))
+            {
+                $record = $record = Tag::select()
+                        ->where('name', $name)
+                        ->where('type_flag', $type)
+                        ->where('user_id', $userId)
+                        ->first();
+            }
+            else
+            {
+                $record = $record = Tag::select()
+                        ->where('name', $name)
+                        ->where('type_flag', $type)
+                        ->first();
+            }
+        }
+        catch(\Exception $e)
+        {
+ 			$msg = 'Error getting tag: ' . $record->name . ', userId: ' . intval($userId);
+			logException($msg, $e->getMessage());
+       }
 
 		return $record;
     }
