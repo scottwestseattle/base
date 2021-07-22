@@ -156,4 +156,6 @@ return [
 'History' => '历史',
 'Session' => '会议',
 'Back to the List' => '回到列表中去',
+'Read' => '阅读',
+'minute' => '分钟|分钟',
 ];

@@ -141,4 +141,7 @@ return [
 'Select Exercise' => '选择运动',
 'Repititions' => '重复',
 'Program' => '程序',
+'Once' => '一度',
+'Continuous' => '连续的',
+'Pause Seconds' => '暂停秒数',
 ];

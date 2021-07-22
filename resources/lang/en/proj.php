@@ -141,4 +141,7 @@ return [
 'Select Exercise' => 'Select Exercise',
 'Repititions' => 'Repititions',
 'Program' => 'Program',
+'Once' => 'once',
+'Continuous' => 'Continuous',
+'Pause Seconds' => 'Pause Second(s)',
 ];

@@ -61,10 +61,10 @@ function loadVoicesGlobal()
     //console.log('loadVoicesGlobal');
 
     var index = getLanguageIndex();
-    console.log('language index: ' + index);
+    //console.log('language index: ' + index);
     if (index < 0) // not set, don't load from global select
     {
-        console.log('loadVoicesGlobal: voice selector not found');
+        //console.log('loadVoicesGlobal: voice selector not found');
         loadVoicesDeck(); //todo: fix the flow
         return;
     }
@@ -89,8 +89,8 @@ function loadVoicesGlobal()
 
 function loadVoices(language, languageLong)
 {
-    console.log('language: ' + language);
-    console.log('loading voices...');
+    //console.log('language: ' + language);
+    //console.log('loading voices...');
 
 	_voices = window.speechSynthesis.getVoices();
 
@@ -138,7 +138,7 @@ function loadVoices(language, languageLong)
 		}
 
         // load the voices into the select for the specified language OR all
-        console.log('voices: ' + _voices.length);
+        //console.log('voices: ' + _voices.length);
 		for(i = 0; i < _voices.length ; i++)
 		{
 			var option = document.createElement('option');

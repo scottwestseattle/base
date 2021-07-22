@@ -16,6 +16,8 @@ const RUNSTATE_END          = 5;
 //
 var curr = 0;   // current slide
 var max = 0;    // number of slides
+var _readContinuous = false; // read and loop
+var _readPage = false;
 
 var _debug = false;
 var _mute = false;
@@ -64,6 +66,12 @@ $(document).ready(function() {
 	    loadRecorder();
 	else
 	    console.log('loadRecorder not found');
+
+    // the pause seconds are stored after they are used once, not when they are set.
+    var pauseSeconds = localStorage['#pause_seconds'];
+	pauseSeconds = (pauseSeconds) ? parseInt(pauseSeconds) : 0;
+	//console.log('pause seconds: ' + pauseSeconds);
+    $('#pause_seconds').html(pauseSeconds);
 });
 
 $(window).on('unload', function() {
@@ -141,6 +149,8 @@ function deck() {
 
     // this shows the current slide
 	this.runSlide = function() {
+
+        clearTimeout(_pauseTimerId);
 
 		//debug("read next: " + curr, _debug);
 
@@ -394,6 +404,22 @@ function incLine(e, count)
 	curr = _incLine;
 }
 
+function inc(e, id, count)
+{
+	e.preventDefault();
+
+	var amount = parseInt($(id).text(), 0);
+	//console.log('amount: ' + amount);
+
+	amount += parseInt(count);
+	if (amount < 0)
+	    amount = 0;
+
+	$(id).html(amount);
+
+	localStorage[id] = amount;
+}
+
 function next()
 {
 	pause();
@@ -443,10 +469,10 @@ function resume()
 	$("#resume").hide();
 }
 
-_readPage = false;
 function readPage(readText = '', textId = '')
 {
     window.speechSynthesis.cancel();
+    _readContinuous = false;
 
     if (_readPage)
     {
@@ -473,10 +499,76 @@ function readPage(readText = '', textId = '')
     }
 }
 
+function keepReading()
+{
+    var readFlag = $("#read_flag").val();
+    var rc = false;
+    if (readFlag == "once") // read once
+    {
+        rc = false;
+    }
+    else if (readFlag == "continuous" ) // read continuous
+    {
+        rc = true;
+    }
+    else
+    {
+        // check elapsed time
+        var readSeconds = (readFlag * 60);
+        rc = (getElapsedSeconds() < readSeconds); // readFlag is in minutes
+    }
+
+    return rc;
+}
+
+function isTimeExpired(readSeconds)
+{
+    var readFlag = $("#read_flag").val();
+    var rc = false;
+    if (readFlag == "once") // read once
+    {
+        rc = false;
+    }
+    else if (readFlag == "continuous" ) // read continuous
+    {
+        rc = false;
+    }
+    else
+    {
+        // check elapsed time
+        var readSeconds = (readFlag * 60);  // readFlag is in minutes
+
+        if (getElapsedSeconds() > readSeconds)
+            rc = true;
+    }
+
+    return rc;
+}
+
+function getTimeTotalSeconds()
+{
+    var readFlag = $("#read_flag").val();
+    var rc = 0;
+
+    if (readFlag == "once") // read once
+    {
+        // no total seconds limit
+    }
+    else if (readFlag == "continuous" ) // read continuous
+    {
+        // no total seconds limit
+    }
+    else
+    {
+        // has a total time limit, return it in seconds
+        rc = (readFlag * 60);  // readFlag is in minutes
+    }
+
+    return rc;
+}
+
 function runContinue()
 {
-	// not starting at the beginning
-
 	if (_incLine != 0) // if line selector was used (+-50) then use that
 		curr = _incLine;
 	else 			  // use last location from the session
@@ -547,6 +639,7 @@ function playAudioFile(file)
 
 var _speechTimerId = null;
 var _clockTimerId = null;
+var _pauseTimerId = null;
 var _utter = null;
 function read(text, charIndex, textId = '#slideDescription')
 {
@@ -703,12 +796,29 @@ function readNext()
 	if (curr >= max)
 	{
 		curr = 0;
-        end();
+
+		if (keepReading())
+		    pauseReadNext();
+        else
+            end();
 	}
 	else
 	{
-		deck.runSlide();
+	    if (isTimeExpired())
+	        end();
+        else
+		    pauseReadNext();
 	}
+}
+
+function pauseReadNext()
+{
+    var pauseSeconds = parseInt($("#pause_seconds").text());
+    if (pauseSeconds > 0)
+    {
+        clearTimeout(_pauseTimerId);
+        _pauseTimerId = setTimeout(deck.runSlide, pauseSeconds * 1000);
+    }
 }
 
 function tts(text)
@@ -721,7 +831,6 @@ function tts(text)
         utter.text = text;
 
         window.speechSynthesis.speak(utter);
-
     }
 }
 
@@ -1011,9 +1120,9 @@ function showElapsedTime()
 	_clockTimerId = setTimeout(showElapsedTime, 1000);
 }
 
-function getElapsedTime()
+function getElapsedSeconds()
 {
-	var time = '';
+    var seconds = 0;
 
 	// get run time
 	if (_startTime != null)
@@ -1021,44 +1130,71 @@ function getElapsedTime()
 		endTime = new Date();
 		var timeDiff = endTime - _startTime; //in ms
 		timeDiff /= 1000; // to seconds
-		var seconds = Math.round(timeDiff);
-		var total = seconds;
+		seconds = Math.round(timeDiff);
+    }
 
-		if (seconds < 10)
-			time = '00:0' + seconds;
-		else
-			time = '00:' + seconds
+    return seconds;
+}
 
-		if (seconds >= 60)
-		{
-			minutes = Math.round(seconds / 60);
-			seconds = seconds % 60;
+function getElapsedTime()
+{
+	var time = '';
 
-			if (minutes >= 60)
-			{
-				hours = Math.round(minutes / 60);
-				minutes = minutes % 60;
+	// get run time
+	if (_startTime != null)
+	{
+		var seconds = getElapsedSeconds();
 
-				if (minutes < 10)
-					minutes = "0" + minutes;
-				if (seconds < 10)
-					seconds = "0" + seconds;
-				if (hours < 10)
-					hours = "0" + hours;
+        time = getTimeDisplay(seconds);
 
-				time = hours + ":" + minutes + ":" + seconds;
-			}
-			else
-			{
-				if (minutes < 10)
-					minutes = "0" + minutes;
-				if (seconds < 10)
-					seconds = "0" + seconds;
-
-				time = minutes + ":" + seconds;
-			}
-		}
+        var totalSeconds = getTimeTotalSeconds();
+        if (totalSeconds > 0)
+            time += ' / ' + getTimeDisplay(totalSeconds);
 	}
 
 	return time;
 }
+
+function getTimeDisplay(seconds)
+{
+    var time = '';
+
+    if (seconds < 10)
+        time = '00:0' + seconds;
+    else
+        time = '00:' + seconds
+
+    if (seconds >= 60)
+    {
+        minutes = Math.round(seconds / 60);
+        seconds = seconds % 60;
+
+        if (minutes >= 70)
+        {
+            hours = Math.round(minutes / 60);
+            minutes = minutes % 60;
+
+            if (minutes < 10)
+                minutes = "0" + minutes;
+            if (seconds < 10)
+                seconds = "0" + seconds;
+            if (hours < 10)
+                hours = "0" + hours;
+
+            time = hours + ":" + minutes + ":" + seconds;
+        }
+        else
+        {
+            if (minutes < 10)
+                minutes = "0" + minutes;
+            if (seconds < 10)
+                seconds = "0" + seconds;
+
+            time = minutes + ":" + seconds;
+        }
+    }
+
+    return time;
+}
+
+

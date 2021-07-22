@@ -49,7 +49,6 @@
 @endforeach
 
 <div class="container">
-
 	<!-------------------------------------------------------->
 	<!-- Header -->
 	<!-------------------------------------------------------->
@@ -93,8 +92,29 @@
 					<a onclick="incLine(event, -50)" href=""><span id="button-decrement-line" class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
 					<div id="readCurrLine" class="middle large-text mb-2" style="min-width:85px;">Line </div>
 					<a onclick="incLine(event, 50)" href=""><span id="button-increment-line" class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
+
+                    <div>
+                        <label for="read_flag" class="checkbox-big-label">@LANG('ui.Read'):</label>
+                        <select name="read_flag" id="read_flag">
+                            <option value="once">@LANG('proj.Once')</option>
+                            <option value="1">1 {{trans_choice('ui.minute', 1)}}</option>
+                            <option value="5">5 {{trans_choice('ui.minute', 2)}}</option>
+                            <option value="15">15 {{trans_choice('ui.minute', 2)}}</option>
+                            <option value="30">30 {{trans_choice('ui.minute', 2)}}</option>
+                            <option value="45">45 {{trans_choice('ui.minute', 2)}}</option>
+                            <option value="60">60 {{trans_choice('ui.minute', 2)}}</option>
+                            <option value="continuous">@LANG('proj.Continuous')</option>
+                        </select>
+                    </div>
+                    <div>
+                        <a onclick="inc(event, '#pause_seconds', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
+                        <div class="middle large-text mb-2" style="min-width:85px;">@LANG('proj.Pause Seconds'): <span id="pause_seconds">0</span></div>
+                        <a onclick="inc(event, '#pause_seconds', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
+                    </div>
+
 					<div id="elapsedTime" class="mt-5"></div>
 				</div>
+
 			</div>
 
 		</div><!-- panel-start -->

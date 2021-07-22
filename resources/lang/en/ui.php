@@ -156,4 +156,6 @@ return [
 'History' => 'History',
 'Session' => 'Session',
 'Back to the List' => 'Back to the List',
+'Read' => 'Read',
+'minute' => 'minute|minutes',
 ];
