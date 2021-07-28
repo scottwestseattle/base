@@ -576,7 +576,6 @@ class DefinitionController extends Controller
 		catch (\Exception $e)
 		{
 		    //dump($record);
-            //dd($e->getMessage());
 			$msg = isset($msg) ? $msg : "Error adding new $tag";
             logException($f, $e->getMessage(), $msg, ['msg' => $msg]);
 		}
@@ -1237,6 +1236,7 @@ class DefinitionController extends Controller
         }
 
         $options['return'] = '/practice';
+        $options['randomOrder'] = true;
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),

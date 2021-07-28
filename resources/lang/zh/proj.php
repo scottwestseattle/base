@@ -144,4 +144,5 @@ return [
 'Once' => '一度',
 'Continuous' => '连续的',
 'Pause Seconds' => '暂停秒数',
+'Add Translation' => '添加翻译',
 ];

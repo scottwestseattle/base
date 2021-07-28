@@ -5,6 +5,7 @@
     $recordId = isset($recordId) ? $recordId : -1;
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = count($lines);
+    $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
 @endphp
 
 <!-------------------------------------------------------->
@@ -30,6 +31,7 @@
 	data-labelline="{{$labels['line']}}"
 	data-labelof="{{$labels['of']}}"
 	data-labelreadingtime="{{$labels['readingTime']}}"
+	data-randomorder="{{$randomOrder ? 1 : 0}}"
 ></div>
 
 	<!-------------------------------------------------------->
@@ -106,10 +108,18 @@
                             <option value="continuous">@LANG('proj.Continuous')</option>
                         </select>
                     </div>
+
                     <div>
                         <a onclick="inc(event, '#pause_seconds', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
                         <div class="middle large-text mb-2" style="min-width:85px;">@LANG('proj.Pause Seconds'): <span id="pause_seconds">0</span></div>
                         <a onclick="inc(event, '#pause_seconds', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="random_order" name="random_order" value="0" {{$randomOrder ? '' : 'checked'}}>
+                        <label for="random_order">Default Order</label><br>
+                        <input type="radio" id="random_order" name="random_order" value="1" {{$randomOrder ? 'checked' : ''}}>
+                        <label for="random_order">Random Order</label><br>
                     </div>
 
 					<div id="elapsedTime" class="mt-5"></div>

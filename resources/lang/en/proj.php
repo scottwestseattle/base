@@ -144,4 +144,5 @@ return [
 'Once' => 'once',
 'Continuous' => 'Continuous',
 'Pause Seconds' => 'Pause Second(s)',
+'Add Translation' => 'Add Translation',
 ];
