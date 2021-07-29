@@ -158,7 +158,7 @@ class Spanish
 		{
 			// looks raw so attempt to clean it
 			// returns both 'full' and 'search'
-			$rc = self::cleanConjugationsPasted($raw);
+			$rc = self::cleanConjugationsPastedRae($raw); // from RAE page, starts with 'Conjugación de tener'
 		}
 
 		return $rc;
@@ -629,6 +629,168 @@ class Spanish
 		return $rc;
 	}
 
+    static public function cleanConjugationsPastedRae($raw)
+    {
+		$rc['full'] = null;		// full conjugations
+		$rc['search'] = null;	// conjugations list that can be searched (needed for reflexive conjugations like: 'nos acordamos')
+
+		if (!isset($raw))
+			return null;
+
+        $search = '';
+		$words = explode("\r\n", $raw);	// put lines into an array
+		$count = count($words);
+		$w = [];
+		$index = 0;
+		$c = [];
+
+		if ($count == 59) // total verb conjugations
+		{
+            $offset = 6;
+            $conjugations = 7;
+            $duplicateIndex = 3;
+
+            $c[CONJ_PARTICIPLE] = ';';
+            $c[CONJ_IND_PRESENT] = ';';
+            $c[CONJ_IND_IMPERFECT] = ';';
+            $c[CONJ_IND_PRETERITE] = ';';
+            $c[CONJ_IND_FUTURE] = ';';
+            $c[CONJ_IND_CONDITIONAL] = ';';
+            $c[CONJ_SUB_PRESENT] = ';';
+            $c[CONJ_SUB_IMPERFECT] = ';';
+            $c[CONJ_SUB_IMPERFECT2] = ';';
+            $c[CONJ_SUB_FUTURE] = ';';
+            $c[CONJ_IMP_AFFIRMATIVE] = ';';
+            $c[CONJ_IMP_NEGATIVE] = ';';
+
+            // crack the participles
+		    $ix = 3; // infinitive
+            $participleIndex = 5;
+            $parts = explode("\t", $words[$ix]);
+            if (count($parts) >= 2)
+            {
+                $c[CONJ_PARTICIPLE] .= $parts[1] . ';';  // teniendo
+				$c[CONJ_PARTICIPLE] .= $words[$participleIndex] . ';'; // tenido
+
+    			$participleStem = trunc($words[$participleIndex], 1);
+
+    			$c[CONJ_PARTICIPLE] .= $participleStem . 'os;'; 	 // abarcados
+    			$c[CONJ_PARTICIPLE] .= $participleStem . 'a;'; 	 // abarcada
+    			$c[CONJ_PARTICIPLE] .= $participleStem . 'as;';	 // abarcadas
+            }
+
+            // crack the indicative and past imperfect
+            $ix = 8;
+            for ($i = 0; $i < $conjugations; $i++)
+            {
+                $parts = explode("\t", $words[$ix++]);
+                if (count($parts) >= 3 && $i != $duplicateIndex)
+                {
+                    $c[CONJ_IND_PRESENT] .= getWord($parts[1], 1, ' / ') . ';';
+                    $c[CONJ_IND_IMPERFECT] .= $parts[2] . ';';
+                }
+            }
+
+            $ix = 17;
+            for ($i = 0; $i < $conjugations; $i++)
+            {
+                $parts = explode("\t", $words[$ix++]);
+                if (count($parts) >= 3 && $i != $duplicateIndex)
+                {
+                    $c[CONJ_IND_PRETERITE] .= $parts[1] . ';';
+                    $c[CONJ_IND_FUTURE] .= $parts[2] . ';';
+                }
+            }
+
+            $ix = 26;
+            for ($i = 0; $i < $conjugations; $i++)
+            {
+                $parts = explode("\t", $words[$ix++]);
+                if (count($parts) >= 2 && $i != $duplicateIndex)
+                {
+                    $c[CONJ_IND_CONDITIONAL] .= $parts[1] . ';';
+                }
+            }
+
+            $ix = 36;
+            for ($i = 0; $i < $conjugations; $i++)
+            {
+                $parts = explode("\t", $words[$ix++]);
+                if (count($parts) >= 3 && $i != $duplicateIndex)
+                {
+                    $c[CONJ_SUB_PRESENT] .= $parts[1] . ';';
+                    $c[CONJ_SUB_FUTURE] .= $parts[2] . ';';
+
+                    // create the negative imperative from the subjunctive present, starting at "tu"
+                    if ($i > 0)
+                    {
+                        $c[CONJ_IMP_NEGATIVE] .= 'no ' . $parts[1] . ';';
+                    }
+                }
+            }
+
+            $ix = 45;
+            for ($i = 0; $i < $conjugations; $i++)
+            {
+                $parts = explode("\t", $words[$ix++]);
+                if (count($parts) >= 2 && $i != $duplicateIndex)
+                {
+                    $delim = [' o ', ' u '];
+                    $c[CONJ_SUB_IMPERFECT] .= getWord($parts[1], 1, $delim) . ';';
+                    $c[CONJ_SUB_IMPERFECT2] .= getWord($parts[1], 2, $delim) . ';';
+                }
+            }
+
+            $index = count($w);
+            $conjugations = 4;
+            $ix = 55;
+            for ($i = 0; $i < $conjugations; $i++)
+            {
+                $parts = explode("\t", $words[$ix++]);
+                if (count($parts) >= 2)
+                {
+                    if ($i == 2) // nosotros not included on RAE so get it from the neg which gets it from the subjunctive
+                    {
+                        // dig out the affirmative nosotros from the negative imperative
+                        $c[CONJ_IMP_AFFIRMATIVE] .= getWord($c[CONJ_IMP_NEGATIVE], 4, ';no ') . ';';
+                    }
+
+                    $c[CONJ_IMP_AFFIRMATIVE] .= getWord($parts[1], 1, ' / ') . ';';
+                }
+            }
+
+			//
+			// save the conjugations
+			//
+			$conj = '';
+
+			$conj .= $c[CONJ_PARTICIPLE]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IND_PRESENT]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IND_PRETERITE]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IND_IMPERFECT]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IND_CONDITIONAL]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IND_FUTURE]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_SUB_PRESENT]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_SUB_IMPERFECT]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_SUB_IMPERFECT2]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_SUB_FUTURE]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IMP_AFFIRMATIVE]; // save the conjugation string
+			$conj .= '|' . $c[CONJ_IMP_NEGATIVE]; // save the conjugation string
+
+			//dd($conjugations);
+		}
+		else
+		{
+			$msg = 'Error cleaning pasted conjugation: total results: ' . count($words);
+			throw new \Exception($msg);
+		}
+
+		$rc['full'] = $conj;
+		$rc['search'] = str_replace(';|;', ';', $conj); // search doesn't have the separators
+
+		return $rc;
+	}
+
     static public function cleanConjugationsPasted($raw)
     {
 		$rc['full'] = null;		// full conjugations
@@ -642,7 +804,6 @@ class Spanish
 		$v = alpha($v, true);			// clean it up
 		$v = preg_replace('/[ *]/i', '|', $v);	// replace all spaces with '|'
 		$parts = explode('|', $v);
-		//dd($parts);
 		$prefix = null;
 		$search = null;
 		$searchUnique = [];
@@ -728,7 +889,6 @@ class Spanish
 			}
 		}
 
-		//dd($words);
 		$search = isset($search) ? ';' . $search : null;
 
 		$count = count($words);
@@ -770,7 +930,7 @@ class Spanish
 
 		$conj = null;
 		$count = count($words);
-		//dd($words);
+        //dd($words);
 		if ($count == 66) // total verb conjugations
 		{
 			//

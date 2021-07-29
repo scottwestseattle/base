@@ -95,17 +95,17 @@
 	<!-------------------------------------------------------->
 
 	<div class="text-center" style="xbackground-color:gray;">
-	<div class="card card-flashcard card-blue text-center" style="font-size: {{$settings['options']['font-size']}};">
-		<a href="" onclick="flipCard(event);">
-			<div class="card-header">
-				<div id="prompt" class="card-text"></div>
-			</div>
-			<div class="card-body">
-				<p id="flashcard-answer" class="card-text hidden"></p>
-				<p id="flashcard-extra" class="large-text hidden"></p>
-			</div>
-		</a>
-	</div>
+        <div class="card card-flashcard card-blue text-center" style="font-size: {{$settings['options']['font-size']}};">
+            <a href="" onclick="flipCard(event);">
+                <div class="card-header">
+                    <div id="prompt" class="card-text"></div>
+                </div>
+                <div class="card-body">
+                    <p id="flashcard-answer" class="card-text hidden"></p>
+                    <p id="flashcard-extra" class="large-text hidden"></p>
+                </div>
+            </a>
+        </div>
 	</div>
 
 	<!-------------------------------------------------------->
@@ -121,7 +121,7 @@
 
 		<!-- BUTTONS ROW 1 -->
 
-		<div class="btn-panel-bottom pb-2">
+		<div class="btn-panel-bottom pb-0 mb-0">
 			<button class="btn btn-success btn-quiz" onclick="event.preventDefault(); nextAttempt()" id="button-next-attempt">@LANG('ui.Next')</button>
 			<input class="btn btn-default btn-quiz " type="button" value="@LANG('quiz.I KNOW IT') (Alt+k)" onclick="checkAnswer(2)" id="button-know" style="display: default; background-color: green; color: white;">
 			<input class="btn btn-default btn-quiz" type="button" value="@LANG('quiz.I DONT KNOW') (Alt+d)" onclick="checkAnswer(3)" id="button-dont-know" style="display: none; background-color: red; color: white;">
@@ -129,7 +129,10 @@
 		</div>
 
 		<div class="form-group">
-			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
+		    <div class="mt-0 pt-0">
+			    <button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
+                <button class="btn btn-success btn-quiz" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.I know it, don\'t show again')</button>
+            </div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
 				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion();">@LANG('quiz.Reverse question and answer')</label>
