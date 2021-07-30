@@ -283,7 +283,7 @@ class TagController extends Controller
 			$record->user_id = Auth::id();
 			$record->save();
 
-			logInfo(__FUNCTION__, __('pron.New list has been added'), ['name' => $record->name, 'id' => $record->id]);
+			logInfo(__FUNCTION__, __('proj.New list has been added'), ['name' => $record->name, 'id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{

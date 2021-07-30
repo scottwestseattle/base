@@ -145,4 +145,5 @@ return [
 'Continuous' => 'continuo',
 'Pause Seconds' => 'Segundos de pausa',
 'Add Translation' => 'Agregar traducción',
+'New list has been added' => 'Se ha añadido una nueva lista',
 ];

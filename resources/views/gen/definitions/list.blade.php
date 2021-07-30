@@ -1,5 +1,6 @@
 @php
     $name = isset($name) ? $name : (isset($tag) ? $tag->name : 'name not set');
+    $lengthLimit = 125;
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('ui.List', 2))
@@ -38,26 +39,33 @@
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
             @if (isAdmin())
-                <td class="" style=""><a href="/practice/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a></td>
+                <td class="" style=""><a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a></td>
             @endif
-            <td style="">
-
+            <td style="width:100%;">
                 @if ($record->isSnippet())
-                    <a href="/definitions/view/{{$record->permalink}}">{{$record->title_long}}</a>
+                    <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title_long, $lengthLimit)}}</a>
+                    <div>
+                        @if (isset($record->translation_en))
+                            <div class="medium-thin-text" >{{Str::limit($record->translation_en, $lengthLimit)}}</div>
+                        @else
+                            <a class="small-thin-text red" href="/practice/edit/{{$record->id}}">@LANG('proj.Add Translation')</a>
+                        @endif
+                    </div>
                 @else
                     <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
+                    <div>
+                        @if (isset($record->translation_en))
+                            <div class="medium-thin-text" >{{$record->translation_en}}</div>
+                        @else
+                            <a class="small-thin-text red" href="/definitions/edit/{{$record->id}}">@LANG('proj.Add Translation')</a>
+                        @endif
+                    </div>
                 @endif
 
-                @if (isset($record->translation_en))
-                    <div>{{$record->translation_en}}</div>
-                @else
-                    <div>{{$record->examples}}</div>
+                @if (isAdmin())
+                    <div class="small-thin-text" style="">{{$record->updated_at}}</div>
                 @endif
             </td>
-
-            @if (isAdmin())
-                <td class="small-thin-text" style="width:100px;">{{$record->updated_at}}</td>
-            @endif
 
             @if (isset($tag))
             @if (false && count($lists) > 1)
