@@ -67,11 +67,22 @@ $(document).ready(function() {
 	else
 	    console.log('loadRecorder not found');
 
-    // the pause seconds are stored after they are used once, not when they are set.
+    //
+    // get the last pause seconds setting and use it
+    //
     var pauseSeconds = localStorage['#pause_seconds'];
 	pauseSeconds = (pauseSeconds) ? parseInt(pauseSeconds) : 0;
 	//console.log('pause seconds: ' + pauseSeconds);
     $('#pause_seconds').html(pauseSeconds);
+
+    //
+    // get the last random setting and use it
+    //
+    var randomOrder = localStorage['#random_order'];
+	randomOrder = (randomOrder) ? randomOrder : "";
+	//console.log('pause seconds: ' + pauseSeconds);
+    $('#random_order').val(randomOrder);
+
 });
 
 $(window).on('unload', function() {
@@ -104,6 +115,7 @@ $(document).keyup(function(event) {
 function deck() {
 
 	this.slides = [];   // slides
+    this.slideOrder = null; // slide order
 	this.speech = null;
 	this.language = "";
 	this.languageLong = "";
@@ -117,6 +129,7 @@ function deck() {
 	this.contentId 		 = 'contentIdNotSet';	// id of the content being read
 	this.readLocationTag = 'readLocation';		// readLocation session id tag
 	this.readLocationOtherDevice = 0;			// read location from another device for logged in user
+    this.randomOrder = false;                   // read slides in random order
 
 	// labels
 	this.labelStart = 'Start not set';
@@ -240,9 +253,9 @@ function deck() {
 	}
 
 	this.showSlide = function() {
-	    var slide = deck.slides[curr];
+	    var slide = getCurrentSlide();
         $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + deck.slides.length);
-        $(".slideDescription").text(deck.slides[curr].description);
+        $(".slideDescription").text(slide.description);
 		$('#selected-word').text('');
 		$('#selected-word-definition').text('');
 
@@ -252,12 +265,12 @@ function deck() {
 	}
 
 	this.readSlideResume = function() {
-	    var slide = deck.slides[curr];
+	    var slide = getCurrentSlide();
 		read(slide.description, _lastCharIndex);
 	}
 
 	this.readSlide = function() {
-	    var slide = deck.slides[curr];
+	    var slide = getCurrentSlide();
         //debug("read slide " + (curr+1) + ": " + slide.description, _debug);
 		read(slide.description, 0);
 
@@ -314,6 +327,8 @@ function loadData()
 		i++;
     });
 
+    deck.slideOrder = loadOrder();
+
 	//
 	// load misc variables
 	//
@@ -342,7 +357,10 @@ function loadData()
 
         // use keyboard
 		_useKeyboard = parseInt(container.data('usekeyboard'), 10);
-		//console.log('keyboard: ' + _useKeyboard);
+
+		// random order
+		deck.randomOrder = (parseInt(container.data('randomorder')) > 0);
+		console.log('random order: ' + deck.randomOrder);
 
 		// labels
 		deck.labelStart = container.data('labelstart');
@@ -353,7 +371,33 @@ function loadData()
 		deck.labelOf = container.data('labelof');
 		deck.labelReadingTime = container.data('labelreadingtime');
 		//console.log('start: ' + deck.labelStart);
+
     });
+
+    console.log('random: ' + $('input[name="random_order"]:checked').val());
+}
+
+function loadOrder()
+{
+	//
+	// load random map in a work array
+	//
+	var order = [];
+	for (var i = 0; i < deck.slides.length; i++)
+		order[i] = i;
+
+	order = shuffle(order); // mix it up
+
+	return order;
+}
+
+function getCurrentSlide()
+{
+    var randomOrder = $('input[name="random_order"]:checked').val();
+    console.log('random order: ' + randomOrder);
+    var index = (randomOrder == "1") ? deck.slideOrder[curr] : curr;
+
+    return deck.slides[index];
 }
 
 function first()
@@ -488,7 +532,7 @@ function readPage(readText = '', textId = '')
 
         if (readText.length == 0)
         {
-            var slide = deck.slides[curr];
+            var slide = getCurrentSlide();
             readText = slide.description;
         }
 

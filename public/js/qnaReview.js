@@ -39,7 +39,7 @@ function showQuestionCustom()
 	$("#prompt").html(q);
 }
 
-function showQuestion() 
+function showQuestion()
 {
 	clear();
 	var q = getQuestion();
@@ -52,11 +52,11 @@ function showQuestion()
 
 	// shows or hides answer option buttons according to checkbox
 	displayAnswerButtons();
-	
+
 	// new way where buttons are in html and configured from here
 	var answers = new Array();
 	var choices = Math.min(quiz.qna.length, 5);
-				
+
 	for (var i = 0; i < choices; i++) // start at one because we've already added the correct answer
 	{
 		var rnd = Math.floor(Math.random() * quiz.qna.length);
@@ -76,7 +76,7 @@ function showQuestion()
 				rnd++;
 				if (rnd >= choices)
 					rnd = 0; // wrap to the beginning and keep looking
-				
+
 				// if not in the answers list, add it
 				if (!answers.includes(rnd))
 				{
@@ -88,7 +88,7 @@ function showQuestion()
 			}
 		}
 	}
-	
+
 	// now lay in the correct answer randomly if it's not already in the array
 	if (!answers.includes(currIndex))
 	{
@@ -100,10 +100,10 @@ function showQuestion()
 	{
 		console.log('choices: ' + choices);
 		console.log('currIndex: ' + currIndex);
-		console.log('correct button: ' + correctButton);				
+		console.log('correct button: ' + correctButton);
 		answers.forEach(function (item, index, arr) {
 			console.log('random array: ' + index + ', item: ' + item + ', ans: ' +  quiz.qna[item].a);
-		});				
+		});
 	}
 
 	// reset the buttons
@@ -114,21 +114,21 @@ function showQuestion()
 	$(".btn-quiz-mc3").css('background-color', '#2fa360');
 	$(".btn-quiz-mc3").css('border-color', '#2d995b');
 	$(".btn-quiz-mc3").css('color', 'white');
-	
+
 	answers.forEach(function (item, index, arr) {
 		var text = getAnswer(item); // quiz.qna[item].a;
 		var btn = '#' + index;
-										
+
 		if (item == currIndex) // the right answer
 			$(btn).addClass('btn-right');
 		else
 			$(btn).addClass('btn-wrong');
-			
+
 		$(btn).html(text);
-		
+
 		// buttons start as hidden in case we are using less than the max (5)
 		// only show the ones we are using so we're not lugging around dead empty buttons
-		$(btn).show(); 
+		$(btn).show();
 	});
 
 	// show answer
@@ -146,71 +146,6 @@ function showQuestion()
 	$("#stats").show();
 }
 
-function nextAttempt()
-{
-	clearTimeout(nextAttemptTimer);
-
-	setButtonStates(RUNSTATE_ASKING);
-
-	var done = false;
-	var count = 0;
-	while(!done)
-	{
-		curr++;
-
-		// check if at the end of round
-		if (curr >= max)
-		{
-			curr = 0;
-			nbr = 0;
-			score = (right / (right+wrong)) * 100;
-			total = right + wrong;
-			if (total > 0)
-			{
-				results = '<p>' + quiz.quizTextRound + ' ' + round + ': ' + score.toFixed(2) + '% (' + right + '/' + total + ')</p>';
-				if (round == 1)
-					$("#rounds").text('');
-				$("#rounds").append(results);
-				//alert('End of Round, Starting next round');
-				quiz.showPanel(RUNSTATE_ENDOFROUND);
-			}
-			else
-			{
-				//alert('End of Round???');
-			}
-
-			//alert('End of Round ' + round + ': ' + score.toFixed(2) + '% (' + right + ' of ' + (right+wrong) + ')');
-
-			round++;
-			statsMax = wrong;
-			right = 0;
-			wrong = 0;
-		}
-
-		// if this question has not been answered correctly yet
-		if (!quiz.qna[quiz.qna[curr].order].correct)
-		{
-			loadQuestion();
-			done = true;
-		}
-		else if (count++ >= max)
-		{
-			// no wrong answers left
-			//alert('Done, all answered correctly!!');
-			//quiz.showPanel(RUNSTATE_ENDOFQUIZ);
-			//resetQuiz();
-			quiz.runState = RUNSTATE_ENDOFQUIZ;
-			done = true;
-		}
-
-		if (count > 10000)
-		{
-			// break out just in care we're looping
-			break;
-		}
-	}
-}
-
 function continueQuiz()
 {
 	// if end of round but not end of quiz, keep asking
@@ -225,15 +160,15 @@ function showAnswerOptionButtons()
 	// use visibility instead of show/hide to keep the spacing
 	$("#optionButtons").css('visibility', 'visible');
 	$("#button-show-options").hide();
-	$("#button-show-answer").show();	
+	$("#button-show-answer").show();
 }
 
 function displayAnswerButtons()
-{	
+{
 	if ($("#checkbox-hide-options").prop('checked'))
 	{
 		// use visibility instead of show/hide to keep the spacing
-		$("#optionButtons").css('visibility', 'hidden'); 
+		$("#optionButtons").css('visibility', 'hidden');
 		$("#button-show-options").show();
 		$("#button-show-answer").hide();
 	}
@@ -243,7 +178,7 @@ function displayAnswerButtons()
 		$("#button-show-options").hide();
 		$("#button-show-answer").show();
 	}
-	
+
 	var checked = $('#checkbox-hide-options').prop('checked') ? 'true' : '';
 	localStorage.setItem('checkbox-hide-options', checked);
 }
@@ -252,7 +187,7 @@ function showAnswer()
 {
 	$("#button-show-answer").hide();
 	var id = $(".btn-right").attr('id');
-	$('.btn-right').addClass('btn-right-show');	
+	$('.btn-right').addClass('btn-right-show');
 	checkAnswerFromButton(id, true);
 }
 

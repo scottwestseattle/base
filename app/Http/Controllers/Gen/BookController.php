@@ -109,7 +109,7 @@ class BookController extends Controller
 		$record->source_link		= trimNull($request->source_link);
 		$record->display_date 		= timestamp();
 		$record->display_order 		= $request->display_order;
-		$record->release_flag 		= RELEASEFLAG_PUBLIC;
+		$record->release_flag 		= RELEASEFLAG_PRIVATE;
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_BOOK;

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', __('proj.Add Chapter'))
-@section('menu-submenu')@component('gen.books.menu-submenu', ['bookId' => $book->id])@endcomponent @endsection
+@section('menu-submenu')@component('gen.books.menu-submenu', [])@endcomponent @endsection
 @section('content')
 
 <div class="container page-normal">

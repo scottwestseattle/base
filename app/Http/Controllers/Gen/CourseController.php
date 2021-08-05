@@ -340,7 +340,7 @@ class CourseController extends Controller
 		]);
     }
 
-    public function publishupdate(Request $request, Course $course)
+    public function updatePublish(Request $request, Course $course)
     {
 		$record = $course;
 

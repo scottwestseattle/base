@@ -13,11 +13,11 @@
     <h3 name="title" class="">{{$record->title }}</h3>
 
     <div class="form-group">
-        @component('components.control-dropdown-menu', ['options' => $wip_flags, 'field_name' => 'wip_flag', 'prompt' => 'base.Work Status'])@endcomponent
+        @component('components.control-dropdown-menu', ['options' => $wip_flags, 'field_name' => 'wip_flag', 'prompt' => 'base.Work Status', 'selected_option' => $record->wip_flag])@endcomponent
     </div>
 
     <div class="form-group">
-        @component('components.control-dropdown-menu', ['options' => $release_flags, 'field_name' => 'release_flag', 'prompt' => 'base.Release Status'])@endcomponent
+        @component('components.control-dropdown-menu', ['options' => $release_flags, 'field_name' => 'release_flag', 'prompt' => 'base.Release Status', 'selected_option' => $record->release_flag])@endcomponent
     </div>
 
     <div class="submit-button">

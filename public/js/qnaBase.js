@@ -159,11 +159,11 @@ function quiz() {
 	this.flipped = function() {
 		return $('#checkbox-flip').prop('checked');
 	}
-	
+
 	this.useDefinition = function() {
 		return $("#checkbox-use-definition").prop("checked");
 	}
-	
+
 	//review: not used
 	this.flip = function() {
 		this._flip = !this._flip;
@@ -261,11 +261,15 @@ function quiz() {
 	}
 
 	this.setAlertPrompt = function(text, color, bold = false) {
-
 		$("#alertPrompt").html(text);
 		$("#alertPrompt").css('color', color);
 		$("#alertPrompt").css('font-weight', bold ? 'bold' : 'normal');
 	}
+
+	this.setCorrect = function() {
+		this.qna[this.qna[curr].order].correct = true;
+		console.log('set correct: true');
+    }
 }
 
 var quiz = new quiz();
@@ -362,26 +366,6 @@ function loadOrder()
 		s += quiz.qna[i].order + ",";
 	alert(s);
 	*/
-}
-
-function shuffle(array)
-{
-	var currentIndex = array.length, temporaryValue, randomIndex ;
-
-	// While there are elements to shuffle...
-	while (0 !== currentIndex)
-	{
-		// Pick a remaining element...
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex -= 1;
-
-		// And swap it with the current element.
-		temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
-	}
-
-	return array;
 }
 
 function first()
@@ -529,11 +513,11 @@ function loadQuestion()
 function reloadQuestion()
 {
 	showQuestion();
-	
+
 	// one of these triggered this call so save the state
 	var checked = $('#checkbox-flip').prop('checked') ? 'true' : '';
 	localStorage.setItem('checkbox-flip', checked);
-		
+
 	var checked = $('#checkbox-use-definition').prop('checked') ? 'true' : '';
 	localStorage.setItem('checkbox-use-definition', checked);
 }
@@ -661,7 +645,7 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 		var correctAnswer = false;
 		if (checkOptions == CHECKANSWER_FROMBUTTON)
 		{
-			correctAnswer = correctButtonClicked;		
+			correctAnswer = correctButtonClicked;
 		}
 		else
 		{
@@ -673,7 +657,7 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 				cleanAnswer = accentFold(cleanAnswer);
 				cleanAttempt = accentFold(cleanAttempt);
 			}
-			
+
 			correctAnswer = ((answer != null && attempt != null) && cleanAnswer == cleanAttempt);
 		}
 
@@ -684,7 +668,6 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 				result = quiz.quizTextMarkedWrong;
 				answerColor = 'purple';
 				quiz.qna[quiz.qna[curr].order].correct = false;
-				
 			}
 			else
 			{
@@ -692,12 +675,12 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 				answerColor = 'green';
 				quiz.qna[quiz.qna[curr].order].correct = true;
 			}
-			
+
 			$("#button-next-attempt").focus();
 			quiz.showOverrideButton(false, quiz.quizTextOverrideWrong);
 			quiz.lastScore = SCORE_WRONG;
 			$("#question-right").show();
-			
+
 			if (showOnly)
 			{
 				wrong++;
@@ -880,7 +863,7 @@ function accentFold (s)
 function touch(q)
 {
 	//debug('touching', true);
-	   
+
     // if it's a word, update it's last display time
     if (quiz.touchPath.length > 0) // if touchPath set
     {
@@ -896,7 +879,7 @@ function flip()
 	quiz.flip();
 }
 
-function setButtonStates(state) 
+function setButtonStates(state)
 {
 	quiz.runState = state;
 
@@ -1003,3 +986,6 @@ function setButtonStates(state)
 		alert("setButtonStates - bad value");
 	}
 }
+
+
+
