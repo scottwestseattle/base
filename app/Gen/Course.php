@@ -181,8 +181,18 @@ class Course extends Model
 		    else if ($language == LANGUAGE_EN)
 		        $typeFlag = COURSETYPE_ENGLISH;
 
-			// public
-			if ($typeFlag >= 0)
+            if (isAdmin())
+            {
+                // Show all to admin
+                $records = Course::select()
+                    //->where('type_flag', $typeFlag)
+                    ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+                    ->orderBy('type_flag', 'DESC') // show exercises first for the moment
+                    ->orderBy('site_id')
+                    ->orderBy('display_order')
+                    ->get();
+            }
+			else if ($typeFlag >= 0)	// public
             {
                 // use type flag for Spanish and English sites
                 $records = Course::select()
@@ -195,7 +205,7 @@ class Course extends Model
 			}
 			else
 			{
-			    // user site_id for the non-language sites
+			    // use user site_id for the non-language sites
                 $records = Course::select()
                     ->where('site_id', $siteId)
                     ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
