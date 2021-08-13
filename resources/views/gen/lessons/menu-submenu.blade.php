@@ -27,6 +27,9 @@
 			<li class="nav-item"><a class="nav-link" href="/lessons/confirmdelete/{{$record->id}}">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
 			</a></li>
+            <li class="nav-item"><a class="nav-link" href="/lessons/rss-reader/{{$record->id}}">
+                <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#rss" /></svg>
+            </a></li>
 		@else
 			<li class="nav-item"><a class="nav-link" href="/lessons/deleted">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>

@@ -4,6 +4,8 @@
 DB Changes:
 
 NEW:
+ALTER TABLE `tags` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
+ALTER TABLE `tags` ADD `wip_flag` TINYINT NOT NULL DEFAULT '0' AFTER `release_flag`;
 
 Done:
 UPDATE `definitions` SET examples = NULL WHERE 1 AND TYPE_FLAG = 1

@@ -26,6 +26,9 @@
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>
 			</a></li>
 		@endisset
+    	<li class="nav-item"><a class="nav-link" href="/favorites/rss">
+            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#rss" /></svg>
+        </a></li>
     </ul>
   </div>
 </nav>

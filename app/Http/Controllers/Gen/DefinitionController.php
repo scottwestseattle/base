@@ -46,7 +46,7 @@ class DefinitionController extends Controller
 			'setFavoriteList',
 			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs', 'reviewRankedVerbs', 'reviewSnippets',
 
-			'favorites',
+			'favorites', 'favoritesRss', 'favoritesRssReader',
 			'setSnippetCookie',
         ]);
 
@@ -1422,6 +1422,41 @@ class DefinitionController extends Controller
 		return view(VIEWS . '.favorites', [
 			'favorites' => $favorites,
 			'newest' => true,
+		]);
+    }
+
+    public function favoritesRss(Request $request)
+    {
+		// definitions favorites
+		$records = Definition::getFavoriteLists();
+
+		return view(VIEWS . '.favoritesRss', [
+			'records' => $records,
+		]);
+    }
+
+    public function favoritesRssReader(Request $request, Tag $tag)
+    {
+		// definitions favorites
+		$records = Definition::getFavoriteLists($tag->id);
+        foreach($records as $record)
+        {
+            $qna = [];
+            $index = 0;
+            foreach($record->definitions as $definition)
+            {
+                if (isset($definition->translation_en))
+                {
+                    $qna[$index]['a'] = $definition->translation_en;
+                    $qna[$index++]['q'] = $definition->title_long;
+                }
+            }
+        }
+
+        $record['qna'] = $qna;
+
+		return view(VIEWS . '.favoritesRssReader', [
+			'records' => $records,
 		]);
     }
 

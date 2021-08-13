@@ -818,38 +818,46 @@ class LessonController extends Controller
 
     public function rssReader(Lesson $lesson)
     {
-		$records = Lesson::getIndex($lesson->parent_id, $lesson->lesson_number);
+        $records = Lesson::getIndex($lesson->parent_id, $lesson->lesson_number);
+        $qna = [];
 
-		$qna = [];
+        foreach ($records as $record)
+        {
+            if ($record->isText()) // isText() is all non-timed slides
+            {
+                $lines = explode("\r\n", strip_tags(html_entity_decode($record->text)));
+                //dd($lines);
 
-		foreach ($records as $record)
-		{
-			$lines = explode("\r\n", strip_tags(html_entity_decode($record->text)));
-			//dd($lines);
+                $cnt = 0;
+                foreach($lines as $line)
+                {
+                    $line = trim($line);
+                    if (strlen($line) > 0)
+                    {
+                        $parts = explode(" - ", $line);
 
-			$cnt = 0;
-			foreach($lines as $line)
-			{
-				$line = trim($line);
-				if (strlen($line) > 0)
-				{
-					$parts = explode(" - ", $line);
+                        $qna[$cnt]['q'] = null;
+                        $qna[$cnt]['a'] = null;
 
-					$qna[$cnt]['q'] = null;
-					$qna[$cnt]['a'] = null;
+                        if (count($parts) > 0)
+                            $qna[$cnt]['q'] = $parts[0];
 
-					if (count($parts) > 0)
-						$qna[$cnt]['q'] = $parts[0];
+                        if (count($parts) > 1)
+                            $qna[$cnt]['a'] = $parts[1];
 
-					if (count($parts) > 1)
-						$qna[$cnt]['a'] = $parts[1];
+                        $cnt++;
+                    }
+                }
 
-					$cnt++;
-				}
-			}
-
-			$record['qna'] = $qna;
-		}
+                $record['qna'] = $qna;
+            }
+            else
+            {
+                $qna[0]['q'] = 'tipo de lección no funciona.';
+                $qna[0]['a'] = 'tipo de lección no funciona.';
+                $record['qna'] = $qna;
+            }
+        }
 
 		return view(VIEWS . '.rss-reader', [
 			'record' => $lesson,

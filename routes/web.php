@@ -426,7 +426,13 @@ Route::group(['prefix' => 'visitors'], function () {
 use App\Http\Controllers\Gen\DefinitionController;
 
 Route::get('/dictionary', [DefinitionController::class, 'search']);
-Route::get('/favorites', [DefinitionController::class, 'favorites']);
+
+// Favorites lists
+Route::group(['prefix' => 'favorites'], function () {
+    Route::get('/', [DefinitionController::class, 'favorites']);
+    Route::get('/rss', [DefinitionController::class, 'favoritesRss']);
+    Route::get('/rss-reader/{tag}', [DefinitionController::class, 'favoritesRssReader']);
+});
 
 // Practice text (Snippets)
 Route::group(['prefix' => 'practice'], function () {

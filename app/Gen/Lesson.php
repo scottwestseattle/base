@@ -16,18 +16,19 @@ use App\User;
 define('LESSON_FORMAT_DEFAULT', 0);
 define('LESSON_FORMAT_AUTO', 1);
 
-define('LESSONTYPE_NOTSET', 0);
-define('LESSONTYPE_TEXT', 10);
-define('LESSONTYPE_VOCAB', 20);
-define('LESSONTYPE_QUIZ_FIB', 30);
-define('LESSONTYPE_QUIZ_MC1', 40);
-define('LESSONTYPE_QUIZ_MC2', 41);
-define('LESSONTYPE_QUIZ_MC3', 42);
-define('LESSONTYPE_QUIZ_MC4', 43);
-define('LESSONTYPE_TIMED_SLIDES', 50);
-define('LESSONTYPE_READING', 60);
-define('LESSONTYPE_OTHER', 99);
-define('LESSONTYPE_DEFAULT', LESSONTYPE_TEXT);
+define('LESSONTYPE_NOTSET',          0);
+define('LESSONTYPE_TEXT',           10);
+define('LESSONTYPE_VOCAB',          20);
+define('LESSONTYPE_QUIZ_FIB',       30);
+define('LESSONTYPE_QUIZ_MC1',       40);
+define('LESSONTYPE_QUIZ_MC2',       41);
+define('LESSONTYPE_QUIZ_MC3',       42);
+define('LESSONTYPE_QUIZ_MC4',       43);
+define('LESSONTYPE_TIMED_SLIDES',   50);
+define('LESSONTYPE_READING',        60);
+define('LESSONTYPE_LISTS',          70); // favorites lists
+define('LESSONTYPE_OTHER',          99);
+define('LESSONTYPE_DEFAULT',        LESSONTYPE_TEXT);
 
 class Lesson extends Model
 {
@@ -43,6 +44,7 @@ class Lesson extends Model
 		LESSONTYPE_QUIZ_MC3 => 'Multiple Choice - New Layout (MC3)',
 		LESSONTYPE_TIMED_SLIDES => 'Timed Slides',
 		LESSONTYPE_READING => 'Reading',
+		LESSONTYPE_LISTS => 'Favorites Lists',
 		LESSONTYPE_OTHER => 'Other',
     ];
 
@@ -479,6 +481,16 @@ class Lesson extends Model
 	    $rc = false;
 
 	    if ($this->type_flag == LESSONTYPE_TIMED_SLIDES)
+	        $rc = true;
+
+	    return $rc;
+    }
+
+    public function isLists()
+	{
+	    $rc = false;
+
+	    if ($this->type_flag == LESSONTYPE_LISTS)
 	        $rc = true;
 
 	    return $rc;

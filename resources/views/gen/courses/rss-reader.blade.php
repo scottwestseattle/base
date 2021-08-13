@@ -11,6 +11,7 @@
 				<lesson_id>{{$lesson['id']}}</lesson_id>
 				<lesson_number>{{$lesson['number']}}</lesson_number>
 				<lesson_parent>{{$lesson['course']}}</lesson_parent>
+				<lesson_type>{{$lesson['type']}}</lesson_type>
 			</lesson>
 		@endforeach
 </course>

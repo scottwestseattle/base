@@ -9,6 +9,7 @@ use DB;
 use Auth;
 use App\User;
 use App\Gen\Course;
+use App\Gen\Definition;
 use App\Gen\Lesson;
 use App\Site;
 use App\Status;
@@ -377,26 +378,48 @@ class CourseController extends Controller
 				{
 					if ($lesson->deleted_flag == 0)
 					{
-						if ($lesson->section_number == 1) // lesson 1 holds the chapter info
-						{
-							$sessions[$lesson->lesson_number]['title'] = isset($lesson->title_chapter) ? $lesson->title_chapter : 'Chapter ' . $lesson->lesson_number;
-							$sessions[$lesson->lesson_number]['description'] = $lesson->description;
-							$sessions[$lesson->lesson_number]['id'] = $lesson->id;
-							$sessions[$lesson->lesson_number]['number'] = $lesson->lesson_number;
-							$sessions[$lesson->lesson_number]['course'] = $course->title;
-						}
+					    if ($lesson->isLists())
+					    {
+					        // get favorites lists and loop through them
+					        $lists = Definition::getFavoriteLists();
+					        $index = 0;
+					        foreach($lists as $list)
+					        {
+                                $sessions[$index]['title'] = $list->name;
+                                $sessions[$index]['description'] = $list->description;
+                                $sessions[$index]['id'] = $list->id;
+                                $sessions[$index]['number'] = $index + 1;
+                                $sessions[$index]['course'] = $course->title;
+                                $sessions[$index]['type'] = $lesson->type_flag;
+                                $sessions[$index]['exercise_count'] = count($list->definitions);
 
-						if (array_key_exists($lesson->lesson_number, $sessions) && array_key_exists('exercise_count', $sessions[$lesson->lesson_number]))
-						{
-							$sessions[$lesson->lesson_number]['exercise_count'] += 1;
-						}
-						else
-						{
-							$sessions[$lesson->lesson_number]['exercise_count'] = 1;
-						}
+                                $index++;
+					        }
 
-						//dump($lesson->title . ': ' . $lesson->section_number);
+					        //dd($sessions);
+					    }
+					    else
+					    {
+                            if ($lesson->section_number == 1) // lesson 1 holds the chapter info
+                            {
+                                $sessions[$lesson->lesson_number]['title'] = isset($lesson->title_chapter) ? $lesson->title_chapter : 'Chapter ' . $lesson->lesson_number;
+                                $sessions[$lesson->lesson_number]['description'] = $lesson->description;
+                                $sessions[$lesson->lesson_number]['id'] = $lesson->id;
+                                $sessions[$lesson->lesson_number]['number'] = $lesson->lesson_number;
+                                $sessions[$lesson->lesson_number]['course'] = $course->title;
+                                $sessions[$lesson->lesson_number]['type'] = $lesson->type_flag;
+                            }
 
+                            if (array_key_exists($lesson->lesson_number, $sessions) && array_key_exists('exercise_count', $sessions[$lesson->lesson_number]))
+                            {
+                                $sessions[$lesson->lesson_number]['exercise_count'] += 1;
+                            }
+                            else
+                            {
+                                $sessions[$lesson->lesson_number]['exercise_count'] = 1;
+                            }
+                            //dump($lesson->title . ': ' . $lesson->section_number);
+					    }
 					}
 				}
 

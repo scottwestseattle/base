@@ -226,6 +226,28 @@ class Definition extends Model
 		return $options;
 	}
 
+    static public function getFavoriteLists($id = 0)
+    {
+		$records = null;
+        $idCondition = ($id > 0) ? '=' : '>=';
+
+		try
+		{
+            $records = Tag::select()
+                ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
+                ->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+                ->where('id', $idCondition, $id)
+                ->get();
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error getting rss favorite lists';
+            logExceptionEx(__CLASS__, __FUNCTION__, $msg . ', ' . $e->getMessage());
+		}
+
+		return $records;
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Release status
