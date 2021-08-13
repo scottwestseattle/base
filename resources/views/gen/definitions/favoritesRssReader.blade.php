@@ -4,8 +4,8 @@
 	<record>
 		<name>{{$record->name}}</name>
 		@foreach($record['qna'] as $qna)
-			<question>{{$qna['q']}}</question>
-			<answer>{{$qna['a']}}</answer>
+			<question language="{{$qna['questionLanguage']}}">{{$qna['q']}}</question>
+			<answer language="{{$qna['answerLanguage']}}">{{$qna['a']}}</answer>
 		@endforeach
 	</record>
 @endforeach

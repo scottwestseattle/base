@@ -1447,8 +1447,13 @@ class DefinitionController extends Controller
             {
                 if (isset($definition->translation_en))
                 {
-                    $qna[$index]['a'] = $definition->translation_en;
-                    $qna[$index++]['q'] = $definition->title_long;
+                    $qna[$index]['q'] = $definition->translation_en;
+                    $qna[$index]['questionLanguage'] = LANGUAGE_EN;
+
+                    $qna[$index]['a'] = $definition->title_long;
+                    $qna[$index]['answerLanguage'] = LANGUAGE_ES;
+
+                    $index++;
                 }
             }
         }
