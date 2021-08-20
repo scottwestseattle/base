@@ -946,21 +946,33 @@ class Definition extends Model
 		return $records;
 	}
 
-	static public function getSnippetsReview($options)
+	static public function getSnippetsReview($options = null)
 	{
 		$records = [];
 
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
+        $limit = isset($options['limit']) ? $options['limit'] : PHP_INT_MAX;
 
 		try
 		{
-			$records = Definition::select()
-				->where('type_flag', DEFTYPE_SNIPPET)
-				->where('language_flag', $languageFlagCondition, $languageId)
-				->whereNotNull('translation_en')
-				->limit($options['limit'])
-				->get();
+		    if (isset($options['count']))
+		    {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('language_flag', $languageFlagCondition, $languageId)
+                    ->whereNotNull('translation_en')
+                    ->count();
+		    }
+		    else
+		    {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('language_flag', $languageFlagCondition, $languageId)
+                    ->whereNotNull('translation_en')
+                    ->limit($limit)
+                    ->get();
+		    }
 		}
 		catch (\Exception $e)
 		{
@@ -969,6 +981,13 @@ class Definition extends Model
 		}
 
 		return $records;
+	}
+
+	static public function getSnippetsReviewCount()
+	{
+        $rc = self::getSnippetsReview(['count' => true]);
+
+		return $rc;
 	}
 
 	static public function makeQna($records)

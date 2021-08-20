@@ -380,7 +380,9 @@ class CourseController extends Controller
 					{
 					    if ($lesson->isLists())
 					    {
+					        //
 					        // get favorites lists and loop through them
+					        //
 					        $lists = Definition::getFavoriteLists();
 					        $index = 0;
 					        foreach($lists as $list)
@@ -395,8 +397,6 @@ class CourseController extends Controller
 
                                 $index++;
 					        }
-
-					        //dd($sessions);
 					    }
 					    else
 					    {

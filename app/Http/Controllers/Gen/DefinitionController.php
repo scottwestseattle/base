@@ -1443,17 +1443,38 @@ class DefinitionController extends Controller
         {
             $qna = [];
             $index = 0;
-            foreach($record->definitions as $definition)
+            if (count($record->definitions) == 0) // this is the flag to get all snippets with a translation
             {
-                if (isset($definition->translation_en))
+                $favorites = Definition::getSnippetsReview();
+                foreach($favorites as $definition)
                 {
-                    $qna[$index]['q'] = $definition->translation_en;
-                    $qna[$index]['questionLanguage'] = LANGUAGE_EN;
+                    if (isset($definition->translation_en))
+                    {
+                        $qna[$index]['q'] = $definition->translation_en;
+                        $qna[$index]['questionLanguage'] = LANGUAGE_EN;
 
-                    $qna[$index]['a'] = $definition->title_long;
-                    $qna[$index]['answerLanguage'] = LANGUAGE_ES;
+                        $qna[$index]['a'] = $definition->title_long;
+                        $qna[$index]['answerLanguage'] = LANGUAGE_ES;
 
-                    $index++;
+                        $index++;
+                    }
+                }
+
+            }
+            else
+            {
+                foreach($record->definitions as $definition)
+                {
+                    if (isset($definition->translation_en))
+                    {
+                        $qna[$index]['q'] = $definition->translation_en;
+                        $qna[$index]['questionLanguage'] = LANGUAGE_EN;
+
+                        $qna[$index]['a'] = $definition->title_long;
+                        $qna[$index]['answerLanguage'] = LANGUAGE_ES;
+
+                        $index++;
+                    }
                 }
             }
         }
