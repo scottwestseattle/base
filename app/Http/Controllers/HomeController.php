@@ -233,10 +233,11 @@ class HomeController extends Controller
 		//
 		// get articles
 		//
-	    $options['articles'] = Entry::getArticles(LANGUAGE_ALL, 5);
+	    $options['articlesPublic'] = Entry::getArticles(LANGUAGE_ALL, 5);
 
         return $options;
 	}
+
 	public function about(Request $request)
 	{
 		return view('home.about');

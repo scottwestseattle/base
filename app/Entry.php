@@ -464,14 +464,25 @@ class Entry extends Model
     {
         $records = null;
 
-        $languageCondition = ($languageFlag == LANGUAGE_ALL) ? '>=' : '=';
+        if ($languageFlag == LANGUAGE_ALL)
+        {
+            $languageCondition = '>=';
+            $languageFlag = LANGUAGE_NOTSET;
+        }
+        else
+        {
+            $languageCondition = '=';
+        }
+
         $releaseCondition = isAdmin() ? '>=' : '=';
         $releaseFlag = isAdmin() ? RELEASEFLAG_NOTSET : RELEASEFLAG_PUBLIC;
+
 		try
 		{
 			$records = Entry::select()
 			    ->where('language_flag', $languageCondition, $languageFlag)
 			    ->where('release_flag', $releaseCondition, $releaseFlag)
+			    ->where('type_flag', ENTRY_TYPE_ARTICLE)
 				->orderByRaw('created_at DESC')
 				->limit($limit)
 				->get();

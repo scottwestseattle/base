@@ -1,6 +1,7 @@
 <?php
 
 // language flag
+define('LANGUAGE_NOTSET', -1);
 define('LANGUAGE_EN', 0);
 define('LANGUAGE_ES', 1);
 define('LANGUAGE_FR', 2);

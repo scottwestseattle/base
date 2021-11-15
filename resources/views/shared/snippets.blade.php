@@ -124,11 +124,15 @@
                                 <div class="float-left mr-3">
                                     <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
                                 </div>
+
                                 @if (!isset($record->translation_en))
+                                @if (App\User::isOwner($record->user_id))
                                     <div class="float-left mr-3" style="margin-top: 2px;">
                                             <a href="/practice/edit/{{$record->id}}"><span class="red">@LANG('proj.Add Translation')</span></a>
                                     </div>
                                 @endif
+                                @endif
+
                                 <div class="float-left" style="margin-top:2px; margin-right: 10px;">
                                     <div class=""><a href="/definitions/stats/{{$record->id}}">{{str_word_count($record->title_long)}} {{trans_choice('ui.Word', 2)}}</a></div>
                                 </div>
