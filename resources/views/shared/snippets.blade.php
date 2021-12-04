@@ -1,5 +1,4 @@
 @php
-    $showLanguages = (isset($options['showLanguages'])) ? $options['showLanguages'] : false;
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
 @endphp
 
@@ -56,16 +55,6 @@
         </div>
 
         <span class='mini-menu'>
-            @if ($showLanguages)
-                @component('components.control-dropdown-language', [
-                    'record' => isset($options['snippet']) ? $options['snippet'] : null,
-                    'options' => $options['snippetLanguages'],
-                    'selected_option' => $options['language'],
-                    'field_name' => 'language_flag',
-                    'select_class' => 'mini-border mt-1 mr-2',
-                ])@endcomponent
-                <select class="mini-border" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
-            @endif
             <a href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
             <a href="" onclick="copySnippet(event)" class="ml-1">@LANG('ui.Copy')<a/>
         </span>

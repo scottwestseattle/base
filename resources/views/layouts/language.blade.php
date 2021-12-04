@@ -12,7 +12,7 @@
                 'label' => trans_choice('ui.Language', 1) . ':',
                 'onchange' => 'setLanguageGlobal()',
             ])@endcomponent
-            <select class="mini-border" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
+            <select class="mini-border hidden" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
         </span>
     </div>
 </div>

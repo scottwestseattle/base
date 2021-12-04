@@ -87,6 +87,23 @@ function loadVoicesGlobal()
 	}
 }
 
+function isLanguageMatch(lang, deckLang1, deckLang2)
+{
+    // check for 'es-' or 'es_'
+    if (lang.search(deckLang1 + "-") !== -1 || lang.search(deckLang1 + "_") !== -1)
+    {
+        return true;
+    }
+
+    // check for 'spa-' or 'spa_'
+    if (lang.search(deckLang2 + "-") !== -1 || lang.search(deckLang2 + "_") !== -1)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 function loadVoices(language, languageLong)
 {
     //console.log('language: ' + language);
@@ -103,6 +120,9 @@ function loadVoices(language, languageLong)
 
 	var voiceSelect = document.querySelector('#selectVoice');
 
+    // un-hide the voice list
+    document.getElementById('selectVoice').style.display = 'inline-block';
+
     // empty the voices from the select
     var length = voiceSelect.options.length;
     for (i = length-1; i >= 0; i--) {
@@ -113,25 +133,19 @@ function loadVoices(language, languageLong)
 
 	if (_voices.length > 0)
 	{
-	    var langCodeSize = 2;
-	    var deckLang = language.substring(0, langCodeSize);
-
-	    // figure out how the voices are formatted, either 'en-US' or 'eng-USA', 'es-ES' or 'spa-ESP'
-	    if (_voices.length > 0 && _voices[0].lang.length > 5)
-	    {
-	        // using 3 letter language and country codes: 'spa-ESP'
-	        langCodeSize = 3;
-    	    deckLang = languageLong.substring(0, langCodeSize);
-	    }
+	    // possible formats are: 'en-US' or 'eng-USA', 'es-ES' or 'spa-ESP'
+	    var deckLang1 = language.substring(0, 2); // two letter language code like 'en'
+	    var deckLang2 = language.substring(0, 3); // three letter language code like 'eng'
 
         // quick check to see if there are any voices installed for the selected language
         var showAll = true;
-		for(i = 0; i < _voices.length ; i++)
+		for (i = 0; i < _voices.length ; i++)
 		{
-            var lang = _voices[i].lang.substring(0, langCodeSize);
-            if (deckLang == lang)
+            lang = _voices[i].lang;
+            if (isLanguageMatch(lang, deckLang1, deckLang2))
             {
                 // if at least one found, bail out
+                //console.log('one found: ' + lang);
                 showAll = false;
                 break;
             }
@@ -139,12 +153,24 @@ function loadVoices(language, languageLong)
 
         // load the voices into the select for the specified language OR all
         //console.log('voices: ' + _voices.length);
-		for(i = 0; i < _voices.length ; i++)
+		for (i = 0; i < _voices.length ; i++)
 		{
 			var option = document.createElement('option');
-			option.textContent = _voices[i].name;
+
+			option.textContent = _voices[i].name.replace('Microsoft ', '');
+			option.textContent = option.textContent.replace(' Online (Natural) -', '');
+			option.textContent = option.textContent.replace(' Spanish', '');
+			option.textContent = option.textContent.replace(' español', '');
+
 			if (option.textContent.length < 10 && !option.textContent.endsWith(')')) // if it's short and doesn't already have something in parens, add the language
+            {
     			option.textContent += ' (' + _voices[i].lang + ')';
+            }
+    		else if (false) // for debugging
+    		{
+    			option.textContent += ' (' + _voices[i].lang + ') showAll=' + showAll;
+    		}
+
 			option.value = i;
 
 			if(_voices[i].default) {
@@ -154,10 +180,8 @@ function loadVoices(language, languageLong)
 			option.setAttribute('data-lang', _voices[i].lang);
 			option.setAttribute('data-name', _voices[i].name);
 
-            var lang = _voices[i].lang.substring(0, langCodeSize);
-            //console.log('looking for: ' + deckLang + ', voice: ' + lang);
-
-            if (showAll || deckLang == lang)
+            var lang = _voices[i].lang;
+            if (showAll || isLanguageMatch(lang, deckLang1, deckLang2))
             {
                 if (found == 0)
                 {

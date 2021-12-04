@@ -360,7 +360,7 @@ function loadData()
 
 		// random order
 		deck.randomOrder = (parseInt(container.data('randomorder')) > 0);
-		console.log('random order: ' + deck.randomOrder);
+		//console.log('random order: ' + deck.randomOrder);
 
 		// labels
 		deck.labelStart = container.data('labelstart');
@@ -374,7 +374,7 @@ function loadData()
 
     });
 
-    console.log('random: ' + $('input[name="random_order"]:checked').val());
+    //console.log('random: ' + $('input[name="random_order"]:checked').val());
 }
 
 function loadOrder()
@@ -394,7 +394,7 @@ function loadOrder()
 function getCurrentSlide()
 {
     var randomOrder = $('input[name="random_order"]:checked').val();
-    console.log('random order: ' + randomOrder);
+    //console.log('random order: ' + randomOrder);
     var index = (randomOrder == "1") ? deck.slideOrder[curr] : curr;
 
     return deck.slides[index];
@@ -488,11 +488,64 @@ function skip()
 function reload()
 {
     location.reload();
+    releaseWakeLock();
 }
 
 function run()
 {
+    //
+    // start reading
+    //
 	resume();
+}
+
+// The wake lock sentinel.
+let wakeLock = null;
+
+function hasWakeLock()
+{
+    if ('wakeLock' in navigator) {
+          //console.log('Wake Lock supported');
+          return true;
+    }
+    else {
+        console.log('Wake Lock NOT supported');
+        return false;
+    }
+}
+
+// Function that attempts to request a screen wake lock.
+async function requestWakeLock()
+{
+    if (!hasWakeLock())
+        return; // not available
+
+    if (wakeLock) // already locked
+        return;
+
+  try {
+        wakeLock = await navigator.wakeLock.request();
+        wakeLock.addEventListener('release', () => {
+            console.log('Screen Wake Lock released:', wakeLock.released);
+        });
+
+        console.log('wake lock requested');
+
+  } catch (err) {
+    console.error(`${err.name}, ${err.message}`);
+  }
+}
+
+function releaseWakeLock()
+{
+    if (!hasWakeLock())
+        return; // not available
+
+    if (wakeLock) // is it locked?
+    {
+        wakeLock.release();
+        wakeLock = null;
+    }
 }
 
 function resume()
@@ -511,6 +564,8 @@ function resume()
 
 	$("#pause").show();
 	$("#resume").hide();
+
+	requestWakeLock();
 }
 
 function readPage(readText = '', textId = '')
@@ -650,6 +705,8 @@ function pause()
 	$("#pause").hide();
     $("#resume").show();
     $("#readPage").show();
+
+    releaseWakeLock();
 }
 
 function mute()
@@ -698,7 +755,7 @@ function read(text, charIndex, textId = '#slideDescription')
 
 	if (deck.voice != null)
 	{
-        console.log('reading: ' + deck.voice.lang);
+        //console.log('reading: ' + deck.voice.lang);
 		_utter.voice = deck.voice;  // if voices for language were found, then use the one we saved on start-up
 		_utter.lang = deck.voice.lang;
 	}
@@ -842,25 +899,37 @@ function readNext()
 		curr = 0;
 
 		if (keepReading())
+		{
 		    pauseReadNext();
+		}
         else
+        {
+        	saveReadLocation(0);
             end();
+        }
 	}
 	else
 	{
 	    if (isTimeExpired())
+	    {
 	        end();
+	    }
         else
-		    pauseReadNext();
+        {
+            pauseReadNext();
+        }
 	}
 }
 
 function pauseReadNext()
 {
     var pauseSeconds = parseInt($("#pause_seconds").text());
-    if (pauseSeconds > 0)
-    {
+
+    if (_pauseTimerId)
         clearTimeout(_pauseTimerId);
+
+    if (pauseSeconds >= 0)
+    {
         _pauseTimerId = setTimeout(deck.runSlide, pauseSeconds * 1000);
     }
 }
@@ -897,7 +966,6 @@ function showSeconds(text = null)
 
 function end()
 {
-	saveReadLocation(0);
 	clearTimeout(_speechTimerId);
 	reset();
 	loadData();
@@ -907,6 +975,7 @@ function end()
 	$('#readCurrLine').text(deck.labelLine + " " + (curr + 1));
 	showElapsedTime();
 	clearTimeout(_clockTimerId);
+	releaseWakeLock();
 }
 
 function reset()
@@ -1086,6 +1155,7 @@ function setFontSize()
 
 function saveReadLocation(location)
 {
+    //console.log('saving readlocation: ' + location);
 	localStorage[deck.readLocationTag] = location;
 	if (location == 0)
 	{
