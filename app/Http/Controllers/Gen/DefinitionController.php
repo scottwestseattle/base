@@ -633,7 +633,7 @@ class DefinitionController extends Controller
         $options['returnUrl'] = '/practice';
 
         // get the snippets for the appropriate langauge
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
         $snippets = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
         $options['records'] = $snippets;
 

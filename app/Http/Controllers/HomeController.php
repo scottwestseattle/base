@@ -105,7 +105,7 @@ class HomeController extends Controller
         $snippetsLimit = 5;
         if ($siteLanguage == LANGUAGE_ALL)
         {
-    		$languageFlagCondition = '>=';
+    		$languageFlagCondition = '<=';
             $snippetsLimit = 10;
         }
 

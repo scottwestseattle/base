@@ -466,8 +466,7 @@ class Entry extends Model
 
         if ($languageFlag == LANGUAGE_ALL)
         {
-            $languageCondition = '>=';
-            $languageFlag = LANGUAGE_NOTSET;
+            $languageCondition = '<=';
         }
         else
         {
@@ -499,7 +498,7 @@ class Entry extends Model
 	{
 		$type = intval($parms['type']);
 		$languageFlag = $parms['id'];
-		$languageCondition = '=';
+		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
 		$records = [];
 		$tag = self::getRecentTag();
 

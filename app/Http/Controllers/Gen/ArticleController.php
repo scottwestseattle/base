@@ -43,6 +43,7 @@ class ArticleController extends Controller
 
         $parms = Site::getLanguage();
         $parms['type'] = ENTRY_TYPE_ARTICLE;
+        $options = [];
 
 		try
 		{
