@@ -211,13 +211,15 @@ class Tag extends Model
 		return $record;
     }
 
-    static public function getByType($type)
+    static public function getByType($type, $orderBy = null)
     {
 		$type = intval($type);
+		$orderBy = ($orderBy != null) ? $orderBy : 'id ASC';
 
 		$records = $record = Tag::select()
 				->where('deleted_at', null)
 				->where('type_flag', $type)
+				->orderByRaw($orderBy)
 				->get();
 
 		return $record;

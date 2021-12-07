@@ -427,7 +427,7 @@ class Entry extends Model
 
     static public function getBookTags()
     {
-        $tags = Tag::getByType(TAG_TYPE_BOOK);
+        $tags = Tag::getByType(TAG_TYPE_BOOK, 'id DESC');
 
         // figure out which ones to show
         $records = [];

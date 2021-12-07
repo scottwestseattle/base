@@ -775,7 +775,7 @@ class Definition extends Model
 	// search checks title and forms
     static public function search($word)
     {
-		$word = alphanum($word, /* strict = */ true);
+		$word = alphanum(strtolower($word), /* strict = */ true);
 		$record = null;
 
 		try
