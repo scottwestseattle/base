@@ -3,6 +3,47 @@ $(document).ready(function() {
     console.log('project.js ready');
 });
 
+let charSubs = {
+        65:'á',
+        69:'é',
+        73:'í',
+        79:'ó',
+        85:'ú',
+        78:'ñ',
+};
+
+
+$(document).keydown(function(event) {
+
+    //console.log(event.keyCode);
+    //console.log(event.altKey);
+    //console.log(event.shiftKey);
+
+    switch (event.keyCode)
+    {
+        case 65: // a
+        case 69: // e
+        case 73: // i
+        case 79: // o
+        case 85: // u
+        case 78: // n
+            if (event.altKey)
+            {
+                event.preventDefault();
+                let accentChar = charSubs[event.keyCode];
+                accentChar = (event.shiftKey) ? accentChar.toUpperCase() : accentChar;
+                insertChar(accentChar, 0, false);
+            }
+            break;
+        case 18: // alt key
+            event.preventDefault();
+            break;
+        default:
+            break;
+    }
+
+});
+
 var isMobile = {
     Android: function() {
         return navigator.userAgent.match(/Android/i);
