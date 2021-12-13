@@ -12,11 +12,11 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
     <!-- Top Navigation Buttons -->
     <!------------------------------------>
     @if ($showPrevNext)
-    <div style="margin-top: 10px;">
+    <div>
         @if (isset($prev))
             <a href="/{{$prefix}}/show/{{$prev->permalink}}"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
         @endif
-            <a href="/{{$prefix}}"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>@LANG('ui.Back to the List')</button></button></a>
+            <a href="{{$options['backLink']}}"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('proj.Back to Book', 1)}}</button></button></a>
         @if (isset($next))
             <a href="/{{$prefix}}/show/{{$next->permalink}}"><button type="button" class="btn btn-success mb-1">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
         @endif

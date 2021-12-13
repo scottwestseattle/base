@@ -440,7 +440,7 @@ Route::group(['prefix' => 'practice'], function () {
     Route::get('/show/{definition}', [DefinitionController::class, 'showSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
     Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
-	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
     Route::get('/{id?}', [DefinitionController::class, 'snippets']);
 });
@@ -452,7 +452,7 @@ Route::group(['prefix' => 'dictionary'], function () {
 
 // Snippets
 Route::group(['prefix' => 'snippets'], function () {
-	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
 	Route::get('/review', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
@@ -541,6 +541,7 @@ Route::group(['prefix' => 'books'], function () {
 	// view
 	Route::get('/view/{entry}', [BookController::class, 'view']);
 	Route::get('/show/{permalink}', [BookController::class, 'permalink']);
+	Route::get('/chapters/{tag}', [BookController::class, 'chapters']);
 
 	// read
 	Route::get('/read/{entry}', [BookController::class, 'read']);

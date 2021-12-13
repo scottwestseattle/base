@@ -146,4 +146,5 @@ return [
 'Pause Seconds' => '暂停秒数',
 'Add Translation' => '添加翻译',
 'New list has been added' => '增加了新的名单',
+'Latest Practice Text' => '最新实践文本',
 ];

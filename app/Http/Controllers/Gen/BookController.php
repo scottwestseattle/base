@@ -32,7 +32,7 @@ class BookController extends Controller
 	{
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
-            'read', 'readBook',
+            'read', 'readBook', 'chapters',
         ]);
 
 		parent::__construct();
@@ -69,6 +69,16 @@ class BookController extends Controller
     	return view(VIEWS . '.index', [
 			'books' => $books,
 			'records' => $records,
+			'page_title' => 'Books',
+			'index' => 'books',
+			'isIndex' => true,
+		]);
+    }
+
+    public function chapters(Request $request, Tag $tag)
+    {
+    	return view(VIEWS . '.chapters', [
+			'book' => $tag,
 			'page_title' => 'Books',
 			'index' => 'books',
 			'isIndex' => true,
@@ -187,19 +197,23 @@ class BookController extends Controller
 		//todo: $visitor = $this->saveVisitor(LOG_MODEL_ENTRIES, LOG_PAGE_PERMALINK, $id);
 		//todo: $isRobot = isset($visitor) && $visitor->robot_flag;
 
+        $backLink = '/books';
 		if (isset($record))
 		{
 			$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
 			Entry::countView($record);
 			$options['wordCount'] = str_word_count($record->description); // count it before <br/>'s are added
 			$record->description = nl2br($record->description);
+			$book = Book::getBook($entry);
+			if (isset($book))
+			    $backLink .= '/chapters/' . $book->id;
 		}
 		else
 		{
 			return $this->pageNotFound404($permalink);
 		}
 
-        $options['backLink'] = '/books';
+        $options['backLink'] = $backLink;
         $options['index'] = 'books';
         $options['backLinkText'] = __('ui.Back to List');
         $options['page_title'] = trans_choice('proj.Chapter', 1) . ' - ' . $record->title;
@@ -408,7 +422,7 @@ class BookController extends Controller
             $lines = self::getLines($chapter, $lines);
         }
 
-		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, '/books');
+		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, '/books/chapters/' . $tag->id);
     }
 
     // this is read chapter

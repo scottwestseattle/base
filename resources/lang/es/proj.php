@@ -146,4 +146,5 @@ return [
 'Pause Seconds' => 'Segundos de pausa',
 'Add Translation' => 'Agregar traducción',
 'New list has been added' => 'Se ha añadido una nueva lista',
+'Latest Practice Text' => 'Último texto de práctica',
 ];

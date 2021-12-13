@@ -24,30 +24,25 @@
 
 	<h1>{{trans_choice('proj.Book', 2)}} ({{count($books)}})</h1>
 
-@if (true)
-    <div class="row">
-	@foreach($books as $record)
-	    @php $photo = file_exists(public_path() . '/img/books/' . $record->id . '.png'); @endphp
-        <div class="col-sm-3 text-center mb-4" style="min-width:200px;">
+    <div class="row mb-3">
+        @foreach($books as $record)
+            @php $photo = file_exists(public_path() . '/img/books/' . $record->id . '.png'); @endphp
+            <div class="text-center mb-2 ml-2"
+            style="min-width:100px; max-width:45%; border-radius:10px; background-color: {{$photo ? 'default' : $colors[$colorIndex % 10]}};
+                background-image:url('/img/books/pattern.png'); background-size:cover;">
 
-            <div class="card" style="border-radius:{{$photo ? '0' : '10'}}px;">
-                <div class="card-header" style="padding: {{$photo ? '0' : 'default'}}; border-radius:10px 10px 0px 0px; background-color: {{$photo ? 'default' : $colors[$colorIndex % 10]}};">
-                    <a href="" onclick="event.preventDefault(); $('#parts{{$record->id}}').toggle();">
-                        @if ($photo)
-                            <img style="height:205px; max-width:95%;" src="/img/books/{{$record->id}}.png" />
-                        @else
-                            <div style="height:180px; width:100%;">
-                                <div style="color: white; padding: 10% 20px; overflow-wrap:break-word; font-weight:bold; font-size:20px;">{{$record->name}}</div>
+                <a href="/books/chapters/{{$record->id}}">
+                    @if ($photo)
+                        <img style="height:230px;" src="/img/books/{{$record->id}}.png" />
+                    @else
+                        <div style="height:230px; width:151px;">
+                            <div style="color: white; padding: 30% 20px; overflow-wrap:break-word; font-weight:bold; font-size:20px;">
+                                {{$record->name}}
                             </div>
+                        </div>
                         @php $colorIndex++ @endphp
-                        @endif
-                    </a>
-
-                </div>
-
-                <div class="card-body">
-                    <p class="">Read All&nbsp;@component('components.icon-read', ['href' => "/books/read-book/$record->id", 'color' => '', 'nodiv' => true])@endcomponent<p>
-                </div>
+                    @endif
+                </a>
 
                 <!-- The chapters are hidden until clicked on -->
                 <div id="parts{{$record->id}}" class="mt-2 hidden">
@@ -59,40 +54,11 @@
                 </div>
                 @endforeach
                 </div>
+                <!-- End of Chapters -->
+
             </div>
-
-        </div>
-    @endforeach
+        @endforeach
     </div>
-
-@else
-
-	<div>
-	@foreach($books as $record)
-	<div class="drop-box-ghost mb-4" style="padding:10px;">
-		<div style="font-size:1.3em; font-weight:normal;">
-
-			<a href=""  onclick="event.preventDefault(); $('#parts{{$record->id}}').toggle();">
-			    {{$record->name}} ({{count($record->books)}} {{strtolower(trans_choice('proj.Chapter', 2))}})
-			</a>&nbsp;@component('components.icon-read', ['href' => "/books/read-book/$record->id", 'color' => '', 'nodiv' => true])@endcomponent
-
-			<!-- The chapters are hidden until clicked on -->
-			<div id="parts{{$record->id}}" class="mt-2 hidden">
-			@foreach($record->books as $r)
-			<div class="ml-2 mt-1" style="font-size:14px;">
-				<div class="">
-					<a href="/books/show/{{$r->permalink}}">{{$r->title}}</a>
-				</div>
-			</div>
-			@endforeach
-			</div>
-
-		</div>
-	</div>
-	@endforeach
-	</div>
-
-@endif
 
 	<h1>@LANG('proj.Latest Chapters Viewed')</h1>
 

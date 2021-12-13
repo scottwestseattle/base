@@ -1218,15 +1218,22 @@ class DefinitionController extends Controller
 		]);
     }
 
-	public function readSnippets()
+	public function readSnippets($count = 20)
     {
+        $count = intval($count);
         $siteLanguage = Site::getLanguage()['id'];
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
 
-        $records = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+        $records = Definition::getSnippets(['limit' => $count, 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
 
-        $r = (count($records) > 0) ? $records[0] : LANGUAGE_EN;
-        $languageFlag = (count($records) > 0) ? $languageFlag = $r->language_flag : LANGUAGE_FLAG;
+        if (count($records) > 0)
+        {
+            $languageFlag = $records[0]->language_flag;
+        }
+        else
+        {
+            $languageFlag = LANGUAGE_EN;
+        }
 
         $lines = [];
         foreach($records as $record)

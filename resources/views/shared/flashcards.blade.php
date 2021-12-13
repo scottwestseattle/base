@@ -131,7 +131,7 @@
 		<div class="form-group">
 		    <div class="mt-0 pt-0">
 			    <button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
-                <button class="btn btn-success btn-quiz" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.I know it, don\'t show again')</button>
+                <button class="btn btn-success btn-quiz" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.I know it, remove from review')</button>
             </div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
