@@ -1218,7 +1218,7 @@ class DefinitionController extends Controller
 		]);
     }
 
-	public function readSnippets($count = 20)
+	public function readSnippets($count = PHP_INT_MAX)
     {
         $count = intval($count);
         $siteLanguage = Site::getLanguage()['id'];
