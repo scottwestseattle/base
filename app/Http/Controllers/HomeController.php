@@ -261,6 +261,7 @@ class HomeController extends Controller
 		$events = null;
 		$users = null;
         $site = null;
+        $language = Site::getLanguage();
 
 		if (isAdmin())
 		{

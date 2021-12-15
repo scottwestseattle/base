@@ -5,7 +5,7 @@
 	<h1>{{__('base.Dashboard')}}</h1>
 
 	@if (!App\User::isConfirmed())
-		<div class="text-center center">
+		<div class="">
 		<h3>You email address has not been confirmed</h3>
 		<p><a href="/email/send/{{Auth::id()}}">Click here to resend the confirmation email to {{Auth::user()->email}}</a></p>
 		</div>
@@ -94,6 +94,26 @@
 		<hr />
 		<h1>{{trans_choice('base.User', 2)}} ({{$users}})</h1>
 		<p><a href="/users">{{__('base.Go to Users')}}</a>
+
+
+	@else
+
+        @php
+            $date = '';
+            $date = new DateTime(Auth::user()->created_at);
+            if (isset($date))
+                $date = $date->format('F j, Y');
+        @endphp
+        <div class="xl-thin-text">
+            <h5>@LANG('ui.Name')</h5>
+            <p>{{Auth::user()->name}}
+            <h5>@LANG('ui.Email Address')</h5>
+            <p>{{Auth::user()->email}}
+            <h5>@LANG('ui.Joined')</h5>
+            <p>{{$date}}</p>
+            <p>
+        </div>
+
 	@endif
 
 @endsection

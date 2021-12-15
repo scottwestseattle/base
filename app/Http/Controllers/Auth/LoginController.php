@@ -14,37 +14,37 @@ use App\User;
 class LoginController extends Controller
 {
 	public function __construct ()
-	{			
+	{
         $this->middleware('auth')->except([
 			'login',
 			'logout',
 			'authenticate',
 			'updatePassword',
-		]);		
+		]);
 
         $this->middleware('owner')->only([
 			'resetPassword', 'editPassword',
 		]);
-	
+
 		parent::__construct();
-	}	
-	
+	}
+
 	public function login(Request $request)
     {
 		Auth::logout();
-		
-		return view('auth.login');		
+
+		return view('auth.login');
 	}
 
 	public function logout(Request $request)
     {
 		Auth::logout();
-		
+
 		return redirect('/');
 	}
-	
+
 	public function editPassword(Request $request, User $user)
-    {		
+    {
 		$token = uniqueToken();
 		return view('auth.passwords.edit', ['user' => $user, 'token' => $token]);
 	}
@@ -52,11 +52,11 @@ class LoginController extends Controller
     public function updatePassword(Request $request, User $user)
     {
 		$data = $request->validate([
-			'current_password' => 'required|string|min:8|max:25',		
-			'password' => 'required|string|min:8|max:25|confirmed',		
-		]);	
-	
-		if (Auth::attempt(['email' => $user->email, 'password' => $data['current_password']])) 
+			'current_password' => 'required|string|min:8|max:25',
+			'password' => 'required|string|min:8|max:25|confirmed',
+		]);
+
+		if (Auth::attempt(['email' => $user->email, 'password' => $data['current_password']]))
 		{
 			// remove the password reset token
 			try
@@ -69,7 +69,7 @@ class LoginController extends Controller
 			{
 				logException(__('Error removing password reset token'), $e->getMessage());
 			}
-			
+
 			if ($user->isBlocked())
 			{
 				logWarning(__FUNCTION__, __('base.User is blocked'), ['email' => $user->email]);
@@ -88,17 +88,17 @@ class LoginController extends Controller
 				{
 					logException(__FUNCTION__, $e->getMessage(), __('Error saving new password'));
 				}
-			}			
+			}
         }
 		else
 		{
 			logWarning(__FUNCTION__, __('base.Current password invalid'));
 			return back();
 		}
-			
-		return redirect('/login'); 
+
+		return redirect('/login');
     }
-	
+
     /**
      * Handle an authentication attempt.
      *
@@ -109,27 +109,31 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
 		$data = $request->validate([
-			'email' => 'required|email',		
-			'password' => 'required|string',		
+			'email' => 'required|email',
+			'password' => 'required|string',
 		]);
-		
-        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) 
+
+        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
 		{
 			if (User::isUserBlocked())
 			{
 				logWarning(__FUNCTION__, 'User is Blocked', ['email' => $data['email']]);
 			}
+        	if (!User::isConfirmed())
+			{
+				logError(__FUNCTION__, 'User email has not been confirmed', ['email' => $data['email']]);
+			}
 			else
 			{
 				// Authentication passed...
 				return redirect()->intended('dashboard');
-			}			
+			}
         }
 		else
 		{
 			logWarning(__FUNCTION__, 'Invalid credentials', ['email' => $data['email']]);
 		}
-		
+
 		return redirect('/login');
     }
 }

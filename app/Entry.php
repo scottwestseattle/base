@@ -505,14 +505,27 @@ class Entry extends Model
 		// release
         $releaseFlag = Status::getReleaseFlag();
         $releaseCondition = '>=';
+
+        // user
+        $ownerId = 0;
+        $ownerCondition = '>=';
+
         if (isset($parms['release']))
         {
+            // all users
+            $ownerId = 0;
+            $ownerCondition = '>=';
+
             if (Auth::check())
             {
                 if ($parms['release'] == 'private')
                 {
                     $releaseFlag = RELEASEFLAG_APPROVED;
                     $releaseCondition = '<=';
+
+                    // current user
+                    $ownerId = Auth::id();
+                    $ownerCondition = '=';
                 }
                 else if ($parms['release'] == 'public')
                 {
@@ -527,9 +540,14 @@ class Entry extends Model
                     // make sure none match
                     $releaseFlag = RELEASEFLAG_NOTSET;
                     $releaseCondition = '<';
+
+                    // make sure none match
+                    $ownerId = -1;
+                    $ownerCondition = '=';
                 }
                 else if ($parms['release'] == 'public')
                 {
+                    // public
                     $releaseFlag = RELEASEFLAG_PUBLIC;
                     $releaseCondition = '>=';
                 }
@@ -553,6 +571,7 @@ class Entry extends Model
 					->where('entries.language_flag', $languageCondition, $languageFlag)
 					->where('entries.type_flag', $type)
 					->where('entries.release_flag', $releaseCondition, $releaseFlag)
+					->where('entries.user_id', $ownerCondition, $ownerId)
 					->orderByRaw($orderBy)
 					->limit($limit)
 					->get();
