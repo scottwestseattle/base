@@ -147,4 +147,8 @@ return [
 'Add Translation' => '添加翻译',
 'New list has been added' => '增加了新的名单',
 'Latest Practice Text' => '最新实践文本',
+'Back to Book' => '回到书本|回到书本',
+'No lists' => '没有名单',
+'Article not found' => '未找到文章',
+'Book not found' => '没有找到书',
 ];

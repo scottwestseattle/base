@@ -420,7 +420,7 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+		return redirect('/');
     }
 
     public function undelete(Request $request, $id)

@@ -147,4 +147,8 @@ return [
 'Add Translation' => 'Agregar traducción',
 'New list has been added' => 'Se ha añadido una nueva lista',
 'Latest Practice Text' => 'Último texto de práctica',
+'Back to Book' => 'Volver al libro|Volver a los libros',
+'No lists' => 'No hay listas',
+'Article not found' => 'Artículo no encontrado',
+'Book not found' => 'Libro no encontrado',
 ];

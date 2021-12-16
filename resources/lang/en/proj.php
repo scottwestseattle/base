@@ -147,4 +147,8 @@ return [
 'Add Translation' => 'Add Translation',
 'New list has been added' => 'New list has been added',
 'Latest Practice Text' => 'Latest Practice Text',
+'Back to Book' => 'Back to Book|Back to Books',
+'No lists' => 'No lists',
+'Article not found' => 'Article not found',
+'Book not found' => 'Book not found',
 ];

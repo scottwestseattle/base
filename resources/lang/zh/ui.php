@@ -158,4 +158,5 @@ return [
 'Back to the List' => '回到列表中去',
 'Read' => '阅读',
 'minute' => '分钟|分钟',
+'Joined' => '加入',
 ];

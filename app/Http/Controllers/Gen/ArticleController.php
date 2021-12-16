@@ -28,10 +28,23 @@ class ArticleController extends Controller
 	public function __construct()
 	{
         $this->middleware('admin')->except([
-            'index', 'view', 'permalink',
-            'add', 'edit',
+            'index',
+            'view',
+            'permalink',
             'read',
+            'add', 'create',
+            'edit', 'update',
         ]);
+
+        $this->middleware('auth')->only([
+			'add',
+			'create',
+		]);
+
+        $this->middleware('owner')->only([
+			'edit',
+			'update',
+		]);
 
 		parent::__construct();
 	}
@@ -145,13 +158,36 @@ class ArticleController extends Controller
 
 		$record->site_id             = Site::getId();
 		$record->user_id             = Auth::id();
-		//$record->parent_id 			= $request->parent_id;
-		$record->title 				= trimNull($request->title);
-		$record->description_short	= trimNull($request->description_short);
-		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
-		$record->source				= trimNull($request->source);
-		$record->source_credit		= trimNull($request->source_credit);
-		$record->source_link		= trimNull($request->source_link);
+
+		$title 				= $request->title;
+		$description_short	= $request->description_short;
+		$description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$source				= $request->source;
+		$source_credit		= $request->source_credit;
+		$source_link		= $request->source_link;
+
+        if (isAdmin())
+        {
+            // anything goes
+        }
+        else
+        {
+    		// deep clean the entries
+            $title = alphanumHarsh($title);
+            $description_short = alphanumHarsh($description_short);
+            $description = alphanumHarsh($description);
+            $source = alphanumHarsh($source);
+            $source_credit = alphanumHarsh($source_credit);
+            $source_link = alphanumHarsh($source_link);
+        }
+
+		$record->title 				= trimNull($title);
+		$record->description_short	= trimNull($description_short);
+		$record->description		= trimNull($description);
+		$record->source				= trimNull($source);
+		$record->source_credit		= trimNull($source_credit);
+		$record->source_link		= trimNull($source_link);
+
 		$record->display_date 		= timestamp();
 		$record->release_flag 		= RELEASEFLAG_PUBLIC;
 		$record->wip_flag 			= WIP_FINISHED;
@@ -205,13 +241,35 @@ class ArticleController extends Controller
 		$prevTitle = $record->title;
 
 		$record->site_id 			= Site::getId();
-		$record->title 				= trimNull($request->title);
-		$record->description_short	= trimNull($request->description_short);
-		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
-		$record->source				= trimNull($request->source);
-		$record->source_credit		= trimNull($request->source_credit);
-		$record->source_link		= trimNull($request->source_link);
-		//todo: $record->display_date 		= Controller::getSelectedDate($request);
+
+		$title 				= $request->title;
+		$description_short	= $request->description_short;
+		$description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$source				= $request->source;
+		$source_credit		= $request->source_credit;
+		$source_link		= $request->source_link;
+
+        if (isAdmin())
+        {
+            // anything goes
+        }
+        else
+        {
+    		// deep clean the entries
+            $title = alphanumHarsh($title);
+            $description_short = alphanumHarsh($description_short);
+            $description = alphanumHarsh($description);
+            $source = alphanumHarsh($source);
+            $source_credit = alphanumHarsh($source_credit);
+            $source_link = alphanumHarsh($source_link);
+        }
+
+		$record->title 				= trimNull($title);
+		$record->description_short	= trimNull($description_short);
+		$record->description		= trimNull($description);
+		$record->source				= trimNull($source);
+		$record->source_credit		= trimNull($source_credit);
+		$record->source_link		= trimNull($source_link);
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
 		$record->permalink          = createPermalink($record->title, $record->created_at);

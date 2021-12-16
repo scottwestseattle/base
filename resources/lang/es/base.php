@@ -150,4 +150,6 @@ return [
 'View Tag' => 'Visualizar etiqueta',
 'Delete Tag' => 'Eliminar etiqueta',
 'Publish Tag' => 'Publicar etiqueta',
+'Record has been undeleted' => 'El registro ha sido eliminado',
+'Deleted Users' => 'Usuarios eliminados',
 ];

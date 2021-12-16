@@ -60,19 +60,19 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-	
+
     protected function create(Request $request)
     {
 		$request->validate([
 			'name' => 'required|string|max:25',
 			'email' => 'required|email|unique:users',
-			'password' => 'required|string|min:8|max:25|confirmed',		
+			'password' => 'required|string|min:8|max:25|confirmed',
 		]);
-		
+
 		$record = new User();
-		
+
 		$credentials = $request->only('name', 'email', 'password');
-		
+
 		$record->name = $credentials['name'];
 		$record->email = $credentials['email'];
 		$record->email_verification_token = uniqueToken();
@@ -82,14 +82,11 @@ class RegisterController extends Controller
 		$record->blocked_flag = 0;
 		$record->user_type = Config::get('constants.user_type.unconfirmed');
 
-		try 
+        $msg = 'new user registered: ' . $record->email;
+		try
 		{
 			$record->save();
-			
-			if (Email::sendVerification($record))
-				logInfo($msg, 'Email successfully sent');
-
-			logInfo('new user registered: ' . $record->email, 'new user added, please log-in');	   
+			logInfo($msg, 'New user added, please check you email for the verification link, and then log in');
 		}
 		catch(\Exception $e)
 		{
@@ -97,13 +94,25 @@ class RegisterController extends Controller
 			logError($flash . ': ' . $record->email, $flash);
 			return back();
 		}
-		
+
+		try
+		{
+			if (Email::sendVerification($record))
+				logInfo('New user email successfully sent - ' . $msg);
+		}
+		catch(\Exception $e)
+		{
+			$flash = 'error: new user email not sent';
+			logError($flash . ': ' . $record->email, $flash, ['exc' => $e->getMessage()]);
+			return redirect('/');
+		}
+
 		return redirect('/login');
 	}
 
 	public function register(Request $request)
     {
-		return view('auth.register');		
+		return view('auth.register');
 	}
 
 }

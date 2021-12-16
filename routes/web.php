@@ -151,6 +151,8 @@ Route::group(['prefix' => 'users'], function () {
 	// delete
 	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete']);
 	Route::post('/delete/{user}', [UserController::class, 'delete']);
+	Route::get('/deleted', [UserController::class, 'deleted']);
+	Route::get('/undelete/{user}', [UserController::class, 'undelete']);
 
 	// email verification
 	Route::get('/verify-email/{user}/{token}', [VerificationController::class, 'verifyEmail']);

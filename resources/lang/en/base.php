@@ -150,4 +150,6 @@ return [
 'View Tag' => 'View Tag',
 'Delete Tag' => 'Delete Tag',
 'Publish Tag' => 'Publish Tag',
+'Record has been undeleted' => 'Record has been undeleted',
+'Deleted Users' => 'Deleted Users',
 ];

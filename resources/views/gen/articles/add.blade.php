@@ -34,13 +34,19 @@
                 @endif
 			@endif
 
-			<div class="entry-title-div mb-3 mt-2">
-				<input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
-			</div>
+            @if (isAdmin())
+                <div class="entry-title-div mb-3 mt-2">
+                    <input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
+                </div>
 
-			<div class="entry-title-div mb-3">
-				<input tabindex="-1" type="text" id="permalink" name="permalink" class="form-control"  placeholder="Permalink" />
-			</div>
+                <div class="entry-title-div mb-3">
+                    <input tabindex="-1" type="text" id="permalink" name="permalink" class="form-control"  placeholder="Permalink" />
+                </div>
+            @else
+                <div class="entry-title-div mb-3 mt-2">
+                    <input type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
+                </div>
+            @endif
 
 			<div class="entry-title-div mb-3">
 				<input type="text" id="source" name="source" placeholder="Source" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
@@ -50,9 +56,11 @@
 				<input type="text" id="source_credit" name="source_credit" placeholder="Author" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
 			</div>
 
-			<div class="entry-title-div mb-3">
-				<input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" />
-			</div>
+            @if (isAdmin())
+                <div class="entry-title-div mb-3">
+                    <input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" />
+                </div>
+            @endif
 
 			<div class="entry-description-div mb-3">
 				<textarea rows="3" id="description_short" name="description_short" class="form-control" placeholder="Summary" onfocus="setFocus($(this), '#accent-chars')"></textarea>

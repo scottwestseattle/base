@@ -150,4 +150,6 @@ return [
 'View Tag' => '查看标签',
 'Delete Tag' => '删除标签',
 'Publish Tag' => '发布标签',
+'Record has been undeleted' => '记录已被撤销',
+'Deleted Users' => '被删除的用户',
 ];

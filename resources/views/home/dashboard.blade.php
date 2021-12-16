@@ -95,7 +95,6 @@
 		<h1>{{trans_choice('base.User', 2)}} ({{$users}})</h1>
 		<p><a href="/users">{{__('base.Go to Users')}}</a>
 
-
 	@else
 
         @php

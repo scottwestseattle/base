@@ -26,7 +26,7 @@
 				<div style="float:left;">
 					@component('components.icon-read', ['href' => "/books/read/$record->id"])@endcomponent
 					<div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.View', 2)}}</div>
-					<div style="margin-right:15px; float:left;"><a href="/books/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
+					<div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
 					@if (App\User::isAdmin())
 						<div style="margin-right:15px; float:left;">
 							@component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true])@endcomponent

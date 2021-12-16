@@ -158,4 +158,5 @@ return [
 'Back to the List' => 'Back to the List',
 'Read' => 'Read',
 'minute' => 'minute|minutes',
+'Joined' => 'Joined',
 ];
