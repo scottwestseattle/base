@@ -24,6 +24,7 @@
 
 			<div id="en" style="display:default;">
 
+                @if (isAdmin())
 				<div class="mb-1">
 					<label class="tiny">Title</label>
 					<input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{ $record->title }}"  placeholder="Title" />
@@ -39,6 +40,15 @@
 					<input tabindex="-1" type="text" id="permalink" name="permalink" class="form-control" value="{{ $record->permalink }}"  placeholder="Permalink" />
 				</div>
 
+				@else
+
+                    <div class="mb-1">
+                        <label class="tiny">Title</label>
+                        <input type="text" id="title" name="title" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{ $record->title }}"  placeholder="Title" />
+                    </div>
+
+                @endif
+
 				<div class="entry-title-div mb-3">
 					<label class="tiny">Source</label>
 					<input type="text" id="source" name="source" placeholder="Source" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source}}" />
@@ -49,10 +59,12 @@
 					<input type="text" id="source_credit" name="source_credit" placeholder="Author" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source_credit}}" />
 				</div>
 
+                @if (isAdmin())
 				<div class="entry-title-div mb-3">
 					<label class="tiny">Source Link</label>
 					<input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" value="{{$record->source_link}}" />
 				</div>
+				@endif
 
 				<div class="entry-description-div mb-3">
 					<label class="tiny">Tag Line</label>

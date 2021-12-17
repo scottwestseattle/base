@@ -123,6 +123,8 @@
                     </div>
 
 					<div id="elapsedTime" class="mt-5"></div>
+					<div class="statusMsg" class="ml-3"></div>
+
 				</div>
 
 			</div>
@@ -138,8 +140,10 @@
 			<div id="panel-run-col-text" class="" style="width:100%;" >
 				<div id="panel-run" class="slide-panel text-center" style="">
 					<div><span class="medium-thin-text" id="title">{{$title}}</span></div>
-					<div>
-						<span class="small-thin-text" id="slideCount"></span><span id="clock" class="small-thin-text ml-3">00:00</span>
+					<div class="small-thin-text">
+						<span id="slideCount"></span>
+						<span id="clock" class="ml-3">00:00</span>
+						<span class="statusMsg ml-3">Wake not set</span>
 					</div>
 
 					<div id="debug"></div>

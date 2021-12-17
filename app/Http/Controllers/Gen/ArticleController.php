@@ -88,8 +88,11 @@ class ArticleController extends Controller
 		try
 		{
 			$record = Entry::select()
-				->where('release_flag', $releaseFlagCondition, $releaseFlag)
 				->where('permalink', $permalink)
+				->where(function ($query) use($releaseFlagCondition, $releaseFlag) {$query
+    				->where('release_flag', $releaseFlagCondition, $releaseFlag)
+					->orWhere('user_id', Auth::id()) // or he is the owner
+					;})
 				->first();
 
 			if (blank($record))
@@ -168,7 +171,8 @@ class ArticleController extends Controller
 
         if (isAdmin())
         {
-            // anything goes
+            // anything goes in the text
+    		$record->release_flag = RELEASEFLAG_PUBLIC;
         }
         else
         {
@@ -179,6 +183,8 @@ class ArticleController extends Controller
             $source = alphanumHarsh($source);
             $source_credit = alphanumHarsh($source_credit);
             $source_link = alphanumHarsh($source_link);
+
+    		$record->release_flag = RELEASEFLAG_PRIVATE;
         }
 
 		$record->title 				= trimNull($title);
@@ -189,7 +195,6 @@ class ArticleController extends Controller
 		$record->source_link		= trimNull($source_link);
 
 		$record->display_date 		= timestamp();
-		$record->release_flag 		= RELEASEFLAG_PUBLIC;
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_ARTICLE;

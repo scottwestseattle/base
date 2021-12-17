@@ -271,11 +271,7 @@ function deck() {
 
 	this.readSlide = function() {
 	    var slide = getCurrentSlide();
-        //debug("read slide " + (curr+1) + ": " + slide.description, _debug);
 		read(slide.description, 0);
-
-        //$("#slideCount").text(slide.number + " of " + deck.slides.length);
-        //$(".slideDescription").text(deck.slides[curr].description);
 	}
 
 	this.setAlertPrompt = function(text, color, bold = false) {
@@ -517,23 +513,38 @@ function hasWakeLock()
 // Function that attempts to request a screen wake lock.
 async function requestWakeLock()
 {
+    var msg = 'wake lock off';
+    var statusMsg = $('.statusMsg');
+    statusMsg.text(msg);
+
     if (!hasWakeLock())
+    {
+        statusMsg.text('screen lock not available');
         return; // not available
+    }
 
     if (wakeLock) // already locked
+    {
+        statusMsg.text('wake lock on');
         return;
+    }
 
-  try {
+    try {
         wakeLock = await navigator.wakeLock.request();
+
         wakeLock.addEventListener('release', () => {
             console.log('Screen Wake Lock released:', wakeLock.released);
         });
 
-        console.log('wake lock requested');
+        msg = 'wake lock on';
+        statusMsg.text(msg);
+        console.log(msg);
 
-  } catch (err) {
-    console.error(`${err.name}, ${err.message}`);
-  }
+    } catch (err) {
+        msg = 'wake lock error: ' + `${err.name}, ${err.message}`;
+        statusMsg.text(msg);
+        console.error(msg);
+    }
 }
 
 function releaseWakeLock()
@@ -545,6 +556,8 @@ function releaseWakeLock()
     {
         wakeLock.release();
         wakeLock = null;
+
+        $('.statusMsg').text('wake lock off');
     }
 }
 
@@ -676,6 +689,7 @@ function runContinue()
 	$("#pause").show();
 	$("#resume").hide();
 	startClock();
+	requestWakeLock();
 	deck.run(/* fromBeginning = */ false);
 }
 
@@ -686,6 +700,7 @@ function runContinueOther()
 	$("#pause").show();
 	$("#resume").hide();
 	startClock();
+	requestWakeLock();
 	deck.run(/* fromBeginning = */ false);
 }
 
