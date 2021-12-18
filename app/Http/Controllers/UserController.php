@@ -63,9 +63,17 @@ class UserController extends Controller
 			$user->blocked_flag = isset($request->blocked_flag) ? 1 : 0;
 		}
 
-		$user->save();
-		Log::info('User updated', ['id' => $user->id]);
-		flash('success', 'User updated');
+        try {
+            $user->save();
+            Log::info('User updated', ['id' => $user->id]);
+            flash('success', 'User updated');
+        }
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record'),
+			    ['record_id' => $user->id, 'exc' => $e->getMessage()]);
+			return back();
+		}
 
 		return redirect(User::isAdmin() ? '/users' : '/dashboard');
     }

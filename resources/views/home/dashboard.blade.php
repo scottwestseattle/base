@@ -17,18 +17,12 @@
 			<tr><td><strong>Server Time:</strong>&nbsp;&nbsp;</td><td>{{date("M d, Y H:i:s")}}</td></tr>
 			<tr><td><strong>Language:</strong></td><td>{{$language['name']}} ({{$language['short'] . ', ' . $language['long']}})</td></tr>
             <tr><td><strong>Client:</strong></td><td>{{ipAddress()}}</td></tr>
-    		<tr><td><strong>Debug:</strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
 			<!-- tr><td><strong>Session:</strong></td><td>{{env('SESSION_LIFETIME', 0)}}</td></tr -->
 	        <tr><td><strong>Snippet:</strong></td><td>{{Cookie::get('snippetId')}}</td></tr>
             <tr><td><strong>Folder:</strong></td><td class="xs-text">{{base_path()}}</td></tr>
-            <tr><td><strong>Hash:</strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
+    		<tr><td><strong><a href="/dashboard" type="button" class="btn btn-sm btn-warning">Debug</a></strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
+            <tr><td><strong><a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a></strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
         </table>
-
-        <div class="mt-2">
-            <a href="/" type="button" class="btn btn-sm btn-primary">Debug</a>
-            <a href="/" type="button" class="btn btn-sm btn-primary">Geo</a>
-            <a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a>
-        </div>
 
         <hr />
 

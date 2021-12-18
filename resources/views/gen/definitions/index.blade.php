@@ -7,7 +7,7 @@
 <table class="table table-responsive table-fat">
     <thead>
         <tr>
-            <th></th><th>@LANG('ui.Title')</th><th>{{__('ui.Type')}}</th><th>{{trans_choice('proj.Definition', 2)}}</th><th>@LANG('ui.Created')</th>
+            <th></th><th>@LANG('ui.Title')</th><th>{{__('ui.Type')}} / {{trans_choice('ui.User', 1)}}</th><th>{{trans_choice('proj.Definition', 1)}}</th><th>@LANG('ui.Created')</th>
             @if (isAdmin())
             <th></th>
             @endif
@@ -23,7 +23,7 @@
                 <td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
                 <td><a href="/definitions/{{ blank($record->permalink) ? 'view/' . $record->id : $record->permalink }}">{{$record->title}}</a></td>
             @endif
-            <td class="">{{$record->type_flag}}</td>
+            <td class="">{{$record->type_flag}} / {{isset($record->user_id) ? $record->user_id : 'null'}}</td>
             @if (isset($record->definition))
                 <td>{{Str::limit($record->definition, 200)}}</td>
             @elseif (isset($record->translation_en))
