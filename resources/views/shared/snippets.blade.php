@@ -115,20 +115,17 @@
                                 </div>
 
                                 @if (!isset($record->translation_en))
-                                @if (App\User::isOwner($record->user_id))
-                                    <div class="float-left mr-3" style="margin-top: 2px;">
-                                            <a href="/practice/edit/{{$record->id}}"><span class="red">@LANG('proj.Add Translation')</span></a>
-                                    </div>
-                                @endif
+                                    @if (App\User::isOwner($record->user_id))
+                                        <div class="float-left mr-3" style="margin-top: 2px;">
+                                                <a href="/practice/edit/{{$record->id}}"><span class="red">@LANG('proj.Add Translation')</span></a>
+                                        </div>
+                                    @endif
                                 @endif
 
-                                <div class="float-left" style="margin-top:2px; margin-right: 10px;">
-                                    <div class=""><a href="/definitions/stats/{{$record->id}}">{{str_word_count($record->title_long)}} {{trans_choice('ui.Word', 2)}}</a></div>
-                                </div>
                                 <div style="float:left;">
-                                    @if (App\User::isAdmin())
-                                    <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
-                                    <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
+                                    @if (App\User::isAdmin() || App\User::isOwner($record->user_id))
+                                        <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
+                                        <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
                                     @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
                                     @endif
                                 </div>

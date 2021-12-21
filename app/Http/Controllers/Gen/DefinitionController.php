@@ -38,6 +38,9 @@ class DefinitionController extends Controller
             'view', 'permalink',
             'snippets', 'createSnippet', 'readSnippets', 'viewSnippet',
 
+            // let these through to be caught below
+			'editSnippet', 'updateSnippet',
+
             // copied
 			'find', 'search', 'listTag',
 			'conjugationsGen', 'conjugationsGenAjax', 'conjugationsComponentAjax', 'verbs',
@@ -48,7 +51,13 @@ class DefinitionController extends Controller
 
 			'favorites', 'favoritesRss', 'favoritesRssReader',
 			'setSnippetCookie',
+
+			'stats',
         ]);
+
+        $this->middleware('owner')->only([
+			'editSnippet', 'updateSnippet',
+		]);
 
 		parent::__construct();
 	}

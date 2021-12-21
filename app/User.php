@@ -52,7 +52,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-	
+
 	private static $userTypes = [
 		USER_UNCONFIRMED => 'Unconfirmed',
 		USER_CONFIRMED => 'Confirmed',
@@ -66,36 +66,41 @@ class User extends Authenticatable
 	{
 		return($this->blocked_flag == 1);
 	}
-	
+
 	static public function isUserBlocked()
 	{
 		$rc = false;
-		
+
 		if (Auth::check())
 		{
 			$rc = (Auth::user()->blocked_flag == 1);
 		}
-			
+
 		return $rc;
 	}
 
 	static public function isConfirmed()
 	{
 		$rc = false;
-		
+
 		if (Auth::check())
 		{
 			$rc = (Auth::user()->user_type >= Config::get('constants.user_type.confirmed'));
 		}
-			
+
 		return $rc;
 	}
-	
+
+	public function isUserConfirmed()
+	{
+		return ($this->user_type >= USER_CONFIRMED);
+	}
+
 	public function getBlocked()
 	{
 		return $this->blocked_flag ? 'yes' : 'no';
 	}
-	
+
 	public function getUserTypes()
 	{
 		return User::$userTypes;
@@ -150,14 +155,15 @@ class User extends Authenticatable
 	public function isSuperAdminUser()
 	{
 		return ($this->user_type >= USER_SUPER_ADMIN);
-	}	
-	
-	static public function get()
+	}
+
+	static public function get($limit = PHP_INT_MAX)
 	{
 		$records = User::select()
 			->orderByRaw('id DESC')
+			->limit($limit)
 			->get();
-			
+
 		return $records;
 	}
 
@@ -166,15 +172,15 @@ class User extends Authenticatable
 		$count = User::select()
 			->orderByRaw('id DESC')
 			->count();
-			
+
 		return $count;
 	}
-	
+
 	static public function getByEmail($email)
 	{
 		$email = alphanum($email);
 		$record = null;
-		
+
 		try
 		{
 			$record = User::select()
@@ -186,7 +192,7 @@ class User extends Authenticatable
 			$msg = 'get user by email address - ' . $e->getMessage();
 			logError($msg);
 		}
-			
+
 		return $record;
 	}
 }

@@ -644,14 +644,16 @@ if (!function_exists('timestamp2date')) {
 }
 
 if (!function_exists('translateDate')) {
-    function translateDate($date)
+    function translateDate($date, $short = false)
     {
-		$dateFormat = "%B %e, %Y";
+		$dateFormat = $short ? "%m-%e-%Y" : "%B %e, %Y";
 
 		if (App::getLocale() == 'es')
 		{
-			$dateFormat = "%e " . __('ui.of') . ' ' . __('ui.' . strftime("%B", strtotime($date))) . ", %Y";
-
+		    if ($short)
+    			$dateFormat = "%e-%m-%Y";
+    		else
+    			$dateFormat = "%e " . __('ui.of') . ' ' . __('ui.' . strftime("%B", strtotime($date))) . ", %Y";
 		}
 		else if (App::getLocale() == 'zh')
 		{

@@ -50,7 +50,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-	
+
 	private static $userTypes = [
 		USER_UNCONFIRMED => 'Unconfirmed',
 		USER_CONFIRMED => 'Confirmed',
@@ -59,12 +59,12 @@ class User extends Authenticatable
 		USER_SITE_ADMIN => 'Admin',
 		USER_SUPER_ADMIN => 'Super Admin',
 	];
-	
+
 	public function getBlocked()
 	{
 		return $this->blocked_flag ? 'yes' : 'no';
 	}
-	
+
 	public function getUserTypes()
 	{
 		return User::$userTypes;
@@ -119,5 +119,5 @@ class User extends Authenticatable
 	public function isSuperAdminUser()
 	{
 		return ($this->user_type >= USER_SUPER_ADMIN);
-	}	
+	}
 }

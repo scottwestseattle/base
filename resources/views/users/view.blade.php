@@ -13,7 +13,7 @@
 
     @php
         $date = '';
-        $date = new DateTime(Auth::user()->created_at);
+        $date = new DateTime($user->created_at);
         if (isset($date))
             $date = $date->format('F j, Y');
     @endphp

@@ -26,6 +26,16 @@
 
         <hr />
 
+		<h1>{{trans_choice('base.User', 2)}} ({{$users}})</h1>
+		@if (intval($users) > 0 && isset($userNewest) /* && $userNewest->isUserConfirmed() */)
+		    <p class="medium-thin-text">
+		        <b>Newest:&nbsp;</b>{{$userNewest->name}} ({{$userNewest->getUserType()}}), {{$userNewest->email}}, {{translateDate($userNewest->created_at, true)}}
+		    </p>
+		@endif
+		<p><a href="/users">{{__('base.Go to Users')}}</a>
+
+        <hr />
+
         <div>
             <h1 class="">{{__('Ajax Links')}}</h1>
 
@@ -54,40 +64,6 @@
 
             <a href="/events">{{__('base.Go to Events')}}</a>
         @endif
-
-		<hr />
-        <div class="mt-4">
-            <h3>Features</h3>
-            <ul>
-                <li>Blog</li>
-                <li>Blog Entry</li>
-                <li>Comments</li>
-                <li>Contact Form</li>
-                <li>Error Handling</li>
-                <li>EU GDPR Compliance Notice</li>
-                <li>Form Validation</li>
-                <li>Forum</li>
-                <li>Geo-enabled</li>
-                <li>Icon</li>
-                <li>Site Map</li>
-                <li>User Access Levels</li>
-                <li>Visitor Tracking</li>
-                <li><strong><i>Domain-aware (multiple sites)</i></strong></li>
-                <li><strong><i>Event Logging</i></strong></li>
-                <li><strong><i>Https Certificate</i></strong></li>
-                <li><strong><i>Hosting</strong></i></li>
-                <li><strong><i>Soft Deletes</i></strong></li>
-                <li><strong><i>Templates</i></strong></li>
-                <li><strong><i>User Management</i></strong></li>
-                <li><strong><i>Terms of Use</i></strong></li>
-                <li><strong><i>Localization</i></strong></li>
-                <li><strong><i>Privacy Policy</i></strong></li>
-            </ul>
-        </div>
-
-		<hr />
-		<h1>{{trans_choice('base.User', 2)}} ({{$users}})</h1>
-		<p><a href="/users">{{__('base.Go to Users')}}</a>
 
 	@else
 

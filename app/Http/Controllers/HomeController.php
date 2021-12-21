@@ -260,12 +260,18 @@ class HomeController extends Controller
 	{
 		$events = null;
 		$users = null;
+		$userNewest = null;
         $site = null;
         $language = Site::getLanguage();
 
 		if (isAdmin())
 		{
 			$users = User::count();
+			$userNewest = User::get(1);
+			if (isset($userNewest) && count($userNewest) > 0)
+			{
+			    $userNewest = $userNewest[0];
+			}
             $language = Site::getLanguage();
 			$events = Event::get();
 			if ($events['emergency'] > 0)
@@ -275,6 +281,7 @@ class HomeController extends Controller
 		return view('home.dashboard', [
 		    'events' => $events,
 		    'users' => $users,
+		    'userNewest' => $userNewest,
 		    'language' => $language,
 		]);
 	}
