@@ -159,4 +159,6 @@ return [
 'Read' => 'Read',
 'minute' => 'minute|minutes',
 'Joined' => 'Joined',
+'Minimum of :count characters' => 'Minimum of :count characters',
+'Email will be confirmed' => 'Email will be confirmed',
 ];

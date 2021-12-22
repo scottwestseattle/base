@@ -139,7 +139,7 @@ class User extends Authenticatable
 
 	static public function isOwner($user_id)
 	{
-		return ((Auth::check() && Auth::id() == $user_id) || self::isAdmin());
+		return (Auth::check() && Auth::id() == $user_id);
 	}
 
 	static public function isAdmin()

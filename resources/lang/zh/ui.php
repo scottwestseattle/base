@@ -159,4 +159,6 @@ return [
 'Read' => '阅读',
 'minute' => '分钟|分钟',
 'Joined' => '加入',
+'Minimum of :count characters' => '至少:count个字符',
+'Email will be confirmed' => '电子邮件将被确认',
 ];

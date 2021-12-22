@@ -98,6 +98,18 @@
             @if (isset($options['records']))
             @foreach($options['records'] as $record)
 
+            @php
+                $owner = trans_choice('ui.Visitor', 1);
+                if (isset($record->user_id) && intval($record->user_id) > 0)
+                {
+                    $member =  __('ui.Member') . ': ' . $record->user_id;
+
+                    if (App\User::isOwner($record->user_id))
+                        $owner = isAdmin() ? __('ui.Admin') : $member;
+                    else
+                        $owner = $member;
+                }
+            @endphp
             <tr class="drop-box-ghost-small" style="vertical-align:middle;">
                 <td style="color:default; text-align:left; padding:5px 10px;">
                     <table>
@@ -126,7 +138,13 @@
                                     @if (App\User::isAdmin() || App\User::isOwner($record->user_id))
                                         <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
                                         <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
-                                    @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
+                                        <div class="float-left">
+                                            @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
+                                        </div>
+                                    @endif
+
+                                    @if (isAdmin())
+                                        <div class="small-thin-text float-left ml-2">({{$owner}})</div>
                                     @endif
                                 </div>
                             </td>
