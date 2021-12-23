@@ -916,19 +916,33 @@ function setTab(event, tab)
 
 	if (tab == 1)
 	{
-		$('#tab-tab1').show();
 		$('#tab-tab2').hide();
-
-		$('#nav-link-tab1').addClass('active');
+		$('#tab-tab3').hide();
 		$('#nav-link-tab2').removeClass('active');
+		$('#nav-link-tab3').removeClass('active');
+
+		$('#tab-tab1').show();
+		$('#nav-link-tab1').addClass('active');
 	}
 	else if (tab == 2)
 	{
 		$('#tab-tab1').hide();
-		$('#tab-tab2').show();
-
+		$('#tab-tab3').hide();
 		$('#nav-link-tab1').removeClass('active');
+		$('#nav-link-tab3').removeClass('active');
+
+		$('#tab-tab2').show();
 		$('#nav-link-tab2').addClass('active');
+	}
+	else if (tab == 3)
+	{
+		$('#tab-tab1').hide();
+		$('#tab-tab2').hide();
+		$('#nav-link-tab1').removeClass('active');
+		$('#nav-link-tab2').removeClass('active');
+
+		$('#tab-tab3').show();
+		$('#nav-link-tab3').addClass('active');
 	}
 }
 

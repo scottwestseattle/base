@@ -83,9 +83,13 @@ Route::group(['prefix' => 'articles'], function () {
 	Route::post('/create/', [ArticleController::class, 'create']);
 	Route::get('/read/{entry}', [ArticleController::class, 'read']);
 
-    // edit / (update done in entries)
+    // edit / update
 	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);
 	Route::post('/update/{entry}', [ArticleController::class, 'update']);
+
+    // confirm delete / delte
+	Route::get('/confirmdelete/{entry}', [ArticleController::class, 'confirmDelete']);
+	Route::post('/delete/{entry}', [ArticleController::class, 'delete']);
 });
 
 // MVC

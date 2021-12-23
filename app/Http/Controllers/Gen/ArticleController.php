@@ -34,6 +34,7 @@ class ArticleController extends Controller
             'read',
             'add', 'create',
             'edit', 'update',
+            'confirmDelete', 'delete',
         ]);
 
         $this->middleware('auth')->only([
@@ -44,6 +45,8 @@ class ArticleController extends Controller
         $this->middleware('owner')->only([
 			'edit',
 			'update',
+			'confirmDelete',
+			'delete',
 		]);
 
 		parent::__construct();
@@ -67,6 +70,10 @@ class ArticleController extends Controller
             // get private articles
             $parms['release'] = 'private';
     		$options['private'] = Entry::getRecentList($parms);
+
+            // get other peoples articles
+            $parms['release'] = 'other';
+    		$options['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
 		}
 		catch (\Exception $e)
 		{
@@ -304,27 +311,27 @@ class ArticleController extends Controller
 		return redirect(VIEW . $record->permalink);
 	}
 
-    public function confirmDelete(Article $article)
+    public function confirmDelete(Entry $entry)
     {
-		$record = $article;
+		$record = $entry;
 
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,
 		]);
     }
 
-    public function delete(Request $request, Article $article)
+    public function delete(Request $request, Entry $entry)
     {
-		$record = $article;
+		$record = $entry;
 
 		try
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, __('proj.Record has been deleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('proj.Article has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('proj.Error deleting record'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('proj.Error deleting article'), ['record_id' => $record->id]);
 			return back();
 		}
 

@@ -9,6 +9,10 @@
 
 		<h4>{{$record->title}}</h4>
 
+		<div class="submit-button mb-2">
+			<button type="submit" class="btn btn-primary">@LANG('ui.Confirm Delete')</button>
+		</div>
+
 		<p>{{$record->description }}</p>
 
 		<div class="submit-button">

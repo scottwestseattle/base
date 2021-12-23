@@ -527,6 +527,15 @@ class Entry extends Model
                     $ownerId = Auth::id();
                     $ownerCondition = '=';
                 }
+                else if ($parms['release'] == 'other')
+                {
+                    $releaseFlag = RELEASEFLAG_APPROVED;
+                    $releaseCondition = '<=';
+
+                    // current user
+                    $ownerId = Auth::id();
+                    $ownerCondition = '<>';
+                }
                 else if ($parms['release'] == 'public')
                 {
                     $releaseFlag = RELEASEFLAG_PAID;
