@@ -5,7 +5,7 @@
 @endphp
 
 @if (!isset($nodiv) || !$nodiv)
-<div class="mr-2" style="display: {{$float}};">
+<div class="mr-2 {{$float}}" style="margin-top:4px;">
 @endif
 
 @if (isset($href))

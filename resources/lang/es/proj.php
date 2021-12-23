@@ -151,4 +151,5 @@ return [
 'No lists' => 'No hay listas',
 'Article not found' => 'Artículo no encontrado',
 'Book not found' => 'Libro no encontrado',
+'Other' => 'Otros Miembros',
 ];

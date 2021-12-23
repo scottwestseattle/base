@@ -211,12 +211,13 @@ class HomeController extends Controller
             $parms['release'] = 'public';
     		$options['articlesPublic'] = Entry::getRecentList($parms, 5);
 
-            if (Auth::check())
-            {
-                // get private articles
-                $parms['release'] = 'private';
-                $options['articlesPrivate'] = Entry::getRecentList($parms, 5);
-            }
+            // get private articles
+            $parms['release'] = 'private';
+            $options['articlesPrivate'] = Entry::getRecentList($parms, 5);
+
+            // get other peoples articles
+            $parms['release'] = 'other';
+            $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms) : null;
 		}
 		catch (\Exception $e)
 		{

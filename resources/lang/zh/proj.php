@@ -151,4 +151,5 @@ return [
 'No lists' => '没有名单',
 'Article not found' => '未找到文章',
 'Book not found' => '没有找到书',
+'Other' => '其他成员',
 ];

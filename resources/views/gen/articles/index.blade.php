@@ -32,7 +32,7 @@
     <li class="nav-item">
         <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3);">
             <span class="nav-link-tab">
-                @LANG('ui.Other')&nbsp;<span style="font-size:.8em;">({{count($options['other'])}})</span>
+                @LANG('proj.Other')&nbsp;<span style="font-size:.8em;">({{count($options['other'])}})</span>
             </span>
         </a>
     </li>

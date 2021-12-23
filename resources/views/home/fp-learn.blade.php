@@ -220,11 +220,13 @@
 <!--------------------------------------------------------------------------------------->
 
 @php
-    $showTabs = Auth::check() && isset($options['articlesPrivate']) && count($options['articlesPrivate']) > 0;
+    $showPrivate = Auth::check() && isset($options['articlesPrivate']) && count($options['articlesPrivate']) > 0;
+    $showOther = isAdmin() && isset($options['articlesOther']) && count($options['articlesOther']) > 0;
 @endphp
 
-@if ($showTabs)
+@if ($showPrivate || $showOther)
 <ul class="nav nav-tabs">
+
     <li class="nav-item">
         <a id="nav-link-tab1" class="nav-link active" href="#" onclick="setTab(event, 1);">
             <span class="nav-link-tab">
@@ -232,6 +234,8 @@
             </span>
         </a>
     </li>
+
+    @if ($showPrivate)
     <li class="nav-item">
         <a id="nav-link-tab2" class="nav-link" href="#" onclick="setTab(event, 2);">
             <span class="nav-link-tab">
@@ -239,6 +243,17 @@
             </span>
         </a>
     </li>
+    @endif
+
+    @if ($showOther)
+    <li class="nav-item">
+        <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3);">
+            <span class="nav-link-tab">
+                @LANG('proj.Other')&nbsp;<span style="font-size:.8em;">({{count($options['articlesOther'])}})</span>
+            </span>
+        </a>
+    </li>
+    @endif
 </ul>
 @else
 <h3 class="">
@@ -249,11 +264,19 @@
 <div style="" id="tab-tab1">
     @component('shared.articles', ['records' => $options['articlesPublic'], 'release' => 'public'])@endcomponent
 </div>
-@if ($showTabs)
-<div style="display:none" id="tab-tab2">
-    @component('shared.articles', ['records' => $options['articlesPrivate'], 'release' => 'private'])@endcomponent
-</div>
+
+@if ($showPrivate)
+    <div style="display:none" id="tab-tab2">
+        @component('shared.articles', ['records' => $options['articlesPrivate'], 'release' => 'private'])@endcomponent
+    </div>
 @endif
+
+@if ($showOther)
+    <div style="display:none" id="tab-tab3">
+        @component('shared.articles', ['records' => $options['articlesOther'], 'release' => 'other'])@endcomponent
+    </div>
+@endif
+
 
 <!--------------------------------------------------------------------------------------->
 <!-- NEWEST WORDS -->

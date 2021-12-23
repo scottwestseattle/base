@@ -86,9 +86,10 @@
 <!-- SNIPPETS -->
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['records']) && count($options['records']) > 0)
-    <h3 class="mt-2">@LANG('proj.Practice Text') <span style="font-size:.8em;">({{count($options['records'])}})&nbsp;&nbsp;
-         @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'inline-block'])@endcomponent
-         &nbsp;&nbsp;<span style="font-size:.5em;"><a href="/snippets/review">Flashcards</a></span>
+    <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
+         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
+         @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'float-left'])@endcomponent
+         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review">Flashcards</a></span>
     </span></h3>
     <div class="text-center mt-2" style="">
         <div style="display: inline-block; width:100%">

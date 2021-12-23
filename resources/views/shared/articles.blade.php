@@ -13,29 +13,32 @@
                         <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;"><a href="/articles/view/{{$record->permalink}}">{{$record->title}}</a></td>
                     </tr>
                     <tr>
-                        <td style="font-size:.8em; font-weight:100;">
+                        <td style="font-weight:100;">
                             <div class="float-left mr-3">
                                 <img width="25" src="/img/flags/{{getSpeechLanguage($record->language_flag)['code']}}.png" />
                             </div>
-                            <div style="float:left;">
-                                @component('components.icon-read', ['href' => "/articles/read/$record->id", 'color' => ''])@endcomponent
-                                <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
-                                <div style="margin-right:15px; margin-bottom:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>
 
-                                @if (App\User::isAdmin())
-                                    <div style="margin-right:15px; float:left;">
-                                        @component('components.control-button-publish', ['record' => $record, 'btnStyle' => 'btn-xxs', 'prefix' => 'entries', 'showPublic' => true])@endcomponent
-                                    </div>
-                                @endif
-                            </div>
-                            <div style="float:left;">
-                                @if (App\User::isAdmin() || App\User::isOwner($record->user_id))
-                                    <div style="margin-right:5px; float:left;"><a href='/articles/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
-                                    <div style="margin-right:0px; float:left;"><a href='/articles/confirmdelete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
-                                @endif
-                            </div>
+                            @component('components.icon-read', ['href' => "/articles/read/$record->id", 'color' => ''])@endcomponent
+
+                            <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
+                            <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>
+
+                            @if (isAdmin() || App\User::isOwner($record->user_id))
+                                <div style="margin-right:10px; float:left;">
+                                    @component('components.control-button-publish', ['record' => $record, 'btnStyle' => 'btn-xxs', 'prefix' => 'entries', 'showPublic' => true])@endcomponent
+                                </div>
+                                <div style="margin-right:5px; float:left;"><a href='/articles/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
+                                <div style="margin-right:0px; float:left;"><a href='/articles/confirmdelete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
+                            @endif
                         </td>
                     </tr>
+                    @if (isAdmin() && !App\User::isOwner($record->user_id))
+                    <tr>
+                        <td>
+                            <div class="small-thin-text">@LANG('ui.Member'): {{$record->user_id}}</div>
+                        </td>
+                    </tr>
+                    @endif
                 </tbody>
                 </table>
             </td>
