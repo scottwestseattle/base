@@ -152,4 +152,8 @@ return [
 'Article not found' => '未找到文章',
 'Book not found' => '没有找到书',
 'Other' => '其他成员',
+'Source' => '资料来源',
+'Source Link' => '链接到来源',
+'Add Book' => '添加书籍',
+'Chapter Number' => '章节编号',
 ];

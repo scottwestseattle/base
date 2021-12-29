@@ -152,4 +152,8 @@ return [
 'Article not found' => 'Artículo no encontrado',
 'Book not found' => 'Libro no encontrado',
 'Other' => 'Otros Miembros',
+'Source' => 'Fuente',
+'Source Link' => 'Enlace a la fuente',
+'Add Book' => 'Añadir libro',
+'Chapter Number' => 'Número de capítulo',
 ];

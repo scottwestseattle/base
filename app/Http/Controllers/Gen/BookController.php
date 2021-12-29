@@ -113,12 +113,23 @@ class BookController extends Controller
 		$record->site_id             = Site::getId();
 		$record->user_id             = Auth::id();
 		$record->title 				= trimNull($request->title);
+		$record->display_order 		= intval($request->display_order);
+		if (!isset($record->title))
+		{
+		    // if title not set, set it as "Chapter X"
+		    $record->title = trans_choice('proj.Chapter', 1);
+
+		    // display_order is chapter number
+		    if ($record->display_order > 0)
+		        $record->title .= ' ' . $record->display_order;
+		}
+
 		$record->description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$record->description_short	= trimNull($request->description_short);
 		$record->source				= trimNull($request->source);
 		$record->source_credit		= trimNull($request->source_credit);
 		$record->source_link		= trimNull($request->source_link);
 		$record->display_date 		= timestamp();
-		$record->display_order 		= $request->display_order;
 		$record->release_flag 		= RELEASEFLAG_PRIVATE;
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];

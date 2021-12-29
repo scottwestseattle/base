@@ -152,4 +152,5 @@ return [
 'Publish Tag' => 'Publicar etiqueta',
 'Record has been undeleted' => 'El registro ha sido restaurado',
 'Deleted Users' => 'Usuarios eliminados',
+'Entry Type' => 'Tipo de entrada',
 ];

@@ -1,21 +1,25 @@
 @extends('layouts.app')
 @section('title', trans_choice('proj.Book', 2))
-@section('menu-submenu')@component('gen.books.menu-submenu', ['index' => 'books', 'isIndex' => true])@endcomponent @endsection
+@section('menu-submenu')@component('gen.books.menu-submenu', ['index' => 'books', 'isIndex' => true, 'bookId' => $book->id])@endcomponent @endsection
 @section('content')
-
+@php
+    $count = isset($book) ? count($book->books) : 0;
+@endphp
 <div class="container page-normal">
 
     <div class="mb-2">
         <a href="/books/"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('proj.Back to Book', 2)}}</button></button></a>
     </div>
 
-	<h1>
-	    {{$book->name}}
+	<h1 class="mb-1">
+	    <span class="mr-2">{{$book->name}}</span>
         @component('components.icon-read', ['href' => "/books/read-book/$book->id", 'color' => '', 'nodiv' => true])@endcomponent
 	</h1>
 
+    <div class="medium-thin-text mb-3">{{trans_choice('proj.Chapter', 2)}}: {{$count}}</div>
+
 	<div>
-	@if (isset($book))
+	@if ($count > 0)
 		@foreach($book->books as $record)
 		<div class="drop-box-ghost mb-4" style="padding:10px 10px 20px 15px;">
 			<div style="font-size:1.3em; font-weight:normal;">

@@ -2,6 +2,9 @@
 @section('title', __('proj.Add Article'))
 @section('menu-submenu')@component('gen.articles.menu-submenu')@endcomponent @endsection
 @section('content')
+@php
+    $type_flag = isAdmin() ? null : ENTRY_TYPE_ARTICLE;
+@endphp
 
 <div class="container page-normal">
 
@@ -36,7 +39,7 @@
 
             @if (isAdmin())
                 <div class="entry-title-div mb-3 mt-2">
-                    <input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
+                    <input onblur="javascript:urlEncode('title', 'permalink')" type="text" id="title" name="title" placeholder="@LANG('ui.Title')" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
                 </div>
 
                 <div class="entry-title-div mb-3">
@@ -44,37 +47,38 @@
                 </div>
             @else
                 <div class="entry-title-div mb-3 mt-2">
-                    <input type="text" id="title" name="title" placeholder="Title" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
+                    <input type="text" id="title" name="title" placeholder="@LANG('ui.Title')" onfocus="setFocus($(this), '#accent-chars')" class="form-control" autofocus />
                 </div>
             @endif
 
 			<div class="entry-title-div mb-3">
-				<input type="text" id="source" name="source" placeholder="Source" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
+				<input type="text" id="source" name="source" placeholder="@LANG('proj.Source')" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
 			</div>
 
 			<div class="entry-title-div mb-3">
-				<input type="text" id="source_credit" name="source_credit" placeholder="Author" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
+				<input type="text" id="source_credit" name="source_credit" placeholder="@LANG('ui.Author')" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
 			</div>
 
             @if (isAdmin())
                 <div class="entry-title-div mb-3">
-                    <input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" />
+                    <input type="text" id="source_link" name="source_link" placeholder="@LANG('proj.Source Link')" class="form-control" />
                 </div>
             @endif
 
 			<div class="entry-description-div mb-3">
-				<textarea rows="3" id="description_short" name="description_short" class="form-control" placeholder="Summary" onfocus="setFocus($(this), '#accent-chars')"></textarea>
+				<textarea rows="3" id="description_short" name="description_short" class="form-control" placeholder="@LANG('ui.Summary')" onfocus="setFocus($(this), '#accent-chars')"></textarea>
 			</div>
 
 			<div class="mt-3 mb-3">
-				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">Add</button>
+				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>
 			</div>
 
 			<div class="entry-description-div mb-3">
-				<textarea rows="12" id="description" name="description" class="form-control" placeholder="Description" onfocus="setFocus($(this), '#accent-chars')"></textarea>
+				<textarea rows="12" id="description" name="description" class="form-control" placeholder="@LANG('ui.Text')" onfocus="setFocus($(this), '#accent-chars')"></textarea>
 			</div>
 
             @if (isset($languageOptions))
+                <div><labe>{{trans_choice('ui.Language', 1)}}:</label></div>
                 @component('components.control-dropdown-language', [
                     'options' => $languageOptions,
                     'selected_option' => $selectedOption,
@@ -84,7 +88,7 @@
             @endif
 
 			<div style="margin:20px 0;">
-				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">Add</button>
+				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>
 			</div>
 
 			{{ csrf_field() }}

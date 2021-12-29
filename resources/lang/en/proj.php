@@ -152,4 +152,8 @@ return [
 'Article not found' => 'Article not found',
 'Book not found' => 'Book not found',
 'Other' => 'Other Members',
+'Source' => 'Source',
+'Source Link' => 'Source Link',
+'Add Book' => 'Add Book',
+'Chapter Number' => 'Chapter Number',
 ];

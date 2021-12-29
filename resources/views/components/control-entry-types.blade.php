@@ -1,5 +1,5 @@
 <div class="form-group">
-	<label for="type_flag">Entry Type:&nbsp;</label>		
+	<label for="type_flag">@LANG('base.Entry Type'):&nbsp;</label>
 	<select name="type_flag" id="type_flag">
 		@foreach ($entryTypes as $key => $value)
 			@if (isset($current_type) && intval($key) === intval($current_type))
@@ -9,4 +9,4 @@
 			@endif
 		@endforeach
 	</select>
-</div>					
+</div>
