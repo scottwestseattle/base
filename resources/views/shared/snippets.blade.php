@@ -100,15 +100,26 @@
             @foreach($options['records'] as $record)
 
             @php
+                $iconColor = 'default';
+                $linkColor = 'purple';
+                $isOwner = false;
                 $owner = trans_choice('ui.Visitor', 1);
                 if (isset($record->user_id) && intval($record->user_id) > 0)
                 {
                     $member =  __('ui.Member') . ': ' . $record->user_id;
 
                     if (App\User::isOwner($record->user_id))
+                    {
                         $owner = isAdmin() ? __('ui.Admin') : $member;
+                        $isOwner = true;
+                        $linkColor = 'red';
+                    }
                     else
+                    {
                         $owner = $member;
+                        $iconColor = 'red';
+                        $linkColor = 'red';
+                    }
                 }
             @endphp
             <tr class="drop-box-ghost-small" style="vertical-align:middle;">
@@ -128,17 +139,17 @@
                                 </div>
 
                                 @if (!isset($record->translation_en))
-                                    @if (App\User::isOwner($record->user_id))
-                                        <div class="float-left mr-3" style="margin-top: 2px;">
-                                                <a href="/practice/edit/{{$record->id}}"><span class="red">@LANG('proj.Add Translation')</span></a>
+                                    @if (isAdmin() || $isOwner)
+                                        <div class="float-left mr-3 pb-1">
+                                                <a href="/practice/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
                                         </div>
                                     @endif
                                 @endif
 
                                 <div style="float:left;">
                                     @if (App\User::isAdmin() || App\User::isOwner($record->user_id))
-                                        <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
-                                        <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
+                                        <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
+                                        <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash" style="color:{{$iconColor}}"></span></a></div>
                                         <div class="float-left">
                                             @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
                                         </div>
