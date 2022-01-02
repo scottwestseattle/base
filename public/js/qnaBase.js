@@ -874,6 +874,18 @@ function touch(q)
     }
 }
 
+function addHistory()
+{
+    if (true || quiz.touchPath.length > 0) // if touchPath set
+    {
+        // https://domain.com/course/id/lesson/id/score
+        var path = '/history/add-public/' + 'quiz' + '/' + 0 + '/' + 'qna' + '/' + 0 + '/' + quiz.lastScore;
+        console.log('history: ' + path);
+        console.log('touchpath: ' + quiz.touchPath);
+        ajaxexec(path);
+    }
+}
+
 function flip()
 {
 	quiz.flip();

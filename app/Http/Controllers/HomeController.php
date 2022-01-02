@@ -15,6 +15,7 @@ use App\Event;
 use App\Home;
 use App\Gen\Article;
 use App\Gen\Definition;
+use App\Gen\History;
 use App\Gen\Lesson;
 use App\Site;
 use App\Tag;
@@ -279,9 +280,12 @@ class HomeController extends Controller
 				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));
 		}
 
+		$history = History::get(5);
+
 		return view('home.dashboard', [
 		    'events' => $events,
 		    'users' => $users,
+		    'history' => $history,
 		    'userNewest' => $userNewest,
 		    'language' => $language,
 		]);

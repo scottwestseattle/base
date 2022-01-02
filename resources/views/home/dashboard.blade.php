@@ -26,14 +26,40 @@
 
         <hr />
 
-		<h1>{{trans_choice('base.User', 2)}} ({{$users}})</h1>
+		<h1>{{trans_choice('base.User', 2)}}<span class="title-count">({{$users}})</span></h1>
 		@if (intval($users) > 0 && isset($userNewest) /* && $userNewest->isUserConfirmed() */)
 		    <p class="medium-thin-text">
 		        <b>Newest:&nbsp;</b>{{$userNewest->name}} ({{$userNewest->getUserType()}}), {{$userNewest->email}}, {{translateDate($userNewest->created_at, true)}}
 		    </p>
 		@endif
-		<p><a href="/users">{{__('base.Go to Users')}}</a>
+		<p><a href="/users">{{__('base.Go to Users')}}</a></p>
+        <hr />
 
+        <div>
+            <h1 class="">{{__('History')}}<span class="title-count">(5)</span></h1>
+            <div class="">
+            <table>
+            @foreach ($history as $record)
+                <tr>
+                    <td class="pr-3">{{$record->program_name}}</td>
+                    <td>{{$record->session_name}}</td>
+                </tr>
+            @endforeach
+            </table>
+    		<p class="mt-2"><a href="/history">{{__('ui.Show All')}}</a></p>
+            </div>
+        </div>
+        <hr />
+
+        <div>
+            <h1 class="">{{__('RSS Links')}}</h1>
+
+            <div class="">
+                <div><a target="_blank" href="/courses/rss">Courses</a></div>
+                <div><a target="_blank" href="/lessons/rss">Lessons</a></div>
+                <div><a target="_blank" href="/history/rss">History</a></div>
+            </div>
+        </div>
         <hr />
 
         <div>
@@ -43,6 +69,7 @@
                 <div><a target="_blank" href="/definitions/scrape-definition/tener">Scrape Definition</a></div>
                 <div><a target="_blank" href="/definitions/conjugationsgenajax/tener">Scrape Conjugation</a></div>
                 <div><a target="_blank" href="/definitions/find/tener">Find Word</a></div>
+                <div><a target="_blank" href="/history/add-public/course-name/0/lesson-name/0/100">Add History</a></div>
             </div>
         </div>
 
@@ -82,6 +109,15 @@
             <p>{{$date}}</p>
             <p>
         </div>
+
+        <hr />
+        <div>
+            <h1 class="">{{__('History')}}</h1>
+            <div class="">
+                <div><a href="/history">History</a></div>
+            </div>
+        </div>
+
 
 	@endif
 

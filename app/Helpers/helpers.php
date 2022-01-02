@@ -836,11 +836,7 @@ if (!function_exists('trunc')) {
 
 	    if ($length < 0) // then subtract this number of chars
 	    {
-	        $length = $l + $length;
-	    }
-	    else
-	    {
-	        $length = $l - $length;
+	        $length = 0;
 	    }
 
 		if ($l > $length)

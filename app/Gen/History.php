@@ -5,6 +5,7 @@ namespace App\Gen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Auth;
 use App\Status;
 
 class History extends Model
@@ -25,6 +26,26 @@ class History extends Model
 		return $records;
 	}
 
+    static public function get($limit = PHP_INT_MAX)
+    {
+		$records = [];
+
+		try
+		{
+			$records = History::select()
+				->where('user_id', Auth::id())
+				->orderByRaw('id DESC')
+				->limit($limit)
+				->get();
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
+		}
+
+		return $records;
+	}
+
 	static public function add($programName, $programId, $sessionName, $sessionId, $seconds)
 	{
 	    $msg = '';
@@ -36,6 +57,7 @@ class History extends Model
 		$record->session_name = trimNull($sessionName, true);;
 		$record->session_id = intval($sessionId);
 		$record->seconds = intval($seconds);
+		$record->user_Id = Auth::id();
 
 		try
 		{

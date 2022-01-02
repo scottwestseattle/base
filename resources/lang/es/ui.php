@@ -131,7 +131,7 @@ return [
 'Favorite' => 'Favorito|Favoritos',
 'Add New List' => 'Agregar lista nueva',
 'Continue' => 'Continuar',
-'Author' => 'Author',
+'Author' => 'Autor',
 'Language' => 'Idioma|Idiomas',
 'Text' => 'Texto',
 'Option' => 'Opción|Opciones',

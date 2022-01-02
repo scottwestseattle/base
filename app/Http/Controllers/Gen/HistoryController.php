@@ -30,6 +30,10 @@ class HistoryController extends Controller
             'rss', 'addPublic'
         ]);
 
+        $this->middleware('auth')->only([
+			'index',
+		]);
+
 		parent::__construct();
 	}
 
@@ -57,10 +61,15 @@ class HistoryController extends Controller
     {
 		$records = [];
 
+        if (isAdmin())
+        {
+            return $this->admin($request);
+        }
+
 		try
 		{
 			$records = History::select()
-				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				->where('user_id', Auth::id())
 				->orderByRaw('id DESC')
 				->get();
 		}
@@ -275,11 +284,13 @@ class HistoryController extends Controller
     }
 
 	// sample url:
-	// http://localhost/history/add-public/Plancha/14/Day+4/4/750
+	// http://domain.com/history/add-public/Plancha/14/Day+4/4/750
     public function addPublic($programName, $programId, $sessionName, $sessionId, $seconds)
     {
-		$msg = History::add(urldecode($programName), $programId, urldecode($sessionName), $sessionId, $seconds);
+		$msg = History::add(urldecode($programName), intval($programId), urldecode($sessionName), intval($sessionId), intval($seconds));
 
-		return $msg;
+        $rc = '<a href="/history">' . $msg . '</a>';
+
+		return $rc;
 	}
 }

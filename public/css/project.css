@@ -32,7 +32,6 @@ body {
 	}
 }
 
-
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
 
@@ -530,6 +529,11 @@ Fancy Text
 	font-weight:200;
 }
 
+.thin-text-18 {
+	font-weight:200;
+	font-size:18px;
+}
+
 .large-text, .large-thin-text {
 	font-size:22px;
 }
@@ -544,6 +548,11 @@ Fancy Text
 
 .large-text {
 	font-size:18px;
+}
+
+.title-count {
+    font-size:.8em;
+    margin-left:5px;
 }
 
 /***************************************************
@@ -696,7 +705,7 @@ h6 {
     margin-bottom:30px;
 }
 
-.card-potd, .card-potd a, .card-wotd, .card-votd {
+.card-potd, .card-potd a, .card-wotd, .card-aotd {
 	min-height:200px;
 	color:white;
 	text-decoration:none;
@@ -707,11 +716,11 @@ h6 {
 }
 
 .card-wotd {
-	background-color: #5CB85C; /* minty green */
+	background-color: #4993FD; /* bright blue */
 }
 
-.card-votd {
-	background-color: #4993FD; /* bright blue */
+.card-aotd {
+	background-color: #5CB85C; /* minty green */
 }
 
 .card-header-potd {
@@ -724,6 +733,11 @@ h6 {
     font-weight: 300;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+a.link-white {
+    color: white;
+    text-decoration: none;
 }
 
 @media (max-width:576px) { /* small screen only */
@@ -808,7 +822,8 @@ h6 {
  Reader Light Styles
 ************************************************************/
 .highlight-word {
-	background-color: gray;
+    color: DarkBlue;
+	background-color: yellow;
 	border-radius: 8px;
 	padding: 0px 0;
 }
