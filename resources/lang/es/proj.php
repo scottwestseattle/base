@@ -156,4 +156,6 @@ return [
 'Source Link' => 'Enlace a la fuente',
 'Add Book' => 'Añadir libro',
 'Chapter Number' => 'Número de capítulo',
+'Article of the day' => 'Artículo del día',
+'Read All' => 'Leer todo',
 ];

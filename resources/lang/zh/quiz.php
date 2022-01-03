@@ -28,5 +28,4 @@ return [
 'Round' => '圆形的',
 'All questions answered correctly.' => '所有问题均正确回答。',
 'I know it, remove from review' => '我知道，从审查中删除',
-'Article of the day' => '今天的文章',
 ];

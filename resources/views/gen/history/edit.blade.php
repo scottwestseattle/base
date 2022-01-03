@@ -6,16 +6,16 @@
 
 	<h1>{{__('proj.Edit History')}}</h1>
 
-	<form method="POST" id="form-edit" action="/histories/update/{{$record->id}}">
+	<form method="POST" id="form-edit" action="/history/update/{{$record->id}}">
 
 		<div class="form-group">
-			<label for="title" class="control-label">@LANG('base.Title'):</label>
-			<input type="text" name="title" class="form-control" value="{{$record->title}}"></input>
+			<label for="program_name" class="control-label">@LANG('proj.Program Name'):</label>
+			<input type="text" name="program_name" class="form-control" value="{{$record->program_name}}"></input>
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('base.Description'):</label>
-			<textarea name="description" class="form-control">{{$record->description}}</textarea>
+			<label for="session_name" class="control-label">@LANG('proj.Session Name'):</label>
+			<textarea name="session_name" class="form-control">{{$record->session_name}}</textarea>
 		</div>
 
 		<div class="submit-button">

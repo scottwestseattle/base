@@ -34,6 +34,10 @@ class HistoryController extends Controller
 			'index',
 		]);
 
+        $this->middleware('owner')->only([
+			'update',
+		]);
+
 		parent::__construct();
 	}
 
@@ -165,9 +169,8 @@ class HistoryController extends Controller
 		$isDirty = false;
 		$changes = '';
 
-		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
-		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
-        $record->permalink = copyDirty($record->permalink, createPermalink($request->title, $record->created_at), $isDirty, $changes);
+		$record->program_name = copyDirty($record->program_name, $request->program_name, $isDirty, $changes);
+		$record->session_name = copyDirty($record->session_name, $request->session_name, $isDirty, $changes);
 
 		if ($isDirty)
 		{
@@ -186,7 +189,7 @@ class HistoryController extends Controller
 			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect(SHOW . $record->id);
+		return redirect($this->redirectTo);
 	}
 
     public function confirmDelete(History $history)

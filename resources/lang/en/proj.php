@@ -156,4 +156,6 @@ return [
 'Source Link' => 'Source Link',
 'Add Book' => 'Add Book',
 'Chapter Number' => 'Chapter Number',
+'Article of the day' => 'Article of the day',
+'Read All' => 'Read All',
 ];

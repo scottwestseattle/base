@@ -28,5 +28,4 @@ return [
 'Round' => 'Ronda',
 'All questions answered correctly.' => 'Todas las preguntas respondidas correctamente.',
 'I know it, remove from review' => 'Ya lo sé, quitar de la revisión',
-'Article of the day' => 'Artículo del día',
 ];

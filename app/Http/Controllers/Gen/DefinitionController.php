@@ -1090,9 +1090,11 @@ class DefinitionController extends Controller
 			'canEdit' => true,
 			'isMc' => true,
 			'returnPath' => '/favorites',
-			'touchPath' => '',
+			'touchPath' => '/history/add-public/',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
+			'programName' => 'Favorite List Review',
+			'sessionName' => $record->name,
 			]);
     }
 

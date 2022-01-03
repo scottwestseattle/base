@@ -97,6 +97,11 @@ function quiz() {
 	this.quizTextScoreChanged = 'not set';
 	//this.lessonId = 'not set';
 
+    // for History
+    this.programName = 'not set';
+    this.sessionName = 'not set';
+    this.touchPath = 'not set';
+
 	this.getQuestionId = function(index) {
 		return this.qna[this.qna[index].order].id;
 	}
@@ -317,6 +322,12 @@ function loadData()
         var container = $(this);
 
 		max = container.data('max');
+
+        // for History updates
+		quiz.programName = container.data('programName');
+		quiz.sessionName = container.data('sessionName');
+		quiz.touchPath = container.data('touchpath');
+
 		quiz.promptQuestionNormal = container.data('prompt');
 		quiz.promptQuestionReverse = container.data('prompt-reverse');
 		quiz.promptQuestion = quiz.promptQuestionNormal;
@@ -334,7 +345,6 @@ function loadData()
 		quiz.quizTextOverrideWrong = container.data('quiztext-override-wrong') + " (Alt+c)";
 		quiz.quizTextScoreChanged = container.data('quiztext-score-changed');
 		//quiz.lessonId = container.data('lessonid');
-		quiz.touchPath = ''; //turned off for the moment: container.data('touchpath');
 
 		i++;
     });
@@ -865,7 +875,7 @@ function touch(q)
 	//debug('touching', true);
 
     // if it's a word, update it's last display time
-    if (quiz.touchPath.length > 0) // if touchPath set
+    if (false && quiz.touchPath.length > 0) // if touchPath set
     {
         var path = '/' + quiz.touchPath + '/' + q.id;
         ajaxexec(path);
@@ -876,12 +886,16 @@ function touch(q)
 
 function addHistory()
 {
-    if (true || quiz.touchPath.length > 0) // if touchPath set
+    console.log('touchpath: ' + quiz.touchPath);
+
+    if (quiz.touchPath.length > 0) // if touchPath set
     {
         // https://domain.com/course/id/lesson/id/score
-        var path = '/history/add-public/' + 'quiz' + '/' + 0 + '/' + 'qna' + '/' + 0 + '/' + quiz.lastScore;
+        var url = quiz.programName + '/' + 0 + '/' + quiz.sessionName + '/' + 0 + '/' + max;
+        // encodeURI(url.replace(/[\W_]+/g, "-"));
+        var path = quiz.touchPath + url;
+
         console.log('history: ' + path);
-        console.log('touchpath: ' + quiz.touchPath);
         ajaxexec(path);
     }
 }

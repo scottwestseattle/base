@@ -3,7 +3,7 @@
 @section('menu-submenu')@component('gen.history.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-	<h1>{{trans_choice('ui.History', 2)}} ({{count($records)}})</h1>
+	<h1>{{trans_choice('ui.History', 2)}}<span class="title-count">({{count($records)}})</span></h1>
 	<div  class="table-responsive">
 	<table class="table">
 		<thead>
@@ -13,9 +13,11 @@
 			@endif
 				<th>{{__('proj.Program')}}</th>
 				<th>{{__('ui.Session')}}</th>
+				<th>{{__('proj.Score')}}</th>
 				<th>{{__('ui.IP')}}</th>
 				<th>{{__('ui.Created')}}</th>
             @if (isAdmin())
+				<th></th>
 				<th></th>
 			@endif
 			</tr>
@@ -35,9 +37,11 @@
 			@endif
 				<td>{{$record->program_name}}</td>
 				<td>{{$record->session_name}}</td>
+				<td>{{$record->seconds}}</td>
 				<td>{{$record->ip_address}}</td>
 				<td class="date-sm">{{$dt}}</td>
             @if (isAdmin())
+				<td class="icon"><a href='/history/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/history/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
             @endif
 			</tr>
