@@ -93,6 +93,16 @@ define('TAG_TYPE_DEF_FAVORITE', 	    3); // one per user so we have empty favori
 define('TAG_TYPE_OTHER',			   	99);
 //define('TAG_TYPE_DEFAULT', TAG_TYPE_SYSTEM); // need this?
 
+// history type
+define('HISTORY_TYPE_NOTSET', 	-1);
+define('HISTORY_TYPE_NOTUSED', 	0);
+define('HISTORY_TYPE_LIST',	    1);
+define('HISTORY_TYPE_ARTICLE', 	2);
+define('HISTORY_TYPE_BOOK',	 	3);
+define('HISTORY_TYPE_LESSON',	4);
+define('HISTORY_TYPE_EXERCISE',	10);
+define('HISTORY_TYPE_OTHER',	99);
+
 // misc options
 define('USER_ID_NOTSET', 0);
 define('DESCRIPTION_LIMIT_LENGTH', 30);

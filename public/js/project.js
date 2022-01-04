@@ -1363,3 +1363,22 @@ function shuffle(array)
 
 	return array;
 }
+
+function addHistory(url, programName, programId, sessionName, sessionId, score)
+{
+    console.log('touchpath: ' + url);
+
+    programId = (programId > 0) ? programId : 0;
+    sessionId = (sessionId > 0) ? sessionId : 0;
+    score = (score > 0) ? score : 0;
+
+    var parms = programName + '/' + programId + '/' + sessionName + '/' + sessionId + '/' + score;
+    // encodeURI(url.replace(/[\W_]+/g, "-"));
+
+    // path looks like: https://domain.com/course/id/lesson/id/score
+    var path = url + parms;
+
+    console.log('history: ' + path);
+
+    ajaxexec(path);
+}

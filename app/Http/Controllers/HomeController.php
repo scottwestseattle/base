@@ -10,6 +10,7 @@ use Auth;
 use Cookie;
 use Log;
 
+use App\DateTimeEx;
 use App\Entry;
 use App\Event;
 use App\Home;
@@ -280,7 +281,7 @@ class HomeController extends Controller
 				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));
 		}
 
-		$history = History::get(5);
+		$history = History::get(10);
 
 		return view('home.dashboard', [
 		    'events' => $events,

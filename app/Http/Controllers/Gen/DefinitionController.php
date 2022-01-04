@@ -1093,7 +1093,7 @@ class DefinitionController extends Controller
 			'touchPath' => '/history/add-public/',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
-			'programName' => 'Favorite List Review',
+			'programName' => 'Favorites List',
 			'sessionName' => $record->name,
 			]);
     }

@@ -12,6 +12,7 @@
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->
 <div class="data-misc"
+    data-title="{{$title}}"
 	data-count="{{$count}}"
 	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-max="{{$count}}"

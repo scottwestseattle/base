@@ -122,6 +122,9 @@ function deck() {
 	this.isAdmin = false;
 	this.userId = 0;
 
+    // add History
+    this.title = 'not set';
+
 	// options
 	this.runState = RUNSTATE_START;
 
@@ -332,6 +335,9 @@ function loadData()
         var container = $(this);
 
 		max = container.data('max');
+
+        // for History record
+		deck.title = container.data('title');
 
 		// new settings
 		deck.quizTextDone = container.data('quiztext-done');
@@ -920,6 +926,7 @@ function readNext()
         else
         {
         	saveReadLocation(0);
+        	addHistory('/history/add-public/', 'Reader', 0, deck.title, deck.contentId, max);
             end();
         }
 	}

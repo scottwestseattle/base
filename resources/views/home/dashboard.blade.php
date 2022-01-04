@@ -35,21 +35,29 @@
 		<p><a href="/users">{{__('base.Go to Users')}}</a></p>
         <hr />
 
+        @component('shared.history', ['history' => $history])@endcomponent
+        <hr />
+
+        @if (false)
         <div>
-            <h1 class="">{{__('History')}}<span class="title-count">(5)</span></h1>
-            <div class="">
-            <table>
-            @foreach ($history as $record)
-                <tr>
-                    <td class="pr-3">{{$record->program_name}}</td>
-                    <td>{{$record->session_name}}</td>
+            <table class="">
+            @php
+                $colors = App\DateTimeEx::getDayColors();
+            @endphp
+            @foreach ($colors as $color)
+                <tr class="mb-3" style="border: 1px white solid; background-color:{{$color}}; color:white;">
+                    <td class="p-3">
+                        <div class="text-center">
+                            <div>One line of text</div>
+                            <div>Second line of text</div>
+                        </div>
+                    </td>
                 </tr>
             @endforeach
             </table>
-    		<p class="mt-2"><a href="/history">{{__('ui.Show All')}}</a></p>
-            </div>
         </div>
         <hr />
+        @endif
 
         <div>
             <h1 class="">{{__('RSS Links')}}</h1>
@@ -100,24 +108,14 @@
             if (isset($date))
                 $date = $date->format('F j, Y');
         @endphp
-        <div class="xl-thin-text">
-            <h5>@LANG('ui.Name')</h5>
-            <p>{{Auth::user()->name}}
-            <h5>@LANG('ui.Email Address')</h5>
-            <p>{{Auth::user()->email}}
-            <h5>@LANG('ui.Joined')</h5>
-            <p>{{$date}}</p>
-            <p>
-        </div>
-
-        <hr />
         <div>
-            <h1 class="">{{__('History')}}</h1>
-            <div class="">
-                <div><a href="/history">History</a></div>
-            </div>
+            <p class="xl-thin-text">@LANG('ui.Hello')&nbsp;{{Auth::user()->name}}
+            <p class="medium-thin-text">{{Auth::user()->email}}</p>
+            <a href="/users/edit/{{Auth::id()}}">@LANG('base.Edit Profile')</a>
         </div>
+        <hr />
 
+        @component('shared.history', ['history' => $history])@endcomponent
 
 	@endif
 
