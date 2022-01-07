@@ -17,8 +17,8 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/review-random-verbs">@LANG('proj.Latest Practice Text')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/review">
-                        @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
+                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/review/20">
+                        @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
                     <a class="btn btn-primary btn-xs" role="button" href="/snippets/read/20">
                         @LANG('proj.Reader') (20)<span class="glyphicon glyphicon-volume-up ml-1"></span>

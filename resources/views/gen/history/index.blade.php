@@ -11,11 +11,13 @@
             @if (false && isAdmin())
 				<th></th>
 			@endif
-				<th>{{__('proj.Program')}}</th>
-				<th>{{__('ui.Session')}}</th>
-				<th>{{__('proj.Score')}}</th>
-				<th>{{__('ui.IP')}}</th>
-				<th>{{__('ui.Created')}}</th>
+				<th>{{__('ui.Type')}}</th>
+				<th>{{__('ui.Title')}}</th>
+				<th>{{__('proj.Score/Count')}}</th>
+				@if (isAdmin())
+    				<th>{{__('ui.IP')}}</th>
+				@endif
+				<th>{{__('ui.Date')}}</th>
             @if (isAdmin())
 				<th></th>
 				<th></th>
@@ -39,7 +41,9 @@
 				<td>{{$record->program_name}}</td>
 				<td>{{$record->session_name}}</td>
 				<td>{{$record->seconds}}</td>
+			@if (isAdmin())
 				<td>{{$record->ip_address}}</td>
+            @endif
 				<td class="date-sm">{{App\DateTimeEx::getShortDateTime($record->created_at)}}</td>
             @if (isAdmin())
 				<td class="icon"><a href='/history/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>

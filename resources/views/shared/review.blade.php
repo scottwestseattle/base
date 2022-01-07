@@ -1,7 +1,10 @@
 @extends('layouts.review')
 @section('title', __('proj.Review'))
 @section('content')
-
+@php
+    $programName = isset($programName) ? $programName : 'Program Name not set';
+    $sessionName = isset($sessionName) ? $sessionName : 'Session Name not set';
+@endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->

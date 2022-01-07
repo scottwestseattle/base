@@ -1105,7 +1105,7 @@ class DefinitionController extends Controller
         if (Quiz::isQuiz($reviewType))
         {
             // flashcards or multiple choice
-            return $this->doReview($records, $reviewType);
+            return $this->doReview($records, $reviewType, $name);
         }
         else
         {
@@ -1114,18 +1114,20 @@ class DefinitionController extends Controller
         }
     }
 
-    public function doReview($records, $reviewType)
+    public function doReview($records, $reviewType, $title)
     {
 		$qna = Definition::makeQna($records); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 
 		return view($settings['view'], [
+		    'programName' => 'Review',
+		    'sessionName' => $title,
+			'touchPath' => '/history/add-public/',
 			'sentenceCount' => count($qna),
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
 			'returnPath' => '/favorites',
-			'touchPath' => '',
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
 			]);
@@ -1189,12 +1191,13 @@ class DefinitionController extends Controller
 		    : $this->doList($title, $reviewType, $records);
     }
 
-	public function reviewSnippets(Request $request, $reviewType = null, $count = PHP_INT_MAX)
+	public function reviewSnippets(Request $request, $count = PHP_INT_MAX)
     {
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
         $records = Definition::getSnippetsReview(['limit' => intval($count), 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+
         $title = trans('proj.:count Snippets', ['count' => $count]);
 
 		return $this->doList($title, 'flashcards', $records);

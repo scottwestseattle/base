@@ -443,12 +443,19 @@ class BookController extends Controller
 		$readLocation = $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
 		Entry::countView($record);
 
+        $title = $record->title;
+		$book = Book::getBook($entry);
+		if (isset($book))
+		{
+		    $title = $book->name . ' - ' . $record->title;
+		}
+
 		$lines = [];
 		$lines = self::getLines($record, $lines);
 
 		$backLink = '/books/show/' . $record->permalink;
 
-		return $this->doRead($lines, $record->title, $record->id, $readLocation, $record->language_flag, $backLink);
+		return $this->doRead($lines, $title, $record->id, $readLocation, $record->language_flag, $backLink);
     }
 
 
