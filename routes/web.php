@@ -458,8 +458,9 @@ Route::group(['prefix' => 'dictionary'], function () {
 
 // Snippets
 Route::group(['prefix' => 'snippets'], function () {
+	Route::get('/read-latest/{count?}', [DefinitionController::class, 'readSnippetsLatest']);
 	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
-	Route::get('/review/{count?}', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/review/{reviewType?}/{count?}', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
 

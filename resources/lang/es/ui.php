@@ -161,4 +161,6 @@ return [
 'Joined' => 'Se unió',
 'Minimum of :count characters' => 'Mínimo de :count caracteres',
 'Email will be confirmed' => 'Se confirmará el correo electrónico',
+'Hello' => 'Hola',
+'Return' => 'Volver',
 ];

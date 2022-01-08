@@ -1364,7 +1364,7 @@ function shuffle(array)
 	return array;
 }
 
-function addHistory(url, programName, programId, sessionName, sessionId, score)
+function addHistoryRecord(url, programName, programId, sessionName, sessionId, score)
 {
     console.log('touchpath: ' + url);
 

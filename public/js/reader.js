@@ -474,7 +474,10 @@ function next()
 
 	curr++;
 	if (curr >= max)
+	{
 		curr = 0;
+		addHistory();
+	}
 
 	loadSlide();
 }
@@ -926,7 +929,7 @@ function readNext()
         else
         {
         	saveReadLocation(0);
-        	addHistory('/history/add-public/', 'Reader', 0, deck.title, deck.contentId, max);
+        	addHistory();
             end();
         }
 	}
@@ -1333,4 +1336,7 @@ function getTimeDisplay(seconds)
     return time;
 }
 
-
+function addHistory()
+{
+    addHistoryRecord('/history/add-public/', 'Reader', 0, deck.title, deck.contentId, max);
+}

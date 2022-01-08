@@ -126,6 +126,8 @@ function nextAttempt()
 		// check if at the end of round
 		if (curr >= max)
 		{
+		    addHistory();
+
 			curr = 0;
 			nbr = 0;
 			score = (right / (right+wrong)) * 100;
@@ -174,5 +176,9 @@ function nextAttempt()
 			break;
 		}
 	}
+
+    //todo: fix wrap around, remove questions, add history
+	//console.log('curr: ' + curr);
+	//console.log('max: ' + max);
 }
 

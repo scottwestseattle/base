@@ -235,6 +235,7 @@ class Quiz
 	{
 		$loadJs = 'qnaReview.js';
 		$view = 'shared.review';
+		$programName = __('proj.Quiz');
 
 		$quizText = [
 			'Round' => 'Round',
@@ -261,6 +262,7 @@ class Quiz
 			$options['prompt'] = 'Tap or click to continue';
 			$view = 'shared.flashcards';
 			$loadJs = 'qnaFlashcards.js';
+			$programName = __('proj.Flashcards');
 		}
 		else if ($type == REVIEWTYPE_WHEELOFFORTUNE)
 		{
@@ -273,6 +275,7 @@ class Quiz
 		$rc['loadJs'] = $loadJs;
 		$rc['view'] = $view;
 		$rc['quizText'] = $quizText;
+        $rc['programName'] = $programName;
 
         //dd($rc);
 

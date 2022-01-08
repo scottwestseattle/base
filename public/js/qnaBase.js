@@ -887,6 +887,8 @@ function touch(q)
 function addHistory()
 {
     console.log('touchpath: ' + quiz.touchPath);
+    console.log('programName: ' + quiz.programName);
+    console.log('sessionName: ' + quiz.sessionName);
 
     if (quiz.touchPath.length > 0) // if touchPath set
     {

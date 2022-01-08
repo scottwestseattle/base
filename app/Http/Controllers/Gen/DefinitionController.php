@@ -36,7 +36,7 @@ class DefinitionController extends Controller
         $this->middleware('admin')->except([
             //'index',
             'view', 'permalink',
-            'snippets', 'createSnippet', 'readSnippets', 'viewSnippet',
+            'snippets', 'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
 
             // let these through to be caught below
 			'editSnippet', 'updateSnippet',
@@ -1120,7 +1120,7 @@ class DefinitionController extends Controller
 		$settings = Quiz::getSettings($reviewType);
 
 		return view($settings['view'], [
-		    'programName' => 'Review',
+		    'programName' => $settings['programName'],
 		    'sessionName' => $title,
 			'touchPath' => '/history/add-public/',
 			'sentenceCount' => count($qna),
@@ -1143,6 +1143,7 @@ class DefinitionController extends Controller
 
     public function reviewNewest(Request $request, $reviewType = null, $count = 20)
     {
+        $reviewType = alpha($reviewType);
         $records = Definition::getNewest(intval($count));
         $title = trans('proj.:count Newest Words', ['count' => $count]);
 
@@ -1153,6 +1154,7 @@ class DefinitionController extends Controller
 
     public function reviewRankedVerbs(Request $request, $reviewType = null, $count = 20)
     {
+        $reviewType = alpha($reviewType);
         $records = Definition::getRankedVerbs(intval($count));
         $title = trans('proj.:count Most Common Verbs', ['count' => $count]);
 
@@ -1163,6 +1165,7 @@ class DefinitionController extends Controller
 
     public function reviewNewestVerbs(Request $request, $reviewType = null, $count = 20)
     {
+        $reviewType = alpha($reviewType);
 		$records = Definition::getNewestVerbs(intval($count));
         $title = trans('proj.:count Newest Verbs', ['count' => $count]);
 
@@ -1173,6 +1176,7 @@ class DefinitionController extends Controller
 
     public function reviewRandomWords(Request $request, $reviewType = null, $count = 20)
     {
+        $reviewType = alpha($reviewType);
 		$records = Definition::getRandomWords(intval($count));
         $title = trans('proj.:count Random Words', ['count' => $count]);
 
@@ -1183,6 +1187,7 @@ class DefinitionController extends Controller
 
 	public function reviewRandomVerbs(Request $request, $reviewType = null, $count = 20)
     {
+        $reviewType = alpha($reviewType);
 		$records = Definition::getRandomVerbs(intval($count));
         $title = trans('proj.:count Random Verbs', ['count' => $count]);
 
@@ -1191,16 +1196,17 @@ class DefinitionController extends Controller
 		    : $this->doList($title, $reviewType, $records);
     }
 
-	public function reviewSnippets(Request $request, $count = PHP_INT_MAX)
+	public function reviewSnippets(Request $request, $reviewType = null, $count = PHP_INT_MAX)
     {
+        $reviewType = alpha($reviewType);
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
         $records = Definition::getSnippetsReview(['limit' => intval($count), 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
 
-        $title = trans('proj.:count Snippets', ['count' => $count]);
+        $title = trans('proj.Latest Practice Text', ['count' => $count]);
 
-		return $this->doList($title, 'flashcards', $records);
+		return $this->doList($title, $reviewType, $records);
     }
 
     public function getRandomWordAjax(Request $request)
@@ -1232,8 +1238,15 @@ class DefinitionController extends Controller
 		]);
     }
 
-	public function readSnippets($count = PHP_INT_MAX)
+	public function readSnippetsLatest(Request $request, $count = PHP_INT_MAX)
     {
+        return $this->readSnippets($request, $count, 'Latest Practice Text', 'favorites');
+    }
+
+	public function readSnippets(Request $request, $count = PHP_INT_MAX, $title = null, $return = null)
+    {
+        $title = isset($title) ? alphanum($title) : 'Practice Text';
+        $return = isset($return) ? alphanum($return) : 'practice';
         $count = intval($count);
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
@@ -1256,7 +1269,7 @@ class DefinitionController extends Controller
     		$lines = array_merge($lines, $text);
         }
 
-        $options['return'] = '/practice';
+        $options['return'] = '/' . $return;
         $options['randomOrder'] = true;
 
         $labels = [
@@ -1271,7 +1284,7 @@ class DefinitionController extends Controller
 
     	return view('shared.reader', [
     	    'lines' => $lines,
-    	    'title' => 'Practice Text',
+    	    'title' => $title,
     	    'options' => $options,
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),

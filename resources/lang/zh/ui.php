@@ -161,4 +161,6 @@ return [
 'Joined' => '加入',
 'Minimum of :count characters' => '至少:count个字符',
 'Email will be confirmed' => '电子邮件将被确认',
+'Hello' => '你好,',
+'Return' => '回去吧',
 ];

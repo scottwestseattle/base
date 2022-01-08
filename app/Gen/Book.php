@@ -47,6 +47,25 @@ class Book extends Model
         return $record;
     }
 
+    static public function getTitle($entry)
+	{
+	    $rc = 'Not Set';
+
+		if (isset($entry->tags))
+		{
+            foreach($entry->tags as $tag)
+            {
+                if ($tag->type_flag == TAG_TYPE_BOOK)
+                {
+                    $rc = $tag->name;
+                    break;
+                }
+            }
+        }
+
+        return $rc;
+    }
+
     static protected function getChapterCount()
 	{
 	}

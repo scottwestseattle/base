@@ -6,6 +6,7 @@
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = count($lines);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
+    $title = __('proj.' . $title);
 @endphp
 
 <!-------------------------------------------------------->

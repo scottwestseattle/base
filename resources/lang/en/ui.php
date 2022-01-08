@@ -161,4 +161,6 @@ return [
 'Joined' => 'Joined',
 'Minimum of :count characters' => 'Minimum of :count characters',
 'Email will be confirmed' => 'Email will be confirmed',
+'Hello' => 'Hello',
+'Return' => 'Go Back',
 ];

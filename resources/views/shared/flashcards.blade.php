@@ -6,6 +6,8 @@
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->
 <div class="data-misc"
+    data-program-name="{{$programName}}"
+    data-session-name="{{$sessionName}}"
 	data-max="{{$sentenceCount}}"
 	data-prompt="@LANG('quiz.' . $settings['options']['prompt'])"
 	data-prompt-reverse="@LANG('quiz.' . $settings['options']['prompt-reverse'])"
@@ -54,17 +56,24 @@
 		<!-- Top Return Button -->
 		<!-------------------------------------------------------->
 		<div style="float:left; margin: 0 5px 0 0;">
-			<span style="font-size:1.3em;" class=""><a class="" role="" href="{{$returnPath}}"><span class="glyphicon glyphicon-button-back-to"></span></a></span>
+	    	<span style="font-size:1.3em;" class=""><a class="" role="" href="{{$returnPath}}"><span class="glyphicon glyphicon-button-back-to"></span></a></span>
 		</div>
 
 		<!-------------------------------------------------------->
 		<!-- Run-time Stats -->
 		<!-------------------------------------------------------->
 		<div id="stats">
-			<div class="middle mt-1 mr-1"><a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a></div>
-			<span id="statsCount" class="mr-2"></span>
-			<span id="statsScore" class="hidden"></span>
-			<span id="statsAlert"></span><!-- what is this? -->
+			<div class="middle mr-1 mb-1">
+			@if (false)
+			    <a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a>
+			@endif
+                <a href="{{$returnPath}}"><button type="button" class="btn btn-xs btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
+			</div>
+			<div class="middle mb-2">
+	    		<span id="statsCount" class="mr-2"></span>
+    			<span id="statsScore" class="hidden"></span>
+		    	<span id="statsAlert"></span><!-- what is this? -->
+		    </div>
 		</div>
 
 
