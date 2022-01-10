@@ -6,7 +6,6 @@
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = count($lines);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
-    $title = __('proj.' . $title);
 @endphp
 
 <!-------------------------------------------------------->
@@ -14,8 +13,11 @@
 <!-------------------------------------------------------->
 <div class="data-misc"
     data-title="{{$title}}"
+    data-sessionname="{{urlencode($title)}}"
+    data-programname="Reader"
+	data-historypath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-touchpath="{{$historyPath}}"
 	data-count="{{$count}}"
-	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-max="{{$count}}"
 	data-language="{{$languageCodes['short']}}"
 	data-language-long="{{$languageCodes['long']}}"

@@ -483,6 +483,7 @@ class BookController extends Controller
 			'contentType' => 'Entry',
 			'languageCodes' => getSpeechLanguage($language),
 			'labels' => $labels,
+			'historyPath' => '/history/add-public/',
 		]);
     }
 

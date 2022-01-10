@@ -94,6 +94,7 @@ class Controller extends BaseController
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $record->title,
+			'historyPath' => '/history/add-public/',
 			'recordId' => $record->id,
 			'options' => $options,
 			'readLocation' => Auth::check() ? $readLocation : null,

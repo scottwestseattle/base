@@ -124,6 +124,9 @@ function deck() {
 
     // add History
     this.title = 'not set';
+    this.programName = 'not set';
+    this.sessionName = 'not set';
+    this.historyPath = 'notset.com';
 
 	// options
 	this.runState = RUNSTATE_START;
@@ -298,6 +301,7 @@ function loadData()
         var service = container.data('title');
 
 		var title = container.data('title');
+
 		var number = 1;
 		var description = container.data('description');
 		var id = container.data('id');
@@ -338,8 +342,11 @@ function loadData()
 
         // for History record
 		deck.title = container.data('title');
+		deck.programName = container.data('programname');
+		deck.sessionName = container.data('sessionname');
+		deck.historyPath = container.data('historypath');
 
-		// new settings
+    	// new settings
 		deck.quizTextDone = container.data('quiztext-done');
 		deck.touchPath = container.data('touchpath');
 		deck.language = container.data('language');			// this is the language that the web site is in
@@ -1338,5 +1345,5 @@ function getTimeDisplay(seconds)
 
 function addHistory()
 {
-    addHistoryRecord('/history/add-public/', 'Reader', 0, deck.title, deck.contentId, max);
+    addHistoryRecord(deck.historyPath, 'Reader', 0, deck.sessionName, deck.contentId, max);
 }

@@ -155,6 +155,9 @@ if (!function_exists('logWarning')) {
 		if (isset($flash))
 			$msg .= ' - ' . $flash;
 
+        // put a max length on it
+        $msg = trunc($msg, 200, '...');
+
 		switch($type)
 		{
 			case 'warning':

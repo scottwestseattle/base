@@ -51,6 +51,10 @@ class History extends Model
 	    $msg = '';
 		$record = new History();
 
+        // inverse quotation mark makes the save fail: ¡
+        $programName = str_replace('¡', '', $programName);
+        $sessionName = str_replace('¡', '', $sessionName);
+
 		$record->ip_address = ipAddress();
 		$record->program_name = trimNull($programName, true);
 		$record->program_id = intval($programId);
@@ -62,14 +66,13 @@ class History extends Model
 		try
 		{
 			$record->save();
-
 			$msg = 'History record added';
             logInfo($msg, null, $parms = ['program' => $record->program_name, 'session' => $record->session_name, 'seconds' => $record->seconds]);
 		}
 		catch (\Exception $e)
 		{
 			$msg = 'Error adding record';
-			logException('History', $e->getMessage(), __('proj.Error adding history record'));
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('proj.Error adding history record'));
 		}
 
 		return $msg;

@@ -231,7 +231,8 @@ class DefinitionController extends Controller
 		{
 			$word = alphanum($text, /* strict = */ true);
 		    $msg = trans('proj.Definition not found') . ': ' . "<a target='_blank' href='https://www.spanishdict.com/translate/" . $word . "'>" . $word . "</a>";
-		    logWarning(null, $msg, ['word' => $word]);
+            flash('warning', $msg);
+		    //logWarning(null, $msg, ['word' => $word]);
 		    return back();
 		}
 
@@ -1118,10 +1119,12 @@ class DefinitionController extends Controller
     {
 		$qna = Definition::makeQna($records); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
+		$sessionName = $title;
+		$title = trans('proj.:count ' . $title, ['count' => count($records)]);
 
 		return view($settings['view'], [
 		    'programName' => $settings['programName'],
-		    'sessionName' => $title,
+		    'sessionName' => $sessionName,
 			'touchPath' => '/history/add-public/',
 			'sentenceCount' => count($qna),
 			'records' => $qna,
@@ -1145,7 +1148,7 @@ class DefinitionController extends Controller
     {
         $reviewType = alpha($reviewType);
         $records = Definition::getNewest(intval($count));
-        $title = trans('proj.:count Newest Words', ['count' => $count]);
+        $title = 'Newest Words';
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
@@ -1156,7 +1159,7 @@ class DefinitionController extends Controller
     {
         $reviewType = alpha($reviewType);
         $records = Definition::getRankedVerbs(intval($count));
-        $title = trans('proj.:count Most Common Verbs', ['count' => $count]);
+        $title = 'Most Common Verbs';
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
@@ -1167,7 +1170,7 @@ class DefinitionController extends Controller
     {
         $reviewType = alpha($reviewType);
 		$records = Definition::getNewestVerbs(intval($count));
-        $title = trans('proj.:count Newest Verbs', ['count' => $count]);
+        $title = 'Newest Verbs';
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
@@ -1178,7 +1181,7 @@ class DefinitionController extends Controller
     {
         $reviewType = alpha($reviewType);
 		$records = Definition::getRandomWords(intval($count));
-        $title = trans('proj.:count Random Words', ['count' => $count]);
+        $title = 'Random Words';
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
@@ -1189,7 +1192,7 @@ class DefinitionController extends Controller
     {
         $reviewType = alpha($reviewType);
 		$records = Definition::getRandomVerbs(intval($count));
-        $title = trans('proj.:count Random Verbs', ['count' => $count]);
+        $title = 'Random Verbs';
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
@@ -1204,7 +1207,7 @@ class DefinitionController extends Controller
 
         $records = Definition::getSnippetsReview(['limit' => intval($count), 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
 
-        $title = trans('proj.Latest Practice Text', ['count' => $count]);
+        $title = 'Latest Practice Text';
 
 		return $this->doList($title, $reviewType, $records);
     }
@@ -1250,7 +1253,6 @@ class DefinitionController extends Controller
         $count = intval($count);
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
-
         $records = Definition::getSnippets(['limit' => $count, 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
 
         if (count($records) > 0)

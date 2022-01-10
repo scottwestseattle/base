@@ -39,7 +39,7 @@
 				<td class="icon"><a href='/history/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
 			@endif
 				<td>{{$record->program_name}}</td>
-				<td>{{$record->session_name}}</td>
+				<td>{{trunc($record->session_name, 20, '...')}}</td>
 				<td>{{$record->seconds}}</td>
 			@if (isAdmin())
 				<td>{{$record->ip_address}}</td>
