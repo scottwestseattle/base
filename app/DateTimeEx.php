@@ -94,11 +94,13 @@ class DateTimeEx
         return $rc;
     }
 
-    static public function getShortDateTime($sDate)
+    static public function getShortDateTime($sDate, $format = null)
     {
+        $format = isset($format) ? $format : 'M-d H:i';
+
         $rc = self::convertTimezone($sDate, self::$_sTimezone);
 
-        $rc = $rc->format('M-d H:i');
+        $rc = $rc->format($format);
 
         return $rc;
     }

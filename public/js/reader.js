@@ -1345,5 +1345,5 @@ function getTimeDisplay(seconds)
 
 function addHistory()
 {
-    addHistoryRecord(deck.historyPath, 'Reader', 0, deck.sessionName, deck.contentId, max);
+    addHistoryRecord(deck.historyPath, deck.programName, 0, deck.sessionName, deck.contentId, max);
 }

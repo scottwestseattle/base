@@ -886,20 +886,7 @@ function touch(q)
 
 function addHistory()
 {
-    console.log('touchpath: ' + quiz.touchPath);
-    console.log('programName: ' + quiz.programName);
-    console.log('sessionName: ' + quiz.sessionName);
-
-    if (quiz.touchPath.length > 0) // if touchPath set
-    {
-        // https://domain.com/course/id/lesson/id/score
-        var url = quiz.programName + '/' + 0 + '/' + quiz.sessionName + '/' + 0 + '/' + max;
-        // encodeURI(url.replace(/[\W_]+/g, "-"));
-        var path = quiz.touchPath + url;
-
-        console.log('history: ' + path);
-        ajaxexec(path);
-    }
+    addHistoryRecord(quiz.touchPath, quiz.programName, 0, quiz.sessionName, 0, max);
 }
 
 function flip()

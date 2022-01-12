@@ -47,16 +47,20 @@ class DefinitionController extends Controller
 			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax',	'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
 			'setFavoriteList',
-			'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs', 'reviewRankedVerbs', 'reviewSnippets',
 
+            // review
+			'review', 'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs',
+			'reviewRankedVerbs', 'reviewSnippets',
+
+            // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
-			'setSnippetCookie',
+			'setSnippetCookie', 'readList',
 
 			'stats',
         ]);
 
         $this->middleware('owner')->only([
-			'editSnippet', 'updateSnippet',
+			'editSnippet', 'updateSnippet', 'review', 'readList',
 		]);
 
 		parent::__construct();
@@ -1094,7 +1098,7 @@ class DefinitionController extends Controller
 			'touchPath' => '/history/add-public/',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
-			'programName' => 'Favorites List',
+			'programName' => $settings['programName'],
 			'sessionName' => $record->name,
 			]);
     }
@@ -1291,6 +1295,7 @@ class DefinitionController extends Controller
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 			'labels' => $labels,
+			'historyPath' => '/history/add-public/',
 		]);
     }
 

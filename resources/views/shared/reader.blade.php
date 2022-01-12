@@ -6,6 +6,12 @@
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = count($lines);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
+    if (!isset($historyPath))
+    {
+        $msg = 'History path not set';
+        logError($msg, $msg);
+        $historyPath = '/history/add-public/';
+    }
 @endphp
 
 <!-------------------------------------------------------->
@@ -15,8 +21,8 @@
     data-title="{{$title}}"
     data-sessionname="{{urlencode($title)}}"
     data-programname="Reader"
-	data-historypath="{{(isset($touchPath) ? $touchPath : '')}}"
-	data-touchpath="{{$historyPath}}"
+	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-historypath="{{$historyPath}}"
 	data-count="{{$count}}"
 	data-max="{{$count}}"
 	data-language="{{$languageCodes['short']}}"
@@ -64,7 +70,18 @@
 		<!-- Top Row Buttons -->
 		<!-------------------------------------------------------->
 		<div>
-			<span class="glyphReader"><a href="{{$options['return']}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a></span>
+			<span class="glyphReader">
+            @if (false)
+			    <a href="{{$options['return']}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
+            @endif
+			</span>
+
+			<span class="glyphReader">
+            @if (false)
+			    <a href="{{$options['return']}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
+            @endif
+                <a href="{{$options['return']}}"><button type="button" class="btn btn-sm btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
+			</span>
 			<span class="glyphReader"><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, -3);" href=""><span class="glyphicon glyphicon-zoom-out"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, 3);" href=""><span class="glyphicon glyphicon-zoom-in"></span></a></span>

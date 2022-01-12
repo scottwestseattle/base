@@ -46,20 +46,20 @@ class Spanish
 	static public $_fixWords = array(
 		'Mr.', 'Sr.', 'Sr ', 'Mrs.', 'Miss.',
 		'Y,', 'Y;', 'y,', 'y:',
-		'Jessica', 'Jéssica', 'Jess',
-		'Max', 'Aspid', 'Áspid',
-		'Mariel', 'MARIEL', 'Beaumont', 'BEAUMONT',
-		'Dennis',
-		'Geovanny', 'Giovanny', 'Geo', 'Gio',
+//		'Jessica', 'Jéssica', 'Jess',
+//		'Max', 'Aspid', 'Áspid',
+//		'Mariel', 'MARIEL', 'Beaumont', 'BEAUMONT',
+//		'Dennis',
+//		'Geovanny', 'Giovanny', 'Geo', 'Gio',
 		);
 	static public $_fixWordsSubs = array(
 		'Señor', 'Señor', 'Señor ', 'Señora', 'Señorita',
 		'Y ', 'Y ', 'y ', 'y ',
-		'Sofía', 'Sofía', 'Sofía',
-		'Pedro', 'Picapiedra', 'Picapiedra',
-		'Gerarda', 'Gerarda', 'Gonzalez', 'Gonzalez',
-		'Fernando',
-		'Jorge', 'Jorge', 'Jorge', 'Jorge',
+//		'Sofía', 'Sofía', 'Sofía',
+//		'Pedro', 'Picapiedra', 'Picapiedra',
+//		'Gerarda', 'Gerarda', 'Gonzalez', 'Gonzalez',
+//		'Fernando',
+//		'Jorge', 'Jorge', 'Jorge', 'Jorge',
 		);
 
     static public function possibleVerb($word)

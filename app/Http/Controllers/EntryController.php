@@ -30,7 +30,12 @@ class EntryController extends Controller
             'view',
             'permalink',
             'articles', 'viewArticle', 'read', 'stats',
+            'setReadLocationAjax',
         ]);
+
+        $this->middleware('auth')->only([
+			'setReadLocationAjax',
+		]);
 
 		parent::__construct();
 	}
