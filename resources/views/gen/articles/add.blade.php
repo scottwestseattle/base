@@ -59,11 +59,9 @@
 				<input type="text" id="source_credit" name="source_credit" placeholder="@LANG('ui.Author')" onfocus="setFocus($(this), '#accent-chars')" class="form-control" />
 			</div>
 
-            @if (isAdmin())
                 <div class="entry-title-div mb-3">
                     <input type="text" id="source_link" name="source_link" placeholder="@LANG('proj.Source Link')" class="form-control" />
                 </div>
-            @endif
 
 			<div class="entry-description-div mb-3">
 				<textarea rows="3" id="description_short" name="description_short" class="form-control" placeholder="@LANG('ui.Summary')" onfocus="setFocus($(this), '#accent-chars')"></textarea>

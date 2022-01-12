@@ -58,12 +58,10 @@
 					<input type="text" id="source_credit" name="source_credit" placeholder="Author" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source_credit}}" />
 				</div>
 
-                @if (isAdmin())
 				<div class="entry-title-div mb-3">
 					<label class="tiny">@LANG('proj.Source Link'):</label>
 					<input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" value="{{$record->source_link}}" />
 				</div>
-				@endif
 
 				<div class="entry-description-div mb-3">
 					<label class="tiny">@LANG('ui.Summary'):</label>

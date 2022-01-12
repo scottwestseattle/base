@@ -2,7 +2,7 @@
 	<a class="navbar-brand" href="/">
 		<div class="brand logo middle">
 			<svg class="bi mt-1" width="32" height="32" fill="currentColor" >
-				<use xlink:href="/img/bootstrap-icons.svg#brightness-high" />
+				<use xlink:href="/img/bootstrap-icons.svg#moon-stars" />
 			</svg>
 		</div>
 	</a>

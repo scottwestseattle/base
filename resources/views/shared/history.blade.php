@@ -2,7 +2,7 @@
     $history = isset($history) ? $history : [];
 @endphp
 <div>
-    <h1 class="">{{__('History')}}<span class="title-count">({{count($history)}})</span></h1>
+    <h1 class="">{{trans_choice('ui.History', 2)}}<span class="title-count">({{count($history)}})</span></h1>
     <div class="">
     <table class="">
     @foreach ($history as $record)
@@ -15,6 +15,12 @@
                 <div class="text-center">
                     <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at)}}</div>
                     <div>{{$record->program_name}}: {{$record->session_name}} ({{$record->seconds}})</div>
+                    @if (isAdmin())
+                        <div>
+                            <a class="white medium-thin-text" href="/history/edit/{{$record->id}}">Edit</a>
+                            <a class="white medium-thin-text ml-3" href="/history/confirmdelete/{{$record->id}}">Delete</a>
+                        </div>
+                    @endif
                 </div>
             </td>
         </tr>

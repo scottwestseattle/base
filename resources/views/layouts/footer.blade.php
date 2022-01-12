@@ -3,9 +3,9 @@
 	<div class="container text-center p-5">
 		<a class="" href="/">
 			<div class="brand logo middle">
-				<svg class="bi app-color-primary-reverse" width="55" height="55" >
-					<use xlink:href="/img/bootstrap-icons.svg#brightness-high" />
-				</svg>
+				<svg class="bi  app-color-primary-reverse" width="50" height="50" fill="currentColor" >
+				    <use xlink:href="/img/bootstrap-icons.svg#moon-stars-fill" />
+			    </svg>
 			</div>
 		</a>
 

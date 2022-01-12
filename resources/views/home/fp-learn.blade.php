@@ -13,17 +13,11 @@
     $banner = isset($options['banner']) ? $options['banner'] : null;
     $wotd = isset($options['wotd']) ? $options['wotd'] : null;
     $potd = isset($options['potd']) ? $options['potd'] : null;
+    $aotd = isset($options['aotd']) ? $options['aotd'] : null;
+    $articleText = isset($aotd) ? trunc($aotd->description, 300) : null;
+
     $randomWords = isset($options['randomWords']) ? $options['randomWords'] : null;
     $newestWords = isset($options['newestWords']) ? $options['newestWords'] : null;
-
-    $articles = null;
-    $article = null;
-    if (isset($options['articlesPublic']) && count($options['articlesPublic']) > 0)
-    {
-        $articles = $options['articlesPublic'];
-        $article = $options['articlesPublic'][0];
-        $articleText = trunc($article->description, 300);
-    }
 @endphp
 
 <!--------------------------------------------------------------------------------------->
@@ -165,7 +159,7 @@
 <!--------------------------------------------------------------------------------------->
 <!-- ARTICLE OF THE DAY -->
 <!--------------------------------------------------------------------------------------->
-@if (isset($article))
+@if (isset($aotd))
 	<div class="row row-course">
 		<div class="col-12 pb-2 px-3">
             <div class="card card-aotd truncate mt-1" style="">
@@ -175,8 +169,8 @@
                 <div class="card-body card-body-potd">
                     <div>
                         @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#aotd').val(), '#aotdVisible');"])@endcomponent
-                        <b><a id="" class="ml-2 link-white" href="/articles/view/{{$article->permalink}}">{{$article->title}}</a></b>
-                        <p class="thin-text-18"><span id="aotdVisible">{{$articleText}}</span>...<a href="/articles/read/{{$article->id}}" class="link-white"><b>(@LANG('proj.Read All'))</b></a></p>
+                        <b><a id="" class="ml-2 link-white" href="/articles/view/{{$aotd->permalink}}">{{$aotd->title}}</a></b>
+                        <p class="thin-text-18"><span id="aotdVisible">{{$articleText}}</span>...<a href="/articles/read/{{$aotd->id}}" class="link-white"><b>(@LANG('proj.Read All'))</b></a></p>
                         <input type="hidden" id="aotd" value="{{$articleText}}" />
                     </div>
                 </div>

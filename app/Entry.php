@@ -510,6 +510,11 @@ class Entry extends Model
         $ownerId = 0;
         $ownerCondition = '>=';
 
+        // order by
+		$orderBy = (isset($parms['orderBy']) && $parms['orderBy'] == 'date')
+		    ? 'entries.id DESC'
+		    : 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
+
         if (isset($parms['release']))
         {
             // all users
@@ -567,8 +572,6 @@ class Entry extends Model
 		{
 			try
 			{
-			    $orderBy = 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
-
 				$records = DB::table('entries')
 					->leftJoin('entry_tag', function($join) use ($tag) {
 						$join->on('entry_tag.entry_id', '=', 'entries.id');

@@ -60,6 +60,9 @@ class HomeController extends Controller
             if (blank($record->frontpage))
                 throw new \Exception('Site frontpage not set');
 
+            //
+            // get the frontpage from the site record
+            //
             $viewFile = resource_path() . '/views/home/' . $record->frontpage . '.blade.php';
             if (!file_exists($viewFile))
                 throw new \Exception('Site frontpage file not found: ' . $viewFile);
@@ -116,14 +119,22 @@ class HomeController extends Controller
         ]);
         $options['records'] = $snippets;
 
+        //
         // get the favorite lists so the entries can be favorited
+        //
         $options['favoriteLists'] = Definition::getUserFavoriteLists();
 
+        //
+        // set up the reader
+        //
         //$options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
         $options['language'] = $siteLanguage;
         $options['loadReader'] = true; // this loads js and css
         //dump($options);
 
+        //
+        // get the latest snippets
+        //
         $options['snippet'] = null;
         $snippetId = intval(Cookie::get('snippetId'));
         if (isset($snippetId) && $snippetId > 0)
@@ -202,7 +213,7 @@ class HomeController extends Controller
         }
 
 		//
-		// get articles
+		// get articles and aotd
 		//
 		try
 		{
@@ -220,6 +231,9 @@ class HomeController extends Controller
             // get other peoples articles
             $parms['release'] = 'other';
             $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms) : null;
+
+            // get aotd
+            $options['aotd'] = Article::getFirst($parms);
 		}
 		catch (\Exception $e)
 		{
@@ -281,7 +295,7 @@ class HomeController extends Controller
 				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));
 		}
 
-		$history = History::get(5);
+		$history = History::get(isAdmin() ? 5 : 20);
 
 		return view('home.dashboard', [
 		    'events' => $events,

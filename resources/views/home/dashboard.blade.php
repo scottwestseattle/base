@@ -2,8 +2,6 @@
 @section('title', __('base.Dashboard'))
 @section('content')
 
-	<h1>{{__('base.Dashboard')}}</h1>
-
 	@if (!App\User::isConfirmed())
 		<div class="">
 		<h3>You email address has not been confirmed</h3>
@@ -12,6 +10,8 @@
 	@endif
 
     @if (isAdmin())
+    	<h1>{{__('base.Dashboard')}}</h1>
+
 		<p class="xl-thin-text">{{domainName()}}</p>
         <table>
 			<tr><td><strong>Server Time:</strong>&nbsp;&nbsp;</td><td>{{date("M d, Y H:i:s")}}</td></tr>
@@ -110,8 +110,8 @@
         @endphp
         <div>
             <p class="xl-thin-text">@LANG('ui.Hello')&nbsp;{{Auth::user()->name}}
-            <p class="medium-thin-text">{{Auth::user()->email}}</p>
-            <a href="/users/edit/{{Auth::id()}}">@LANG('base.Edit Profile')</a>
+                <a class="medium-thin-text" href="/users/edit/{{Auth::id()}}">({{strtolower(__('ui.Edit'))}})</a>
+            </p>
         </div>
         <hr />
 

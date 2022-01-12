@@ -33,6 +33,22 @@ class Article extends Model
 		return ($this->release_flag);
     }
 
+    static public function getFirst($parms)
+    {
+		$languageFlag = $parms['id'];
+		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
+
+		$record = Entry::select()
+				->where('site_id', Site::getId())
+				->where('type_flag', ENTRY_TYPE_ARTICLE)
+				->where('language_flag', $languageCondition, $languageFlag)
+				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+				->orderByRaw('id DESC')
+				->first();
+
+        return $record;
+    }
+
 	static public function search($string)
 	{
 		$string = alphanum($string);

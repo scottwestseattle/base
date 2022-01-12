@@ -52,28 +52,30 @@ class ArticleController extends Controller
 		parent::__construct();
 	}
 
-    public function index(Request $request)
+    public function index(Request $request, $orderBy = null)
     {
+        $orderBy = strtolower(alpha($orderBy));
 		$records = [];
 		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
 
         $parms = Site::getLanguage();
         $parms['type'] = ENTRY_TYPE_ARTICLE;
+        $parms['orderBy'] = $orderBy;
         $options = [];
 
 		try
 		{
             // get public articles
             $parms['release'] = 'public';
-    		$options['public'] = Entry::getRecentList($parms);
+            $options['public'] = Entry::getRecentList($parms);
 
             // get private articles
             $parms['release'] = 'private';
-    		$options['private'] = Entry::getRecentList($parms);
+            $options['private'] = Entry::getRecentList($parms);
 
             // get other peoples articles
             $parms['release'] = 'other';
-    		$options['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
+            $options['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
 		}
 		catch (\Exception $e)
 		{

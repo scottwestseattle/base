@@ -75,6 +75,7 @@ Route::group(['prefix' => 'articles'], function () {
 
     // index
     Route::get('/', [ArticleController::class, 'index']);
+    Route::get('/index/{orderBy}', [ArticleController::class, 'index']);
 	Route::get('/view/{permalink}', [ArticleController::class, 'permalink']);
 	Route::get('/show/{entry}', [ArticleController::class, 'view']);
 
