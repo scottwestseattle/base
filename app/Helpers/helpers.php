@@ -930,4 +930,18 @@ if (!function_exists('secondsToTime')) {
     }
 }
 
+if (!function_exists('getLogo')) {
+	function getLogo()
+	{
+	    $logos = [
+	        'moon',
+	        'moon-fill',
+	        'moon-stars',
+	        'moon-stars-fill',
+	        'cloud-moon',
+	        'cloud-moon-fill',
+	    ];
 
+        return $logos[mt_rand(0, count($logos)-1)];
+    }
+}

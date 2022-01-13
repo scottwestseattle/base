@@ -4,7 +4,7 @@
 		<a class="" href="/">
 			<div class="brand logo middle">
 				<svg class="bi  app-color-primary-reverse" width="50" height="50" fill="currentColor" >
-				    <use xlink:href="/img/bootstrap-icons.svg#moon-stars-fill" />
+				    <use xlink:href="/img/bootstrap-icons.svg#{{getLogo()}}" />
 			    </svg>
 			</div>
 		</a>

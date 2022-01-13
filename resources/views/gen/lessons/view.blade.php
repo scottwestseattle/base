@@ -16,6 +16,7 @@
 		>@LANG('proj.Back to')&nbsp;{{$courseTitle}}<span class="glyphicon glyphicon-circle-arrow-up"></span></a>
 		<a class="btn btn-success btn-sm btn-nav-lesson-sm {{isset($nextChapter) ? '' : 'hidden'}}" role="button" href="/lessons/view/{{$nextChapter}}">@LANG('proj.Next Chapter')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
 	</div>
+
 	<div class="page-nav-buttons">
 		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($prev) ? '' : 'disabled'}}" role="button" href="/{{$prefix}}/view/{{$prev}}"><span class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</a>
 		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($next) ? '' : 'disabled'}}" role="button" href="/{{$prefix}}/view/{{$next}}">@LANG('ui.Next')<span class="glyphicon glyphicon-circle-arrow-right"></span>
@@ -92,8 +93,6 @@
 
 					<div style="margin: 20px 0;">
 						<a href="/lessons/review/{{$record->id}}"><button class="btn btn-success">Review</button></a>
-					</div>
-					<div style="margin: 20px 0;">
 						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards</button></a>
 					</div>
 
@@ -120,6 +119,9 @@
 						</div>
 						@endif
 					@endif
+
+            		<div>{!! $record->text !!}</div>
+
 				</div>
 			</div>
 

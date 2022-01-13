@@ -681,6 +681,9 @@ class LessonController extends Controller
 		$settings = Quiz::getSettings($reviewType);
 
 		return view($settings['view'], [
+		    'programName' => 'Lessons',
+		    'sessionName' => $lesson->title,
+			'touchPath' => '/history/add-public/',
 			'prev' => $prev,
 			'next' => $next,
 			'sentenceCount' => count($quiz),
