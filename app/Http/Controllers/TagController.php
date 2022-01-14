@@ -24,7 +24,29 @@ class TagController extends Controller
 
 	public function __construct ()
 	{
-        $this->middleware('admin')->except(['index', 'view', 'permalink']);
+        $this->middleware('admin')->except([
+            'index', 'view', 'permalink',
+
+            'edit', 'update', 'delete',
+
+            'addUserFavoriteList',
+            'createUserFavoriteList',
+            'confirmUserFavoriteListDelete',
+            'editUserFavoriteList',
+        ]);
+
+        $this->middleware('auth')->only([
+            'addUserFavoriteList',
+            'createUserFavoriteList',
+        ]);
+
+        $this->middleware('owner')->only([
+            'edit',
+            'update',
+            'delete',
+            'confirmUserFavoriteListDelete',
+            'editUserFavoriteList',
+        ]);
 
 		parent::__construct();
 	}
