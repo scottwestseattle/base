@@ -39,6 +39,7 @@ function showQuestionCustom()
 	$("#prompt").html(q);
 }
 
+//sbw
 function showQuestion()
 {
 	clear();
@@ -46,6 +47,7 @@ function showQuestion()
 	var a = getAnswer();
 	var currIndex = quiz.qna[curr].order;
 	var currQuestion = quiz.qna[currIndex];
+	var choices = currQuestion.choices;
 	var debugOn = false;
 
 	showQuestionCustom();
@@ -55,50 +57,80 @@ function showQuestion()
 
 	// new way where buttons are in html and configured from here
 	var answers = new Array();
-	var choices = Math.min(quiz.qna.length, 5);
+    var choiceCnt = 0;
+    var choicesArray = new Array();
+    var totalAnswers = 0;
 
-	for (var i = 0; i < choices; i++) // start at one because we've already added the correct answer
+	if (choices) // if answers are provided in the question text like: "El [es, está] bravo." and they arrive here as: es|está
 	{
-		var rnd = Math.floor(Math.random() * quiz.qna.length);
-
-		// if it's not the correct answer AND it's not already in the answers list
-		if (!answers.includes(rnd))
-		{
-			// not in array yet, add it
-			answers.push(rnd);
-		}
-		else
-		{
-			// continue from the random position until we find an unused answer
-			var loop = 0;
-			while(loop < quiz.qna.length) // don't loop forever
-			{
-				rnd++;
-				if (rnd >= choices)
-					rnd = 0; // wrap to the beginning and keep looking
-
-				// if not in the answers list, add it
-				if (!answers.includes(rnd))
-				{
-					answers.push(rnd);
-					break;
-				}
-
-				loop++;
-			}
-		}
+	    //
+	    // this way uses the embedded answers
+	    //
+	    console.log('using embedded answers');
+	    choicesArray = choices.split("|");
+        choiceCnt = choicesArray.length;
+        totalAnswers = choiceCnt;
+	}
+	else
+	{
+	    //
+	    // this way uses random answers from all the other questions
+	    //
+        choiceCnt = Math.min(quiz.qna.length, 5);
+        totalAnswers = quiz.qna.length;
 	}
 
-	// now lay in the correct answer randomly if it's not already in the array
-	if (!answers.includes(currIndex))
-	{
-		var correctButton = Math.floor(Math.random() * choices);
-		answers[correctButton] = currIndex;
-	}
+    // fill up the array with random answer indexes
+    for (var i = 0; i < choiceCnt; i++) // start at one because we've already added the correct answer
+    {
+        var rnd = Math.floor(Math.random() * totalAnswers);
 
-	if (debugOn)
+        // if it's not the correct answer AND it's not already in the answers list
+        if (!answers.includes(rnd))
+        {
+            // not in array yet, add it
+            answers.push(rnd);
+        }
+        else
+        {
+            // continue from the random position until we find an unused answer
+            var loop = 0;
+            while(loop < totalAnswers) // don't loop forever
+            {
+                rnd++;
+                if (rnd >= choiceCnt)
+                    rnd = 0; // wrap to the beginning and keep looking
+
+                // if not in the answers list, add it
+                if (!answers.includes(rnd))
+                {
+                    answers.push(rnd);
+                    break;
+                }
+
+                loop++;
+            }
+        }
+    }
+
+    if (choices)
+    {
+        // answer were embedded so correct answer is already in the list
+    }
+    else
+    {
+        // now lay in the correct answer randomly if it's not already in the array
+        if (!answers.includes(currIndex))
+        {
+            var correctButton = Math.floor(Math.random() * choiceCnt);
+            answers[correctButton] = currIndex;
+        }
+    }
+
+	if (true)
 	{
 		console.log('choices: ' + choices);
+		console.log('choiceCnt: ' + choiceCnt);
 		console.log('currIndex: ' + currIndex);
 		console.log('correct button: ' + correctButton);
 		answers.forEach(function (item, index, arr) {
@@ -115,16 +147,39 @@ function showQuestion()
 	$(".btn-quiz-mc3").css('border-color', '#2d995b');
 	$(".btn-quiz-mc3").css('color', 'white');
 
+    //
+    // now update the static view buttons with the answers using the unique list of
+    // random indexes that we've created
+    //
 	answers.forEach(function (item, index, arr) {
-		var text = getAnswer(item); // quiz.qna[item].a;
 		var btn = '#' + index;
 
-		if (item == currIndex) // the right answer
-			$(btn).addClass('btn-right');
-		else
-			$(btn).addClass('btn-wrong');
+        if (choices)
+        {
+            // set the button text
+		    var text = choicesArray[item]; // quiz.qna[item].a;
+		    $(btn).html(text);
 
-		$(btn).html(text);
+            console.log('item = ' + item);
+            console.log('text = ' + text);
+            console.log('a = ' + a);
+            if (text.localeCompare(a) == 0)
+                $(btn).addClass('btn-right');
+            else
+               $(btn).addClass('btn-wrong');
+        }
+        else
+        {
+            // set the button text
+	    	var text = getAnswer(item); // quiz.qna[item].a;
+		    $(btn).html(text);
+
+            // add a class so we know the right answer
+            if (item == currIndex)
+                $(btn).addClass('btn-right');
+            else
+                $(btn).addClass('btn-wrong');
+        }
 
 		// buttons start as hidden in case we are using less than the max (5)
 		// only show the ones we are using so we're not lugging around dead empty buttons

@@ -291,6 +291,7 @@ function loadData()
 
 		var question = container.data('question');
 		var answer = container.data('answer');
+		var choices = container.data('choices');
 		var def = container.data('definition');
 		var extra = container.data('extra');
 		var options = container.data('options'); // mc options
@@ -301,6 +302,7 @@ function loadData()
 		quiz.qna[i] = {
 		    q:question.toString(),
 		    a:answer.toString(),
+		    choices:(choices) ? choices.toString() : null,
 			definition:def.toString(),
 			extra:extra.toString(),
 		    id:id.toString(),

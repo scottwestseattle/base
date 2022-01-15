@@ -388,12 +388,23 @@ class HomeController extends Controller
 		$wordsUser = null;
 		$isPost = $request->isMethod('post');
 		$count = 0;
+        $options = null;
+
+        // turn these on by default
+		$options['articles'] = true;
+		$options['dictionary'] = true;
+		$options['snippets'] = true;
+		$options['word'] = false;
 
 		if ($isPost)
 		{
 			// do the search
-
+			$options['word'] = isset($request->word_flag) ? true : false;
+			$options['articles'] = isset($request->articles_flag) ? true : false;
+			$options['dictionary'] = isset($request->dictionary_flag) ? true : false;
+			$options['snippets'] = isset($request->snippets_flag) ? true : false;
 			$search = alphanum($request->searchText);
+
 			if (strlen($search) > 1)
 			{
 				try
@@ -403,21 +414,21 @@ class HomeController extends Controller
 						throw new \Exception("dangerous search characters");
 					}
 
-					if (true)
+					if ($options['articles'])
 					{
-						$entries = Article::search($search);
+						$entries = Article::search($search, $options['word']);
 						$count += (isset($entries) ? count($entries) : 0);
 					}
 
-					if (true)
+					if ($options['dictionary'])
 					{
 						$definitions = Definition::searchDictionary($search);
 						$count += (isset($definitions) ? count($definitions) : 0);
 					}
 
-					if (true)
+					if ($options['snippets'])
 					{
-						$snippets = Definition::searchSnippets($search);
+						$snippets = Definition::searchSnippets($search, $options['word']);
 						$count += (isset($snippets) ? count($snippets) : 0);
 					}
 
@@ -442,6 +453,7 @@ class HomeController extends Controller
 		}
 
 		return view('home.search', [
+		    'options' => $options,
 			'lessons' => $lessons,
 			'definitions' => $definitions,
 			'snippets' => $snippets,

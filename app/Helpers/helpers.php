@@ -934,14 +934,36 @@ if (!function_exists('getLogo')) {
 	function getLogo()
 	{
 	    $logos = [
-	        'moon',
+//	        'moon',
 	        'moon-fill',
-	        'moon-stars',
-	        'moon-stars-fill',
-	        'cloud-moon',
-	        'cloud-moon-fill',
+//	        'moon-stars',
+//	        'moon-stars-fill',
+//	        'cloud-moon',
+//	        'cloud-moon-fill',
 	    ];
 
-        return $logos[mt_rand(0, count($logos)-1)];
+        $cnt = count($logos);
+
+        if ($cnt > 1)
+            return $logos[mt_rand(0, count($logos)-1)];
+        else
+            return $logos[0];
+    }
+}
+
+if (!function_exists('getArrayValue')) {
+	function getArrayValue($array, $key, $default = null)
+	{
+        $rc = $default;
+
+        if (is_array($array))
+        {
+            if (array_key_exists($key, $array))
+            {
+                $rc = $array[$key];
+            }
+        }
+
+        return $rc;
     }
 }

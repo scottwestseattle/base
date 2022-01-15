@@ -89,8 +89,8 @@
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
          <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
          @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'float-left'])@endcomponent
-         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/100/flashcards">@LANG('proj.Flashcards')</a></span>
-         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/20/flashcards">@LANG('proj.Flashcards') (20)</a></span>
+         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/flashcards">@LANG('proj.Flashcards')</a></span>
+         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
     </span></h3>
     <div class="text-center mt-2" style="">
         <div style="display: inline-block; width:100%">

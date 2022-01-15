@@ -40,6 +40,7 @@
 	<div class="data-qna"
 	    data-question="{{$rec['q']}}"
 	    data-answer="{{$rec['a']}}"
+	    data-choices="{{isset($rec['choices']) ? $rec['choices'] : ''}}"
 	    data-definition="{{$rec['definition']}}"
 	    data-extra="{{$rec['extra']}}"
 	    data-options="{{$rec['options']}}"

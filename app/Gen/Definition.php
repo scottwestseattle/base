@@ -874,10 +874,14 @@ class Definition extends Model
 	}
 
 	// search checks title and forms
-    static public function searchSnippets($word)
+    static public function searchSnippets($word, $matchWholeWord = false)
     {
 		$word = alpha($word);
 		$records = null;
+        $search  = ($matchWholeWord) ? '% ' . $word . ' %' : '%' . $word . '%';
+        $search1 = ($matchWholeWord) ? $word . ' %' : '%' . $word . '%';
+        $search2 = ($matchWholeWord) ? '% ' . $word . '.%' : '%' . $word . '%';
+        $search3 = ($matchWholeWord) ? '% ' . $word . '?%' : '%' . $word . '%';
 
 		if (isset($word))
 		{
@@ -885,7 +889,12 @@ class Definition extends Model
             {
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where('title_long', 'LIKE', '%' . $word . '%')
+                    ->where(function ($query) use($search, $search1, $search2, $search3) {$query
+                        ->where('title_long', 'like', $search)
+                        ->orWhere('title_long', 'like', $search1)
+                        ->orWhere('title_long', 'like', $search2)
+                        ->orWhere('title_long', 'like', $search3)
+                        ;})
                     ->orderBy('title')
                     ->get();
             }

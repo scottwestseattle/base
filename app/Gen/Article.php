@@ -49,10 +49,15 @@ class Article extends Model
         return $record;
     }
 
-	static public function search($string)
+	static public function search($string, $matchWholeWord = false)
 	{
-		$string = alphanum($string);
-		$search = '%' . $string . '%';
+		$string = strtolower(alphanum($string));
+
+		if ($matchWholeWord)
+    		$search = '% ' . $string . ' %';
+    	else
+    		$search = '%' . $string . '%';
+
 
 		$records = $record = Entry::select()
 				->where('entries.site_id', Site::getId())
@@ -65,6 +70,31 @@ class Article extends Model
 					;})
 				->orderByRaw('type_flag, title')
 				->get();
+
+        // do deep search
+        foreach($records as $record)
+        {
+            $matches = [];
+            $sentences = str_replace(['.', '!', '?'], '|', $record->description);
+            $sentences = explode('|', $sentences);
+            foreach($sentences as $sentence)
+            {
+                $sentence = strtolower(trim($sentence));
+
+                $words = explode(' ', $sentence);
+                foreach($words as $word)
+                {
+                    //if (strpos($sentence, $string) !== false)
+                    if ($word == $string)
+                    {
+                        $matches[] = $sentence;
+                        break;
+                    }
+                }
+            }
+
+            $record['matches'] = $matches;
+        }
 
 		return $records;
 	}

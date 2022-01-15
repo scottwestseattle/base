@@ -548,7 +548,6 @@ class LessonController extends Controller
 	public function makeQna($text)
     {
 		$records = [];
-
 		// chop it into lines by using the <p>'s
 	    $text = str_replace(['&ndash;', '&nbsp;'], ['-', ' '], $text);
 		preg_match_all('#<p>(.*?)</p>#is', $text, $records, PREG_SET_ORDER);
@@ -556,19 +555,35 @@ class LessonController extends Controller
 		$qna = [];
 		$cnt = 0;
 		$delim = (strpos($text, ' | ') !== false) ? ' | ' : ' - ';
+
 		foreach($records as $record)
 		{
 			$line = $record[1];
 			$line = strip_tags($line);
-
 			$parts = explode($delim, $line); // split the line into q and a, looks like: "question text - correct answer text"
-            //dd($parts);
 
 			if (count($parts) > 0)
 			{
 				$q = trim($parts[0]);
+
+				// see if there are embedded answer choices such "El [es, está] alto."
+    			preg_match('#\[.*\]#is', $q, $choices);
+                if (count($choices) > 0)
+                {
+                    $choices = str_replace(', ', '|', trim($choices[0], '[]')); // leaves in a string separated by '|'
+                    //$choices = explode(', ', trim($choices[0], '[]')); // puts each in an array
+                }
+                else
+                {
+                    $choices = null;
+                }
+
+                // now replace choices with a big black
+                $q = preg_replace('/\[.*\]/i', '__________', $q);
+
 				$qna[$cnt]['q'] = $q;
 				$qna[$cnt]['a'] = array_key_exists(1, $parts) ? trim($parts[1]) : null;
+				$qna[$cnt]['choices'] = $choices;
 				$qna[$cnt]['definition'] = 'false';
 				$qna[$cnt]['translation'] = '';
 				$qna[$cnt]['extra'] = '';
@@ -624,7 +639,7 @@ class LessonController extends Controller
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
 
-		$quiz = LessonController::makeQuiz($lesson->text); // splits text into questions and answers
+		$quiz = self::makeQuiz($lesson->text); // splits text into questions and answers
 		$quiz = $lesson->formatByType($quiz, $lesson->type_flag); // format the answers according to quiz type
 
 		//todo: not working yet
@@ -638,10 +653,10 @@ class LessonController extends Controller
 
 		$options = Quiz::getOptionArray($lesson->options);
 
-		$options['prompt'] = self::getSafeArrayString($options, 'prompt', 'Select the correct answer');
-		$options['prompt-reverse'] = self::getSafeArrayString($options, 'prompt-reverse', 'Select the correct question');
-		$options['question-count'] = self::getSafeArrayInt($options, 'question-count', 0);
-		$options['font-size'] = self::getSafeArrayString($options, 'font-size', '120%');
+		$options['prompt'] = getArrayValue($options, 'prompt', 'Select the correct answer');
+		$options['prompt-reverse'] = getArrayValue($options, 'prompt-reverse', 'Select the correct question');
+		$options['question-count'] = intval(getArrayValue($options, 'question-count', 0));
+		$options['font-size'] = getArrayValue($options, 'font-size', '120%');
 
 		return view(VIEWS . '.reviewmc', [
 			'record' => $lesson,
@@ -667,6 +682,9 @@ class LessonController extends Controller
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
 
+       if ($lesson->isMc())
+            return $this->reviewmc($lesson, $reviewType);
+
 		try
 		{
 			$quiz = self::makeQna($lesson->text); // split text into questions and answers
@@ -679,10 +697,11 @@ class LessonController extends Controller
 		}
 
 		$settings = Quiz::getSettings($reviewType);
+        $title = (isset($lesson->course->title) ? $lesson->course->title . ' - ' : '') . $lesson->title;
 
 		return view($settings['view'], [
 		    'programName' => 'Lessons',
-		    'sessionName' => $lesson->title,
+		    'sessionName' => $title,
 			'touchPath' => '/history/add-public/',
 			'prev' => $prev,
 			'next' => $next,

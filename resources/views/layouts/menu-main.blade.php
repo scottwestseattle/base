@@ -35,6 +35,23 @@
 			</div>
 		</a>
 
+@if (false) // doesn't fit
+		<a class="navbar-item" href="/practice">
+			<div>
+				<svg class="" width="20" height="20" fill="currentColor" >
+					<use xlink:href="/img/bootstrap-icons.svg#list-check" />
+				</svg>
+			</div>
+		</a>
+@endif
+		<a class="navbar-item" href="/favorites">
+			<div>
+				<svg class="" width="20" height="20" fill="currentColor" >
+					<use xlink:href="/img/bootstrap-icons.svg#heart-fill" />
+				</svg>
+			</div>
+		</a>
+
 		<!-- Language Selector Dropdown -->
 		<div class="mt-1 middle dropdown">
 			<a href="#" class="navbar-item" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">

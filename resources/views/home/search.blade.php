@@ -1,12 +1,30 @@
 @extends('layouts.app')
 @section('title', __('ui.Search'))
 @section('content')
-
+@php
+    $articlesChecked = (isset($options['articles']) && $options['articles']) ? 'CHECKED' : '';
+    $dictionaryChecked = (isset($options['dictionary']) && $options['dictionary']) ? 'CHECKED' : '';
+    $snippetsChecked = (isset($options['snippets']) && $options['snippets']) ? 'CHECKED' : '';
+    $wordChecked = (isset($options['word']) && $options['word']) ? 'CHECKED' : '';
+@endphp
 <h1>@LANG('ui.Search'){{$isPost ? ' (' . $count . ')' : ''}}</h1>
 
 <form method="POST" action="/search">
     <div class="form-group form-control-big">
         <input type="text" id="searchText" name="searchText" class="form-control" value="{{$search}}" autofocus/>
+        <div class="mt-3">
+            <input type="checkbox" name="articles_flag" id="articles_flag" class="ml-2" {{$articlesChecked}}/>
+            <label for="articles_flag" class="checkbox-big-label">{{trans_choice('proj.Article', 2)}}</label>
+
+            <input type="checkbox" name="dictionary_flag" id="dictionary_flag" class="ml-2" {{$dictionaryChecked}} />
+            <label for="dictionary_flag" class="checkbox-big-label">@LANG('proj.Dictionary')</label>
+
+            <input type="checkbox" name="snippets_flag" id="snippets_flag" class="ml-2" {{$snippetsChecked}} />
+            <label for="snippets_flag" class="checkbox-big-label">@LANG('proj.Practice Text')</label>
+
+            <input type="checkbox" name="word_flag" id="word_flag" class="ml-2" {{$wordChecked}} />
+            <label for="word_flag" class="checkbox-big-label">@LANG('ui.Match Whole Word')</label>
+        </div>
     </div>
     <div class="form-group">
             <button type="submit" name="submit" class="btn btn-primary">@LANG('ui.Search')</button>
@@ -22,7 +40,15 @@
                 @foreach($entries as $record)
                     <tr>
                         <td>{{trans_choice('proj.' . $record->getTypeFlagName($record->type_flag), 2)}}</td>
-                        <td><a href="/articles/view/{{$record->permalink}}" target="_blank">{{$record->title}}</a></td>
+                        <td>
+                            <a href="/articles/view/{{$record->permalink}}" target="_blank">{{$record->title}}</a>
+                            @if (isset($record->matches))
+                                @foreach($record->matches as $match)
+                                <p>{{$match}}</p>
+                                @endforeach
+                            @endif
+                        </td>
+
                     </tr>
                 @endforeach
             @endif
