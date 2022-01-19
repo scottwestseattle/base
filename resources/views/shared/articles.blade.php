@@ -13,7 +13,7 @@
                         <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;"><a href="/articles/view/{{$record->permalink}}">{{$record->title}}</a></td>
                     </tr>
                     <tr>
-                        <td class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at, 'M d, Y')}}</td>
+                        <td class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</td>
                     </tr>
                     <tr>
                         <td style="font-weight:100;">

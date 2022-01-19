@@ -287,7 +287,7 @@ if (!function_exists('alpha')) {
 }
 
 if (!function_exists('alphanum')) {
-	function alphanum($text, $strict = false)
+	function alphanum($text, $strict = false, $plus = null)
 	{
 		if (isset($text))
 		{
@@ -300,6 +300,11 @@ if (!function_exists('alphanum')) {
 			{
 				$punct =  Config::get('constants.characters.safe_punctuation');
 				$match .= $punct;
+			}
+
+			if (isset($plus))
+			{
+			    $match .= $plus;
 			}
 
 			$text = preg_replace("/[^" . $match . "]+/", "", trim($text));
@@ -343,6 +348,20 @@ if (!function_exists('alphanumHarsh')) {
 	}
 }
 
+if (!function_exists('cleanUrl')) {
+	function cleanUrl($url, &$changed)
+	{
+        $changed = false;
+
+        if (true || isset($url))
+        {
+            $clean = alphanum($url, /* strict = */ false, /* allow = */ '\/\:\&\%');
+            $changed = ($clean != $url);
+        }
+
+        return $url;
+    }
+}
 if (!function_exists('isExpired')) {
 	function isExpired($sDate)
 	{

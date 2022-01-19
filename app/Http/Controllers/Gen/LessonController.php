@@ -244,6 +244,12 @@ class LessonController extends Controller
 			$lesson->text = LessonController::autoFormat($lesson->text);
 		}
 
+		if ($lesson->isFib())
+		{
+//
+            $lesson->text = '<span style="font-size:1.2em;">' . self::formatChoices($lesson->text) . '</span>';
+		}
+
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
 		$nextChapter = $lesson->getNextChapter();
@@ -542,6 +548,25 @@ class LessonController extends Controller
 		return $records;
 	}
 
+	static public function blankChoices($text)
+    {
+        return preg_replace('/\[.*\]/i', '__________', $text);
+    }
+
+	static public function formatChoices($text)
+    {
+        // first remove the answer
+        $text = preg_replace('/\ - .*/i', '', $text);
+
+        // then replace choices with a long underline
+        //return preg_replace('/\[.*\]/i', '__________', $text);
+        $text = str_replace('[', '<span class="" style="font-weight:bold;">(', $text);
+        //$text = str_replace('[', '<span class="px-2 py-1" style="background-color:green; color:white">', $text);
+        $text = str_replace(']', ')</span>', $text);
+
+        return $text;
+    }
+
 	//
 	// this is the new way, updated for review.js
 	//
@@ -571,15 +596,14 @@ class LessonController extends Controller
                 if (count($choices) > 0)
                 {
                     $choices = str_replace(', ', '|', trim($choices[0], '[]')); // leaves in a string separated by '|'
-                    //$choices = explode(', ', trim($choices[0], '[]')); // puts each in an array
                 }
                 else
                 {
                     $choices = null;
                 }
 
-                // now replace choices with a big black
-                $q = preg_replace('/\[.*\]/i', '__________', $q);
+                // now replace choices with a big blank
+                $q = self::blankChoices($q);
 
 				$qna[$cnt]['q'] = $q;
 				$qna[$cnt]['a'] = array_key_exists(1, $parts) ? trim($parts[1]) : null;
@@ -800,7 +824,7 @@ class LessonController extends Controller
 			}
 		}
 
-        //todo sbw: hardcode the seconds until we can edit them
+        //todo: hardcode the seconds until we can edit them
         if (false)
         {
             foreach($records as $record)

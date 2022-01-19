@@ -13,17 +13,26 @@
     <div class="form-group form-control-big">
         <input type="text" id="searchText" name="searchText" class="form-control" value="{{$search}}" autofocus/>
         <div class="mt-3">
+
+            <div>
             <input type="checkbox" name="articles_flag" id="articles_flag" class="ml-2" {{$articlesChecked}}/>
             <label for="articles_flag" class="checkbox-big-label">{{trans_choice('proj.Article', 2)}}</label>
+            </div>
 
+            <div>
             <input type="checkbox" name="dictionary_flag" id="dictionary_flag" class="ml-2" {{$dictionaryChecked}} />
             <label for="dictionary_flag" class="checkbox-big-label">@LANG('proj.Dictionary')</label>
+            </div>
 
+            <div>
             <input type="checkbox" name="snippets_flag" id="snippets_flag" class="ml-2" {{$snippetsChecked}} />
             <label for="snippets_flag" class="checkbox-big-label">@LANG('proj.Practice Text')</label>
+            </div>
 
+            <div>
             <input type="checkbox" name="word_flag" id="word_flag" class="ml-2" {{$wordChecked}} />
             <label for="word_flag" class="checkbox-big-label">@LANG('ui.Match Whole Word')</label>
+            </div>
         </div>
     </div>
     <div class="form-group">

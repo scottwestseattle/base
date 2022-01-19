@@ -13,6 +13,7 @@
 	<form method="POST" action="/articles/create">
 		<div class="form-control-big">
 
+            @component('components.control-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent
 			@component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent
 
 			@if (isset($type_flag))

@@ -518,6 +518,11 @@ class Lesson extends Model
 		return $v;
 	}
 
+    public function isFib()
+	{
+        return($this->type_flag == LESSONTYPE_QUIZ_FIB);
+	}
+
 	public function getLines($text)
     {
 		$raw = [];

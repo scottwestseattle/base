@@ -10,13 +10,11 @@
 	<form method="POST" action="/articles/update/{{ $record->id }}">
 		<div class="form-group form-control-big">
 
+            @component('components.control-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent
 			@component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent
 
 			<input type="hidden" name="referer" value={{array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER["HTTP_REFERER"] : ''}} />
 
-            @if (false)
-                @component('components.control-dropdown-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent
-            @endif
 
 			<div class="mb-3" style="clear:both;">
 				<button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>

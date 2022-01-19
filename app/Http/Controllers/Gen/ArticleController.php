@@ -10,6 +10,7 @@ use Auth;
 use Config;
 use Log;
 
+use App\DateTimeEx;
 use App\Entry;
 use App\Gen\Article;
 use App\Site;
@@ -156,11 +157,13 @@ class ArticleController extends Controller
 			]);
 	}
 
-    public function add()
+    public function add(Request $request)
     {
 		return view(VIEWS . '.add', [
 			'languageOptions' => getLanguageOptions(),
 			'selectedOption' => getLanguageId(),
+			'dates' => DateTimeEx::getDateControlDates(),
+			'filter' => DateTimeEx::getDateFilter($request, /* today = */ true),
 			]);
 	}
 
@@ -177,6 +180,7 @@ class ArticleController extends Controller
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
+   		$urlChanged = false;
 
         if (isAdmin())
         {
@@ -191,9 +195,8 @@ class ArticleController extends Controller
             $description = alphanumHarsh($description);
             $source = alphanumHarsh($source);
             $source_credit = alphanumHarsh($source_credit);
-            $source_link = alphanumHarsh($source_link);
-
     		$record->release_flag = RELEASEFLAG_PRIVATE;
+    		$source_link = cleanUrl($source_link, $urlChanged);
         }
 
 		$record->title 				= trimNull($title);
@@ -202,8 +205,11 @@ class ArticleController extends Controller
 		$record->source				= trimNull($source);
 		$record->source_credit		= trimNull($source_credit);
 		$record->source_link		= trimNull($source_link);
+		$record->user_id 			= Auth::id();
 
-		$record->display_date 		= timestamp();
+		$filter = DateTimeEx::getDateFilter($request);
+		$record->display_date	= trimNull($filter['from_date']);
+
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
@@ -217,6 +223,8 @@ class ArticleController extends Controller
 				throw new \Exception('Title not set');
 			if (!isset($record->display_date))
 				throw new \Exception('Date not set');
+			if ($urlChanged)
+				throw new \Exception('URL has been changed'); // throws if we are trimming too many url characters
 
 			$record->save();
 
@@ -232,7 +240,7 @@ class ArticleController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error adding new record'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error adding new record'), ['url' => $source_link]);
 			return back();
 		}
 
@@ -243,9 +251,14 @@ class ArticleController extends Controller
     {
 		$record = $entry;
 
+        $dates = DateTimeEx::getDateControlDates();
+		$filter = DateTimeEx::getDateControlSelectedDate($record->display_date);
+
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			'languageOptions' => getLanguageOptions(),
+			'dates' => $dates,
+			'filter' => $filter,
 			]);
     }
 
@@ -262,6 +275,14 @@ class ArticleController extends Controller
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
+		$display_date       = $request->source_link;
+
+		// put the date together from the mon day year pieces
+		$filter = DateTimeEx::getDateFilter($request);
+		$date = trimNull($filter['from_date']);
+		$record->display_date = $date;
+
+   		$urlChanged = false;
 
         if (isAdmin())
         {
@@ -275,7 +296,7 @@ class ArticleController extends Controller
             $description = alphanumHarsh($description);
             $source = alphanumHarsh($source);
             $source_credit = alphanumHarsh($source_credit);
-            $source_link = alphanumHarsh($source_link);
+    		$source_link = cleanUrl($source_link, $urlChanged);
         }
 
 		$record->title 				= trimNull($title);
@@ -290,6 +311,9 @@ class ArticleController extends Controller
 
 		try
 		{
+			if ($urlChanged)
+				throw new \Exception('URL has been changed'); // throws if we are trimming too many url characters
+
 			$record->save();
 
 			logInfo('update article', null, ['title' => $record->title, 'id' => $record->id, 'prevTitle' => $prevTitle, 'title' => $record->title]);
@@ -306,7 +330,7 @@ class ArticleController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating article'));
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error updating record'), ['url' => $source_link]);
 			return back();
 		}
 
@@ -329,11 +353,11 @@ class ArticleController extends Controller
 		try
 		{
 			$record->delete();
-			logInfo(LOG_CLASS, __('proj.Article has been deleted'), ['record_id' => $record->id]);
+			logInfo(LOG_CLASS, __('base.Record has been deleted'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('proj.Error deleting article'), ['record_id' => $record->id]);
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error deleting record'), ['record_id' => $record->id]);
 			return back();
 		}
 

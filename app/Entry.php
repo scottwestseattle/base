@@ -512,7 +512,7 @@ class Entry extends Model
 
         // order by
 		$orderBy = (isset($parms['orderBy']) && $parms['orderBy'] == 'date')
-		    ? 'entries.id DESC'
+		    ? 'entries.display_date DESC'
 		    : 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
 
         if (isset($parms['release']))
