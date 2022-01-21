@@ -158,4 +158,6 @@ return [
 'Chapter Number' => 'Número de capítulo',
 'Article of the day' => 'Artículo del día',
 'Read All' => 'Leer todo',
+'Quiz' => 'Prueba',
+'Practice' => 'Practicar',
 ];

@@ -223,6 +223,7 @@
 
 @endsection
 
+@if (false)
 <script>
 
 function showMainPhoto(id)
@@ -231,4 +232,5 @@ function showMainPhoto(id)
 }
 
 </script>
+@endif
 

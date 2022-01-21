@@ -52,12 +52,7 @@ class Article extends Model
 	static public function search($string, $matchWholeWord = false)
 	{
 		$string = strtolower(alphanum($string));
-
-		if ($matchWholeWord)
-    		$search = '% ' . $string . ' %';
-    	else
-    		$search = '%' . $string . '%';
-
+   		$search = '%' . $string . '%';
 
 		$records = $record = Entry::select()
 				->where('entries.site_id', Site::getId())
@@ -72,6 +67,7 @@ class Article extends Model
 				->get();
 
         // do deep search
+        if ($matchWholeWord)
         foreach($records as $record)
         {
             $matches = [];

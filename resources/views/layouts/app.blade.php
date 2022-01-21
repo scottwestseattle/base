@@ -2,7 +2,7 @@
     $iconFolder = App\Site::getIconFolder();
     $loadReader = isset($options['loadReader']) && $options['loadReader'];
 @endphp
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">

@@ -14,9 +14,7 @@ class DateTimeEx
 
     static private $colors = [
         'SteelBlue',
-        'Orange',
         'DarkCyan',
- //       'LightSalmon',
         'IndianRed',
         'MediumPurple',
         'LightSeaGreen',

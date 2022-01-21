@@ -163,4 +163,5 @@ return [
 'Email will be confirmed' => 'Se confirmará el correo electrónico',
 'Hello' => 'Hola',
 'Return' => 'Volver',
+'Match Whole Word' => 'Emparejar palabra entera',
 ];

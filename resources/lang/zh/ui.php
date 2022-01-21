@@ -163,4 +163,5 @@ return [
 'Email will be confirmed' => '电子邮件将被确认',
 'Hello' => '你好,',
 'Return' => '回去吧',
+'Match Whole Word' => '匹配整个单词',
 ];

@@ -163,4 +163,5 @@ return [
 'Email will be confirmed' => 'Email will be confirmed',
 'Hello' => 'Hello',
 'Return' => 'Go Back',
+'Match Whole Word' => 'Match Whole Words',
 ];

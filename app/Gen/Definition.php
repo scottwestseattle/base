@@ -878,24 +878,20 @@ class Definition extends Model
     {
 		$word = alpha($word);
 		$records = null;
-        $search  = ($matchWholeWord) ? '% ' . $word . ' %' : '%' . $word . '%';
-        $search1 = ($matchWholeWord) ? $word . ' %' : '%' . $word . '%';
-        $search2 = ($matchWholeWord) ? '% ' . $word . '.%' : '%' . $word . '%';
-        $search3 = ($matchWholeWord) ? '% ' . $word . '?%' : '%' . $word . '%';
+        $search  = $word;
 
 		if (isset($word))
 		{
             try
             {
+                // Actually, if you add COLLATE UTF8_GENERAL_CI to your column's definition,
+                // you can just omit all these tricks: it will work automatically.
+                $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
+
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where(function ($query) use($search, $search1, $search2, $search3) {$query
-                        ->where('title_long', 'like', $search)
-                        ->orWhere('title_long', 'like', $search1)
-                        ->orWhere('title_long', 'like', $search2)
-                        ->orWhere('title_long', 'like', $search3)
-                        ;})
-                    ->orderBy('title')
+                    ->whereRaw('title_long ' . $collation . ' like "%' . $search . '%"')
+                    ->orderBy('title_long')
                     ->get();
             }
             catch (\Exception $e)
