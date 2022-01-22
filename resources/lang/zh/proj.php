@@ -160,4 +160,5 @@ return [
 'Read All' => '阅读所有文本',
 'Quiz' => '测验',
 'Practice' => '实践',
+'Delete Article' => '删除文章',
 ];

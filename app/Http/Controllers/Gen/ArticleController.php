@@ -341,6 +341,8 @@ class ArticleController extends Controller
     {
 		$record = $entry;
 
+		$record->description = nl2br($record->description);
+
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $record,
 		]);

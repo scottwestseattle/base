@@ -36,7 +36,7 @@ class DefinitionController extends Controller
         $this->middleware('admin')->except([
             //'index',
             'view', 'permalink',
-            'snippets', 'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
+            'snippets', 'indexSnippets', 'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
 
             // let these through to be caught below
 			'editSnippet', 'updateSnippet',
@@ -630,26 +630,41 @@ class DefinitionController extends Controller
         }
     }
 
+	public function indexSnippets($count = PHP_INT_MAX)
+    {
+        return $this->getSnippets($count);
+    }
+
 	public function snippets($id = null)
     {
-        //
-        // all the stuff for the speak and record module
-        //
-        $siteLanguage = Site::getLanguage()['id'];
+        return $this->getSnippets(PHP_INT_MAX, $id, /* showFrom = */ true);
+    }
 
+	public function getSnippets($count = PHP_MAX_INT, $id = null, $showForm = false)
+    {
+        $count = intval($count);
         $options = [];
+
+        $siteLanguage = Site::getLanguage()['id'];
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
+
+        // get the snippets for the appropriate langauge
+        $snippets = Definition::getSnippets([
+            'languageId' => $siteLanguage,
+            'languageFlagCondition' => $languageFlagCondition,
+            'limit' => $count,
+        ]);
+        $options['records'] = $snippets;
+
+        // get all the stuff for the speak and record module
+        $options['showForm'] = $showForm;
         $options['showAllButton'] = false;
         $options['loadReader'] = true;
         $options['siteLanguage'] = $siteLanguage;
-        $options['records'] = Definition::getSnippets();
+//        $options['records'] = Definition::getSnippets();
         $options['snippetLanguages'] = getLanguageOptions();
         $options['languageCodes'] = getSpeechLanguage($siteLanguage);
         $options['returnUrl'] = '/practice';
-
-        // get the snippets for the appropriate langauge
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
-        $snippets = Definition::getSnippets(['languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
-        $options['records'] = $snippets;
 
         // command line supercedes cookie
         $id = isset($id) ? intval($id) : intval(Cookie::get('snippetId'));

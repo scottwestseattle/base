@@ -90,7 +90,7 @@
     <div class="col-sm-12 col-lg-6 col-xl-4">
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title"><a href="/definitions/review-random-verbs">@LANG('proj.Latest Practice Text')</a></h5>
+                <h5 class="card-title"><a href="/practice/index/20">@LANG('proj.Latest Practice Text')</a></h5>
                 <p class="card-text">
                     <a class="btn btn-primary btn-xs" role="button" href="/snippets/review/quiz/20">
                         @LANG('proj.Review') (20)<span class="glyphicon glyphicon-flash ml-1"></span>

@@ -160,4 +160,5 @@ return [
 'Read All' => 'Leer todo',
 'Quiz' => 'Prueba',
 'Practice' => 'Practicar',
+'Delete Article' => 'Eliminar artículo',
 ];

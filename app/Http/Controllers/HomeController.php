@@ -118,6 +118,7 @@ class HomeController extends Controller
             'languageFlagCondition' => $languageFlagCondition
         ]);
         $options['records'] = $snippets;
+        $options['showForm'] = true;
 
         //
         // get the favorite lists so the entries can be favorited

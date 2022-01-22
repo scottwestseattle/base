@@ -1,5 +1,6 @@
 @php
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
+    $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
 @endphp
 
 <!-------------------------------------------------------->
@@ -37,6 +38,7 @@
 <!--------------------------------------------------------------------------------------->
 <!-- The record form -->
 <!--------------------------------------------------------------------------------------->
+@if ($showForm)
 <div class="record-form text-center mt-2 p-1">
 
 	<form method="POST" action="/definitions/create-snippet">
@@ -79,8 +81,8 @@
 
     <section class="sound-clips">
     </section>
-
 </div>
+@endif
 
 <!--------------------------------------------------------------------------------------->
 <!-- SNIPPETS -->
