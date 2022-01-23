@@ -975,6 +975,7 @@ class Definition extends Model
                     ->where('type_flag', DEFTYPE_SNIPPET)
                     ->where('language_flag', $languageFlagCondition, $languageId)
                     ->whereNotNull('translation_en')
+                    ->orderBy('id', 'desc')
                     ->limit($limit)
                     ->get();
 		    }

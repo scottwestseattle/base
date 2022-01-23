@@ -1,11 +1,17 @@
 <nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
     <ul class="nav">
+
         <li class="nav-item"><a class="nav-link" href="/articles">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
         </a></li>
+
         <li class="nav-item"><a class="nav-link" href="/articles/index/date">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-down-alt" /></svg>
+        </a></li>
+
+        <li class="nav-item"><a class="nav-link" href="/articles/add">
+            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
         </a></li>
 
         @isset($record)

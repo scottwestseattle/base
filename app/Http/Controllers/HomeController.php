@@ -153,6 +153,14 @@ class HomeController extends Controller
 	static public function getOptions($options, $languageFlag)
 	{
         $options['showWidgets'] = true;
+        $showTopBoxes = false;
+
+        // show aotd if it hasn't been shown recently
+        if (null === Cookie::get('showTopBoxes'))
+        {
+            $showTopBoxes = true;
+            Cookie::queue('showTopBoxes', 1, COOKIE_HOUR * 1);
+        }
 
         if ($languageFlag == LANGUAGE_ES)
         {
@@ -176,33 +184,39 @@ class HomeController extends Controller
             //
             // Get WOTD
             //
-            $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
-            if (isset($tag))
+            if ($showTopBoxes)
             {
-                // get the last record added to the tag
-                $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
-                if (isset($record))
+                $tag = Tag::get(TAG_NAME_WOTD, TAG_TYPE_DEF_FAVORITE);
+                if (isset($tag))
                 {
-                    // only show the first part of the definition
-                    $record->definition = getSentences($record->definition, 1);
+                    // get the last record added to the tag
+                    $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
+                    if (isset($record))
+                    {
+                        // only show the first part of the definition
+                        $record->definition = getSentences($record->definition, 1);
 
-                    // only show the first sentence in the examples
-                    $record->title_long = getSentences($record->title_long, 1);
+                        // only show the first sentence in the examples
+                        $record->title_long = getSentences($record->title_long, 1);
 
-                    $options['wotd'] = $record;
+                        $options['wotd'] = $record;
+                    }
                 }
             }
 
             //
             // Get POTD
             //
-            $tag = Tag::get(TAG_NAME_POTD, TAG_TYPE_DEF_FAVORITE);
-            if (isset($tag))
+            if ($showTopBoxes)
             {
-                $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
-                if (isset($record))
+                $tag = Tag::get(TAG_NAME_POTD, TAG_TYPE_DEF_FAVORITE);
+                if (isset($tag))
                 {
-                    $options['potd'] = $record->title_long;
+                    $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
+                    if (isset($record))
+                    {
+                        $options['potd'] = $record->title_long;
+                    }
                 }
             }
 
@@ -233,8 +247,11 @@ class HomeController extends Controller
             $parms['release'] = 'other';
             $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms) : null;
 
-            // get aotd
-            $options['aotd'] = Article::getFirst($parms);
+            // show aotd if it hasn't been shown recently
+            if ($showTopBoxes)
+            {
+                $options['aotd'] = Article::getFirst($parms);
+            }
 		}
 		catch (\Exception $e)
 		{

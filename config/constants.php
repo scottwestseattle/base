@@ -107,7 +107,9 @@ define('HISTORY_TYPE_OTHER',	99);
 define('USER_ID_NOTSET', 0);
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 byetes for db overhead
-define('MS_YEAR', 525600); // milliseconds for one year
+define('COOKIE_HOUR', 60);     // Minutes per hour: 60
+define('COOKIE_DAY',  1440);   // Minutes per day:  60 * 24
+define('COOKIE_YEAR', 525600); // Minutes per year: 60 * 24 * 365
 define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
 define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
 

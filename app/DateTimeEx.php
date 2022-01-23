@@ -238,8 +238,10 @@ class DateTimeEx
 	{
         $sTimeZone = 'America/Chicago';
 
-		$day = DateTimeEx::getDaysSinceZero($sDate, $sTimeZone);
+		$day = self::getDaysSinceZero($sDate, $sTimeZone);
 		$colorCnt = count(self::$colors);
+
+		// put day in our range of color codes
 		$day = ($day) % $colorCnt;
 
 		if ($day >= 0 && $day < $colorCnt)

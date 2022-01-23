@@ -65,7 +65,7 @@ class Controller extends BaseController
 
 	static function setLanguage($languageId)
 	{
-        Cookie::queue('languageId', intval($languageId), MS_YEAR);
+        Cookie::queue('languageId', intval($languageId), COOKIE_YEAR);
     }
 
     static public function reader(Entry $entry, $options)

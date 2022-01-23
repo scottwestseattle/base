@@ -599,7 +599,7 @@ class DefinitionController extends Controller
 
 	static public function setSnippetCookie($id)
     {
-        Cookie::queue('snippetId', intval($id), MS_YEAR);
+        Cookie::queue('snippetId', intval($id), COOKIE_YEAR);
     }
 
 	public function viewSnippet($permalink)
