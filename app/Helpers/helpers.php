@@ -331,7 +331,7 @@ if (!function_exists('alphanumHarsh')) {
 		if (isset($text))
 		{
 			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
-            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\&\-\r\n]/u", '', $text);
+            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\/\&\-\r\n]/u", '', $text);
             $chino = '\。\，';
 
             if ($debug)

@@ -19,8 +19,7 @@
 @else
 		<a class="navbar-item" href="{{lurl('login')}}">
 			<div>
-				<svg class="" width="24" height="24" style="color:LightGray;" >
-					<!-- use xlink:href="/img/bootstrap-icons.svg#box-arrow-in-right" / -->
+				<svg class="" width="24" height="24" fill="currentColor" style="color:LightGray;" >
 					<use xlink:href="/img/bootstrap-icons.svg#person-circle" />
 				</svg>
 			</div>

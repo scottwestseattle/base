@@ -37,6 +37,7 @@ class DefinitionController extends Controller
             //'index',
             'view', 'permalink',
             'snippets', 'indexSnippets', 'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
+            'delete',
 
             // let these through to be caught below
 			'editSnippet', 'updateSnippet',
@@ -60,7 +61,7 @@ class DefinitionController extends Controller
         ]);
 
         $this->middleware('owner')->only([
-			'editSnippet', 'updateSnippet', 'review', 'readList',
+			'editSnippet', 'updateSnippet', 'review', 'readList', 'delete'
 		]);
 
 		parent::__construct();

@@ -159,7 +159,7 @@ class HomeController extends Controller
         if (null === Cookie::get('showTopBoxes'))
         {
             $showTopBoxes = true;
-            Cookie::queue('showTopBoxes', 1, COOKIE_HOUR * 1);
+            Cookie::queue('showTopBoxes', 1, COOKIE_HOUR * 6); // only show every six hours
         }
 
         if ($languageFlag == LANGUAGE_ES)
