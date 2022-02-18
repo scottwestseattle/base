@@ -35,6 +35,7 @@ var nbr = 0;
 // max number of qna
 //
 var max = 0;
+var quizCount = 0;
 var statsMax = 0;
 
 var nextAttemptTimer = null;
@@ -323,7 +324,16 @@ function loadData()
 	$('.data-misc').each(function() {
         var container = $(this);
 
-		max = container.data('max');
+		max = container.data('max');             // total questions available
+
+		// if user wants to do less than the total number of questions available
+		// done here so we can always get a subset of the available questions and
+		// not just the same subset every time
+		quizCount = container.data('quizcount');
+		if (quizCount > 0 && quizCount < max)
+		{
+		    max = quizCount;
+		}
 
         // for History updates
 		quiz.programName = container.data('programName');

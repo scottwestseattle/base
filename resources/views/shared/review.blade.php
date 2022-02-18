@@ -12,6 +12,7 @@
     data-program-name="{{$programName}}"
     data-session-name="{{$sessionName}}"
 	data-max="{{$sentenceCount}}"
+	data-quizcount="{{$quizCount}}"
 	data-prompt="@LANG('quiz.' . $settings['options']['prompt'])"
 	data-prompt-reverse="@LANG('quiz.' . $settings['options']['prompt-reverse'])"
 	data-question-count="{{$settings['options']['question-count']}}"

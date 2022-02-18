@@ -22,6 +22,9 @@
             <tr><td><strong>Folder:</strong></td><td class="xs-text">{{base_path()}}</td></tr>
     		<tr><td><strong><a href="/dashboard" type="button" class="btn btn-sm btn-warning">Debug</a></strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
             <tr><td><strong><a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a></strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td><a href="/clear-cache" class="">Clear Cache</a></td></tr>
+            <tr><td><a href="/clear-view" class="">Clear View Cache</a></td></tr>
         </table>
 
         <hr />

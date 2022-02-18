@@ -699,10 +699,12 @@ class LessonController extends Controller
 	//
 	// this is the version updated to work with review.js
 	//
-	public function review(Lesson $lesson, $reviewType = null)
+	public function review(Lesson $lesson, $reviewType = null, $count = 0)
     {
         $record = $lesson;
 		$reviewType = intval($reviewType);
+		$count = intval($count);
+
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
 
@@ -730,6 +732,7 @@ class LessonController extends Controller
 			'prev' => $prev,
 			'next' => $next,
 			'sentenceCount' => count($quiz),
+			'quizCount' => $count,
 			'records' => $quiz,
 			'canEdit' => true,
 			'isMc' => true, //$lesson->isMc($reviewType),

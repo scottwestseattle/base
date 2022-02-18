@@ -5,9 +5,10 @@
     $tdClass = 'alignRight medium-thin-text';
     $headers = isset($record->conjugationHeaders) ? $record->conjugationHeaders : [];
     $showTitle = (isset($showTitle) && $showTitle);
+    $tenses = isset($record->conjugations['tenses']) ? $record->conjugations['tenses'] : [];
 @endphp
 
-@if (isset($record->conjugations))
+@if (count($tenses) > 0)
 
     @if ($showTitle)
         <h3>{{$record->title}}</h3>
@@ -25,7 +26,7 @@
     <div class="mb-5">
     <h4>{{__('proj.Indicative')}}</h4>
     <div class="row">
-    @foreach($record->conjugations['tenses'] as $r)
+    @foreach($tenses as $r)
     @if ($loop->index >= 0 && $loop->index < 5)
     <div class="{{$cols1}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-verb-conj mt-4">
@@ -39,13 +40,14 @@
     </div>
     @endif
     @endforeach
+
     </div>
     </div>
 
     <div class="mb-5">
     <h4>{{__('proj.Subjunctive')}}</h4>
     <div class="row">
-    @foreach($record->conjugations['tenses'] as $r)
+    @foreach($tenses as $r)
     @if ($loop->index >= 5 && $loop->index < 9)
     <div class="{{$cols2}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-verb-conj mt-4">
@@ -65,7 +67,7 @@
     <div class="mb-5">
     <h4>{{__('proj.Imperative')}}</h4>
     <div class="row">
-    @foreach($record->conjugations['tenses'] as $r)
+    @foreach($tenses as $r)
     @if ($loop->index >= 9)
     <div class="{{$cols2}}"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-verb-conj mt-4">
@@ -83,12 +85,5 @@
     </div>
 
     </div><!-- for fonts -->
-
-@else
-
-    <h3>{{__($title)}}</h3>
-    <div class="mt-2">
-        <h4>@LANG('proj.Verb not found')</h4>
-    </div>
 
 @endif

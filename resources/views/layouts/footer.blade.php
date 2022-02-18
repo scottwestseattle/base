@@ -3,9 +3,13 @@
 	<div class="container text-center p-5">
 		<a class="" href="/">
 			<div class="brand logo middle">
+			@if (false)
+                <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:100px;"/>
+			@else
 				<svg class="bi  app-color-primary-reverse" width="50" height="50" fill="currentColor" >
 				    <use xlink:href="/img/bootstrap-icons.svg#{{getLogo()}}" />
 			    </svg>
+			@endif
 			</div>
 		</a>
 

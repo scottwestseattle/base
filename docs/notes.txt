@@ -66,3 +66,24 @@ return 404, page not found: abort(404)
 Find and redirect errors
 sudo find / -name RssReader.java 2>/dev/null
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Inode Count Directory Name
+
+166592 /home/codespace/public_html/_subdomains/travel/storage/framework/sessions
+113235 /home/codespace/public_html/storage/framework/sessions
+1057 /home/codespace/public_html/_subdomains/travel/public/img/sliders
+823 /home/codespace/public_html/vendor/nesbot/carbon/src/Carbon/Lang
+348 /home/codespace/public_html/storage/framework/views
+236 /home/codespace/public_html/public/img/spanish/banners
+235 /home/codespace/public_html/_subdomains/travel/public/img/flags
+194 /home/codespace/public_html/vendor/voku/portable-ascii/src/voku/helper/data
+186 /home/codespace/public_html/vendor/scrivo/highlight.php/Highlight/languages
+159 /home/codespace/public_html/_subdomains/travel/vendor/phpunit/phpunit/tests/_files
+
+Top 10 Largest Mailboxes by Inode Usage:
+Inode Address
+92 noreply@scott3.com
+75 info@scott3.com
+71 alerts@scott3.com
+61 noreply@codespace.us
+58 info@english50.com
+46 scott@scott3.com

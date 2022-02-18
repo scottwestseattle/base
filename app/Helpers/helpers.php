@@ -849,6 +849,7 @@ if (!function_exists('splitSentences')) {
 	}
 }
 
+// truncate the string to the given length
 if (!function_exists('trunc')) {
 	function trunc($string, $length, $ellipsis = null)
 	{
@@ -874,6 +875,24 @@ if (!function_exists('trunc')) {
     			$rc = mb_substr($rc, 0, $length);
 		    }
 		}
+
+		return $rc;
+	}
+}
+
+// truncate the string to the given length
+if (!function_exists('shorten')) {
+	function shorten($string, $length)
+	{
+	    $length = intval($length);
+	    $rc = trim($string);
+		$l = mb_strlen($rc);
+        $l -= $length;
+
+	    if ($l > 0)
+	    {
+            $rc = mb_substr($rc, 0, $l);
+	    }
 
 		return $rc;
 	}

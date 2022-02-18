@@ -70,6 +70,16 @@ Route::post('/search', [HomeController::class, 'search']);
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
 
+Route::get('/clear-cache', function() {
+    Cache::flush();
+    return "Cache is cleared";
+});
+
+Route::get('/clear-view', function() {
+    Artisan::call('view:clear');
+    return "Compiled views cleared";
+});
+
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
@@ -634,7 +644,7 @@ Route::group(['prefix' => 'lessons'], function () {
 	Route::post('/view/{lesson}',[LessonController::class, 'view']); // just in case they hit enter on the ajax form
 	Route::get('/review-orig/{lesson}/{reviewType?}',[LessonController::class, 'reviewOrig']);
 	Route::get('/reviewmc/{lesson}/{reviewType?}',[LessonController::class, 'reviewmc']);
-	Route::get('/review/{lesson}/{reviewType?}',[LessonController::class, 'review']);
+	Route::get('/review/{lesson}/{reviewType?}/{count?}',[LessonController::class, 'review']);
 	Route::get('/read/{lesson}',[LessonController::class, 'read']);
 	Route::get('/log-quiz/{lessonId}/{score}', [LessonController::class, 'logQuiz']);
 	Route::get('/start/{lesson}/', [LessonController::class, 'start']);

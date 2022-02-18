@@ -46,6 +46,7 @@
             </div>
 
             <div class="small-text">
+                <div style="margin-right:15px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
                 <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                 <div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['wordCount']}} {{trans_choice('ui.Word', 2)}}</a></div>
                 @if (isAdmin() && !$record->isPublic())

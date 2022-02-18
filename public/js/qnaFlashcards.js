@@ -121,17 +121,19 @@ function nextAttempt()
 	var count = 0;
 	while(!done)
 	{
+        // temp: set the current one to correct so quiz will end
+	    quiz.setCorrect();
+
 		curr++;
 
 		// check if at the end of round
 		if (curr >= max)
 		{
-		    addHistory();
-
 			curr = 0;
 			nbr = 0;
 			score = (right / (right+wrong)) * 100;
 			total = right + wrong;
+			console.log('total: ' + total);
 			if (total > 0)
 			{
 				results = '<p>' + quiz.quizTextRound + ' ' + round + ': ' + score.toFixed(2) + '% (' + right + '/' + total + ')</p>';
@@ -157,6 +159,7 @@ function nextAttempt()
 		// if this question has not been answered correctly yet
 		if (!quiz.qna[quiz.qna[curr].order].correct)
 		{
+		    console.log('load question');
 			loadQuestion();
 			done = true;
 		}
@@ -164,8 +167,9 @@ function nextAttempt()
 		{
 			// no wrong answers left
 			//alert('Done, all answered correctly!!');
-			//quiz.showPanel(RUNSTATE_ENDOFQUIZ);
-			//resetQuiz();
+		    addHistory();
+			quiz.showPanel(RUNSTATE_ENDOFQUIZ);
+			resetQuiz();
 			quiz.runState = RUNSTATE_ENDOFQUIZ;
 			done = true;
 		}

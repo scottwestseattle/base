@@ -44,7 +44,7 @@
 @if (!Auth::check())
     <div class="" style="background-color:#4993FD">
         <div class="text-center py-3" >
-            <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:200px;"/>
+            <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:100px;"/>
             <form method="POST" action="/subscribe" class="px-3 mt-2">
                 <div class="form-group text-center">
                     <div class="input-group mt-2" style="max-width:600px; margin:0 auto;">

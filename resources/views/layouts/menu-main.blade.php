@@ -1,9 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top app-color-primary">
 	<a class="navbar-brand" href="/">
 		<div class="brand logo middle">
+		    @if (Str::endsWith(domainName(), '.com'))
+                <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:40px;"/>
+		    @else
 			<svg class="bi mt-1" width="32" height="32" fill="currentColor" >
 				<use xlink:href="/img/bootstrap-icons.svg#{{getLogo()}}" />
 			</svg>
+			@endif
 		</div>
 	</a>
 

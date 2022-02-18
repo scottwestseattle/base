@@ -91,9 +91,13 @@
 			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 				<div style="min-height:300px;">
 
-					<div style="margin: 20px 0;">
-						<a href="/lessons/review/{{$record->id}}"><button class="btn btn-success">Review</button></a>
+					<div style="margin-top: 20px;">
+						<a href="/lessons/review/{{$record->id}}/2"><button class="btn btn-success">Review</button></a>
+						<a href="/lessons/review/{{$record->id}}/2/20"><button class="btn btn-success">Review (20)</button></a>
+					</div>
+					<div style="margin: 10px 0;">
 						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards</button></a>
+						<a href="/lessons/review/{{$record->id}}/1/20"><button class="btn btn-success">Flashcards (20)</button></a>
 					</div>
 
 					@if (false)
