@@ -666,13 +666,14 @@ class Spanish
             // crack the participles
 		    $ix = 3; // infinitive
             $participleIndex = 5;
-            $parts = explode("\t", $words[$ix]);
+            $parts = explode("\t", trim($words[$ix]));
+
             if (count($parts) >= 2)
             {
                 $c[CONJ_PARTICIPLE] .= $parts[1] . ';';  // teniendo
 				$c[CONJ_PARTICIPLE] .= $words[$participleIndex] . ';'; // tenido
 
-    			$participleStem = trunc($words[$participleIndex], 1);
+    			$participleStem = shorten($words[$participleIndex], 1);
 
     			$c[CONJ_PARTICIPLE] .= $participleStem . 'os;'; 	 // abarcados
     			$c[CONJ_PARTICIPLE] .= $participleStem . 'a;'; 	 // abarcada
@@ -683,7 +684,7 @@ class Spanish
             $ix = 8;
             for ($i = 0; $i < $conjugations; $i++)
             {
-                $parts = explode("\t", $words[$ix++]);
+                $parts = explode("\t", trim($words[$ix++]));
                 if (count($parts) >= 3 && $i != $duplicateIndex)
                 {
                     $c[CONJ_IND_PRESENT] .= getWord($parts[1], 1, ' / ') . ';';
@@ -694,7 +695,7 @@ class Spanish
             $ix = 17;
             for ($i = 0; $i < $conjugations; $i++)
             {
-                $parts = explode("\t", $words[$ix++]);
+                $parts = explode("\t", trim($words[$ix++]));
                 if (count($parts) >= 3 && $i != $duplicateIndex)
                 {
                     $c[CONJ_IND_PRETERITE] .= $parts[1] . ';';
@@ -705,7 +706,7 @@ class Spanish
             $ix = 26;
             for ($i = 0; $i < $conjugations; $i++)
             {
-                $parts = explode("\t", $words[$ix++]);
+                $parts = explode("\t", trim($words[$ix++]));
                 if (count($parts) >= 2 && $i != $duplicateIndex)
                 {
                     $c[CONJ_IND_CONDITIONAL] .= $parts[1] . ';';
@@ -715,7 +716,7 @@ class Spanish
             $ix = 36;
             for ($i = 0; $i < $conjugations; $i++)
             {
-                $parts = explode("\t", $words[$ix++]);
+                $parts = explode("\t", trim($words[$ix++]));
                 if (count($parts) >= 3 && $i != $duplicateIndex)
                 {
                     $c[CONJ_SUB_PRESENT] .= $parts[1] . ';';
@@ -732,7 +733,7 @@ class Spanish
             $ix = 45;
             for ($i = 0; $i < $conjugations; $i++)
             {
-                $parts = explode("\t", $words[$ix++]);
+                $parts = explode("\t", trim($words[$ix++]));
                 if (count($parts) >= 2 && $i != $duplicateIndex)
                 {
                     $delim = [' o ', ' u '];
@@ -746,7 +747,7 @@ class Spanish
             $ix = 55;
             for ($i = 0; $i < $conjugations; $i++)
             {
-                $parts = explode("\t", $words[$ix++]);
+                $parts = explode("\t", trim($words[$ix++]));
                 if (count($parts) >= 2)
                 {
                     if ($i == 2) // nosotros not included on RAE so get it from the neg which gets it from the subjunctive

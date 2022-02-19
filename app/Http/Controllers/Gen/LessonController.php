@@ -246,7 +246,6 @@ class LessonController extends Controller
 
 		if ($lesson->isFib())
 		{
-//
             $lesson->text = '<span style="font-size:1.2em;">' . self::formatChoices($lesson->text) . '</span>';
 		}
 
@@ -587,7 +586,7 @@ class LessonController extends Controller
 			$line = strip_tags($line);
 			$parts = explode($delim, $line); // split the line into q and a, looks like: "question text - correct answer text"
 
-			if (count($parts) > 0)
+			if (count($parts) > 1)
 			{
 				$q = trim($parts[0]);
 
@@ -617,9 +616,9 @@ class LessonController extends Controller
 
 				if (!isset($qna[$cnt]['a']))
 					throw new \Exception('parse error: ' . $q);
-			}
 
-			$cnt++;
+			    $cnt++;
+			}
 		}
 
 		//dd($qna);
