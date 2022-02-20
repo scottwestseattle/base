@@ -123,17 +123,17 @@
 @endif
 
 <!--------------------------------------------------------------------------------------->
-<!-- Dictionary, Lists, and Books shortcuts widget -->
+<!-- Big Shortcuts widget -->
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['showWidgets']) && $options['showWidgets'])
-    <div class="d-block d-md-none d-flex justify-content-center text-center bg-none mb-2">
+    <div class="d-block d-md-none d-flex justify-content-center text-center bg-none mb-2 mt-0">
 
 @php
     $style = 'width: 20%;';
 @endphp
         <div class="" style="{{$style}}">
             <a class="purple" href="/practice">
-                <div class="glyphicon glyphicon-th-list" style="font-size:35px;"></div>
+                <div class="glyphicon glyphicon-blackboard" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{__('proj.Practice')}}</div>
             </a>
         </div>
@@ -154,15 +154,15 @@
 
         <div class="" style="{{$style}}">
             <a class="purple" href="/dictionary">
-                <div class="glyphicon glyphicon-font" style="font-size:35px;"></div>
+                <div class="glyphicon glyphicon-text-background" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{__('proj.Dictionary')}}</div>
             </a>
         </div>
 
         <div class="" style="{{$style}}">
-            <a class="purple" href="/favorites">
-                <div class="glyphicon glyphicon-heart" style="font-size:35px;"></div>
-                <div class="" style="font-size:10px;">{{trans_choice('ui.Favorite', 2)}}</div>
+            <a class="purple" href="/courses">
+                <div class="glyphicon glyphicon-education" style="font-size:35px;"></div>
+                <div class="" style="font-size:10px;">{{trans_choice('proj.Course', 2)}}</div>
             </a>
         </div>
 
