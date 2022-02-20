@@ -83,15 +83,32 @@ class RegisterController extends Controller
 		$record->user_type = Config::get('constants.user_type.unconfirmed');
 
         $msg = 'new user registered: ' . $record->email;
+
+        // robot test data
+	    $rand1 = intval($request->rand1);
+	    $rand2 = intval($request->rand2);
+	    $sum = intval($request->sum);
+
 		try
 		{
+		    if ($rand1 + $rand2 === $sum)
+		    {
+		        // passed the robot test
+		        logInfo("robot test passed: " . $rand1 . ' + ' . $rand2 . ' = ' . $sum);
+		    }
+		    else
+		    {
+		        // didn't pass, throw
+		        throw new \Exception("robot test failed: " . $rand1 . ' + ' . $rand2 . ' = ' . $sum);
+		    }
+
 			$record->save();
 			logInfo($msg, 'New user added, please check you email for the verification link, and then log in');
 		}
 		catch(\Exception $e)
 		{
 			$flash = 'new user not added';
-			logError($flash . ': ' . $record->email, $flash);
+			logError($flash . ': ' . $record->email, $flash, ['exception' => $e->getMessage()]);
 			return back();
 		}
 
@@ -112,7 +129,16 @@ class RegisterController extends Controller
 
 	public function register(Request $request)
     {
-		return view('auth.register');
+        $min = 1;
+        $max = 20;
+
+        $rand1 = rand($min, $max);
+        $rand2 = rand($min, $max);
+
+		return view('auth.register', [
+			'rand1' => $rand1,
+			'rand2' => $rand2,
+		]);
 	}
 
 }

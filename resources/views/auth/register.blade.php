@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Register New User')
 @section('content')
+@php
+    $sum = intval($rand1) + intval($rand2);
+@endphp
 <div class="row justify-content-center form-card-row">
 	<div class="col-md-8">
 		<div class="card">
@@ -9,6 +12,9 @@
 			<div class="card-body">
 				<form method="POST" action="/users/create">
 					@csrf
+
+                    <input type="hidden" name="rand1" value="{{$rand1}}" />
+                    <input type="hidden" name="rand2" value="{{$rand2}}" />
 
 					<div class="form-group row">
 						<label for="name" class="col-md-4 col-form-label text-md-right">@LANG('ui.Name'):</label>
@@ -53,6 +59,13 @@
 						<label for="password-confirm" class="col-md-4 col-form-label text-md-right">@LANG('ui.Confirm Password'):</label>
 						<div class="col-md-6">
 							<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="sum" class="col-md-4 col-form-label text-md-right">{{$rand1}} plus {{$rand2}}:</label>
+						<div class="col-md-6">
+							<input id="sum" type="number" class="form-control" name="sum" required>
 						</div>
 					</div>
 

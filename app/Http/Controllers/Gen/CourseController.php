@@ -74,6 +74,16 @@ class CourseController extends Controller
 		{
 			$public = Course::getIndex(['public']);
 			$private = Course::getIndex(['private']);
+
+			$cntPublic = count($public);
+			$cntPrivate = count($private);
+			if (($cntPublic /* + $cntPrivate */) == 1)
+			{
+			    if ($cntPublic > 0)
+    			    return redirect('/' . PREFIX . '/view/' . $public[0]->id);
+			    if ($cntPrivate > 0)
+    			    return redirect('/' . PREFIX . '/view/' . $private[0]->id);
+			}
 		}
 		catch (\Exception $e)
 		{
