@@ -20,7 +20,6 @@ $( document ).ready(function() {
 	setButtonStates(RUNSTATE_START);
 	quiz.setControlStates();
 	loadData();
-	loadOrder();
 	quiz.showAnswersClick();
 	quiz.typeAnswersClick();
 
@@ -133,7 +132,7 @@ function nextAttempt()
 			nbr = 0;
 			score = (right / (right+wrong)) * 100;
 			total = right + wrong;
-			console.log('total: ' + total);
+			//console.log('total: ' + total);
 			if (total > 0)
 			{
 				results = '<p>' + quiz.quizTextRound + ' ' + round + ': ' + score.toFixed(2) + '% (' + right + '/' + total + ')</p>';
@@ -159,7 +158,7 @@ function nextAttempt()
 		// if this question has not been answered correctly yet
 		if (!quiz.qna[quiz.qna[curr].order].correct)
 		{
-		    console.log('load question');
+		    //console.log('load question');
 			loadQuestion();
 			done = true;
 		}
@@ -169,7 +168,6 @@ function nextAttempt()
 			//alert('Done, all answered correctly!!');
 		    addHistory();
 			quiz.showPanel(RUNSTATE_ENDOFQUIZ);
-			resetQuiz();
 			quiz.runState = RUNSTATE_ENDOFQUIZ;
 			done = true;
 		}

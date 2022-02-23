@@ -20,7 +20,6 @@ $( document ).ready(function() {
 	setButtonStates(RUNSTATE_START);
 	quiz.setControlStates();
 	loadData();
-	loadOrder();
 	quiz.showAnswersClick();
 	quiz.typeAnswersClick();
 
@@ -66,7 +65,7 @@ function showQuestion()
 	    //
 	    // this way uses the embedded answers
 	    //
-	    console.log('using embedded answers');
+	    //console.log('using embedded answers');
 	    choicesArray = choices.split("|");
         choiceCnt = choicesArray.length;
         totalAnswers = choiceCnt;
@@ -127,7 +126,7 @@ function showQuestion()
         }
     }
 
-	if (true)
+	if (false)
 	{
 		console.log('choices: ' + choices);
 		console.log('choiceCnt: ' + choiceCnt);
@@ -160,9 +159,13 @@ function showQuestion()
 		    var text = choicesArray[item]; // quiz.qna[item].a;
 		    $(btn).html(text);
 
-            console.log('item = ' + item);
-            console.log('text = ' + text);
-            console.log('a = ' + a);
+            if (false)
+            {
+                console.log('item = ' + item);
+                console.log('text = ' + text);
+                console.log('a = ' + a);
+            }
+
             if (text.localeCompare(a) == 0)
                 $(btn).addClass('btn-right');
             else

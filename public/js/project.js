@@ -1366,7 +1366,7 @@ function shuffle(array)
 
 function addHistoryRecord(url, programName, programId, sessionName, sessionId, score)
 {
-    console.log('touchpath: ' + url);
+    //console.log('touchpath: ' + url);
 
     programId = (programId > 0) ? programId : 0;
     sessionId = (sessionId > 0) ? sessionId : 0;
@@ -1378,7 +1378,7 @@ function addHistoryRecord(url, programName, programId, sessionName, sessionId, s
     // path looks like: https://domain.com/course/id/lesson/id/score
     var path = url + parms;
 
-    console.log('history: ' + path);
+    //console.log('history: ' + path);
 
     ajaxexec(path);
 }

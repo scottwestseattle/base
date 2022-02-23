@@ -274,7 +274,7 @@ function quiz() {
 
 	this.setCorrect = function() {
 		this.qna[this.qna[curr].order].correct = true;
-		console.log('set correct: true');
+		//console.log('set correct: true');
     }
 }
 
@@ -282,6 +282,8 @@ var quiz = new quiz();
 
 function loadData()
 {
+	console.log('>>> loadData');
+
 	//
 	// load qna arrays from the html tag 'data-' attributes, for example: data-question, data-answer, data-prompt
 	//
@@ -330,10 +332,6 @@ function loadData()
 		// done here so we can always get a subset of the available questions and
 		// not just the same subset every time
 		quizCount = container.data('quizcount');
-		if (quizCount > 0 && quizCount < max)
-		{
-		    max = quizCount;
-		}
 
         // for History updates
 		quiz.programName = container.data('programName');
@@ -362,11 +360,12 @@ function loadData()
     });
 
 	statsMax = max;
-	//alert("max=" + max + ", prompt=" + quiz.promptQuestion);
 }
 
 function loadOrder()
 {
+    console.log(">>> loadOrder");
+
 	//
 	// load random map in a work array
 	//
@@ -382,12 +381,20 @@ function loadOrder()
 	for (var i = 0; i < max; i++)
 		quiz.qna[i].order = order[i];
 
-	/*
-	var s = "";
-	for (var i = 0; i < max; i++)
-		s += quiz.qna[i].order + ",";
-	alert(s);
-	*/
+    if (true)
+    {
+        var s = "";
+        for (var i = 0; i < max; i++)
+            s += quiz.qna[i].order + ",";
+        console.log(s);
+    }
+
+	// now apply the count since all questions have been randomized
+    if (quizCount > 0 && quizCount < max)
+    {
+        max = quizCount;
+    	statsMax = max;
+    }
 }
 
 function first()
@@ -428,7 +435,6 @@ function startQuiz()
 	setButtonStates(RUNSTATE_START);
 	quiz.setControlStates();
 	loadData();
-	loadOrder();
 	$("#checkbox-type-answers").prop('checked', startWithTypeAnswers());
 
 	quiz.showPanel();
@@ -444,6 +450,8 @@ function stopQuiz()
 
 function resetQuiz()
 {
+	console.log('>>> RESET QUIZ');
+
 	clear();
 
 	for (var i = 0; i < max; i++)
@@ -453,8 +461,8 @@ function resetQuiz()
 	right = 0;
 	wrong = 0;
 	round = 1;
-	statsMax = max;
 	nbr = 0;
+	statsMax = max;
 
 	loadOrder();
 
