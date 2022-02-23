@@ -164,4 +164,5 @@ return [
 'Hello' => '你好,',
 'Return' => '回去吧',
 'Match Whole Word' => '匹配整个单词',
+'Filter' => '过滤器',
 ];

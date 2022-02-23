@@ -161,4 +161,5 @@ return [
 'Quiz' => '测验',
 'Practice' => '实践',
 'Delete Article' => '删除文章',
+'Text already exists' => '文本已经存在',
 ];

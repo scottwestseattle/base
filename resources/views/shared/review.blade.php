@@ -4,6 +4,7 @@
 @php
     $programName = isset($programName) ? $programName : 'Program Name not set';
     $sessionName = isset($sessionName) ? $sessionName : 'Session Name not set';
+    $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->

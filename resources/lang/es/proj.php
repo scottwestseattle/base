@@ -161,4 +161,5 @@ return [
 'Quiz' => 'Prueba',
 'Practice' => 'Practicar',
 'Delete Article' => 'Eliminar artículo',
+'Text already exists' => 'El texto ya existe',
 ];

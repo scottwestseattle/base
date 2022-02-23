@@ -35,9 +35,11 @@ class DefinitionController extends Controller
 	{
         $this->middleware('admin')->except([
             //'index',
-            'view', 'permalink',
-            'snippets', 'indexSnippets', 'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
-            'delete',
+            'view', 'permalink', 'delete',
+
+            // snippets
+            'snippets', 'indexSnippets', 'filterSnippets',
+            'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
 
             // let these through to be caught below
 			'editSnippet', 'updateSnippet',
@@ -631,30 +633,79 @@ class DefinitionController extends Controller
         }
     }
 
+	public function filterSnippets(Request $request, $parms)
+    {
+        // $request parameters are accessed as: $request['sort']
+
+		return $this->getSnippets($request);
+    }
+
 	public function indexSnippets($count = PHP_INT_MAX)
     {
-        return $this->getSnippets($count);
+        $parms[$count] = intval($count);
+
+        return $this->getSnippets($parms);
     }
 
 	public function snippets($id = null)
     {
-        return $this->getSnippets(PHP_INT_MAX, $id, /* showFrom = */ true);
+        $parms['id'] = isset($id) ? intval($id) : null;
+        $parms['showForm'] = true;
+
+        return $this->getSnippets($parms);
     }
 
-	public function getSnippets($count = PHP_MAX_INT, $id = null, $showForm = false)
+	public function getSnippets($parms)
     {
-        $count = intval($count);
+        $count = isset($parms['count']) ? $parms['count'] : PHP_INT_MAX;
+        $showForm = isset($parms['showForm']) ? $parms['showForm'] : false;
+        $id = isset($parms['id']) ? $parms['id'] : null;
+
+        $orderBy = null;
+        $sort = isset($parms['sort']) ? alpha(strtolower($parms['sort'])) : null;
+        if ($sort === 'help')
+        {
+            dump("sort: asc|desc|atoz|ztoa|incomplete|help");
+        }
+
+        if (isset($sort))
+        {
+            switch($sort)
+            {
+                case 'asc':
+                    $orderBy = 'id';
+                    break;
+                case 'desc':
+                    $orderBy = 'id DESC';
+                    break;
+                case 'atoz':
+                    $orderBy = 'title_long';
+                    break;
+                case 'ztoa':
+                    $orderBy = 'title_long DESC';
+                    break;
+                case 'incomplete':
+                    $orderBy = 'translation_en, id';
+                    break;
+                default:
+                    break;
+            }
+        }
+
         $options = [];
 
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
 
+        $options['limit']                   = $count;
+        $options['languageId']              = $siteLanguage;
+        $options['languageFlagCondition']   = $languageFlagCondition;
+        $options['orderBy']                 = $orderBy;
+
         // get the snippets for the appropriate langauge
-        $snippets = Definition::getSnippets([
-            'languageId' => $siteLanguage,
-            'languageFlagCondition' => $languageFlagCondition,
-            'limit' => $count,
-        ]);
+        $snippets = Definition::getSnippets($options);
+
+        // the records
         $options['records'] = $snippets;
 
         // get all the stuff for the speak and record module
@@ -662,7 +713,6 @@ class DefinitionController extends Controller
         $options['showAllButton'] = false;
         $options['loadReader'] = true;
         $options['siteLanguage'] = $siteLanguage;
-//        $options['records'] = Definition::getSnippets();
         $options['snippetLanguages'] = getLanguageOptions();
         $options['languageCodes'] = getSpeechLanguage($siteLanguage);
         $options['returnUrl'] = '/practice';

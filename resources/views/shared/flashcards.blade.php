@@ -1,7 +1,9 @@
 @extends('layouts.review')
 @section('title', __('proj.Flashcards'))
 @section('content')
-
+@php
+    $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
+@endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->

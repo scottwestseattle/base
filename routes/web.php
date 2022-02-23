@@ -460,6 +460,7 @@ Route::group(['prefix' => 'practice'], function () {
     Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
 	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
+	Route::get('/filter/{parms}', [DefinitionController::class, 'filterSnippets']);
     Route::get('/{id?}', [DefinitionController::class, 'snippets']);
 });
 

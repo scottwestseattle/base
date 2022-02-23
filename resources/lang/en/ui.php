@@ -164,4 +164,5 @@ return [
 'Hello' => 'Hello',
 'Return' => 'Go Back',
 'Match Whole Word' => 'Match Whole Words',
+'Filter' => 'Filter',
 ];

@@ -93,6 +93,7 @@
          @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'float-left'])@endcomponent
          <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/flashcards">@LANG('proj.Flashcards')</a></span>
          <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
+         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/practice/filter/parms?sort=asc&count=50">@LANG('ui.Filter')</a></span>
     </span></h3>
     <div class="text-center mt-2" style="">
         <div style="display: inline-block; width:100%">
