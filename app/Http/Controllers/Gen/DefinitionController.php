@@ -52,8 +52,12 @@ class DefinitionController extends Controller
 			'setFavoriteList',
 
             // review
-			'review', 'reviewNewest', 'reviewNewestVerbs', 'reviewRandomWords', 'reviewRandomVerbs',
-			'reviewRankedVerbs', 'reviewSnippets',
+			'review',
+			'reviewNewest', 'reviewNewestVerbs',
+			'reviewRandomWords', 'reviewRandomVerbs',
+			'reviewRankedVerbs',
+			'reviewSnippets',
+			'readExamples',
 
             // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
@@ -1214,6 +1218,20 @@ class DefinitionController extends Controller
 		]);
     }
 
+    public function readExamples(Request $request, $parms = null)
+    {
+        $count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
+        $action = isset($request['a']) ? intval($request['a']) : 'list';
+
+   		$records = Definition::getIndex(DEFINITIONS_SEARCH_EXAMPLES, $count);
+
+        $title = __('proj.Dictionary Examples');
+
+		return ($action == 'read')
+		    ? $this->readWords($title, $records, /* $examplesOnly = */ true)
+		    : $this->list($title, $records);
+    }
+
     public function reviewNewest(Request $request, $reviewType = null, $count = 20)
     {
         $reviewType = alpha($reviewType);
@@ -1423,15 +1441,16 @@ class DefinitionController extends Controller
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 			'labels' => $labels,
+			'historyPath' => '/history/add-public/',
 		]);
     }
 
-    public function readWords($title, $records)
+    public function readWords($title, $records, $examplesOnly = false)
     {
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
-		$lines = self::formatDefinitions($records);
+		$lines = self::formatDefinitions($records, $examplesOnly);
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
 	    $options['return'] = '/favorites';
 
@@ -1452,10 +1471,11 @@ class DefinitionController extends Controller
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 			'labels' => $labels,
+			'historyPath' => '/history/add-public/',
 		]);
     }
 
-    static public function formatDefinitions($records)
+    static public function formatDefinitions($records, $examplesOnly = false)
     {
         $labelDefinition = trans_choice('proj.Definition', 1);
         $labelExamples = trans_choice('proj.Example', 2);
@@ -1470,44 +1490,71 @@ class DefinitionController extends Controller
         $lines = [];
         foreach($records as $record)
         {
-            // add the word
-            $text = $labelDefinition . ':  ';
-            $text .= ucfirst($record->title);
-            $text .= '.  ' . ucfirst($record->title);
+            $text = '';
 
-            // add the definition
-            $d = $record->definition;
-            $d = str_replace('1.', $label1, $d);
-            $d = str_replace('2.', $label2, $d);
-            $d = str_replace('3.', $label3, $d);
-            $d = str_replace('4.', $label4, $d);
-            $d = str_replace('5.', $label5, $d);
-
-            $text .= '. ' . ucfirst($d);
-
-            // say the word again
-            if (!Str::endsWith($text, '.'))
-                $text .= '.';
-            $text .= '  ' . ucfirst($record->title) . '.';
-
-            // add the examples
-            if (isset($record->examples))
+            if ($examplesOnly)
             {
-                if (!Str::endsWith($text, '.'))
-                    $text .= '.';
+                if (isset($record->examples))
+                {
+                    $word = strtolower($record->title);
+                    $pre = ucfirst($word) . ': ';
+                    $post = ' (' . $word . ')';
 
-                $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
+                    $parts = explode("\r\n", $record->examples);
+                    if (isset($parts) && count($parts) > 0)
+                    {
+                        foreach($parts as $line)
+                        {
+                            $lines[] = $pre . formatSentence($line) . $post;
+                        }
+                    }
+                    else
+                    {
+                        $lines[] = $pre . formatSentence($record->examples) . $post;
+                    }
+                }
+            }
+            else
+            {
+                // add the word
+                $text .= $labelDefinition . ':  ';
+                $text .= ucfirst($record->title);
+                $text .= '.  ' . ucfirst($record->title);
 
-                // repeat the word one more time
+                // add the definition
+                $d = $record->definition;
+                $d = str_replace('1.', $label1, $d);
+                $d = str_replace('2.', $label2, $d);
+                $d = str_replace('3.', $label3, $d);
+                $d = str_replace('4.', $label4, $d);
+                $d = str_replace('5.', $label5, $d);
+
+                $text .= '. ' . ucfirst($d);
+
+                // say the word again
                 if (!Str::endsWith($text, '.'))
                     $text .= '.';
                 $text .= '  ' . ucfirst($record->title) . '.';
-            }
 
-            $lines[] = $text;
+                // add the examples
+                if (isset($record->examples))
+                {
+                    if (!Str::endsWith($text, '.'))
+                        $text .= '.';
+
+                    $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
+
+                    // repeat the word one more time
+                    if (!Str::endsWith($text, '.'))
+                        $text .= '.';
+                    $text .= '  ' . ucfirst($record->title) . '.';
+                }
+
+                $lines[] = $text;
+            }
         }
 
-        $lines[] = $end;
+        // $lines[] = $end; // << removed because it doesn't work in random mode
 
         return $lines;
     }

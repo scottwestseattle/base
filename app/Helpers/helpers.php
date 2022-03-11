@@ -743,6 +743,17 @@ if (!function_exists('getSentences')) {
     }
 }
 
+if (!function_exists('formatSentence')) {
+	function formatSentence($string)
+	{
+	    $rc = ucfirst(trim($string));
+        if (!Str::endsWith($rc, ['.', '?', '!']))
+            $rc .= '.';
+
+        return $rc;
+    }
+}
+
 if (!function_exists('getWord')) {
 	function getWord($string, $index = 1, $delim = ' ')
 	{

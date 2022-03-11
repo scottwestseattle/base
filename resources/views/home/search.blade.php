@@ -66,7 +66,11 @@
                 @foreach($snippets as $record)
                     <tr>
                         <td>@LANG('proj.Practice Text')</td>
-                        <td><a href="/definitions/view/{{$record->permalink}}" target="_blank">{{$record->title_long}}</a></td>
+                        @if (isAdmin() || App\User::isOwner($record->user_id))
+                            <td><a href="/practice/edit/{{$record->id}}" target="_blank">{{$record->title_long}}</a></td>
+                        @else
+                            <td><a href="/definitions/view/{{$record->permalink}}" target="_blank">{{$record->title_long}}</a></td>
+                        @endif
                     </tr>
                 @endforeach
             @endif

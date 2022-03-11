@@ -92,9 +92,6 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/practice/index/20">@LANG('proj.Latest Practice Text')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/review/quiz/20">
-                        @LANG('proj.Review') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
-                    </a>
                     <a class="btn btn-primary btn-xs" role="button" href="/snippets/review/flashcards/20">
                         @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
@@ -103,6 +100,25 @@
                     </a>
                     <a class="btn btn-primary btn-xs" role="button" href="/snippets/read-latest/100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-6 col-xl-4">
+        <div class="mb-3 mr-0">
+            <div class="card-body drop-box-ghost">
+                <h5 class="card-title"><a href="/definitions/read-examples/p?count=20">@LANG('proj.Dictionary Examples')</a></h5>
+                <p class="card-text">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples/p?count=20&a=read">
+                        @LANG('proj.Reader') (20)<span class="glyphicon glyphicon-volume-up ml-1"></span>
+                    </a>
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples/p?count=100&a=read">
+                        @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
+                    </a>
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples/p?a=read">
+                        @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
             </div>

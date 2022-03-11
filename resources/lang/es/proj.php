@@ -162,4 +162,5 @@ return [
 'Practice' => 'Practicar',
 'Delete Article' => 'Eliminar artículo',
 'Text already exists' => 'El texto ya existe',
+'Dictionary Examples' => 'Ejemplos de diccionario',
 ];

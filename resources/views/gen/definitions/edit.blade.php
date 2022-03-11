@@ -17,7 +17,7 @@
         <input type="text" id="title" name="title" class="form-control" value="{{$record->title}}" autocomplete="off" onfocus="setFocus($(this), '#accent-chars');  $('#wordexists').html('');" onblur="wordExists($(this))" />
         <div id="wordexists" class="small-thin-text ml-2 mb-2"></div>
         <div class="mb-2 ml-2">
-            <a onclick="translateOnWebsite(event, 'google', $('#title').val());" href="" tabindex="-1" class="small-thin-text">Google</a>
+            <a onclick="translateOnWebsite(event, 'deepl', $('#title').val());" href="" tabindex="-1" class="small-thin-text">DeepL</a>
             <a onclick="translateOnWebsite(event, 'spanishdict', $('#title').val());" href="" tabindex="-1"  class="small-thin-text ml-2">Span!shD¡ct</a>
             <a onclick="translateOnWebsite(event, 'rae', $('#title').val());" href="" tabindex="-1"  class="small-thin-text ml-2">RAE</a>
         </div>

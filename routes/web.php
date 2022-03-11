@@ -524,6 +524,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/review-random-words/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomWords']);
 	Route::get('/review-random-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomVerbs']);
 	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs']);
+	Route::get('/read-examples/{parms?}', [DefinitionController::class, 'readExamples']);
 
 
 	// ajax calls

@@ -1206,6 +1206,8 @@ function translateOnWebsite(event, destination, text)
 		window.open("https://www.spanishdict.com/translate/" + text + "");
 	else if (destination == 'rae')
 		window.open("https://dle.rae.es/" + text + "");
+	else if (destination == 'deepl')
+		window.open("https://deepl.com/translator#es/en/" + text + "");
 	else // everything else goes to google
 		window.open("https://translate.google.com/#view=home&op=translate&sl=es&tl=en&text=" + text + "");
 }

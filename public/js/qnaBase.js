@@ -389,7 +389,7 @@ function loadOrder()
         console.log(s);
     }
 
-	// now apply the count since all questions have been randomized
+	// sbw now apply the count since all questions have been randomized
     if (quizCount > 0 && quizCount < max)
     {
         max = quizCount;

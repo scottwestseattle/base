@@ -12,7 +12,9 @@
 <form method="POST" id="form-edit" action="/practice/update/{{$record->id}}">
 
     <div class="form-group mt-3">
-        <label for="title_long">@LANG('proj.Practice Text'):</label>
+        <label for="title_long">@LANG('proj.Practice Text'):
+            <a onclick="translateOnWebsite(event, 'deepl', $('#title_long').val());" href="" tabindex="-1"  class="small-thin-text ml-2">DeepL</a>
+        </label>
         <textarea rows="5" name="title_long" id="title_long" class="form-control" autocomplete="off" onfocus="setFocus($(this))">{{$record->title_long}}</textarea>
     </div>
 

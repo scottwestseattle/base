@@ -162,4 +162,5 @@ return [
 'Practice' => '实践',
 'Delete Article' => '删除文章',
 'Text already exists' => '文本已经存在',
+'Dictionary Examples' => '词典实例',
 ];

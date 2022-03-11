@@ -608,7 +608,16 @@ class Definition extends Model
 					->limit($limit)
 					->get();
 			}
-			else if ($sort == DEFINITIONS_SEARCH_RANKED)
+			else if ($sort == DEFINITIONS_SEARCH_EXAMPLES)
+			{
+				$records = Definition::select()
+					->whereNull('deleted_at')
+        			->where('type_flag', DEFTYPE_DICTIONARY)
+					->whereNotNull('examples')
+					->orderByRaw($orderBy)
+					->limit($limit)
+					->get();
+			}			else if ($sort == DEFINITIONS_SEARCH_RANKED)
 			{
 				$records = Definition::select()
 					->whereNull('deleted_at')
