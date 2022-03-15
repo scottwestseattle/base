@@ -408,9 +408,9 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function publish(Request $request, Article $article)
+    public function publish(Request $request, Entry $entry)
     {
-		$record = $article;
+		$record = $entry;
 
 		return view(VIEWS . '.publish', [
 			'record' => $record,
@@ -419,9 +419,9 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function updatePublish(Request $request, Article $article)
+    public function updatePublish(Request $request, Entry $entry)
     {
-		$record = $article;
+		$record = $entry;
 
         if ($request->isMethod('get'))
         {
@@ -446,7 +446,7 @@ class ArticleController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+		return redirect($this->redirectTo . 'view/' . $record->permalink);
     }
 
     public function read(Request $request, Entry $entry)

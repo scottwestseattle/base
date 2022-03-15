@@ -28,7 +28,7 @@
 
                             @if (isAdmin() || App\User::isOwner($record->user_id))
                                 <div style="margin-right:10px; float:left;">
-                                    @component('components.control-button-publish', ['record' => $record, 'btnStyle' => 'btn-xxs', 'prefix' => 'entries', 'showPublic' => true])@endcomponent
+                                    @component('components.control-button-publish', ['record' => $record, 'btnStyle' => 'btn-xxs', 'prefix' => 'articles', 'showPublic' => true])@endcomponent
                                 </div>
                                 <div style="margin-right:5px; float:left;"><a href='/articles/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
                                 <div style="margin-right:0px; float:left;"><a href='/articles/confirmdelete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>

@@ -101,6 +101,12 @@ Route::group(['prefix' => 'articles'], function () {
     // confirm delete / delte
 	Route::get('/confirmdelete/{entry}', [ArticleController::class, 'confirmDelete']);
 	Route::post('/delete/{entry}', [ArticleController::class, 'delete']);
+
+	// publish
+	Route::get('/publish/{entry}', [ArticleController::class, 'publish']);
+	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']);
+	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']);
+
 });
 
 // MVC

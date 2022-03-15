@@ -51,7 +51,7 @@
                 <div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['wordCount']}} {{trans_choice('ui.Word', 2)}}</a></div>
                 @if (isAdmin() && !$record->isPublic())
                 <span style="margin-left:10px;">
-                    @component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true])@endcomponent
+                    @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true])@endcomponent
                 </span>
                 @endif
                 @if (isset($record->definitions) && count($record->definitions) > 0)

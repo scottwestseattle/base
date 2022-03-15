@@ -407,7 +407,7 @@ class BookController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+		return redirect($this->redirectTo . 'show/' . $record->permalink);
     }
 
     // this is read book
