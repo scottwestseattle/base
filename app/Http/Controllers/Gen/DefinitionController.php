@@ -537,6 +537,25 @@ class DefinitionController extends Controller
         $snippet = alphanumHarsh($raw);
         $tag = "Text";
 
+        try
+        {
+            // check for links
+            $snippet = str_replace('http', '', $snippet);
+            $snippet = str_replace('.com', '', $snippet);
+
+            if (strlen($snippet) != strlen($raw))
+            {
+    			$msg = "Snippet with link not saved: " . str_replace("\r\n", ' ', $raw);
+		        throw new \Exception($msg); // nope!
+            }
+        }
+		catch (\Exception $e)
+		{
+		    // log and fail silently
+            logException($f, $e->getMessage());
+            return back();
+		}
+
 		try
 		{
             if (strlen($snippet) != strlen($raw))
