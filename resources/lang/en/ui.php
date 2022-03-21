@@ -162,7 +162,10 @@ return [
 'Minimum of :count characters' => 'Minimum of :count characters',
 'Email will be confirmed' => 'Email will be confirmed',
 'Hello' => 'Hello',
-'Return' => 'Go Back',
+'Return' => 'Back',
 'Match Whole Word' => 'Match Whole Words',
 'Filter' => 'Filter',
+'Oldest' => 'Oldest',
+'Newest' => 'Newest',
+'Not Translated' => 'Not Translated',
 ];

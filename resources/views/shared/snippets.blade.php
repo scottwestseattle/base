@@ -89,13 +89,23 @@
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['records']) && count($options['records']) > 0)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
-         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
-         @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'float-left'])@endcomponent
-         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/flashcards">@LANG('proj.Flashcards')</a></span>
-         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
-         <span class="ml-2" style="font-size:.5em; vertical-align:middle;"><a href="/practice/filter/parms?sort=asc&count=50">@LANG('ui.Filter')</a></span>
-    </span></h3>
-    <div class="text-center mt-2" style="">
+        <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
+        @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'float-left'])@endcomponent
+    </h3>
+    <div style="clear:both;">
+        <div class="medium-text" style="margin-bottom:3px;">
+            <span class="mb-3"     style="vertical-align:bottom;"><a href="/snippets/review/flashcards">@LANG('proj.Flashcards')</a></span>
+            <span class="ml-2" style="vertical-align:bottom;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
+            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=asc&count=50">@LANG('ui.Oldest')</a></span>
+            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=desc&count=50">@LANG('ui.Newest')</a></span>
+            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=atoz&count=50">A-Z</a></span>
+            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=ztoa&count=50">Z-A</a></span>
+            @if (Auth::check())
+            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
+            @endif
+        </div>
+    </div>
+        <div class="text-center mt-3" style="">
         <div style="display: inline-block; width:100%">
             <table style="width:100%;">
             <?php $count = 0; ?>

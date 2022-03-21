@@ -38,7 +38,7 @@
     <tbody>
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
-            @if (isAdmin())
+            @if (isAdmin() || App\User::isOwner($record->user_id))
                 <td class="" style=""><a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a></td>
             @endif
             <td style="width:100%;">

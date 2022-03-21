@@ -25,7 +25,7 @@
                 </a></li>
 
                 @if (isAdmin())
-                    <li class="nav-item"><a class="nav-link" href="/entries/publish/{{$record->id}}">
+                    <li class="nav-item"><a class="nav-link" href="/articles/publish/{{$record->id}}">
                         <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#lightning" /></svg>
                     </a></li>
                 @endif

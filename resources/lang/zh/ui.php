@@ -165,4 +165,7 @@ return [
 'Return' => '回去吧',
 'Match Whole Word' => '匹配整个单词',
 'Filter' => '过滤器',
+'Oldest' => '最古老的',
+'Newest' => '最新的',
+'Not Translated' => '未翻译',
 ];

@@ -165,4 +165,7 @@ return [
 'Return' => 'Volver',
 'Match Whole Word' => 'Emparejar palabra entera',
 'Filter' => 'Filtrar',
+'Oldest' => 'Más viajos',
+'Newest' => 'Más recientes',
+'Not Translated' => 'Sin traducción',
 ];
