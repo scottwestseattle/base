@@ -941,15 +941,30 @@ class Definition extends Model
 		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'updated_at DESC';
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
+		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
+		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
 
 		try
 		{
-			$records = Definition::select()
-				->where('type_flag', DEFTYPE_SNIPPET)
-				->where('language_flag', $languageFlagCondition, $languageId)
-				->orderByRaw($orderBy)
-				->limit($limit)
-				->get();
+		    if ($userId == 0)
+		    {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('language_flag', $languageFlagCondition, $languageId)
+                    ->orderByRaw($orderBy)
+                    ->limit($limit)
+                    ->get();
+		    }
+            else
+            {
+                $records = Definition::select()
+                    ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('language_flag', $languageFlagCondition, $languageId)
+                    ->where('user_id', $userIdCondition, $userId)
+                    ->orderByRaw($orderBy)
+                    ->limit($limit)
+                    ->get();
+            }
 		}
 		catch (\Exception $e)
 		{

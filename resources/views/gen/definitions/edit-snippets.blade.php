@@ -13,13 +13,16 @@
 
     <div class="form-group mt-3">
         <label for="title_long">@LANG('proj.Practice Text'):
+            <a onclick="event.preventDefault(); $('#title_long').val(''); $('#title_long').focus();" href="" tabindex="-1" class="ml-2"><span  style="margin:0px;" class="glyphicon glyphicon-remove" ></span></a>
             <a onclick="translateOnWebsite(event, 'deepl', $('#title_long').val());" href="" tabindex="-1"  class="small-thin-text ml-2">DeepL</a>
         </label>
         <textarea rows="5" name="title_long" id="title_long" class="form-control" autocomplete="off" onfocus="setFocus($(this))">{{$record->title_long}}</textarea>
     </div>
 
     <div class="form-group mt-3">
-        <label for="translation_en">{{trans_choice('ui.Translation', 1)}}:</label>
+        <label for="translation_en" class="bg-default">{{trans_choice('ui.Translation', 1)}}:
+            <a onclick="event.preventDefault(); $('#translation_en').val(''); $('#translation_en').focus();" href="" tabindex="-1" class="ml-2"><span  style="margin:0px;" class="glyphicon glyphicon-remove" ></span></a>
+        </label>
         <textarea rows="5" name="translation_en" id="translation_en" class="form-control" autocomplete="off" onfocus="setFocus($(this))">{{$record->translation_en}}</textarea>
     </div>
 

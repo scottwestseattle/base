@@ -330,7 +330,7 @@ Super Light Green: #eff7f0
 	color:gray;
 }
 
-.danger {
+.danger, bg-red {
 	color:red;
 }
 
@@ -357,6 +357,10 @@ Super Light Green: #eff7f0
 .bg-oolong {
 	background-color: #FF6900;
 	color: white;
+}
+
+.bg-default {
+    background-color: default;
 }
 
 /***************************************************

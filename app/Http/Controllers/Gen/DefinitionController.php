@@ -680,6 +680,8 @@ class DefinitionController extends Controller
 
 	public function getSnippets($parms)
     {
+        $options = [];
+
         $count = isset($parms['count']) ? $parms['count'] : PHP_INT_MAX;
         $showForm = isset($parms['showForm']) ? $parms['showForm'] : false;
         $id = isset($parms['id']) ? $parms['id'] : null;
@@ -709,13 +711,24 @@ class DefinitionController extends Controller
                     break;
                 case 'incomplete':
                     $orderBy = 'translation_en, id';
+                    if (Auth::check())
+                    {
+                        $options['userId'] = Auth::id();
+                        $options['userIdCondition'] = '=';
+                    }
+                    break;
+                case 'owner':
+                    $orderBy = 'id DESC';
+                    if (Auth::check())
+                    {
+                        $options['userId'] = Auth::id();
+                        $options['userIdCondition'] = '=';
+                    }
                     break;
                 default:
                     break;
             }
         }
-
-        $options = [];
 
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';

@@ -96,13 +96,17 @@
         <div class="medium-text" style="margin-bottom:3px;">
             <span class="mb-3"     style="vertical-align:bottom;"><a href="/snippets/review/flashcards">@LANG('proj.Flashcards')</a></span>
             <span class="ml-2" style="vertical-align:bottom;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
-            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=asc&count=50">@LANG('ui.Oldest')</a></span>
-            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=desc&count=50">@LANG('ui.Newest')</a></span>
-            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=atoz&count=50">A-Z</a></span>
-            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=ztoa&count=50">Z-A</a></span>
-            @if (Auth::check())
-            <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
-            @endif
+            <a class="ml-2 btn btn-success btn-xs" onclick="$('#filter-menu').toggle()" type="button">Filter</a>
+            <div id="filter-menu" class="hidden mt-2">
+                <span class=""     style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=asc&count=50">@LANG('ui.Oldest')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=desc&count=50">@LANG('ui.Newest')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=atoz&count=50">A-Z</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=ztoa&count=50">Z-A</a></span>
+                @if (Auth::check())
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=owner&count=50">@LANG('proj.My Text')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
+                @endif
+            </div>
         </div>
     </div>
         <div class="text-center mt-3" style="">
@@ -142,8 +146,12 @@
                     <tbody>
                         <tr>
                             <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
+                            @if ($showForm)
                                 <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title_long, 200)}}</a>
                                 <input id="{{$record->id}}" type="hidden" value="{{$record->title_long}}" />
+                            @else
+                                <div class="">{{Str::limit($record->title_long, 200)}}@if (false) ({{$record->user_id}})@endif</div>
+                            @endif
                             </td>
                         </tr>
                         <tr>
@@ -155,13 +163,13 @@
                                 @if (!isset($record->translation_en))
                                     @if (isAdmin() || $isOwner)
                                         <div class="float-left mr-3 pb-1">
-                                                <a href="/practice/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
+                                            <a href="/practice/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
                                         </div>
                                     @endif
                                 @endif
 
                                 <div style="float:left;">
-                                    @if (App\User::isAdmin() || App\User::isOwner($record->user_id))
+                                    @if (isAdmin() || $isOwner)
                                         <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
                                         <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash" style="color:{{$iconColor}}"></span></a></div>
                                         <div class="float-left">
