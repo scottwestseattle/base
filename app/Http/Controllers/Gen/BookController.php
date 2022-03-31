@@ -33,6 +33,7 @@ class BookController extends Controller
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
             'read', 'readBook', 'chapters',
+            'stats',
         ]);
 
 		parent::__construct();
@@ -496,4 +497,46 @@ class BookController extends Controller
 		return $lines;
     }
 
+    public function stats(Request $request, Tag $tag)
+    {
+		$record = $tag;
+
+		$words = [];
+		$i = 0;
+		$wordCount = 0;
+		$articleCount = 0;
+		$stats = null;
+
+		foreach($record->books as $record)
+		{
+			if ($record->language_flag == LANGUAGE_ES)
+			{
+				$stats = Spanish::getWordStats($record->description, $words);
+				$wordCount += $stats['wordCount'];
+				$words = $stats['sortAlpha'];
+
+				//dump($stats);
+
+				$articleCount++;
+				//if ($articleCount > 1) break;
+			}
+		}
+
+		// count possible verbs
+		$possibleVerbs = 0;
+		foreach($stats['sortCount'] as $key => $value)
+		{
+			if (Str::endsWith($key, ['ar', 'er', 'ir']))
+				$possibleVerbs++;
+		}
+
+		$stats['wordCount'] = $wordCount;
+
+    	return view('gen.books.stats', [
+			'record' => $tag,
+			'stats' => $stats,
+			'possibleVerbs' => $possibleVerbs,
+			'index' => 'books',
+		]);
+    }
 }

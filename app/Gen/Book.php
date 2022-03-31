@@ -29,7 +29,7 @@ class Book extends Model
 		return ($this->release_flag);
     }
 
-    static protected function getBook($entry)
+    static public function getBook($entry)
 	{
 	    $record = null;
 

@@ -61,20 +61,22 @@
     </div>
 
 	<h1>@LANG('proj.Latest Chapters Viewed')</h1>
-
 	<div>
 	@if (isset($records))
 		@foreach($records as $record)
 		<div class="drop-box-ghost mb-4" style="padding:10px 10px 20px 15px;">
 			<div style="font-size:1.3em; font-weight:normal;">
-				<a href="/books/show/{{$record->permalink}}">{{$record->title}}</a>
+			@php
+			    //dump($record->tags); // tags doesn't exist so we can't get the book title
+			@endphp
+				<a href="/books/show/{{$record->permalink}}">@if (false){{App\Gen\Book::getBook($record)}} - @endif{{$record->title}}</a>
 			</div>
 
 			<div style="padding-bottom:10px; font-size:.8em; font-weight:10;">
 				<div style="float:left;">
 					@component('components.icon-read', ['href' => "/books/read/$record->id"])@endcomponent
 					<div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.View', 2)}}</div>
-					<div style="margin-right:15px; float:left;"><a href="/books/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
+					<div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
 					@if (App\User::isAdmin())
 						<div style="margin-right:15px; float:left;">
 							@component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true])@endcomponent

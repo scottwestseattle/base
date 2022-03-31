@@ -597,6 +597,9 @@ Route::group(['prefix' => 'books'], function () {
 	Route::get('/deleted', [BookController::class, 'deleted']);
 	Route::get('/undelete/{id}', [BookController::class, 'undelete']);
 
+	// stats
+	Route::get('/stats/{tag}', [BookController::class, 'stats']);
+
 });
 
 // GENERATED for Course model

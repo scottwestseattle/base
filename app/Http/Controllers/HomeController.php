@@ -156,7 +156,7 @@ class HomeController extends Controller
         $showTopBoxes = false;
 
         // show aotd if it hasn't been shown recently
-        if (null === Cookie::get('showTopBoxes'))
+        if (!Auth::check() || null === Cookie::get('showTopBoxes'))
         {
             $showTopBoxes = true;
             Cookie::queue('showTopBoxes', 1, COOKIE_HOUR * 6); // only show every six hours
@@ -250,6 +250,7 @@ class HomeController extends Controller
             // show aotd if it hasn't been shown recently
             if ($showTopBoxes)
             {
+                $parms['orderBy'] = Auth::check() ? 'id DESC' : 'id ASC';
                 $options['aotd'] = Article::getFirst($parms);
             }
 		}

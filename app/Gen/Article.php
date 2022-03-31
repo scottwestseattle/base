@@ -43,7 +43,7 @@ class Article extends Model
 				->where('type_flag', ENTRY_TYPE_ARTICLE)
 				->where('language_flag', $languageCondition, $languageFlag)
 				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
-				->orderByRaw('id DESC')
+				->orderByRaw($parms['orderBy'])
 				->first();
 
         return $record;

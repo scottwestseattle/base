@@ -8,7 +8,7 @@
                 'options' => getLanguageOptions(true),
                 'selected_option' => getLanguageId(),
                 'field_name' => 'language_flag',
-                'select_class' => 'mini-border mt-1 mr-2',
+                'select_class' => 'mini-border mt-2 mr-2',
                 'label' => trans_choice('ui.Language', 1) . ':',
                 'onchange' => 'setLanguageGlobal()',
             ])@endcomponent

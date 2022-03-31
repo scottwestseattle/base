@@ -41,40 +41,35 @@
 <!--------------------------------------------------------------------------------------->
 <!-- Logo and Subscribe Form-->
 <!--------------------------------------------------------------------------------------->
-@if (!Auth::check())
-    <div class="" style="background-color:#4993FD">
-        <div class="text-center py-3" >
-            <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:100px;"/>
-            <form method="POST" action="/subscribe" class="px-3 mt-2">
-                <div class="form-group text-center">
-                    <div class="input-group mt-2" style="max-width:600px; margin:0 auto;">
-                        <input name="email" id="email" type="email"
-                            style="font-weight:200; font-size:18px;"
-                            class="form-control @error('email') is-invalid @enderror"
-                            value="{{ old('email') }}"
-                            autocomplete="email"
-                            maxlength="50"
-                            placeholder="@LANG('ui.Email Address')"
-                            required
-                        />
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-success" type="button">@LANG('ui.Subscribe')</button>
-                        </div>
-
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+@if (false && !Auth::check())
+    <div class="bg-purple text-center py-2 px-3" style="">
+        <!-- img src="/img/logos/logo-{{domainName()}}.png" style="max-width:100px;"/ -->
+        <form method="POST" action="/subscribe" class="mt-2">
+            <div class="form-group text-center mb-1">
+                <div class="input-group mt-2" style="max-width:600px; margin:0 auto;">
+                    <input name="email" id="email" type="email"
+                        style="font-weight:200; font-size:18px;"
+                        class="form-control @error('email') is-invalid @enderror"
+                        value="{{ old('email') }}"
+                        autocomplete="email"
+                        maxlength="50"
+                        placeholder="@LANG('ui.Email Address')"
+                        required
+                    />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-success" type="button">@LANG('ui.Subscribe')</button>
                     </div>
-                    <div class="mt-2 white small-thin-text">@LANG('base.Subscribe to mailing list')</div>
 
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                <div class="form-group">
-                </div>
-                {{ csrf_field() }}
-            </form>
-        </div>
+                <div class="mt-2 mb-0 white small-thin-text">@LANG('base.Subscribe to mailing list')</div>
+            </div>
+            {{ csrf_field() }}
+        </form>
     </div>
 @endif
 
@@ -127,7 +122,6 @@
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['showWidgets']) && $options['showWidgets'])
     <div class="d-block d-md-none d-flex justify-content-center text-center bg-none mb-2 mt-0">
-
 @php
     $style = 'width: 20%;';
 @endphp
@@ -178,6 +172,7 @@
             <div class="card card-aotd truncate mt-1" style="">
                 <div class="card-header card-header-potd">
                     <div>@LANG('proj.Article of the day')</div>
+                    <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($aotd->display_date, 'M d, Y')}}</div>
                 </div>
                 <div class="card-body card-body-potd">
                     <div>

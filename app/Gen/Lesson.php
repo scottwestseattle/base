@@ -20,6 +20,7 @@ define('LESSONTYPE_NOTSET',          0);
 define('LESSONTYPE_TEXT',           10);
 define('LESSONTYPE_VOCAB',          20);
 define('LESSONTYPE_QUIZ_FIB',       30);
+define('LESSONTYPE_QUIZ_FLASHCARDS',31);
 define('LESSONTYPE_QUIZ_MC1',       40);
 define('LESSONTYPE_QUIZ_MC2',       41);
 define('LESSONTYPE_QUIZ_MC3',       42);
@@ -39,6 +40,7 @@ class Lesson extends Model
 		LESSONTYPE_TEXT => 'Text',
 		LESSONTYPE_VOCAB => 'Vocabulary List',
 		LESSONTYPE_QUIZ_FIB => 'Fill in the Blank',
+		LESSONTYPE_QUIZ_FLASHCARDS => 'Flashcards',
 		LESSONTYPE_QUIZ_MC1 => 'Multiple Choice - Set Options (MC1)',
 		LESSONTYPE_QUIZ_MC2 => 'Multiple Choice - Random Options (MC2)',
 		LESSONTYPE_QUIZ_MC3 => 'Multiple Choice - New Layout (MC3)',
@@ -140,6 +142,7 @@ class Lesson extends Model
 		switch($reviewType)
 		{
 			case LESSONTYPE_QUIZ_FIB:
+			case LESSONTYPE_QUIZ_FLASHCARDS:
 				// FIB doesn't use answer options, so if any, remove them
 				$quiz = self::removeEmbeddedAnswers($quiz, $reviewType);
 				break;
@@ -523,6 +526,11 @@ class Lesson extends Model
         return($this->type_flag == LESSONTYPE_QUIZ_FIB);
 	}
 
+    public function isFlashcards()
+	{
+        return($this->type_flag == LESSONTYPE_QUIZ_FLASHCARDS);
+	}
+
 	public function getLines($text)
     {
 		$raw = [];
@@ -640,6 +648,8 @@ class Lesson extends Model
 		switch($this->type_flag)
 		{
 			case LESSONTYPE_QUIZ_FIB:
+			case LESSONTYPE_QUIZ_FLASHCARDS:
+
 			case LESSONTYPE_QUIZ_MC1:
 			case LESSONTYPE_QUIZ_MC2:
 			case LESSONTYPE_QUIZ_MC3:

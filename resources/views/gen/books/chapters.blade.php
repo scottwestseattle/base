@@ -16,7 +16,7 @@
         @component('components.icon-read', ['href' => "/books/read-book/$book->id", 'color' => '', 'nodiv' => true])@endcomponent
 	</h1>
 
-    <div class="medium-thin-text mb-3">{{trans_choice('proj.Chapter', 2)}}: {{$count}}</div>
+    <div class="medium-thin-text mb-3">{{trans_choice('proj.Chapter', 2)}}: {{$count}}<a class="ml-3" href="/books/stats/{{$book->id}}">Stats</a></div>
 
 	<div>
 	@if ($count > 0)

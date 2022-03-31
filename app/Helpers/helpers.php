@@ -553,7 +553,7 @@ if (!function_exists('getLanguageId')) {
 	function getLanguageId()
 	{
         $language = Cookie::get('languageId');
-        $language = isset($language) ? $language : LANGUAGE_ALL;
+        $language = isset($language) ? $language : LANGUAGE_EN;
 
         return intval($language);
     }
