@@ -268,7 +268,9 @@ class LessonController extends Controller
 		}
 
 		// only vocab pages may have vocab
-		$vocab = $lesson->getVocab();
+		//todo: $vocab = $lesson->getVocab();
+		$vocab['records'] = null; //todo: fix me, Word never implemented
+		$vocab['hasDefinitions'] = null; //todo: fix me, not implemented
 
 		// get course time to show
 		$records = Lesson::getIndex($lesson->parent_id, $lesson->lesson_number);

@@ -14,10 +14,11 @@
     $wotd = isset($options['wotd']) ? $options['wotd'] : null;
     $potd = isset($options['potd']) ? $options['potd'] : null;
     $aotd = isset($options['aotd']) ? $options['aotd'] : null;
-    $articleText = isset($aotd) ? trunc($aotd->description, 300) : null;
-
     $randomWords = isset($options['randomWords']) ? $options['randomWords'] : null;
     $newestWords = isset($options['newestWords']) ? $options['newestWords'] : null;
+    $articleText = null;
+    if (isset($aotd))
+        $articleText = (Auth::check()) ? trunc($aotd->description, 300) : $aotd->description;
 @endphp
 
 <!--------------------------------------------------------------------------------------->
@@ -170,6 +171,8 @@
 	<div class="row row-course">
 		<div class="col-12 pb-2 px-3">
             <div class="card card-aotd truncate mt-1" style="">
+
+                @if (Auth::check())
                 <div class="card-header card-header-potd">
                     <div>@LANG('proj.Article of the day')</div>
                     <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($aotd->display_date, 'M d, Y')}}</div>
@@ -182,6 +185,24 @@
                         <input type="hidden" id="aotd" value="{{$articleText}}" />
                     </div>
                 </div>
+
+                @else
+
+                <div class="card-header card-header-potd">
+                    <div>@LANG('proj.How to use this web site')</div>
+                    <div class="small-thin-text">{{date('M d, Y')}}</div>
+                 </div>
+                <div class="card-body card-body-potd">
+                    <div>
+                        @component('components.icon-read', ['color' => 'white', 'nodiv' => true, 'onclick' => "event.preventDefault(); readPage($('#aotd').val(), '#aotdVisible');"])@endcomponent
+                        <b><a id="" class="ml-2 link-white" href="" onclick="event.preventDefault(); readPage($('#aotd').val(), '#aotdVisible');">{{$aotd->title}}</a></b>
+                        <p class="thin-text-18"><span id="aotdVisible">{{$articleText}}</span></p>
+                        <input type="hidden" id="aotd" value="{{$articleText}}" />
+                    </div>
+                </div>
+
+                @endif
+
             </div>
 		</div>
 	</div>

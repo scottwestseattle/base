@@ -38,9 +38,11 @@
     <tbody>
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
-            @if (isAdmin() || App\User::isOwner($record->user_id))
-                <td class="" style=""><a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a></td>
-            @endif
+            <td class="" style="">
+                @if (isAdmin() || App\User::isOwner($record->user_id))
+                    <a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
+                @endif
+            </td>
             <td style="width:100%;">
                 @if ($record->isSnippet())
                     <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title_long, $lengthLimit)}}</a>
