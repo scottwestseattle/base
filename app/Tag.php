@@ -20,9 +20,9 @@ class Tag extends Model
 
 	const _typeFlags = [
         TAG_TYPE_NOTSET         => 'Not Set',
-        TAG_TYPE_SYSTEM         => 'system',
-        TAG_TYPE_BOOK           => 'book',
-        TAG_TYPE_DEF_FAVORITE   => 'Favorites',
+        TAG_TYPE_SYSTEM         => 'System Tag',
+        TAG_TYPE_BOOK           => 'Book',
+        TAG_TYPE_DEF_FAVORITE   => 'Favorite',
         TAG_TYPE_OTHER          => 'Other',
 	];
 

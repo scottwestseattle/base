@@ -25,8 +25,7 @@ class TagController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-            'index', 'view', 'permalink',
-
+            //'index', 'view', 'permalink',
             'edit', 'update', 'delete',
 
             'addUserFavoriteList',
@@ -60,7 +59,7 @@ class TagController extends Controller
 		try
 		{
 			$records = Tag::select()
-				//->where('release_flag', $releaseFlagCondition, $releaseFlag)
+				->orderBy('user_id')
 				->get();
 		}
 		catch (\Exception $e)
@@ -157,7 +156,12 @@ class TagController extends Controller
 		$changes = '';
 
 		$record->name      = copyDirty($record->name, $request->name, $isDirty, $changes);
-		$record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
+
+        if (isAdmin())
+        {
+    		$record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
+    		$record->user_id   = copyDirty($record->user_id, $request->user_id, $isDirty, $changes);
+        }
 
 		if ($isDirty)
 		{
@@ -176,7 +180,9 @@ class TagController extends Controller
 			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect('tags/view/' . $record->id);
+        $redirect = isAdmin() ? 'tags' : 'favorites';
+
+		return redirect($redirect);
 	}
 
     public function confirmDelete(Tag $tag)
