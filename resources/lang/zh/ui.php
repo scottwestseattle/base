@@ -117,7 +117,7 @@ return [
 'Template' => '模板|模板',
 'Word' => '话|话',
 'Record' => '开始录音',
-'Robot' => '机器人',
+'Robot' => '阅读',
 'Copy' => '复制',
 'Error' => '错误|失误',
 'Host' => '网络主机',

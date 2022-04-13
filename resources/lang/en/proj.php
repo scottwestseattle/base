@@ -163,4 +163,8 @@ return [
 'Delete Article' => 'Delete Article',
 'Text already exists' => 'Text already exists',
 'Dictionary Examples' => 'Dictionary Examples',
+'My Text' => 'My Text',
+'Publish Article' => 'Publish Article',
+'Record status has been updated' => 'Record status has been updated',
+'How to use this web site' => 'How to use this web site',
 ];

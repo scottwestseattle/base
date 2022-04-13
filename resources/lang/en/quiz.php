@@ -28,4 +28,6 @@ return [
 'Round' => 'Round',
 'All questions answered correctly.' => 'All questions answered correctly.',
 'I know it, remove from review' => 'I know it, remove from review',
+'Remove' => 'I got it RIGHT',
+'Repeat' => 'I got it WRONG',
 ];

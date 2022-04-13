@@ -117,7 +117,7 @@ return [
 'Template' => 'Template|Templates',
 'Word' => 'Word|Words',
 'Record' => 'Record',
-'Robot' => 'Robot',
+'Robot' => 'Read',
 'Copy' => 'Copy',
 'Error' => 'Error|Errors',
 'Host' => 'Host',

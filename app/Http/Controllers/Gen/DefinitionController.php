@@ -1191,6 +1191,18 @@ class DefinitionController extends Controller
 		$qna = Definition::makeQna($record->definitionsUser); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 
+		try
+		{
+		    // touch it so it will move to beginning of list
+		    $tag->touch();
+			$tag->save();
+		}
+		catch (\Exception $e)
+		{
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error updating tag'));
+		}
+
+
 		return view($settings['view'], [
 			'sentenceCount' => count($qna),
 			'records' => $qna,

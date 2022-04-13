@@ -163,4 +163,8 @@ return [
 'Delete Article' => 'Eliminar artículo',
 'Text already exists' => 'El texto ya existe',
 'Dictionary Examples' => 'Ejemplos de diccionario',
+'My Text' => 'Mi texto',
+'Publish Article' => 'Publicar artículo',
+'Record status has been updated' => 'Se ha actualizado el estado del registro',
+'How to use this web site' => 'Cómo utilizar este sitio web',
 ];

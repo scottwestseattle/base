@@ -67,14 +67,11 @@
 		<!-------------------------------------------------------->
 		<div id="stats">
 			<div class="middle mr-1 mb-1">
-			@if (false)
-			    <a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a>
-			@endif
                 <a href="{{$returnPath}}"><button type="button" class="btn btn-xs btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</div>
 			<div class="middle mb-2">
 	    		<span id="statsCount" class="mr-2"></span>
-    			<span id="statsScore" class="hidden"></span>
+    			<span id="statsScore" class=""></span>
 		    	<span id="statsAlert"></span><!-- what is this? -->
 		    </div>
 		</div>
@@ -108,7 +105,7 @@
 
 	<div class="text-center" style="xbackground-color:gray;">
         <div class="card card-flashcard card-blue text-center" style="font-size: {{$settings['options']['font-size']}};">
-            <a href="" onclick="flipCard(event);">
+            <a href="" onclick="flipCard(event, true);">
                 <div class="card-header">
                     <div id="prompt" class="card-text"></div>
                 </div>
@@ -143,7 +140,10 @@
 		<div class="form-group">
 		    <div class="mt-0 pt-0">
 			    <button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
-                <button class="btn btn-success btn-quiz" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.I know it, remove from review')</button>
+                @if (false)
+                <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.Remove')</button>
+                @endif
+                <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, false)" id="button-repeat">@LANG('quiz.Repeat')</button>
             </div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
@@ -198,6 +198,28 @@
 		<div class="btn-panel-bottom pb-2">
 			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); quiz.start()" id="button-start">@LANG('quiz.Start Review')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
+		</div>
+
+	</div>
+
+	<!---------------------------------------------------------------------------------------------------------------->
+	<!-- Quiz Results Panel -->
+	<!---------------------------------------------------------------------------------------------------------------->
+	<div id="panel-endofround" class="quiz-panel text-center">
+
+		<div class="quiz-panel-content">
+			<span class="hidden" id="panelResultsRoundBase">@LANG('quiz.End of Round')</span>
+			<h1 id="panelResultsRound"></h1>
+			<!-- span style="margin:20px; font-size:75px;" class="glyphicon glyphicon-stats bright-blue-fg"></span -->
+			<img style="margin:20px;" height="100" src="/img/quiz/quiz-endofround.png" />
+			<h3>@LANG('quiz.Correct Answers')</h3>
+			<h1 id="panelResultsCount"></h1>
+			<h3 id="panelResultsPercent"></h3>
+		</div>
+
+		<div class="btn-panel-bottom pb-2">
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); continueQuiz()" id="button-continue">@LANG('quiz.Continue')</button>
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); stopQuiz()" id="button-stop">@LANG('ui.Quit')</button>
 		</div>
 
 	</div>

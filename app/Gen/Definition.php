@@ -198,6 +198,7 @@ class Definition extends Model
                 $records = Tag::select()
                     ->where('tags.user_id', Auth::id())
                     ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
+                    ->orderByRaw('updated_at DESC')
                     ->get();
             }
 		}

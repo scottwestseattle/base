@@ -272,9 +272,8 @@ function quiz() {
 		$("#alertPrompt").css('font-weight', bold ? 'bold' : 'normal');
 	}
 
-	this.setCorrect = function() {
-		this.qna[this.qna[curr].order].correct = true;
-		//console.log('set correct: true');
+	this.setCorrect = function(correct) {
+		this.qna[this.qna[curr].order].correct = correct;
     }
 }
 
@@ -636,6 +635,8 @@ function checkAnswerFromButton(id, showOnly = false)
 
 function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = false)
 {
+    console.log('checkAnswer()');
+
 	setButtonStates(RUNSTATE_CHECKING);
 	$("#question-prompt").hide();
 
@@ -1022,5 +1023,11 @@ function setButtonStates(state)
 	}
 }
 
+function continueQuiz()
+{
+	// if end of round but not end of quiz, keep asking
+	if (quiz.runState == RUNSTATE_ENDOFROUND)
+		quiz.runState = RUNSTATE_ASKING;
 
-
+	quiz.showPanel();
+}

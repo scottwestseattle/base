@@ -204,15 +204,6 @@ function showQuestion()
 	$("#stats").show();
 }
 
-function continueQuiz()
-{
-	// if end of round but not end of quiz, keep asking
-	if (quiz.runState == RUNSTATE_ENDOFROUND)
-		quiz.runState = RUNSTATE_ASKING;
-
-	quiz.showPanel();
-}
-
 function showAnswerOptionButtons()
 {
 	// use visibility instead of show/hide to keep the spacing

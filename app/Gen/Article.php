@@ -5,6 +5,7 @@ namespace App\Gen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Auth;
 use App\Entry;
 use App\Site;
 use App\Status;
@@ -57,7 +58,10 @@ class Article extends Model
 		$records = $record = Entry::select()
 //				->where('entries.site_id', Site::getId())
 				->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
-				->where('release_flag', '>=', Status::getReleaseFlag())
+				->where(function ($query) use($search) {$query
+    				->where('release_flag', '>=', Status::getReleaseFlag())
+					->orWhere('user_id', Auth::id())
+					;})
 				->where(function ($query) use($search) {$query
 					->where('title', 'like', $search)
 					->orWhere('description_short', 'like', $search)

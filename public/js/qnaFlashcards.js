@@ -41,26 +41,50 @@ function getExtra()
 
 }
 
-function flipCard(e, remove = false)
+function updateScoreCount(correct)
 {
-	e.preventDefault();
-
-	if (remove)
+	if (correct)
 	{
-	    quiz.setCorrect();
-	}
-
-	if ($("#flashcard-answer").is(":hidden"))
-	{
-		$('#flashcard-answer').show();
-		$('#flashcard-extra').show();
-		$('#button-remove').show();
+	    // default is correct (when it's clicked after answer is shown)
+	    quiz.setCorrect(true);
+	    right++;
 	}
 	else
 	{
+	    // this is from the "I got it wrong" button
+	    wrong++;
+	}
+
+	//console.log('right: ' + right);
+	//console.log('wrong: ' + wrong);
+	//console.log('total: ' + (right + wrong));
+}
+
+function flipCard(e, correct = true)
+{
+	e.preventDefault();
+
+	if ($("#flashcard-answer").is(":hidden"))
+	{
+	    //
+	    // show the answer
+	    //
+		$('#flashcard-answer').show();
+		$('#flashcard-extra').show();
+		$('#button-remove').show();
+		$('#button-repeat').show();
+	}
+	else
+	{
+	    //
+	    // hide answer, update score, and load next question
+	    //
 		$('#flashcard-answer').hide();
 		$('#flashcard-extra').hide();
 		$('#button-remove').hide();
+		$('#button-repeat').hide();
+
+        updateScoreCount(correct);
 
 		nextAttempt();
 	}
@@ -95,21 +119,6 @@ function resetEndPanels()
 	// nothing to do but still need for call from qnaBase
 }
 
-function nextAttemptORIGNOTUSED()
-{
-	clearTimeout(nextAttemptTimer);
-	setButtonStates(RUNSTATE_ASKING);
-
-	if (++curr < max)
-	{
-		loadQuestion();
-	}
-	else
-	{
-		quiz.showPanel(RUNSTATE_ENDOFQUIZ);
-	}
-}
-
 function nextAttempt()
 {
 	clearTimeout(nextAttemptTimer);
@@ -120,9 +129,6 @@ function nextAttempt()
 	var count = 0;
 	while(!done)
 	{
-        // temp: set the current one to correct so quiz will end
-	    quiz.setCorrect();
-
 		curr++;
 
 		// check if at the end of round
@@ -132,7 +138,6 @@ function nextAttempt()
 			nbr = 0;
 			score = (right / (right+wrong)) * 100;
 			total = right + wrong;
-			//console.log('total: ' + total);
 			if (total > 0)
 			{
 				results = '<p>' + quiz.quizTextRound + ' ' + round + ': ' + score.toFixed(2) + '% (' + right + '/' + total + ')</p>';
@@ -158,7 +163,6 @@ function nextAttempt()
 		// if this question has not been answered correctly yet
 		if (!quiz.qna[quiz.qna[curr].order].correct)
 		{
-		    //console.log('load question');
 			loadQuestion();
 			done = true;
 		}
@@ -166,10 +170,13 @@ function nextAttempt()
 		{
 			// no wrong answers left
 			//alert('Done, all answered correctly!!');
-		    addHistory();
-			quiz.showPanel(RUNSTATE_ENDOFQUIZ);
+			//quiz.showPanel(RUNSTATE_ENDOFQUIZ);
+			//resetQuiz();
 			quiz.runState = RUNSTATE_ENDOFQUIZ;
 			done = true;
+
+			// update user's history
+			addHistory();
 		}
 
 		if (count > 10000)
@@ -178,9 +185,5 @@ function nextAttempt()
 			break;
 		}
 	}
-
-    //todo: fix wrap around, remove questions, add history
-	//console.log('curr: ' + curr);
-	//console.log('max: ' + max);
 }
 

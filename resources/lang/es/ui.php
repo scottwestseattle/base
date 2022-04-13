@@ -117,7 +117,7 @@ return [
 'Template' => 'Plantilla|Plantillas',
 'Word' => 'Palabra|Palabras',
 'Record' => 'Grabar',
-'Robot' => 'Robot',
+'Robot' => 'Leer',
 'Copy' => 'Copiar',
 'Error' => 'Error|Errores',
 'Host' => 'Alojamiento',

@@ -163,4 +163,8 @@ return [
 'Delete Article' => '删除文章',
 'Text already exists' => '文本已经存在',
 'Dictionary Examples' => '词典实例',
+'My Text' => '我的文本',
+'Publish Article' => '发表文章',
+'Record status has been updated' => '记录状态已被更新',
+'How to use this web site' => '如何使用本网站',
 ];
