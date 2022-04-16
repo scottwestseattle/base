@@ -429,14 +429,20 @@ function prev()
 	loadQuestion();
 }
 
-function startQuiz()
+function startQuizWithStartPage() // original: replaced below
 {
 	setButtonStates(RUNSTATE_START);
 	quiz.setControlStates();
 	loadData();
 	$("#checkbox-type-answers").prop('checked', startWithTypeAnswers());
-
 	quiz.showPanel();
+}
+
+function startQuiz()
+{
+	loadData();
+    quiz.runState = RUNSTATE_ASKING; // Skip the start panel
+    quiz.start();
 }
 
 function stopQuiz()

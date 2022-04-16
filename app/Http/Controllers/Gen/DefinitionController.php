@@ -395,15 +395,26 @@ class DefinitionController extends Controller
 
 		if ($isDirty)
 		{
+		    $saveError = false;
 			try
 			{
+			    if (strlen($record->title_long) == 0)
+			        throw new \Exception('text can\'t be blank');
+
+                $saveError = true;
 				$record->save();
 				logInfo($f, __('proj.Practice Text has been updated'), ['title' => $record->title, 'id' => $record->id, 'changes' => $changes]);
 			}
 			catch (\Exception $e)
 			{
-				$msg = __('base.Error updating record');
+			    if ($saveError)
+				    $msg = __('base.Error updating record');
+                else
+                    $msg = $e->getMessage();
+
 				logException($f, $e->getMessage(), $msg);
+
+    			return back();
 			}
 		}
 		else
@@ -568,14 +579,30 @@ class DefinitionController extends Controller
             $msg = null;
 
             $exists = false;
-            $record = Definition::getSnippet($snippet);
+            $link = null;
+            $record = Definition::getSnippet($snippet); // check snippets
             if (isset($record))
             {
                 // if it already exists let user or visitor update it
                 $exists = true;
-                $record->visitor_id     = getVisitorInfo()['hash'];
+                $record->visitor_id = getVisitorInfo()['hash'];
+                $link = '/definitions/show/' . $record->id;
+                $link = '/definitions/view/' . $record->permalink;
             }
-            else
+
+            if (!$exists)
+            {
+                $record = Definition::get($snippet);      // check dictionary
+                if (isset($record))
+                {
+                    $exists = true;
+                    $link = '/definitions/view/' . $record->permalink;
+                    //flash('danger', __('base.record already exists'));
+                    //return redirect('/' . PREFIX . '/view/' . $definition->permalink);
+                }
+            }
+
+            if (!$exists)
             {
                 $record = new Definition();
                 $record->title 			= 'snippet-' . timestamp();
@@ -596,10 +623,10 @@ class DefinitionController extends Controller
             if ($record->language_flag != $siteLanguage)
                 $msg = __("Language does not match: " . $record->language_flag);
 
-		    if (strlen($snippet) < 10)
+		    if (!isset($snippet) || strlen($snippet) === 0)
                 $msg = __("proj.$tag is too short");
 
-            if ($exists && !isAdmin())
+            if ($exists)
                 $msg = __("proj.$tag already exists");
 
             if (isset($msg))
@@ -615,8 +642,14 @@ class DefinitionController extends Controller
 		}
 		catch (\Exception $e)
 		{
-		    //dump($record);
+		    // if $msg from above doesn't show, then it's a programming error, check log events
 			$msg = isset($msg) ? $msg : "Error adding new $tag";
+
+			if (isset($link))
+			{
+    			$msg .= ': <a href="' . $link . '">' . (strlen($snippet) <= 15 ? $snippet : 'show') . '</a>';
+			}
+
             logException($f, $e->getMessage(), $msg, ['msg' => $msg]);
 		}
 

@@ -10,13 +10,7 @@
 
 <div class="middle ml-2">
 
-@if (count($lists) <= 1)
-
-    <a href='' onclick="heartDefinition(event, {{$record->id}}, '#{{$status}}')">
-        <span id="{{$heartId}}" class="glyphCustom-md glyphicon glyphicon-{{$heart}}"></span>
-    </a>
-
-@else
+@if (count($lists) > 1)
 
     <div class="dropdown" >
         <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">
@@ -33,6 +27,12 @@
             @endforeach
         </ul>
     </div>
+
+@else
+
+    <a href='' onclick="heartDefinition(event, {{$record->id}}, '#{{$status}}')">
+        <span id="{{$heartId}}" class="glyphCustom-md glyphicon glyphicon-{{$heart}}"></span>
+    </a>
 
 @endif
 

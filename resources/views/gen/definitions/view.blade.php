@@ -32,8 +32,22 @@
 	<!-- Show the record -->
 	@if (isset($record))
 
+    <table><tr>
+        @if (Auth::check())
+        <td class="icon">
+	    	@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
+        </td>
+        <td class="icon">
+            <div class="ml-3">
+                @if (isAdmin() || App\User::isOwner($record->user_id))
+                    <a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
+                @endif
+            </div>
+        </td>
+        @endif
+    </tr></table>
+
 	<div>
-		@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 		<h3>
  			<div class="middle">
 			    @if ($record->isSnippet())

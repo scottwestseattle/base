@@ -404,7 +404,7 @@ table.table-events {
 }
 
 td.icon {
-	width:10px;
+	padding: 10px 5px 5px 0;
 }
 
 .date-sm {
@@ -623,10 +623,6 @@ Cards
 
 .tab-body {
 	padding-bottom:60px;
-}
-
-td.icon {
-	width:10px;
 }
 
 .submenu-view td.icon {

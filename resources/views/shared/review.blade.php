@@ -68,7 +68,7 @@
 		<!-------------------------------------------------------->
 		<!-- Run-time Stats -->
 		<!-------------------------------------------------------->
-		<div id="stats">
+		<div id="statsRuntime">
 			<div class="middle mr-1 mb-1">
                 @if (false)
 			    <a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a>
@@ -257,9 +257,8 @@
 
 		<div class="quiz-panel-content">
 			<h1 class="" id="">@LANG('quiz.End of Review')</h1>
-			<p id="panelEndofquizFinished">@LANG('quiz.All questions answered correctly.')</p>
+			<h4 id="panelEndofquizFinished">@LANG('quiz.All questions answered correctly')</h4>
 			<p id="panelEndofquizStopped">@LANG('quiz.Review was stopped')</p>
-			<!-- span style="margin:20px; font-size:75px;" class="glyphicon glyphicon-thumbs-up bright-blue-fg"></span -->
 			<img style="margin-bottom:20px;" width="100" src="/img/quiz/quiz-end.jpg" />
 			<h3>@LANG('quiz.Scores by Round')</h3>
 			<span class="hidden" id="roundsStart">@LANG('quiz.None Completed')</span>
@@ -267,7 +266,7 @@
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Continue')</button>
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Restart')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 

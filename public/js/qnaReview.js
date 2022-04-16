@@ -201,7 +201,7 @@ function showQuestion()
 
 	quiz.setAlertPrompt(quiz.promptQuestion, COLOR_QUESTION_PROMPT);
 
-	$("#stats").show();
+	$("#statsRuntime").show();
 }
 
 function showAnswerOptionButtons()
@@ -242,7 +242,7 @@ function showAnswer()
 
 function resetEndPanels()
 {
-	$("#stats").hide();
+	$("#statsRuntime").hide();
 	$("#panelEndofquizFinished").show();
 	$("#panelEndofquizStopped").hide();
 }
@@ -272,12 +272,14 @@ function nextAttempt()
 				if (round == 1)
 					$("#rounds").text('');
 				$("#rounds").append(results);
-				//alert('End of Round, Starting next round');
-				quiz.showPanel(RUNSTATE_ENDOFROUND);
+
+				$state = (wrong == 0) ? RUNSTATE_ENDOFQUIZ : RUNSTATE_ENDOFROUND;
+
+				quiz.showPanel($state);
 			}
 			else
 			{
-				//alert('End of Round???');
+				// not end of round yet
 			}
 
 			//alert('End of Round ' + round + ': ' + score.toFixed(2) + '% (' + right + ' of ' + (right+wrong) + ')');

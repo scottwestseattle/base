@@ -26,7 +26,7 @@ return [
 'Correct Answers' => 'Respuestas correctas',
 'End of Round' => 'Fin de ronda',
 'Round' => 'Ronda',
-'All questions answered correctly.' => 'Todas las preguntas respondidas correctamente.',
+'All questions answered correctly' => 'Todas las preguntas respondidas correctamente',
 'I know it, remove from review' => 'I know it, remove from review',
 'Remove' => 'Lo hice CORRECTO',
 'Repeat' => 'Lo hice MAL',

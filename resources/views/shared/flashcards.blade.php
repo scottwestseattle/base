@@ -65,7 +65,7 @@
 		<!-------------------------------------------------------->
 		<!-- Run-time Stats -->
 		<!-------------------------------------------------------->
-		<div id="stats">
+		<div id="statsRuntime">
 			<div class="middle mr-1 mb-1">
                 <a href="{{$returnPath}}"><button type="button" class="btn btn-xs btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</div>
@@ -215,6 +215,7 @@
 			<h3>@LANG('quiz.Correct Answers')</h3>
 			<h1 id="panelResultsCount"></h1>
 			<h3 id="panelResultsPercent"></h3>
+			<p>Click Continue to answer to incorrect questions</p>
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
@@ -230,13 +231,17 @@
 	<div id="panel-endofquiz" class="quiz-panel text-center">
 
 		<div class="quiz-panel-content">
-			<h1 class="" id="">@LANG('quiz.End of Questions')</h1>
+			<h1 class="" id="">@LANG('quiz.End of Review')</h1>
+			<h4 id="panelEndofquizFinished">@LANG('quiz.All questions answered correctly')</h4>
+			<p id="panelEndofquizStopped">@LANG('quiz.Review was stopped')</p>
 			<img style="margin-bottom:20px;" width="100" src="/img/quiz/quiz-end.jpg" />
-			<h3>@LANG('quiz.Click below to restart')</h3>
+			<h3>@LANG('quiz.Scores by Round')</h3>
+			<span class="hidden" id="roundsStart">@LANG('quiz.None Completed')</span>
+			<span id="rounds"></span>
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); restartQuiz();" id="button-continue2">@LANG('ui.Restart')</button>
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Restart')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 

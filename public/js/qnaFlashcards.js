@@ -103,7 +103,7 @@ function showQuestion()
 
 	quiz.setAlertPrompt(quiz.promptQuestion, COLOR_QUESTION_PROMPT);
 
-	$("#stats").show();
+	$("#statsRuntime").show();
 }
 
 function restartQuiz()
@@ -116,7 +116,9 @@ function restartQuiz()
 
 function resetEndPanels()
 {
-	// nothing to do but still need for call from qnaBase
+	$("#statsRuntime").hide();
+	$("#panelEndofquizFinished").show();
+	$("#panelEndofquizStopped").hide();
 }
 
 function nextAttempt()
@@ -144,8 +146,9 @@ function nextAttempt()
 				if (round == 1)
 					$("#rounds").text('');
 				$("#rounds").append(results);
-				//alert('End of Round, Starting next round');
-				quiz.showPanel(RUNSTATE_ENDOFROUND);
+
+				$state = (wrong == 0) ? RUNSTATE_ENDOFQUIZ : RUNSTATE_ENDOFROUND;
+				quiz.showPanel($state);
 			}
 			else
 			{

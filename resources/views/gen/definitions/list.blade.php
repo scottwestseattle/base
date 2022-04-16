@@ -38,11 +38,22 @@
     <tbody>
     @foreach($records as $record)
         <tr id="row{{$record->id}}">
-            <td class="" style="">
-                @if (isAdmin() || App\User::isOwner($record->user_id))
-                    <a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
-                @endif
+            <td class="icon">
+                @component('gen.definitions.component-heart', [
+                    'record' => $record,
+                    'id' => $record->id,
+                    'lists' => $lists,
+                    'status' => 'status' . 2 . '-' . $record->id . '',
+                ])@endcomponent
             </td>
+            <td class="icon">
+                <div class="ml-3">
+                    @if (isAdmin() || App\User::isOwner($record->user_id))
+                        <a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
+                    @endif
+                </div>
+            </td>
+
             <td style="width:100%;">
                 @if ($record->isSnippet())
                     <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title_long, $lengthLimit)}}</a>
@@ -68,40 +79,6 @@
                     <div class="small-thin-text" style="">{{$record->updated_at}}</div>
                 @endif
             </td>
-
-            @if (isset($tag))
-            @if (false && count($lists) > 1)
-            <td class="icon mr-2">
-                <div class="dropdown" >
-                    <!-- removed 'dropdown-toggle' class to remove the down arrow graphic -->
-                    <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">
-                        <div class="glyphCustom-md glyphicon glyphicon-heart"></div>
-                    </a>
-
-                    <ul class="small-thin-text dropdown-menu dropdown-menu-right">
-                        @foreach($lists as $list)
-                            @if ($tag->id != $list->id)
-                                <li><a class="dropdown-item" href="/definitions/set-favorite-list/{{$record->id}}/{{$tag->id}}/{{$list->id}}">{{$list->name}}</a></li>
-                            @endif
-                        @endforeach
-                    </ul>
-                </div>
-            </td>
-            @endif
-
-            <td class="icon mr-3">
-                <div class="dropdown" >
-                    <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">
-                        <div class="glyphCustom-md glyphicon glyphicon-remove"></div>
-                    </a>
-
-                    <ul class="small-thin-text dropdown-menu dropdown-menu-right">
-                        <li><a class="dropdown-item" href="/definitions/set-favorite-list/{{$record->id}}/{{$tag->id}}/0">@LANG('proj.Remove from List')</a></li>
-                    </ul>
-                </div>
-            </td>
-            @endif
-
         </tr>
     @endforeach
     </tbody>

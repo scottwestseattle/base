@@ -26,7 +26,8 @@ return [
 'Correct Answers' => '正确答案',
 'End of Round' => '回合结束',
 'Round' => '圆形的',
-'All questions answered correctly.' => '所有问题均正确回答。',
+'All questions answered correctly' => '所有问题均正确回答',
+'I know it, remove from review' => 'I know it, remove from review',
 'Remove' => '删除，我知道它',
 'Repeat' => '重复，我不知道它',
 ];

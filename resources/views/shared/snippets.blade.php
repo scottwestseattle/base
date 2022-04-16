@@ -171,6 +171,9 @@
                                 <div style="float:left;">
                                     @if (isAdmin() || $isOwner)
                                         <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
+                                        @if (isAdmin())
+                                            <div style="margin-right:5px; float:left;"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-pencil" style="color:{{$iconColor}}"></span></a></div>
+                                        @endif
                                         <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash" style="color:{{$iconColor}}"></span></a></div>
                                         <div class="float-left">
                                             @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
