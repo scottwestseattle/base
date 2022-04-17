@@ -44,6 +44,13 @@
                 @endif
             </div>
         </td>
+        <td class="icon">
+            <div class="ml-3">
+                @if (isAdmin() || App\User::isOwner($record->user_id))
+                    <a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-pencil" style="color:black"></span></a>
+                @endif
+            </div>
+        </td>
         @endif
     </tr></table>
 

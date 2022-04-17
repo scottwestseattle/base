@@ -34,8 +34,9 @@ class DefinitionController extends Controller
 	public function __construct()
 	{
         $this->middleware('admin')->except([
-            //'index',
-            'view', 'permalink', 'delete',
+
+            // definitions
+            'view', 'permalink', 'delete', 'edit', 'update',
 
             // snippets
             'snippets', 'indexSnippets', 'filterSnippets',
@@ -67,7 +68,9 @@ class DefinitionController extends Controller
         ]);
 
         $this->middleware('owner')->only([
-			'editSnippet', 'updateSnippet', 'review', 'readList', 'delete'
+			'edit', 'update',
+			'editSnippet', 'updateSnippet',
+			'review', 'readList', 'delete'
 		]);
 
 		parent::__construct();
