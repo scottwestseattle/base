@@ -113,7 +113,7 @@ class Site extends Model
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error loading site'), ['domain' => $domain]);
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error loading site'), ['domain' => $domain]);
 		}
 
 		return $record;

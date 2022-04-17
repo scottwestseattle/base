@@ -52,7 +52,7 @@
                 placeholder="{{__('proj.Enter text to read')}}"
                 rows="7"
                 style="font-size:18px;"
-            >{{isset($options['snippet']) ? $options['snippet']->title_long : ''}}</textarea>
+            >{{isset($options['snippet']) ? $options['snippet']->title : ''}}</textarea>
             </div>
         </div>
 
@@ -147,10 +147,10 @@
                         <tr>
                             <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
                             @if ($showForm)
-                                <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title_long, 200)}}</a>
-                                <input id="{{$record->id}}" type="hidden" value="{{$record->title_long}}" />
+                                <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title, 200)}}</a>
+                                <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />
                             @else
-                                <div class="">{{Str::limit($record->title_long, 200)}}@if (false) ({{$record->user_id}})@endif</div>
+                                <div class="">{{Str::limit($record->title, 200)}}@if (false) ({{$record->user_id}})@endif</div>
                             @endif
                             </td>
                         </tr>
@@ -170,8 +170,7 @@
 
                                 <div style="float:left;">
                                     @if (isAdmin() || $isOwner)
-                                        <div style="margin-right:5px; float:left;"><a href='/practice/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
-                                        <div style="margin-right:5px; float:left;"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-pencil" style="color:{{$iconColor}}"></span></a></div>
+                                        <div style="margin-right:5px; float:left;"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
                                         <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash" style="color:{{$iconColor}}"></span></a></div>
                                         <div class="float-left">
                                             @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent

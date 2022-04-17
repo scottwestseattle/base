@@ -197,7 +197,7 @@ class HomeController extends Controller
                         $record->definition = getSentences($record->definition, 1);
 
                         // only show the first sentence in the examples
-                        $record->title_long = getSentences($record->title_long, 1);
+                        $record->title = getSentences($record->title, 1);
 
                         $options['wotd'] = $record;
                     }
@@ -215,7 +215,7 @@ class HomeController extends Controller
                     $record = $tag->definitions()->orderBy('definition_tag.created_at', 'desc')->first();
                     if (isset($record))
                     {
-                        $options['potd'] = $record->title_long;
+                        $options['potd'] = $record->title;
                     }
                 }
             }

@@ -9,7 +9,7 @@
                 <definition_id>{{$def->id}}</definition_id>
                 <definition_type>{{$def->type_flag}}</definition_type>
 	            @if ($def->isSnippet())
-                    <definition_title>{{$def->title_long}}</definition_title>
+                    <definition_title>{{$def->title}}</definition_title>
 				@else
                     <definition_title>{{$def->title}}</definition_title>
                     <definition_definition>{{$def->definition}}</definition_definition>

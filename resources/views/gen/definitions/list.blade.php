@@ -56,7 +56,7 @@
 
             <td style="width:100%;">
                 @if ($record->isSnippet())
-                    <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title_long, $lengthLimit)}}</a>
+                    <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title, $lengthLimit)}}</a>
                     <div>
                         @if (isset($record->translation_en))
                             <div class="medium-thin-text" >{{Str::limit($record->translation_en, $lengthLimit)}}</div>

@@ -94,7 +94,7 @@ return [
 'Remove from List' => '从清单中删除',
 'Private Articles' => '私人文章',
 'Display Order' => '显示顺序',
-'snippet' => '阅读',
+'snippet' => '练习文本',
 'Indicative' => '指示性的',
 'Subjunctive' => '虚拟语气',
 'Imperative' => '至关重要的',
@@ -170,4 +170,5 @@ return [
 'Edit Favorite' => '编辑收藏',
 'Edit System Tag' => '编辑系统标签',
 'Edit Book' => '编辑本书',
+'adjective/adverb' => '形容词或副词',
 ];

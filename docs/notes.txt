@@ -1,13 +1,21 @@
-403 Error:
-2021-07-19 15:47:46.611990 [INFO] [35736] [T0] [73.83.234.194:49812:HTTP2-1#APVH_espdaily.codespace.us:443] File not found [/home/codespace/public_html/public/403.shtml]
+SELECT * FROM `definitions`
+WHERE 1
+AND type_flag = 1
+/* AND title like 'snip%' */
+AND examples is null
 
-DB Changes:
-
-NEW:
-ALTER TABLE `tags` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
-ALTER TABLE `tags` ADD `wip_flag` TINYINT NOT NULL DEFAULT '0' AFTER `release_flag`;
+NEW DB Changes:
+ALTER TABLE `sites` CHANGE `options` `options` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'key1;key2;';
+ALTER TABLE `definitions` ADD `title_snippets` VARCHAR(240) NULL AFTER `title_long`;
+DELETE FROM `definitions` WHERE 1 AND deleted_at IS NOT NULL ;
+update `definitions` set title_snippets = title, pos_flag = 51 WHERE 1 and type_flag = 1;
+update `definitions` set title = title_long WHERE 1 and type_flag = 1 and deleted_at IS NULL;
+update `definitions` set title_long = title_snippets WHERE 1 and type_flag = 1;
+drop title_snippets
 
 Done:
+ALTER TABLE `tags` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
+ALTER TABLE `tags` ADD `wip_flag` TINYINT NOT NULL DEFAULT '0' AFTER `release_flag`;
 UPDATE `definitions` SET examples = NULL WHERE 1 AND TYPE_FLAG = 1
 UPDATE `definitions` SET title_long = examples WHERE 1 AND TYPE_FLAG = 1 AND examples is NOT NULL
 ALTER TABLE `definitions` ADD `title_long` VARCHAR(512) NULL COMMENT 'for snippets' AFTER `title`;

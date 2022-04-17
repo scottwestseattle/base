@@ -285,15 +285,6 @@ class DefinitionController extends Controller
 			// make it prettier
 			$forms = Spanish::getFormsPretty($record->forms);
 		}
-		else
-		{
-			//$records = Definition::conjugationsGen($definition->title);
-			//if (isset($records))
-			//{
-			//	$forms = $records['formsPretty'];
-			//	$record->forms = $forms;
-			//}
-		}
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
@@ -312,7 +303,10 @@ class DefinitionController extends Controller
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
-		$type = (Str::startsWith($record->title, 'snippet')) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+
+		$record->pos_flag = copyDirty($record->pos_flag, intval($request->pos_flag), $isDirty, $changes);
+		$type = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+		$record->type_flag = copyDirty($record->type_flag, $type, $isDirty, $changes);
 
 		if ($isDirty)
 		{
@@ -328,12 +322,9 @@ class DefinitionController extends Controller
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
-		$record->pos_flag = copyDirty($record->pos_flag, intval($request->pos_flag), $isDirty, $changes);
 
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
-
-		$record->type_flag = copyDirty($record->type_flag, $type, $isDirty, $changes);
 
 		try
 		{
@@ -380,6 +371,7 @@ class DefinitionController extends Controller
 
 		return view(VIEWS . '.edit-snippets', [
 			'record' => $record,
+			'formsPretty' => isset($record->forms) ? Spanish::getFormsPretty($record->forms) : null,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
 		]);
     }
@@ -392,7 +384,7 @@ class DefinitionController extends Controller
 		$changes = '';
 		$parent = null;
 
-		$record->title_long = copyDirty($record->title_long, $request->title_long, $isDirty, $changes);
+		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
 
@@ -401,7 +393,7 @@ class DefinitionController extends Controller
 		    $saveError = false;
 			try
 			{
-			    if (strlen($record->title_long) == 0)
+			    if (strlen($record->title) == 0)
 			        throw new \Exception('text can\'t be blank');
 
                 $saveError = true;
@@ -612,11 +604,11 @@ class DefinitionController extends Controller
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
                 $record->release_flag   = RELEASEFLAG_PUBLIC;
-                $record->title_long	    = Str::limit($snippet, 500);
+                $record->title	    = Str::limit($snippet, 500);
                 $record->visitor_id     = getVisitorInfo()['hash'];
 
                 // make the permalink from the example text since the title says 'snippet-'
-                $text = getWords($record->title_long, DEF_PERMALINK_WORDS); // only use the first X words
+                $text = getWords($record->title, DEF_PERMALINK_WORDS); // only use the first X words
                 $record->permalink		= createPermalink($text);
             }
 
@@ -740,10 +732,10 @@ class DefinitionController extends Controller
                     $orderBy = 'id DESC';
                     break;
                 case 'atoz':
-                    $orderBy = 'title_long';
+                    $orderBy = 'title';
                     break;
                 case 'ztoa':
-                    $orderBy = 'title_long DESC';
+                    $orderBy = 'title DESC';
                     break;
                 case 'incomplete':
                     $orderBy = 'translation_en, id';
@@ -1435,7 +1427,7 @@ class DefinitionController extends Controller
         $lines = [];
         foreach($records as $record)
         {
-    		$text = Spanish::getSentences($record->title_long);
+    		$text = Spanish::getSentences($record->title);
     		$lines = array_merge($lines, $text);
         }
 
@@ -1497,7 +1489,7 @@ class DefinitionController extends Controller
 		    // snippets?
             foreach($records as $record)
             {
-                $text = Spanish::getSentences($record->title_long);
+                $text = Spanish::getSentences($record->title);
                 $lines = array_merge($lines, $text);
             }
 		}
@@ -1687,7 +1679,7 @@ class DefinitionController extends Controller
                         $qna[$index]['q'] = $definition->translation_en;
                         $qna[$index]['questionLanguage'] = LANGUAGE_EN;
 
-                        $qna[$index]['a'] = $definition->title_long;
+                        $qna[$index]['a'] = $definition->title;
                         $qna[$index]['answerLanguage'] = LANGUAGE_ES;
 
                         $index++;
@@ -1704,7 +1696,7 @@ class DefinitionController extends Controller
                         $qna[$index]['q'] = $definition->translation_en;
                         $qna[$index]['questionLanguage'] = LANGUAGE_EN;
 
-                        $qna[$index]['a'] = $definition->title_long;
+                        $qna[$index]['a'] = $definition->title;
                         $qna[$index]['answerLanguage'] = LANGUAGE_ES;
 
                         $index++;

@@ -40,14 +40,7 @@
         <td class="icon">
             <div class="ml-3">
                 @if (isAdmin() || App\User::isOwner($record->user_id))
-                    <a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
-                @endif
-            </div>
-        </td>
-        <td class="icon">
-            <div class="ml-3">
-                @if (isAdmin() || App\User::isOwner($record->user_id))
-                    <a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-pencil" style="color:black"></span></a>
+                    <a href="/definitions/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
                 @endif
             </div>
         </td>
@@ -58,7 +51,7 @@
 		<h3>
  			<div class="middle">
 			    @if ($record->isSnippet())
-                    {{$record->title_long}}
+                    {{$record->title}}
 			    @else
                     <div class="float-left">
                         {{$record->title}}

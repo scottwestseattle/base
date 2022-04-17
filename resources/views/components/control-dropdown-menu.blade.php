@@ -29,9 +29,9 @@
 
 	@foreach ($options as $key => $value)
 		@if (isset($selected_option) && $key == $selected_option)
-			<option value="{{$key}}" selected>{{__($value)}}</option>
+			<option value="{{$key}}" selected>{{ucfirst(__($value))}}</option>
 		@else
-			<option value="{{$key}}">{{__($value)}}</option>
+			<option value="{{$key}}">{{ucfirst(__($value))}}</option>
 		@endif
 	@endforeach
 

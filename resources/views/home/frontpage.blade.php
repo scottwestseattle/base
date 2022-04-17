@@ -1,4 +1,4 @@
-@extends('layouts.frontpage')
+@extends('layouts.app')
 @section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
 @section('content')
 

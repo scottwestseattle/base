@@ -50,9 +50,25 @@ class Definition extends Model
         DEFINITIONS_POS_OTHER       => 'base.other',
     ];
 
+    static private $_posLight = [
+        DEFINITIONS_POS_NOTSET      => 'base.not set',
+        DEFINITIONS_POS_ADJECTIVE   => 'proj.adjective/adverb',
+        DEFINITIONS_POS_NOUN        => 'proj.noun',
+        DEFINITIONS_POS_PREPOSITION => 'proj.preposition',
+        DEFINITIONS_POS_PRONOUN     => 'proj.pronoun',
+        DEFINITIONS_POS_VERB        => 'proj.verb',
+        DEFINITIONS_POS_PHRASE      => 'proj.phrase',
+        DEFINITIONS_POS_SNIPPET     => 'proj.snippet',
+    ];
+
     static public function getPosOptions()
     {
         return self::$_pos;
+    }
+
+    static public function getPosLightOptions()
+    {
+        return self::$_posLight;
     }
 
     public function getPos()
@@ -875,7 +891,7 @@ class Definition extends Model
     {
         $rc = false;
 
-		if ($this->type_flag == 1)
+		if ($this->type_flag == DEFTYPE_SNIPPET)
 		{
             $rc = true;
 		}
@@ -900,8 +916,8 @@ class Definition extends Model
 
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->whereRaw('title_long ' . $collation . ' like "%' . $search . '%"')
-                    ->orderBy('title_long')
+                    ->whereRaw('title ' . $collation . ' like "%' . $search . '%"')
+                    ->orderBy('title')
                     ->get();
             }
             catch (\Exception $e)
@@ -921,7 +937,7 @@ class Definition extends Model
 		try
 		{
 			$record = Definition::select()
-				->where('title_long', $value)
+				->where('title', $value)
 				->where('type_flag', DEFTYPE_SNIPPET)
 				->first();
 		}
@@ -1029,7 +1045,7 @@ class Definition extends Model
 		{
 		    if ($record->type_flag == DEFTYPE_SNIPPET)
 		    {
-                $question = getOrSetString($record->title_long, 'snippet not set');
+                $question = getOrSetString($record->title, 'snippet not set');
                 $translation = getOrSetString($record->translation_en, 'translation not set');
                 $definition = getOrSetString($record->definition, 'definition not set');
 		    }
