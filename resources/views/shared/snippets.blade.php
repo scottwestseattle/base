@@ -1,7 +1,38 @@
+<style>
+a:hover {
+	text-decoration:none
+}
+
+.popup {
+    position: relative;
+    display: inline-block;
+    top: 0px;
+}
+
+/* The actual popup (appears on top) */
+.popuptext
+{
+	min-width:300px;
+	height:auto;
+    background-color: white;
+    color: #fff;
+    position: absolute;
+    z-index: 1;
+	top: 0px;
+    xleft: 100%;
+    xmargin-left: -380px;
+	padding: 5px;
+	border: solid 1px lightblue;
+    border-radius: 6px;
+}
+
+</style>
+
 @php
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
 @endphp
+
 
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -36,7 +67,34 @@
 </div>
 
 <!--------------------------------------------------------------------------------------->
-<!-- The record form -->
+<!-- The Search form -->
+<!--------------------------------------------------------------------------------------->
+@php
+    $search = isset($search) ? $search : null;
+    $records = isset($records) ? $records : [];
+@endphp
+<div class="mb-3">
+    <form method="POST" action="/dictionary/create">
+        <input
+            type="text"
+            id="title"
+            name="title"
+            value="{{$search}}"
+            class="form-control textEdit"
+            autocomplete="off"
+            onfocus="$(this).select(); setFocus($(this));" onkeyup="searchDefinitions(event, '#title', '#searchResults', '/definitions/search-ajax/light/');" autofocus
+            placeholder="{{__('proj.Search Dictionary')}}"
+        />
+    </form>
+</div>
+
+<div class='popup'>
+	<span class='popuptext' id="searchResults">
+    </span>
+</div>
+
+<!--------------------------------------------------------------------------------------->
+<!-- The Speech / Record form -->
 <!--------------------------------------------------------------------------------------->
 @if ($showForm)
 <div class="record-form text-center mt-2 p-1">
@@ -44,11 +102,11 @@
 	<form method="POST" action="/definitions/create-snippet">
         <h3 class="practice-title mt-0 pt-0">@LANG('proj.Practice Speaking')</h3>
 		<div class="">
-		    <div style="xmin-height: 300px; ">
+		    <div style="">
             <textarea
                 id="textEdit"
                 name="textEdit"
-                class="form-control textarea-control"
+                class="form-control textarea-control textEdit"
                 placeholder="{{__('proj.Enter text to read')}}"
                 rows="7"
                 style="font-size:18px;"

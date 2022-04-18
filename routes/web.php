@@ -532,7 +532,6 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs']);
 	Route::get('/read-examples/{parms?}', [DefinitionController::class, 'readExamples']);
 
-
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);
 	Route::get('/wordexists/{text}', [DefinitionController::class, 'wordExistsAjax']);
@@ -547,13 +546,12 @@ Route::group(['prefix' => 'definitions'], function () {
 	// search
 	Route::get('/search/{sort?}', [DefinitionController::class, 'search']);
 	Route::post('/search/{sort?}', [DefinitionController::class, 'search']);
-	Route::get('/search-ajax/{text?}', [DefinitionController::class, 'searchAjax']);
+	Route::get('/search-ajax/{resultsFormat}/{text?}', [DefinitionController::class, 'searchAjax']);
 
 	// conjugations
 	Route::get('/conjugationsgen/{definition}', [DefinitionController::class, 'conjugationsGen']);
 	Route::get('/conjugationsgenajax/{text}', [DefinitionController::class, 'conjugationsGenAjax']);
 	Route::get('/conjugationscomponent/{definition}',[DefinitionController::class, 'conjugationsComponentAjax']);
-
 });
 
 // GENERATED for Book model

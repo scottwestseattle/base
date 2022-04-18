@@ -1239,7 +1239,7 @@ function isDelete(keyCode)
 
 _delaySearchId = 0;
 _lastSearchWord = '';
-function searchDefinitions(event, textId, resultsId)
+function searchDefinitions(event, textId, resultsId, url)
 {
 	// only search when alphanum char is pressed or removed with backspace/delete
 	// note that: ctrl-v and ctrl-x still work because the 'v' and 'x' are caught
@@ -1277,11 +1277,12 @@ function searchDefinitions(event, textId, resultsId)
 	$(resultsId).html('');
 
 	//if (searchText.length != 1) // don't use so we can see all the words that start with a letter
+	if (searchText.length > 0)
 	{
 		_delaySearchId = setTimeout(function(){
 			debug('search server call on timer: ' + searchText, debugOn);
 			_lastSearchWord = searchText;
-			ajaxexec('/definitions/search-ajax/' + searchText + '', resultsId, false, searchDefinitionsCallack);}
+			ajaxexec(url + searchText + '', resultsId, false, searchDefinitionsCallack);}
 			, 500
 		);
 	}

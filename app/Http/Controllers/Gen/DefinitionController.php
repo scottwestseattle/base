@@ -48,7 +48,7 @@ class DefinitionController extends Controller
             // copied
 			'find', 'search', 'listTag',
 			'conjugationsGen', 'conjugationsGenAjax', 'conjugationsComponentAjax', 'verbs',
-			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax',	'getRandomWordAjax',
+			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax', 'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
 			'setFavoriteList',
 
@@ -800,13 +800,16 @@ class DefinitionController extends Controller
 	//
 	// This handles the search form from the index/search page
 	//
-    public function searchAjax(Request $request, $text = null)
+    public function searchAjax(Request $request, $resultsFormat, $text = null)
     {
 		$text = getOrSetString(alpha($text), null);
         $records = [];
 
 		try
 		{
+		    if ($resultsFormat != 'full' && $resultsFormat != 'light')
+		        throw new \Exception('bad searchAjax results format parm');
+
 			session(['definitionSearch' => $text]);
 			$records = Definition::searchPartial($text);
 		}
@@ -816,7 +819,9 @@ class DefinitionController extends Controller
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), null, ['text' => $text]);
 		}
 
-		return view(VIEWS . '.component-search-results', [
+        $view = ($resultsFormat === 'light') ? '.component-search-results-light' : '.component-search-results';
+
+		return view(VIEWS . $view, [
 			'records' => $records,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
 		]);
