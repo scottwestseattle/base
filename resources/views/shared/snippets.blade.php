@@ -1,31 +1,23 @@
+<script>
+function showResult(str) {
+  if (str.length==0) {
+    document.getElementById("livesearch").innerHTML="";
+    document.getElementById("livesearch").style.border="0px";
+    return;
+  }
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      document.getElementById("livesearch").innerHTML=this.responseText;
+      document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+    }
+  }
+  xmlhttp.open("GET", "/definitions/search-ajax/light/" + str, true);
+  xmlhttp.send();
+}
+</script>
+
 <style>
-a:hover {
-	text-decoration:none
-}
-
-.popup {
-    position: relative;
-    display: inline-block;
-    top: 0px;
-}
-
-/* The actual popup (appears on top) */
-.popuptext
-{
-	min-width:300px;
-	height:auto;
-    background-color: white;
-    color: #fff;
-    position: absolute;
-    z-index: 1;
-	top: 0px;
-    xleft: 100%;
-    xmargin-left: -380px;
-	padding: 5px;
-	border: solid 1px lightblue;
-    border-radius: 6px;
-}
-
 </style>
 
 @php
@@ -73,25 +65,11 @@ a:hover {
     $search = isset($search) ? $search : null;
     $records = isset($records) ? $records : [];
 @endphp
-<div class="mb-3">
-    <form method="POST" action="/dictionary/create">
-        <input
-            type="text"
-            id="title"
-            name="title"
-            value="{{$search}}"
-            class="form-control textEdit"
-            autocomplete="off"
-            onfocus="$(this).select(); setFocus($(this));" onkeyup="searchDefinitions(event, '#title', '#searchResults', '/definitions/search-ajax/light/');" autofocus
-            placeholder="{{__('proj.Search Dictionary')}}"
-        />
-    </form>
-</div>
+<form>
+    <input type="text" class="form-control form-control-sm textEdit" placeholder="{{__('proj.Dictionary Search')}}" onkeyup="showResult(this.value)" autofocus />
+    <div id="livesearch"></div>
+</form>
 
-<div class='popup'>
-	<span class='popuptext' id="searchResults">
-    </span>
-</div>
 
 <!--------------------------------------------------------------------------------------->
 <!-- The Speech / Record form -->

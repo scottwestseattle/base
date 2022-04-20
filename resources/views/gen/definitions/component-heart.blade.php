@@ -17,7 +17,7 @@
             <div class="glyphCustom-md glyphicon glyphicon-{{$heart}}"></div>
         </a>
 
-        <ul class="small-thin-text dropdown-menu dropdown-menu-right">
+        <ul class="small-thin-text dropdown-menu dropdown-menu-right" style="z-index:10000; background-color:white;">
             @foreach($lists as $list)
                 @if ($tagFromId == $list->id)
                     <li><a class="dropdown-item steelblue" href="/definitions/set-favorite-list/{{$record->id}}/{{$tagFromId}}/0">Remove from {{$list->name}}</a></li>

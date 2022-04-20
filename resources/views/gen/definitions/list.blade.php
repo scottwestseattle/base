@@ -1,6 +1,7 @@
 @php
     $name = isset($name) ? $name : (isset($tag) ? $tag->name : 'name not set');
     $lengthLimit = 125;
+    //$lists = isset($lists) ? $lists : [];
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('ui.List', 2))

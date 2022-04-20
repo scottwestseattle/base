@@ -807,7 +807,7 @@ class DefinitionController extends Controller
 
 		try
 		{
-		    if ($resultsFormat != 'full' && $resultsFormat != 'light')
+		    if ($resultsFormat != 'heavy' && $resultsFormat != 'light')
 		        throw new \Exception('bad searchAjax results format parm');
 
 			session(['definitionSearch' => $text]);
@@ -1292,6 +1292,7 @@ class DefinitionController extends Controller
 		return view(VIEWS . '.list', [
 		    'name' => $name,
 			'records' => $records,
+			'lists' => Definition::getUserFavoriteLists(),
 		]);
     }
 
@@ -1402,7 +1403,6 @@ class DefinitionController extends Controller
 			'records' => $records,
 			'tag' => $tag,
 			'lists' => Definition::getUserFavoriteLists(),
-//			'favoriteListsOptions' => Definition::getUserFavoriteListsOptions(),
 		]);
     }
 
