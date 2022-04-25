@@ -36,7 +36,7 @@
         @endif
 
 		<!-- Javascript -->
-		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+		<script src="{{asset('js/jquery-3.4.1.js')}}"></script>
 		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 
 		<script src="{{asset('js/project.js?ver=' . getVersionJs())}}"></script>

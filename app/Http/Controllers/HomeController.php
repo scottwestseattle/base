@@ -155,8 +155,8 @@ class HomeController extends Controller
         $options['showWidgets'] = true;
         $showTopBoxes = false;
 
-        // show aotd if it hasn't been shown recently
-        if (!Auth::check() || null === Cookie::get('showTopBoxes'))
+        // show aotd, wotd, potd if they haven't been shown recently
+        if (false && (!Auth::check() || null === Cookie::get('showTopBoxes'))) // TURNED OFF
         {
             $showTopBoxes = true;
             Cookie::queue('showTopBoxes', 1, COOKIE_HOUR * 6); // only show every six hours
