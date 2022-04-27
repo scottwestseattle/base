@@ -199,7 +199,7 @@ function showResult(str) {
                                 @if (!isset($record->translation_en))
                                     @if (isAdmin() || $isOwner)
                                         <div class="float-left mr-3 pb-1">
-                                            <a href="/practice/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
+                                            <a href="/definitions/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
                                         </div>
                                     @endif
                                 @endif

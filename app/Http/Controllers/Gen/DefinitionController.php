@@ -603,6 +603,7 @@ class DefinitionController extends Controller
                 $record->title 			= 'snippet-' . timestamp();
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
+                $record->pos_flag 		= DEFINITIONS_POS_SNIPPET;
                 $record->release_flag   = RELEASEFLAG_PUBLIC;
                 $record->title	    = Str::limit($snippet, 500);
                 $record->visitor_id     = getVisitorInfo()['hash'];
