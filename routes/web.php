@@ -448,8 +448,6 @@ Route::group(['prefix' => 'visitors'], function () {
 // GENERATED for Definition model
 use App\Http\Controllers\Gen\DefinitionController;
 
-Route::get('/dictionary', [DefinitionController::class, 'search']);
-
 // Favorites lists
 Route::group(['prefix' => 'favorites'], function () {
     Route::get('/', [DefinitionController::class, 'favorites']);
@@ -472,7 +470,10 @@ Route::group(['prefix' => 'practice'], function () {
 
 // Dictionary
 Route::group(['prefix' => 'dictionary'], function () {
+    Route::get('/', [DefinitionController::class, 'search']);
 	Route::get('/search/{sort}', [DefinitionController::class, 'search']);
+	Route::get('/create-quick/{snippet}', [DefinitionController::class, 'createQuick']);
+	Route::post('/create-quick', [DefinitionController::class, 'createQuick']);
 });
 
 // Snippets

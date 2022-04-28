@@ -16,6 +16,7 @@
         <a onclick="event.preventDefault(); $('#title').val(''); $('#title').focus();" href="" tabindex="-1" class="ml-3"><span id="" class="glyphicon glyphicon-remove" ></span></a>
         <textarea rows="3" id="title" name="title" class="form-control" autocomplete="off" onfocus="setFocus($(this), '#accent-chars');  $('#wordexists').html('');" onblur="wordExists($(this))" />{{$record->title}}</textarea>
         <div id="wordexists" class="small-thin-text ml-2 mb-2"></div>
+        <div class="small-thin-text ml-2">{{$record->permalink}}</div>
         <div class="mb-2 ml-2">
             <a onclick="translateOnWebsite(event, 'deepl', $('#title').val());" href="" tabindex="-1" class="small-thin-text">DeepL</a>
             <a onclick="translateOnWebsite(event, 'spanishdict', $('#title').val());" href="" tabindex="-1"  class="small-thin-text ml-2">Span!shD¡ct</a>

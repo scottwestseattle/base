@@ -65,11 +65,11 @@ function showResult(str) {
     $search = isset($search) ? $search : null;
     $records = isset($records) ? $records : [];
 @endphp
-<form>
-    <input type="text" class="form-control form-control-sm textEdit" placeholder="{{__('proj.Dictionary Search')}}" onkeyup="showResult(this.value)" autofocus />
+<form method="POST" action="/dictionary/create-quick">
+    <input name="title" type="text" class="form-control form-control-sm textEdit" placeholder="{{__('proj.Dictionary Search')}}" onkeyup="showResult(this.value)" autofocus />
     <div id="livesearch"></div>
+    {{ csrf_field() }}
 </form>
-
 
 <!--------------------------------------------------------------------------------------->
 <!-- The Speech / Record form -->
@@ -185,6 +185,9 @@ function showResult(str) {
                             @if ($showForm)
                                 <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title, 200)}}</a>
                                 <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />
+                                @if (Str::startsWith($record->permalink, '-'))
+                                    <div class="red">{{$record->permalink}}</div>
+                                @endif
                             @else
                                 <div class="">{{Str::limit($record->title, 200)}}@if (false) ({{$record->user_id}})@endif</div>
                             @endif

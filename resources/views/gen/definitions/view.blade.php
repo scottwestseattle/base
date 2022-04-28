@@ -51,7 +51,7 @@
 		<h3>
  			<div class="middle">
 			    @if ($record->isSnippet())
-                    {{$record->title}}
+                    <div>{{$record->title}}</div>
 			    @else
                     <div class="float-left">
                         {{$record->title}}
@@ -59,7 +59,7 @@
                     </div>
                     <div class="ml-3 small-thin-text middle"><a target='_blank' href="https://dle.rae.es/{{$record->title}}">RAE</a></div>
                     @if (isAdmin())
-                    <div class="ml-2 small-thin-text middle"><a target='_blank' href="https://www.spanishdict.com/translate/{{$record->title}}">SpanishDict</a></div>
+                        <div class="ml-2 small-thin-text middle"><a target='_blank' href="https://www.spanishdict.com/translate/{{$record->title}}">SpanishDict</a></div>
                     @endif
                     <div class="small-thin-text">{{__(strtolower($record->getPos()))}}</div>
                 @endif

@@ -35,6 +35,9 @@ class DefinitionController extends Controller
 	{
         $this->middleware('admin')->except([
 
+            // dictionary
+            'createQuick',
+
             // definitions
             'view', 'permalink', 'delete', 'edit', 'update',
 
@@ -66,6 +69,10 @@ class DefinitionController extends Controller
 
 			'stats',
         ]);
+
+        $this->middleware('auth')->only([
+			'createQuick',
+		]);
 
         $this->middleware('owner')->only([
 			'edit', 'update',
@@ -122,7 +129,6 @@ class DefinitionController extends Controller
 
 		$record->user_id 		= Auth::id();
 		$record->language_flag 	= LANGUAGE_ES;
-		$record->type_flag      = DEFTYPE_DICTIONARY;
 		$record->title 			= $request->title;
 		$record->forms 			= Spanish::formatForms($request->forms);
 		$record->definition		= $request->definition;
@@ -131,7 +137,9 @@ class DefinitionController extends Controller
 		$record->permalink		= createPermalink($request->title);
 		$record->wip_flag		= WIP_DEFAULT;
 		$record->rank   		= $request->rank;
-		$record->pos_flag   	= $request->pos_flag;
+
+		$record->pos_flag   	= isset($request->pos_flag) ? $request->pos_flag : DEFINITIONS_POS_SNIPPET;
+		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
 
 		try
 		{
@@ -162,6 +170,60 @@ class DefinitionController extends Controller
 			$msg = isset($msg) ? $msg : __('proj.Error adding new definition');
 			logException($f, $e->getMessage(), $msg, ['title' => $record->title]);
 
+			return back();
+		}
+
+		return redirect('/definitions/view/' . $record->permalink);
+    }
+
+    public function createQuick(Request $request, $snippet = null)
+    {
+        $f = __CLASS__ . ':' . __FUNCTION__;
+
+		$title = isset($request->title) ? $request->title : $snippet;
+		$title = alphanum(trim($title));
+        if (!isset($title) || strlen($title) == 0)
+        {
+			$msg = __('base.text is blank');
+			logException($f, $msg);
+			return redirect('/');
+        }
+
+		$record = Definition::get($title);
+		if (isset($record))
+		{
+			flash('danger', __('base.record already exists'));
+			return redirect('/' . PREFIX . '/edit/' . $record->id);
+		}
+		$record = Definition::getSnippet($title);
+		if (isset($record))
+		{
+			flash('danger', __('base.record already exists'));
+			return redirect('/' . PREFIX . '/edit/' . $record->id);
+		}
+
+		$record = new Definition();
+
+		$record->user_id 		= Auth::id();
+		$record->language_flag 	= LANGUAGE_ES;
+		$record->title 			= $title;
+		$record->permalink		= createPermalink($title);
+		$record->wip_flag		= WIP_DEFAULT;
+
+		$record->pos_flag   	= DEFINITIONS_POS_SNIPPET;
+		$record->type_flag      = DEFTYPE_SNIPPET;
+
+		try
+		{
+			$record->save();
+
+			$msg = __('base.New record has been added');
+			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
+		}
+		catch (\Exception $e)
+		{
+			$msg = isset($msg) ? $msg : __('proj.Error adding new definition');
+			logException($f, $e->getMessage(), $msg, ['title' => $record->title]);
 			return back();
 		}
 
@@ -302,18 +364,12 @@ class DefinitionController extends Controller
 		$parent = null;
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
+		$record->permalink = copyDirty($record->permalink, createPermalink($request->title), $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 
 		$record->pos_flag = copyDirty($record->pos_flag, intval($request->pos_flag), $isDirty, $changes);
 		$type = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
 		$record->type_flag = copyDirty($record->type_flag, $type, $isDirty, $changes);
-
-		if ($isDirty)
-		{
-		    // only make new permalink if title changes
-		    $permalink = ($type == DEFTYPE_SNIPPET) ? getWords($record->examples, DEF_PERMALINK_WORDS) : $record->title;
-		    $record->permalink = copyDirty($record->permalink, createPermalink($permalink), $isDirty, $changes);
-		}
 
         // one time call to fix all records
         //Definition::fixAll();

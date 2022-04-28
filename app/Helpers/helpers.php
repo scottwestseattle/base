@@ -459,6 +459,7 @@ if (!function_exists('createPermalink')) {
 
 		if (isset($title))
 		{
+		    $title = getWords($title, DEF_PERMALINK_WORDS);
 		    $v .= convertAccentChars($title);
 		}
 

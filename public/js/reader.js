@@ -1121,11 +1121,16 @@ function getSelectedText(clicks)
 		}
 
 		var html = "<div style='margin-bottom:10px;'><span style='font-size:1.2em;'>" + text + "</span>"
-			+ "&nbsp;<a target='_blank' href='https://translate.google.com/#view=home&op=translate&sl=es&tl=en&text=" + text + "'>(Google)</a>"
+			+ "&nbsp;<a target='_blank' href='https://deepl.com/translator#es/en/" + text + "'>(DeepL)</a>"
 			+ "&nbsp;<a target='_blank' href='https://www.spanishdict.com/translate/" + text + "'>(SpanDict)</a>"
 			+ "&nbsp;<a target='_blank' href='https://dle.rae.es/" + text + "'>(RAE)</a>";
-			if (false && deck.isAdmin)
-				html += "&nbsp;<a target='_blank' href='/definitions/add/" + text + "'>(add)</a>";
+			if (true)
+			{
+				//orig: html += "&nbsp;<a target='_blank' href='/dictionary/create-quick/" + text + "'>(add)</a>";
+				html += "&nbsp;<a href='' onclick='event.preventDefault(); ";
+				html += 'ajaxexec("/dictionary/create-quick/' + text + '"); $("#selected-word").html("<p>Added</p>"); \'>(add)</a>';
+				//console.log(html);
+			}
 			html+= "</div>";
 
 		//_hotWords.push(text + ": ");
@@ -1152,7 +1157,7 @@ function removeDefinitionUser(url)
 
 function translateCallback(definition)
 {
-	ajaxexec('/entries/get-definitions-user/' + parseInt(deck.contentId, 10) + '', '#defs');
+	//translator not plugged in: ajaxexec('/entries/get-definitions-user/' + parseInt(deck.contentId, 10) + '', '#defs');
 }
 
 function xlate(word)
