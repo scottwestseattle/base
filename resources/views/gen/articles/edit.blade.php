@@ -66,10 +66,23 @@
 					<textarea id="description_short" name="description_short" class="form-control entry-description-text" onfocus="setFocus($(this), '#accent-chars')" >{{ $record->description_short }}</textarea>
 				</div>
 
-				<div class="entry-description-div mb-3">
-					<label class="tiny">@LANG('ui.Text'):</label>
-					<textarea id="description" name="description" rows="12" class="form-control" onfocus="setFocus($(this), '#accent-chars')" >{{ $record->description }}</textarea>
-				</div>
+                <div class="mb-3">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a id="nav-link-tab1" class="nav-link active" href="#" onclick="setTab(event, 1);"><span class="nav-link-tab">@LANG('ui.Text')</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="nav-link-tab2" class="nav-link" href="#" onclick="setTab(event, 2);"><span class="nav-link-tab">{{trans_choice('ui.Translation', 1)}}</span></a>
+                        </li>
+                    </ul>
+
+                    <div id="tab-tab1" style="clear:both; display:default;">
+                        <textarea rows="20" name="description" id="description" class="form-control big-text">{{$record->description}}</textarea>
+                    </div>
+                    <div id="tab-tab2" style="clear:both; display:none;">
+                        <textarea rows="20" name="description_translation" id="description_translation" class="form-control big-text">{{$record->description_translation}}</textarea>
+                    </div>
+                </div>
 
                 @if (isset($languageOptions))
                     <div><labe>{{trans_choice('ui.Language', 1)}}:</label></div>

@@ -40,18 +40,14 @@
 
 @if ($record->isText())
     <div id="tab-tab1">
-
         <div id="rich" style="clear:both;display:default;">
             <textarea style="height:500px" name="text" id="text" class="form-control big-text">{{$record->text}}</textarea>
         </div>
-
     </div>
     <div id="tab-tab2">
-
-        <div style="clear:both;display:default;">
+        <div style="clear:both;display:none;">
             <textarea style="height:500px" name="text_translation" id="text_translation" class="form-control big-text">{{$record->text_translation}}</textarea>
         </div>
-
     </div>
 @endif
 

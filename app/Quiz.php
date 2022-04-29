@@ -112,6 +112,41 @@ class Quiz
 		return $quizNew;
 	}
 
+	//
+	// this is the new way, updated for review.js
+	//
+	static public function makeFlashcards($questions, $answers)
+    {
+		$records = [];
+
+		$questions = preg_split('/\r\n/', $questions, -1, PREG_SPLIT_NO_EMPTY);
+		$answers = preg_split('/\r\n/', $answers, -1, PREG_SPLIT_NO_EMPTY);
+		$qna = [];
+		$cnt = 0;
+		foreach($questions as $record)
+		{
+			$line = strip_tags($record);
+            $q = trim($line);
+            if (isset($q) && strlen($q) > 0)
+            {
+                $qna[$cnt]['q'] = $q;
+                $qna[$cnt]['a'] = (count($answers) > $cnt) ? trim(strip_tags($answers[$cnt])) : '';
+                $qna[$cnt]['id'] = $cnt;
+                $qna[$cnt]['ix'] = $cnt; // this will be the button id, just needs to be unique
+
+                $qna[$cnt]['choices'] = null;
+                $qna[$cnt]['definition'] = 'false';
+                $qna[$cnt]['translation'] = '';
+                $qna[$cnt]['extra'] = '';
+                $qna[$cnt]['options'] = '';
+
+                $cnt++;
+            }
+		}
+
+		return $qna;
+	}
+
 	// creates buttons for each answer option
 	// and puts them into the question
 	static private function addAnswerButtons($quiz)

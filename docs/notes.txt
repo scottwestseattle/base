@@ -5,8 +5,8 @@ AND type_flag = 1
 AND examples is null
 
 NEW DB Changes:
+ALTER TABLE `entries` ADD `description_translation` TEXT NULL AFTER `description`
 ALTER TABLE `lessons` ADD `text_translation` TEXT NULL AFTER `text`;
-
 
 Done:
 ALTER TABLE `sites` CHANGE `options` `options` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'key1;key2;';

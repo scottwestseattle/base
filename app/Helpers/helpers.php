@@ -716,12 +716,20 @@ if (!function_exists('intOrNull')) {
 	}
 }
 
+if (!function_exists('getLineCount')) {
+	function getLineCount($text)
+	{
+		$lines = preg_split('/\r\n/', $text, -1, PREG_SPLIT_NO_EMPTY);
+
+        return count($lines);
+    }
+}
+
 if (!function_exists('getSentences')) {
 	function getSentences($string, $count = PHP_INT_MAX)
 	{
 	    $string = trim($string);
 	    $rc = null;
-
         if (isset($string))
         {
             $s = splitSentences($string);
@@ -848,7 +856,6 @@ if (!function_exists('splitSentences')) {
 		{
 			$pattern = '/[\r\n]/';
 			$parts = preg_split($pattern, $string);
-
 			foreach($parts as $part)
 			{
 				$part = trim($part);

@@ -13,6 +13,7 @@ use Log;
 use App\DateTimeEx;
 use App\Entry;
 use App\Gen\Article;
+use App\Quiz;
 use App\Site;
 use App\Status;
 use App\User;
@@ -32,10 +33,10 @@ class ArticleController extends Controller
             'index',
             'view',
             'permalink',
-            'read',
             'add', 'create',
             'edit', 'update',
             'confirmDelete', 'delete',
+            'read', 'flashcards',
         ]);
 
         $this->middleware('auth')->only([
@@ -272,6 +273,7 @@ class ArticleController extends Controller
 		$title 				= $request->title;
 		$description_short	= $request->description_short;
 		$description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
+		$description_trx	= Str::limit($request->description_translation, MAX_DB_TEXT_COLUMN_LENGTH);
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
@@ -294,20 +296,22 @@ class ArticleController extends Controller
             $title = alphanumHarsh($title);
             $description_short = alphanumHarsh($description_short);
             $description = alphanumHarsh($description);
+            $description_trx = alphanumHarsh($description_trx);
             $source = alphanumHarsh($source);
             $source_credit = alphanumHarsh($source_credit);
     		$source_link = cleanUrl($source_link, $urlChanged);
         }
 
-		$record->title 				= trimNull($title);
-		$record->description_short	= trimNull($description_short);
-		$record->description		= trimNull($description);
-		$record->source				= trimNull($source);
-		$record->source_credit		= trimNull($source_credit);
-		$record->source_link		= trimNull($source_link);
-		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
-		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
-		$record->permalink          = createPermalink($record->title, $record->created_at);
+		$record->title 				    = trimNull($title);
+		$record->description_short	    = trimNull($description_short);
+		$record->description		    = trimNull($description);
+		$record->description_translation = trimNull($description_trx);
+		$record->source				    = trimNull($source);
+		$record->source_credit		    = trimNull($source_credit);
+		$record->source_link		    = trimNull($source_link);
+		$record->language_flag		    = isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
+		$record->type_flag 			    = ENTRY_TYPE_ARTICLE;
+		$record->permalink              = createPermalink($record->title, $record->created_at);
 
 		try
 		{
@@ -452,6 +456,41 @@ class ArticleController extends Controller
     public function read(Request $request, Entry $entry)
     {
         return $this->reader($entry, ['return' => PREFIX]);
+    }
+
+	public function flashcards(Request $request, Entry $entry)
+    {
+        $record = $entry;
+		$reviewType = 1;
+        $quiz = null;
+
+		try
+		{
+    		$quiz = Quiz::makeFlashcards($record->description, $record->description_translation);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error making flashcards';
+   			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+			return back();
+		}
+
+		$settings = Quiz::getSettings($reviewType);
+
+		return view($settings['view'], [
+		    'programName' => 'Translations',
+		    'sessionName' => $record->title,
+			'touchPath' => '/history/add-public/',
+			'sentenceCount' => count($quiz),
+			'quizCount' => 0,
+			'records' => $quiz,
+			'canEdit' => true,
+			'isMc' => true, //$lesson->isMc($reviewType),
+            'returnPath' => '/articles/view/' . $entry->permalink,
+			'parentTitle' => $record->title,
+			'settings' => $settings,
+			'random' => 1,
+		]);
     }
 
 }

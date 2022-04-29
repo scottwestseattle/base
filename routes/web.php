@@ -92,7 +92,10 @@ Route::group(['prefix' => 'articles'], function () {
     // add / (create done in entries)
 	Route::get('/add/', [ArticleController::class, 'add']);
 	Route::post('/create/', [ArticleController::class, 'create']);
+
+    // read / flashcards
 	Route::get('/read/{entry}', [ArticleController::class, 'read']);
+	Route::get('/flashcards/{entry}', [ArticleController::class, 'flashcards']);
 
     // edit / update
 	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);

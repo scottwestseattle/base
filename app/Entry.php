@@ -105,6 +105,11 @@ class Entry extends Model
 		return $rc;
 	}
 
+    public function hasTranslation()
+    {
+		return (isset($this->description_translation) && strlen($this->description_translation) > 0);
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Release status
