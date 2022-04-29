@@ -1,7 +1,8 @@
 @extends('layouts.review')
-
 @section('content')
-
+@php
+    dump($random);
+@endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->
@@ -18,12 +19,13 @@
 	data-quiztext-of="@LANG('content.of')"
 	data-quiztext-correct-answer="@LANG('content.Correct!')"
 	data-quiztext-wrong-answer="@LANG('content.Wrong!')"
-	data-quiztext-marked-wrong="@LANG('content.Answer marked as wrong')"	
+	data-quiztext-marked-wrong="@LANG('content.Answer marked as wrong')"
 	data-quiztext-override-correct="@LANG('content.Change to Correct')"
 	data-quiztext-override-wrong="@LANG('content.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('content.Score Changed')"
 	data-lessonid="{{$record->id}}"
 	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-random="{{(isset($random) ? $random : 1)}}"
 ></div>
 
 	<!-------------------------------------------------------->
@@ -56,14 +58,14 @@
 
 		<!-------------------------------------------------------->
 		<!-- Run-time Stats -->
-		<!-------------------------------------------------------->		
+		<!-------------------------------------------------------->
 		<div id="stats">
 			<div class="middle mt-1 mr-1"><a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a></div>
 			<span id="statsCount" class="mr-2"></span>
 			<span id="statsScore"></span>
 			<span id="statsAlert"></span><!-- what is this? -->
 		</div>
-		
+
 
 	</div>
 
@@ -130,7 +132,7 @@
 			<div><button id="3" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
 			<div><button id="4" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
 		</div>
-		
+
 		</fieldset>
 
 	<!----------------------------------------------------------------------------->
@@ -209,7 +211,7 @@
 
 		<div class="btn-panel-bottom pb-2">
 			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); quiz.start()" id="button-start">@LANG('content.Start Review')</button>
-			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>			
+			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 
 	</div>

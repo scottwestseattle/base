@@ -97,6 +97,7 @@ function quiz() {
 	this.quizTextOverrideWrong = 'not set';
 	this.quizTextScoreChanged = 'not set';
 	//this.lessonId = 'not set';
+	this.random = true;
 
     // for History
     this.programName = 'not set';
@@ -355,6 +356,7 @@ function loadData()
 		quiz.quizTextScoreChanged = container.data('quiztext-score-changed');
 		//quiz.lessonId = container.data('lessonid');
 
+		quiz.random = (container.data('random') !== undefined) ? container.data('random') : true;
 		i++;
     });
 
@@ -363,7 +365,7 @@ function loadData()
 
 function loadOrder()
 {
-    console.log(">>> loadOrder");
+    //console.log(">>> loadOrder");
 
 	//
 	// load random map in a work array
@@ -372,7 +374,8 @@ function loadOrder()
 	for (var i = 0; i < max; i++)
 		order[i] = i;
 
-	order = shuffle(order); // mix it up
+    if (quiz.random)
+        order = shuffle(order); // mix it up
 
 	//
 	// now copy it to the real place

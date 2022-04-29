@@ -16,15 +16,19 @@ use App\User;
 define('LESSON_FORMAT_DEFAULT', 0);
 define('LESSON_FORMAT_AUTO', 1);
 
+// CURRENT
 define('LESSONTYPE_NOTSET',          0);
 define('LESSONTYPE_TEXT',           10);
 define('LESSONTYPE_VOCAB',          20);
 define('LESSONTYPE_QUIZ_FIB',       30);
 define('LESSONTYPE_QUIZ_FLASHCARDS',31);
+define('LESSONTYPE_QUIZ_TRANSLATION',32);
+
 define('LESSONTYPE_QUIZ_MC1',       40);
 define('LESSONTYPE_QUIZ_MC2',       41);
 define('LESSONTYPE_QUIZ_MC3',       42);
 define('LESSONTYPE_QUIZ_MC4',       43);
+
 define('LESSONTYPE_TIMED_SLIDES',   50);
 define('LESSONTYPE_READING',        60);
 define('LESSONTYPE_LISTS',          70); // favorites lists
@@ -41,9 +45,10 @@ class Lesson extends Model
 		LESSONTYPE_VOCAB => 'Vocabulary List',
 		LESSONTYPE_QUIZ_FIB => 'Fill in the Blank',
 		LESSONTYPE_QUIZ_FLASHCARDS => 'Flashcards',
-		LESSONTYPE_QUIZ_MC1 => 'Multiple Choice - Set Options (MC1)',
-		LESSONTYPE_QUIZ_MC2 => 'Multiple Choice - Random Options (MC2)',
-		LESSONTYPE_QUIZ_MC3 => 'Multiple Choice - New Layout (MC3)',
+		LESSONTYPE_QUIZ_TRANSLATION => 'Translation',
+//		LESSONTYPE_QUIZ_MC1 => 'Multiple Choice - Set Options (MC1)',
+//		LESSONTYPE_QUIZ_MC2 => 'Multiple Choice - Random Options (MC2)',
+//		LESSONTYPE_QUIZ_MC3 => 'Multiple Choice - New Layout (MC3)',
 		LESSONTYPE_TIMED_SLIDES => 'Timed Slides',
 		LESSONTYPE_READING => 'Reading',
 		LESSONTYPE_LISTS => 'Favorites Lists',
@@ -531,6 +536,11 @@ class Lesson extends Model
         return($this->type_flag == LESSONTYPE_QUIZ_FLASHCARDS);
 	}
 
+    public function isTranslation()
+	{
+        return($this->type_flag == LESSONTYPE_QUIZ_TRANSLATION);
+	}
+
 	public function getLines($text)
     {
 		$raw = [];
@@ -649,6 +659,7 @@ class Lesson extends Model
 		{
 			case LESSONTYPE_QUIZ_FIB:
 			case LESSONTYPE_QUIZ_FLASHCARDS:
+			case LESSONTYPE_QUIZ_TRANSLATION:
 
 			case LESSONTYPE_QUIZ_MC1:
 			case LESSONTYPE_QUIZ_MC2:

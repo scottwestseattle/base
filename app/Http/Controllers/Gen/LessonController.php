@@ -238,6 +238,7 @@ class LessonController extends Controller
 	public function view(Lesson $lesson)
     {
 		$lesson->text = self::convertToHtml($lesson->text);
+		$lesson->text_translation = self::convertToHtml($lesson->text_translation);
 
 		if ($lesson->format_flag == LESSON_FORMAT_AUTO)
 		{
@@ -256,8 +257,17 @@ class LessonController extends Controller
         $lastLesson = (!isset($next) && !isset($nextChapter)); // if on last lesson
 		Lesson::setCurrentLocation($lesson->parent_id, $lesson->id, $lastLesson);
 
-		// count the <p>'s as sentences
-		preg_match_all('#<p>#is', $lesson->text, $matches, PREG_SET_ORDER);
+        if ($lesson->isTranslation())
+        {
+            // count the <p>'s as sentences
+    		$matches = preg_split('/\r\n/', $lesson->text, -1, PREG_SPLIT_NO_EMPTY);
+        }
+        else
+        {
+            // count the <p>'s as sentences
+            preg_match_all('#<p>#is', $lesson->text, $matches, PREG_SET_ORDER);
+        }
+
 		$sentenceCount = count($matches);
 
 		// if there's a table, count the rows, add it to the count
@@ -281,7 +291,7 @@ class LessonController extends Controller
 			'record' => $lesson,
 			'prev' => $prev,
 			'next' => $next,
-			'sentenceCount' => count($matches),
+			'sentenceCount' => $sentenceCount,
 			'courseTitle' => isset($lesson->course) ? $lesson->course->title : '',
 			'nextChapter' => $nextChapter,
 			'lessons' => $lesson->getChapterIndex(),
@@ -310,7 +320,7 @@ class LessonController extends Controller
 		return view(VIEWS . '.edit', [
 			'record' => $lesson,
 			'courses' => self::getCourses('edit'), // for the course dropdown
-			'tinymce' => true,
+			'tinymce' => !$lesson->isTranslation(),
 			'photoPath' => '/img/plancha/',
 			]);
     }
@@ -332,6 +342,7 @@ class LessonController extends Controller
 		$record->title_chapter = copyDirty($record->title_chapter, $request->title_chapter, $isDirty, $changes);
 		$record->description = copyDirty($record->description, $request->description, $isDirty, $changes);
 		$record->text = copyDirty($record->text, self::convertFromHtml(self::cleanHtml($request->text)), $isDirty, $changes);
+		$record->text_translation = copyDirty($record->text_translation, self::convertFromHtml(self::cleanHtml($request->text_translation)), $isDirty, $changes);
 		$record->parent_id = copyDirty($record->parent_id, $request->parent_id, $isDirty, $changes);
 		$record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
 		$record->options = copyDirty($record->options, $request->options, $isDirty, $changes);
@@ -628,6 +639,46 @@ class LessonController extends Controller
 		return $qna;
 	}
 
+	//
+	// this is the new way, updated for review.js
+	//
+	public function makeQnaTranslation($text, $textTranslation)
+    {
+		$records = [];
+
+		// chop it into lines by using the <p>'s
+		/* preg_match_all('#<p.*?>(.*?)</p>#is', $text, $records, PREG_SET_ORDER); */
+		$records = preg_split('/\r\n/', $text, -1, PREG_SPLIT_NO_EMPTY);
+		$recordsTranslation = preg_split('/\r\n/', $textTranslation, -1, PREG_SPLIT_NO_EMPTY);
+		$qna = [];
+		$cnt = 0;
+        $index = 1;
+		foreach($records as $record)
+		{
+			//$line = (count($record) > $index) ? $record[$index] : '';
+			$line = $record;
+			$line = strip_tags($line);
+            $q = trim($line);
+            if (isset($q) && strlen($q) > 0)
+            {
+                $qna[$cnt]['q'] = $q;
+                $qna[$cnt]['a'] = (count($recordsTranslation) > $cnt) ? trim(strip_tags($recordsTranslation[$cnt])) : '';
+                $qna[$cnt]['id'] = $cnt;
+                $qna[$cnt]['ix'] = $cnt; // this will be the button id, just needs to be unique
+
+                $qna[$cnt]['choices'] = null;
+                $qna[$cnt]['definition'] = 'false';
+                $qna[$cnt]['translation'] = '';
+                $qna[$cnt]['extra'] = '';
+                $qna[$cnt]['options'] = '';
+
+                $cnt++;
+            }
+		}
+
+		return $qna;
+	}
+
 	public function reviewOrig(Lesson $lesson, $reviewType = null)
     {
 		$prev = Lesson::getPrev($lesson);
@@ -714,7 +765,10 @@ class LessonController extends Controller
 
 		try
 		{
-			$quiz = self::makeQna($lesson->text); // split text into questions and answers
+		    if ($lesson->isTranslation())
+    			$quiz = self::makeQnaTranslation($lesson->text, $lesson->text_translation);
+    		else
+    			$quiz = self::makeQna($lesson->text); // split text into questions and answers
 		}
 		catch (\Exception $e)
 		{
@@ -740,6 +794,7 @@ class LessonController extends Controller
             'returnPath' => '/' . PREFIX . '/view/' . $lesson->id,
 			'parentTitle' => $lesson->title,
 			'settings' => $settings,
+			'random' => $lesson->isTranslation() ? 0 : 1,
 			]);
     }
 

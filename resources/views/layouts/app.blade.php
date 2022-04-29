@@ -37,12 +37,12 @@
 
 		<!-- Javascript -->
 		<script src="{{asset('js/jquery-3.4.1.js')}}"></script>
-		<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
+		<script src="{{asset('js/bootstrap/bootstrap.bundle.min.js')}}"></script>
 
 		<script src="{{asset('js/project.js?ver=' . getVersionJs())}}"></script>
 		<script src="{{asset('js/speech.js?ver=' . getVersionJs())}}"></script>
 
-        @if (isset($tinymce))
+        @if (isset($tinymce) && $tinymce)
             <script src="/js/tinymce/tinymce.min.js"></script>
             <script src="/js/loadTinyMce.js"></script>
         @endif

@@ -31,6 +31,7 @@
 	data-lessonid="{{$record->id}}"
 @endif
 	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-random="{{(isset($random) ? $random : 1)}}"
 ></div>
 
 	<!-------------------------------------------------------->

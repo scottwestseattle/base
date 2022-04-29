@@ -5,6 +5,10 @@ AND type_flag = 1
 AND examples is null
 
 NEW DB Changes:
+ALTER TABLE `lessons` ADD `text_translation` TEXT NULL AFTER `text`;
+
+
+Done:
 ALTER TABLE `sites` CHANGE `options` `options` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'key1;key2;';
 ALTER TABLE `definitions` ADD `title_snippets` VARCHAR(240) NULL AFTER `title_long`;
 DELETE FROM `definitions` WHERE 1 AND deleted_at IS NOT NULL ;
@@ -12,8 +16,6 @@ update `definitions` set title_snippets = title, pos_flag = 51 WHERE 1 and type_
 update `definitions` set title = title_long WHERE 1 and type_flag = 1 and deleted_at IS NULL;
 update `definitions` set title_long = title_snippets WHERE 1 and type_flag = 1;
 drop title_snippets
-
-Done:
 ALTER TABLE `tags` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
 ALTER TABLE `tags` ADD `wip_flag` TINYINT NOT NULL DEFAULT '0' AFTER `release_flag`;
 UPDATE `definitions` SET examples = NULL WHERE 1 AND TYPE_FLAG = 1

@@ -17,7 +17,10 @@
             <a id="nav-link-tab1" class="nav-link active" href="#" onclick="setTab(event, 1);"><span class="nav-link-tab">@LANG('ui.Text')</span></a>
         </li>
         <li class="nav-item">
-            <a id="nav-link-tab2" class="nav-link" href="#" onclick="setTab(event, 2);"><span class="glyphCustom glyphicon glyphicon-cog"></span><!-- @LANG('ui.Title')--></a>
+            <a id="nav-link-tab2" class="nav-link" href="#" onclick="setTab(event, 2);"><span class="nav-link-tab">{{trans_choice('ui.Translation', 1)}}</span></a>
+        </li>
+        <li class="nav-item">
+            <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3);"><span class="glyphCustom glyphicon glyphicon-cog"></span><!-- @LANG('ui.Title')--></a>
         </li>
         <li class="nav-item">
             <button type="submit" name="update" style="margin-top:5px; margin-left:5px;" class="btn btn-sm btn-primary">@LANG('ui.Save')</button>
@@ -35,7 +38,24 @@
     </div>
 @endif
 
-    <div style="{{$record->isText() ? 'display:none;' : ''}}" id="tab-tab2">
+@if ($record->isText())
+    <div id="tab-tab1">
+
+        <div id="rich" style="clear:both;display:default;">
+            <textarea style="height:500px" name="text" id="text" class="form-control big-text">{{$record->text}}</textarea>
+        </div>
+
+    </div>
+    <div id="tab-tab2">
+
+        <div style="clear:both;display:default;">
+            <textarea style="height:500px" name="text_translation" id="text_translation" class="form-control big-text">{{$record->text_translation}}</textarea>
+        </div>
+
+    </div>
+@endif
+
+    <div style="{{$record->isText() ? 'display:none;' : ''}}" id="tab-tab3">
 
     @if ($record->isTimedSlides())
         <!--------------------------------------------------------------------------->
@@ -195,20 +215,6 @@
         </div>
 
     </div>
-
-@if ($record->isText())
-    <div id="tab-tab1">
-
-        <div id="rich" style="clear:both;display:default;">
-            <textarea style="height:500px" name="text" id="text" class="form-control big-text">{{$record->text}}</textarea>
-        </div>
-
-    </div>
-@endif
-
-    @if (false)
-        <button onclick="event.preventDefault(); saveAndStay();" name="update" class="btn btn-success">Save and Stay</button>
-    @endif
 
     <div class="submit-button">
         <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>

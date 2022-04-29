@@ -5,7 +5,6 @@
 @section('title', trans_choice('proj.Course', 2) )
 @section('menu-submenu')@component('gen.' . $prefix . '.menu-submenu', ['prefix' => $prefix, 'record' => $record])@endcomponent @endsection
 @section('content')
-
 	<div class="page-nav-buttons">
 		<a class="btn btn-success btn-sm btn-nav-lesson-sm" role="button"
             @if($record->isText())
@@ -72,14 +71,38 @@
 	@if ($record->isQuiz())
 
 		@if (isAdmin())
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-			<li class="nav-item">
-				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><span class="nav-link-tab">{{trans_choice('proj.Exercise', 1)}}</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><span class="nav-link-tab">{{trans_choice('proj.Question', 2)}}</span>({{$sentenceCount}})</a>
-			</li>
-		</ul>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            @if ($record->isTranslation())
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><span class="nav-link-tab">{{trans_choice('ui.Text', 1)}}</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><span class="nav-link-tab">{{trans_choice('ui.Translation', 1)}}</span>({{$sentenceCount}})</a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><span class="nav-link-tab">{{trans_choice('proj.Exercise', 1)}}</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><span class="nav-link-tab">{{trans_choice('proj.Question', 2)}}</span>({{$sentenceCount}})</a>
+                </li>
+            @endif
+        </ul>
+
+		@else
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            @if ($record->isTranslation())
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><span class="nav-link-tab">{{trans_choice('ui.Text', 1)}}</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><span class="nav-link-tab">{{trans_choice('ui.Translation', 1)}}</span>({{$sentenceCount}})</a>
+                </li>
+            @endif
+        </ul>
+
 		@endif
 
 		<div class="tab-content" id="myTabContent">
@@ -98,41 +121,44 @@
 						    <a href="/lessons/review/{{$record->id}}/2/20"><button class="btn btn-success">Review (20)</button></a>
 						@endif
 					</div>
-				@endif
-                @if ($record->isFlashcards())
+                @elseif ($record->isFlashcards())
 					<div style="margin: 10px 0;">
 						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
 						@if ($sentenceCount > 20)
     						<a href="/lessons/review/{{$record->id}}/1/20"><button class="btn btn-success">Flashcards (20)</button></a>
                         @endif
 					</div>
+                @elseif ($record->isTranslation())
+					<div style="margin: 10px 0;">
+						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
+					</div>
                 @endif
 
-					@if (false)
-						@if ($record->getLessonType() == LESSONTYPE_QUIZ_MC1)
-						<div style="margin: 20px 0;">
-							<a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC1}}"><button class="btn btn-primary">Start Quiz</button></a>
-						</div>
-						@elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC2)
-						<div style="margin: 20px 0;">
-							<a href="/lessons/review/{{$record->id}}/{{LESSONTYPE_QUIZ_MC2}}"><button class="btn btn-info">Start Quiz</button></a>
-						</div>
-						@elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC3)
-						<div style="margin: 20px 0;">
-							<a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC3}}"><button class="btn btn-info">Start Quiz</button></a>
-						</div>
-						@elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC4)
-						<div style="margin: 20px 0;">
-							<a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC4}}"><button class="btn btn-info">Start Quiz</button></a>
-						</div>
-						@elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC4)
-						<div style="margin: 20px 0;">
-							<a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_FIB}}"><button class="btn btn-success">Start Review</button></a>
-						</div>
-						@endif
-					@endif
+                @if (false)
+                    @if ($record->getLessonType() == LESSONTYPE_QUIZ_MC1)
+                    <div style="margin: 20px 0;">
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC1}}"><button class="btn btn-primary">Start Quiz</button></a>
+                    </div>
+                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC2)
+                    <div style="margin: 20px 0;">
+                        <a href="/lessons/review/{{$record->id}}/{{LESSONTYPE_QUIZ_MC2}}"><button class="btn btn-info">Start Quiz</button></a>
+                    </div>
+                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC3)
+                    <div style="margin: 20px 0;">
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC3}}"><button class="btn btn-info">Start Quiz</button></a>
+                    </div>
+                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC4)
+                    <div style="margin: 20px 0;">
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC4}}"><button class="btn btn-info">Start Quiz</button></a>
+                    </div>
+                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC4)
+                    <div style="margin: 20px 0;">
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_FIB}}"><button class="btn btn-success">Start Review</button></a>
+                    </div>
+                    @endif
+                @endif
 
-            		<div>{!! $record->text !!}</div>
+            	<div>{!! $record->text !!}</div>
 
 				</div>
 			</div>
@@ -141,7 +167,11 @@
 			<!-- The quiz launch tab raw view                                              -->
 			<!------------------------------------------------------------------------------->
 			<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-				<p>{!! $record->text !!}</p>
+			    @if ($record->isTranslation())
+    				<div class="mt-2">{!! $record->text_translation !!}</div>
+				@else
+    				<p>{!! $record->text !!}</p>
+				@endif
 			</div>
 
 		</div>
