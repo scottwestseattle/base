@@ -96,7 +96,7 @@ function d(msg)
 	console.log(msg);
 }
 
-function clipboardCopy(event, idFlash, id)
+function clipboardCopy(event, idFlash, id, stripFormat = true)
 {
 	event.preventDefault();
 
@@ -117,16 +117,19 @@ function clipboardCopy(event, idFlash, id)
 	$("#" + idFlash).css("color", "red");
     $("#status").text("copied");
 
-	// remove the <br>'s and <p>'s and <span>'s
-	text = text.replace(/(\r\n|\n|\r)/gm, "");
-    text = text.trim().replace(/<br\/>/gi, "\n");
-    text = text.trim().replace(/<br \/>/gi, "\n");
-    text = text.trim().replace(/<br>/gi, "\n");
-    text = text.trim().replace(/<p>/gi, "\n");
-    text = text.trim().replace(/<\/p>/gi, "\n");
+    if (stripFormat)
+    {
+        // remove the <br>'s and <p>'s and <span>'s
+        text = text.replace(/(\r\n|\n|\r)/gm, "");
+        text = text.trim().replace(/<br\/>/gi, "\n");
+        text = text.trim().replace(/<br \/>/gi, "\n");
+        text = text.trim().replace(/<br>/gi, "\n");
+        text = text.trim().replace(/<p>/gi, "\n");
+        text = text.trim().replace(/<\/p>/gi, "\n");
 
-    text = text.trim().replace(/<span style="color:green;">/gi, "");
-    text = text.trim().replace(/<\/span>/gi, "");
+        text = text.trim().replace(/<span style="color:green;">/gi, "");
+        text = text.trim().replace(/<\/span>/gi, "");
+    }
 
 	// put the stripped text into the hidden field and select it
     target.textContent = text;

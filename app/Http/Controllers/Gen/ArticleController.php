@@ -13,6 +13,7 @@ use Log;
 use App\DateTimeEx;
 use App\Entry;
 use App\Gen\Article;
+use App\Gen\Spanish;
 use App\Quiz;
 use App\Site;
 use App\Status;
@@ -255,11 +256,19 @@ class ArticleController extends Controller
         $dates = DateTimeEx::getDateControlDates();
 		$filter = DateTimeEx::getDateControlSelectedDate($record->display_date);
 
+		$sentences = Spanish::getSentences($record->description);
+		$sentences_translation = Spanish::getSentences($record->description_translation);
+
+   		$flashcards = Quiz::makeFlashcards($record->description, $record->description_translation);
+
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			'languageOptions' => getLanguageOptions(),
 			'dates' => $dates,
 			'filter' => $filter,
+			'sentences' => Spanish::getString($sentences),
+			'sentences_translation' => Spanish::getString($sentences_translation),
+			'flashcards' => $flashcards,
 			]);
     }
 
@@ -489,7 +498,7 @@ class ArticleController extends Controller
             'returnPath' => '/articles/view/' . $entry->permalink,
 			'parentTitle' => $record->title,
 			'settings' => $settings,
-			'random' => 1,
+			'article' => true,
 		]);
     }
 

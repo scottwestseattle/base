@@ -110,6 +110,11 @@ class Entry extends Model
 		return (isset($this->description_translation) && strlen($this->description_translation) > 0);
     }
 
+    static public function hasTranslationStatic($record)
+    {
+		return (isset($record->description_translation) && strlen($record->description_translation) > 0);
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Release status

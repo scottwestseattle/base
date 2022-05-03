@@ -13,15 +13,27 @@
                         <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;"><a href="/articles/view/{{$record->permalink}}">{{$record->title}}</a></td>
                     </tr>
                     <tr>
-                        <td class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</td>
+                        <td class="small-thin-text">
+                            <div class="float-left">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
+                            <div class="float-left ml-3">
+                                <a class="btn btn-primary btn-xs" role="button" href="/articles/read/{{$record->id}}">
+                                    @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
+                                </a>
+                            </div>
+                            @if (App\Entry::hasTranslationStatic($record))
+                            <div class="float-left ml-2">
+                                <a class="btn btn-success btn-xs" role="button" href="/articles/flashcards/{{$record->id}}">
+                                    @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
+                                </a>
+                            </div>
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td style="font-weight:100;">
                             <div class="float-left mr-3">
                                 <img width="25" src="/img/flags/{{getSpeechLanguage($record->language_flag)['code']}}.png" />
                             </div>
-
-                            @component('components.icon-read', ['href' => "/articles/read/$record->id", 'color' => ''])@endcomponent
 
                             <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                             <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>

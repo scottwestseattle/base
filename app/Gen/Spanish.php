@@ -1692,6 +1692,22 @@ class Spanish
 		return $rc;
 	}
 
+	static public function getSentencesString($text, $delim = "\r\n\r\n") // double-space
+	{
+		$lines = self::getSentences($text);
+        return self::getString($lines, $delim);
+    }
+
+	static public function getString($lines, $delim = "\r\n\r\n") // double-space
+	{
+		$rc = '';
+
+		foreach($lines as $line)
+		    $rc .= $line . $delim;
+
+		return $rc;
+    }
+
 	static public function getSentences($text)
 	{
 		$lines = [];

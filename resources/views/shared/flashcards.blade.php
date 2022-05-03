@@ -3,6 +3,11 @@
 @section('content')
 @php
     $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
+    $article = isset($article) ? $article : false;
+    if ($article)
+    {
+        $random = 0;
+    }
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -97,14 +102,29 @@
 		<!-------------------------------------------------------->
 		<!-- SHOW Question prompt and results RIGHT/WRONG -->
 		<!-------------------------------------------------------->
-		<span id="alertPrompt"></span>
+		<span id="alertPrompt" style=""></span>
 	</div>
 
 	<!-------------------------------------------------------->
 	<!-- QUESTION -->
 	<!-------------------------------------------------------->
 
-	<div class="text-center" style="xbackground-color:gray;">
+	<div class="text-center" style="">
+    @if ($article)
+        <div class="text-center" style="font-size: {{$settings['options']['font-size']}};">
+            <a href="" style="color: black; background-color:LightGray; text-decoration:none;" onclick="flipCard(event, true);">
+                <div style="min-height: 300px; ">
+                    <div class="" style="">
+                        <div id="prompt" class="mb-3"></div>
+                    </div>
+                    <div style="color: #681d1d;">
+                        <p id="flashcard-answer" class="hidden"></p>
+                        <p id="flashcard-extra" class="large-text hidden"></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    @else
         <div class="card card-flashcard card-blue text-center" style="font-size: {{$settings['options']['font-size']}};">
             <a href="" onclick="flipCard(event, true);">
                 <div class="card-header">
@@ -116,6 +136,7 @@
                 </div>
             </a>
         </div>
+    @endif
 	</div>
 
 	<!-------------------------------------------------------->
