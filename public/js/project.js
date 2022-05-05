@@ -737,9 +737,6 @@ function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = n
 	var xhttp = new XMLHttpRequest();
 	var debugOn = false;
 
-	debug('ajaxexec: url: ' + url, debugOn);
-	//debug('ajaxexec: resultsId: ' + resultsId, debugOn);
-
 	xhttp.onreadystatechange = function()
 	{
 		//alert(this.status);

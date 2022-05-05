@@ -79,7 +79,7 @@
 					<div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
 					@if (App\User::isAdmin())
 						<div style="margin-right:15px; float:left;">
-							@component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true])@endcomponent
+							@component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true, 'ajax' => true, 'reload' => true])@endcomponent
 						</div>
 					@endif
 				</div>

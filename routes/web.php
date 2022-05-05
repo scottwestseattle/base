@@ -108,7 +108,7 @@ Route::group(['prefix' => 'articles'], function () {
 	// publish
 	Route::get('/publish/{entry}', [ArticleController::class, 'publish']);
 	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']);
-	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']);
+	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']); // for ajax
 
 });
 
@@ -588,7 +588,7 @@ Route::group(['prefix' => 'books'], function () {
 	// publish
 	Route::get('/publish/{entry}', [BookController::class, 'publish']);
 	Route::post('/publishupdate/{entry}', [BookController::class, 'updatePublish']);
-	Route::get('/publishupdate/{entry}', [BookController::class, 'updatePublish']);
+	Route::get('/publishupdate/{entry}', [BookController::class, 'updatePublish']); // for ajax: toggles publish
 
 	// delete
 	Route::get('/confirmdelete/{entry}', [BookController::class, 'confirmDelete']);

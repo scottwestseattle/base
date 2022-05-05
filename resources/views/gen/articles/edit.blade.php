@@ -74,7 +74,7 @@
                             <a id="nav-link-tab2" class="nav-link" href="#" onclick="setTab(event, 2);"><span class="nav-link-tab">{{trans_choice('ui.Translation', 1)}}</span></a>
                         </li>
                         <li class="nav-item">
-                            <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3);"><span class="nav-link-tab">{{trans_choice('proj.Side by Side', 1)}}</span></a>
+                            <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3);"><span class="nav-link-tab">{{trans_choice('ui.Show All', 1)}}</span></a>
                         </li>
                     </ul>
 
@@ -97,11 +97,11 @@
                         <textarea rows="20" name="sentences_translation" id="sentences_translation" class="form-control big-text hidden">{{$sentences_translation}}</textarea>
                     </div>
                     <div id="tab-tab3" style="clear:both; display:none; min-height:500px; overflow-y:auto;">
-                        <table><tbody>
+                        <table class="mt-2"><tbody>
                         @foreach($flashcards as $card)
                         <tr class="mb-3">
-                            <td class="pb-4">{{$loop->index + 1}}) {{$card['q']}}</td>
-                            <td class="pb-4">{{$loop->index + 1}}) {{$card['a']}}</td>
+                            <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$card['q']}}</td>
+                            <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$card['a']}}</td>
                         </tr>
                         @endforeach
                         </tbody></table>

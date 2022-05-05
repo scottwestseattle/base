@@ -991,8 +991,8 @@ if (!function_exists('getLogo')) {
 	function getLogo()
 	{
 	    $logos = [
-//	        'moon',
-	        'moon-fill',
+	        'sun',
+//	        'moon-fill',
 //	        'moon-stars',
 //	        'moon-stars-fill',
 //	        'cloud-moon',

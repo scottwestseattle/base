@@ -54,11 +54,9 @@
                 <div style="margin-right:15px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
                 <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                 <div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['wordCount']}} {{trans_choice('ui.Word', 2)}}</a></div>
-                @if (isAdmin() && !$record->isPublic())
                 <span style="margin-left:10px;">
-                    @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true])@endcomponent
+                    @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true,  'ajax' => true, 'reload' => true])@endcomponent
                 </span>
-                @endif
                 @if (isset($record->definitions) && count($record->definitions) > 0)
                     <div class="mr-2 float-left">
                         <a href="/entries/vocabulary/{{$record->id}}" class="btn btn-xs btn-primary" role="button">

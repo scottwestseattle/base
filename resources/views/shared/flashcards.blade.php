@@ -110,14 +110,14 @@
 	<!-------------------------------------------------------->
 
 	<div class="text-center" style="">
-    @if ($article)
+    @if (true || $article)
         <div class="text-center" style="font-size: {{$settings['options']['font-size']}};">
             <a href="" style="color: black; background-color:LightGray; text-decoration:none;" onclick="flipCard(event, true);">
                 <div style="min-height: 300px; ">
                     <div class="" style="">
                         <div id="prompt" class="mb-3"></div>
                     </div>
-                    <div style="color: #681d1d;">
+                    <div class="steelblue">
                         <p id="flashcard-answer" class="hidden"></p>
                         <p id="flashcard-extra" class="large-text hidden"></p>
                     </div>
@@ -169,7 +169,11 @@
             </div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
-				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion();">@LANG('quiz.Reverse question and answer')</label>
+				<label for="checkbox-flip" class="checkbox-xs steelblue" onclick="reloadQuestion();">@LANG('quiz.Reverse question and answer')</label>
+			</div>
+			<div class="mt-1 ml-1">
+				<input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#panel-show').toggle();" />
+				<label for="checkbox-show" class="checkbox-xs steelblue">@LANG('ui.Show All')</label>
 			</div>
 		</div>
 
@@ -268,6 +272,20 @@
 		</div>
 
 	</div>
+
+	<!---------------------------------------------------------------------------------------------------------------->
+	<!-- Show Flashcards Panel -->
+	<!---------------------------------------------------------------------------------------------------------------->
+    <div id="panel-show" style="clear:both; display:none; min-height:500px; overflow-y:auto;">
+        <table><tbody>
+        @foreach($records as $card)
+        <tr class="mb-3">
+            <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$card['q']}}</td>
+            <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$card['a']}}</td>
+        </tr>
+        @endforeach
+        </tbody></table>
+    </div>
 
 @endif
 

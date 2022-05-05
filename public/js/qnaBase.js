@@ -20,7 +20,7 @@ const SCORE_NOTSET = 0;
 const SCORE_CORRECT = 1;
 const SCORE_WRONG = 2;
 
-const COLOR_QUESTION_PROMPT = 'black';
+const COLOR_QUESTION_PROMPT = '#4682b4'; // steelblue
 
 //
 // numbers
