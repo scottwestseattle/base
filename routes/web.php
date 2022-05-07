@@ -96,6 +96,7 @@ Route::group(['prefix' => 'articles'], function () {
     // read / flashcards
 	Route::get('/read/{entry}', [ArticleController::class, 'read']);
 	Route::get('/flashcards/{entry}', [ArticleController::class, 'flashcards']);
+	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
 
     // edit / update
 	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);

@@ -659,19 +659,22 @@ h6 {
 
 .card-flashcard, .card-flashcard a {
 	max-width:100%;
-	width:500px;
 	min-height:200px;
 	color:white;
 	text-decoration:none;
+	width:100%;
+
+    /* to center the card if it has the width set narrower
+	width:800px;
+    margin: 0 auto;
+    float:none;
+    */
 }
 
 .card-verb-conj {
 	text-decoration:none;
 	border:none;
     min-width: 200px;
-    xbackground: LightGray;
-    xmargin-right:20px;
-    xpadding-right:10px;
 }
 
 .col-verb-conj {

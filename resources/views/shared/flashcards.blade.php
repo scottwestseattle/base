@@ -110,7 +110,7 @@
 	<!-------------------------------------------------------->
 
 	<div class="text-center" style="">
-    @if (true || $article)
+    @if ($article)
         <div class="text-center" style="font-size: {{$settings['options']['font-size']}};">
             <a href="" style="color: black; background-color:LightGray; text-decoration:none;" onclick="flipCard(event, true);">
                 <div style="min-height: 300px; ">
@@ -165,7 +165,10 @@
                 @if (false)
                 <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.Remove')</button>
                 @endif
-                <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, false)" id="button-repeat">@LANG('quiz.Repeat')</button>
+
+                <div class="text-center">
+                    <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, false)" id="button-repeat">@LANG('quiz.Repeat')</button><!-- this is te I GOT IT WRONG button -->
+                </div>
             </div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />

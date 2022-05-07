@@ -37,7 +37,7 @@ class ArticleController extends Controller
             'add', 'create',
             'edit', 'update',
             'confirmDelete', 'delete',
-            'read', 'flashcards',
+            'read', 'flashcards', 'flashcardsView'
         ]);
 
         $this->middleware('auth')->only([
@@ -500,6 +500,17 @@ class ArticleController extends Controller
 			'settings' => $settings,
 			'article' => true,
 		]);
+    }
+
+	public function flashcardsView(Request $request, Entry $entry)
+    {
+		$record = $entry;
+
+   		$flashcards = Quiz::makeFlashcards($record->description, $record->description_translation);
+
+		return view('shared.flashcards-view', [
+			'records' => $flashcards,
+			]);
     }
 
 }

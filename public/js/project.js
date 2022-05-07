@@ -100,7 +100,9 @@ function clipboardCopy(event, idFlash, id, stripFormat = true)
 {
 	event.preventDefault();
 
-	var text = document.getElementById(id).innerHTML;
+    id = getId(id);
+//	var text = document.getElementById(id).innerHTML;
+	var text = $(id).val();
 
 	// create an input field that can be selected
 	var target = document.createElement("textarea");
@@ -736,6 +738,7 @@ function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = n
 {
 	var xhttp = new XMLHttpRequest();
 	var debugOn = false;
+	resultsId = getId(resultsId);
 
 	xhttp.onreadystatechange = function()
 	{
@@ -1384,4 +1387,40 @@ function addHistoryRecord(url, programName, programId, sessionName, sessionId, s
     //console.log('history: ' + path);
 
     ajaxexec(path);
+}
+
+function getSentences(text)
+{
+    //var result = text.replace(/ [a-zA-Z][a-zA-Z]\./g);
+    var rc = '';
+
+    var result = text.replace(/ [a-zA-Z][a-zA-Z]\./g, (match) => {
+        //console.log({match});
+        return match.replace('.', '|');
+    });
+
+    result = result.match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+
+    result.forEach(function (line) {
+        rc += line.replace('|', '.').trim() + '\r\n';
+    });
+
+    return rc;
+}
+
+function getId(id)
+{
+    return id.startsWith('#') ? id : '#' + id;
+}
+
+function swap(idFrom, idTo)
+{
+    idTo = getId(idTo);
+    idFrom = getId(idFrom);
+
+	var text = $(idFrom).val();
+
+    // do the swap
+    $(idFrom).val($(idTo).val());
+    $(idTo).val(text);
 }
