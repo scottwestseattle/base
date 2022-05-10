@@ -738,7 +738,8 @@ function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = n
 {
 	var xhttp = new XMLHttpRequest();
 	var debugOn = false;
-	resultsId = getId(resultsId);
+
+   	resultsId = getId(resultsId);
 
 	xhttp.onreadystatechange = function()
 	{
@@ -1394,23 +1395,31 @@ function getSentences(text)
     //var result = text.replace(/ [a-zA-Z][a-zA-Z]\./g);
     var rc = '';
 
-    var result = text.replace(/ [a-zA-Z][a-zA-Z]\./g, (match) => {
-        //console.log({match});
-        return match.replace('.', '|');
+    // Step 1: Remove initials like T.S. Elliot and remove numbers like 1.1 2.2 so they won't be split on
+    var result = text.replace(/([a-zA-Z]\.[a-zA-Z])|([0-9]\.[0-9])/g, (match) => {
+        console.log({match});
+        return match.replace(/\./g, '| ');
+    });
+
+    // Step 2: Try to avoid splitting after Mr. Mrs. Sra. Sr. by looking 2 or 3 letter words starting with an uppercase letter
+    result = result.replace(/(^[A-Z][a-zA-Z]{1,2}\.)|( [A-Z][a-zA-Z]{1,2}\.)|( [A-Z]\.)/g, (match) => {
+        console.log({match});
+        return match.replace(/\./g, '| ');
+    });
+
+    // Step 3: Undo changes to roman numerals like "Siglo XXI." so they WILL be split on
+    result = result.replace(/( [IVXLCDM]+\| )/g, (match) => {
+        console.log({match});
+        return match.replace(/\| /g, '. ');
     });
 
     result = result.match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
 
     result.forEach(function (line) {
-        rc += line.replace('|', '.').trim() + '\r\n';
+        rc += line.replace(/\| /g, '.').trim() + '\r\n\r\n';
     });
 
     return rc;
-}
-
-function getId(id)
-{
-    return id.startsWith('#') ? id : '#' + id;
 }
 
 function swap(idFrom, idTo)
@@ -1423,4 +1432,12 @@ function swap(idFrom, idTo)
     // do the swap
     $(idFrom).val($(idTo).val());
     $(idTo).val(text);
+}
+
+function getId(id)
+{
+    if (id.length > 0)
+        return id.startsWith('#') ? id : '#' + id;
+    else
+        return id;
 }
