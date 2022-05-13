@@ -1572,6 +1572,7 @@ class DefinitionController extends Controller
 		}
 
         $sentences = [];
+        $type = DEFTYPE_SNIPPET; // read all as DEF
         if ($type == DEFTYPE_DICTIONARY)
         {
             // regular definition
@@ -1616,7 +1617,9 @@ class DefinitionController extends Controller
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
-		$lines = self::formatDefinitions($records, $examplesOnly);
+		$words = self::formatDefinitions($records, $examplesOnly);
+		$lines['text'] = $words;
+
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
 	    $options['return'] = '/favorites';
 

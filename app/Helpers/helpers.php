@@ -325,13 +325,15 @@ if (!function_exists('alphanumHarsh')) {
 	function alphanumHarsh($text)
 	{
 	    $debug = false;
-	    //$debug = true;
 	    $clean = null;
 
 		if (isset($text))
 		{
+		    $clean = str_replace('[', '(', $text);
+		    $clean = str_replace(']', ')', $clean);
+
 			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
-            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\/\&\-\r\n]/u", '', $text);
+            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\=\%\/\&\-\+\r\n]/u", '', $clean);
             $chino = '\。\，';
 
             if ($debug)
