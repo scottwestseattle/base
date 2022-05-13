@@ -544,6 +544,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/translate/{text}/{entryId?}',[DefinitionController::class, 'translateAjax']);
 	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);
 	Route::get('/unheart/{definition}',[DefinitionController::class, 'unheartAjax']);
+	Route::get('/remove-favorites/{tag}',[DefinitionController::class, 'removeFavorites']);
 	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
 	Route::get('/get-random-word/',[DefinitionController::class, 'getRandomWordAjax']);
 	Route::get('/scrape-definition/{word}',[DefinitionController::class, 'scrapeDefinitionAjax']);

@@ -38,10 +38,12 @@
                             <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                             <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>
 
-                            @if (isAdmin())
+                            @if (isAdmin() || App\User::isOwner($record->user_id))
+                                @if (isAdmin())
                                 <div style="margin-right:10px; float:left;">
                                     @component('components.control-button-publish', ['record' => $record, 'btnStyle' => 'btn-xxs', 'prefix' => 'articles', 'showPublic' => true, 'ajax' => true, 'reload' => true])@endcomponent
                                 </div>
+                                @endif
                                 <div style="margin-right:5px; float:left;"><a href='/articles/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
                                 <div style="margin-right:0px; float:left;"><a href='/articles/confirmdelete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash"></span></a></div>
                             @endif

@@ -53,7 +53,7 @@ class DefinitionController extends Controller
 			'conjugationsGen', 'conjugationsGenAjax', 'conjugationsComponentAjax', 'verbs',
 			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax', 'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
-			'setFavoriteList',
+			'setFavoriteList', 'removeFavorites',
 
             // review
 			'review',
@@ -77,7 +77,8 @@ class DefinitionController extends Controller
         $this->middleware('owner')->only([
 			'edit', 'update',
 			'editSnippet', 'updateSnippet',
-			'review', 'readList', 'delete'
+			'review', 'readList', 'delete',
+			'unheartAjax', 'removeFavorites',
 		]);
 
 		parent::__construct();
@@ -1274,6 +1275,31 @@ class DefinitionController extends Controller
 		return $rc;
     }
 
+	public function removeFavorites(Request $request, Tag $tag)
+    {
+        $rc = '';
+		$records = []; // make this countable so view will always work
+		try
+		{
+			$records = $tag->definitionsUser()->get();
+            foreach($records as $record)
+            {
+            	$record->removeTag($tag->id);
+            }
+
+            $rc .= '"' . $tag->name . '": ';
+           	$rc .= count($records) > 0 ? __('proj.All favorites removed') : __('proj.Nothing to remove');
+		}
+		catch (\Exception $e)
+		{
+			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting list'));
+		}
+
+        logInfo('removeFavorites', $rc, null, ['tag' => $tag->name, 'id' => $tag->id]);
+
+		return redirect('/' . PREFIX . '/list-tag/' . $tag->id);
+    }
+
     public function review(Request $request, Tag $tag, $reviewType = null)
     {
 		$reviewType = intval($reviewType);
@@ -1486,12 +1512,17 @@ class DefinitionController extends Controller
             $languageFlag = LANGUAGE_EN;
         }
 
-        $lines = [];
+        $text = [];
+        $translations = [];
         foreach($records as $record)
         {
-    		$text = Spanish::getSentences($record->title);
-    		$lines = array_merge($lines, $text);
+    		$text = array_merge($text, Spanish::getSentences($record->title));
+
+            // these don't match yet because some snippets have more than one sentence
+    		$trx = (strlen($record->translation_en) > 0) ? $record->translation_en : '(none)';
+    		$translations = array_merge($translations, Spanish::getSentences($trx));
         }
+        $lines = ['text' => $text, 'translations' => $translations];
 
         $options['return'] = '/' . $return;
         $options['randomOrder'] = true;
@@ -1540,11 +1571,11 @@ class DefinitionController extends Controller
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting list'));
 		}
 
-        $lines = [];
+        $sentences = [];
         if ($type == DEFTYPE_DICTIONARY)
         {
             // regular definition
-		    $lines = self::formatDefinitions($records);
+		    $sentences = self::formatDefinitions($records);
         }
 		else
 		{
@@ -1552,9 +1583,10 @@ class DefinitionController extends Controller
             foreach($records as $record)
             {
                 $text = Spanish::getSentences($record->title);
-                $lines = array_merge($lines, $text);
+                $sentences = array_merge($sentences, $text);
             }
 		}
+		$lines['text'] = $sentences;
 
 	    $options['return'] = '/favorites';
 

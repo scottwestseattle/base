@@ -25,6 +25,7 @@ var _paused = false;
 var _lastCharIndex = 0;
 var _cancelled = false;
 var _readFontSize = 18;
+var _minFontSize = 14;
 var _maxFontSize = 99;
 var _hotWords = [];
 var _bottomPanelHeight; // height of bottom button panel
@@ -259,25 +260,48 @@ function deck() {
 	}
 
 	this.showSlide = function() {
-	    var slide = getCurrentSlide();
         $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + deck.slides.length);
-        $(".slideDescription").text(slide.description);
+        $(".slideDescription").text(deck.getText());
 		$('#selected-word').text('');
 		$('#selected-word-definition').text('');
+
+		$('#slideTranslaiton').text('');
+        $("#slideTranslation").hide();
 
 		if ($('#tab1').is(':visible'))
 			window.scroll(0, 0); // scroll to top
 
 	}
 
-	this.readSlideResume = function() {
+	this.isFlipped = function() {
+		return $('#checkbox-flip').prop('checked');
+	}
+
+    this.getText = function (mainText = true) {
+
 	    var slide = getCurrentSlide();
-		read(slide.description, _lastCharIndex);
+
+        if (mainText)
+        {
+            return this.isFlipped() ? slide.translation : slide.description;
+        }
+        else // get translation
+        {
+            return this.isFlipped() ? slide.description : slide.translation;
+        }
+    }
+
+	this.showTranslation = function() {
+        $("#slideTranslation").text(deck.getText(/* main text = */ false));
+        $("#slideTranslation").toggle();
+	}
+
+	this.readSlideResume = function() {
+		read(deck.getText(), _lastCharIndex);
 	}
 
 	this.readSlide = function() {
-	    var slide = getCurrentSlide();
-		read(slide.description, 0);
+		read(deck.getText(), 0);
 	}
 
 	this.setAlertPrompt = function(text, color, bold = false) {
@@ -304,6 +328,9 @@ function loadData()
 
 		var number = 1;
 		var description = container.data('description');
+		var translation = container.data('translation');
+		translation = (typeof translation !== 'undefined') ? translation : '';
+
 		var id = container.data('id');
         var seconds = parseInt(container.data('seconds'));
         var between = parseInt(container.data('between'));
@@ -315,6 +342,7 @@ function loadData()
 		    title:title.toString(),
 		    number:number,
 		    description:description.toString(),
+		    translation:translation.toString(),
 		    id:id.toString(),
 		    order:0,
 		    seconds:seconds,
@@ -616,8 +644,7 @@ function readPage(readText = '', textId = '')
 
         if (readText.length == 0)
         {
-            var slide = getCurrentSlide();
-            readText = slide.description;
+            readText = deck.getText();
         }
 
         read(readText, 0, textId);
@@ -1175,6 +1202,9 @@ function zoom(event, amount)
 
 	if (_readFontSize > _maxFontSize) // don't go crazy
 		_readFontSize = _maxFontSize;
+	if (_readFontSize < _minFontSize) // don't go crazy
+		_readFontSize = _minFontSize;
+	//console.log('font size: ' + _readFontSize);
 
 	localStorage['readFontSize'] = _readFontSize;
 	setFontSize();
@@ -1183,8 +1213,14 @@ function zoom(event, amount)
 function setFontSize()
 {
 	$("#slideDescription").css("font-size", _readFontSize + "px");
-	$("#slideTitle").css("font-size", _readFontSize + "px");
 
+    var fontDiff = 5;
+	var transFontSize = _readFontSize - fontDiff;
+	transFontSize = transFontSize >= (_minFontSize - fontDiff) ? transFontSize : _minFontSize;
+	$("#slideTranslation").css("font-size", transFontSize + "px");
+	//console.log('transFont: ' + transFontSize);
+
+	$("#slideTitle").css("font-size", _readFontSize + "px");
 	$("#readFontSizeLabel").css("font-size", _readFontSize + "px");
 	$(".glyph-zoom-button").css("font-size", _readFontSize + "px");
 	$("#readFontSize").text(_readFontSize);

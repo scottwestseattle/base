@@ -4,7 +4,7 @@
 @php
     $recordId = isset($recordId) ? $recordId : -1;
     $readLocation = isset($readLocation) ? $readLocation : null;
-    $count = count($lines);
+    $count = count($lines['text']);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
     if (!isset($historyPath))
     {
@@ -12,6 +12,10 @@
         logError($msg, $msg);
         $historyPath = '/history/add-public/';
     }
+
+	$hasTranslation = isset($lines['translation']) && count($lines['text']) == count($lines['translation']); // translation matches text
+	$showTranslationControls = isset($lines['translation']); // show the translation in case it needs work
+
 @endphp
 
 <!-------------------------------------------------------->
@@ -47,11 +51,12 @@
 	<!-------------------------------------------------------->
 	<!-- Add the body lines to read -->
 	<!-------------------------------------------------------->
-@foreach($lines as $line)
+@foreach($lines['text'] as $line)
 	<div class="data-slides"
 	    data-title="{{$line}}"
 	    data-number="1"
 	    data-description="{{$line}}"
+	    data-translation="{{$hasTranslation ? $lines['translation'][$loop->index] : ''}}"
 	    data-id="{{$recordId}}"
 	    data-seconds="10"
 	    data-between="2"
@@ -86,8 +91,11 @@
 			<span class="glyphReader"><a onclick="zoom(event, -3);" href=""><span class="glyphicon glyphicon-zoom-out"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, 3);" href=""><span class="glyphicon glyphicon-zoom-in"></span></a></span>
 			<span class="glyphReader"><a onclick="toggleActiveTab(event, '#tab3', '#tab1', '.tab-body');" href=""><span class="glyphicon glyphicon-cog"></span></a></span>
-			@if (Auth::check())
-				<span class="glyphReader"><a onclick="toggleActiveTab(event, '#tab2', '#tab1', '.tab-body');" href=""><span class="glyphicon glyphicon-th-list"></span></a></span>
+			@if (false && Auth::check())
+				<span class="glyphReader"><a onclick="toggleActiveTab(event, '#tab2', '#tab1', '.tab-body');" href=""><span class=""></span></a></span>
+			@endif
+			@if ($hasTranslation)
+				<span class="glyphReader"><a onclick="event.preventDefault(); deck.showTranslation();" href=""><span class="glyphicon glyphicon-text-width"></span></a></span>
 			@endif
 
 			@if (false)
@@ -143,6 +151,18 @@
                         <label for="random_order">Random Order</label><br>
                     </div>
 
+                    @if ($hasTranslation)
+    					<div id="" class="mt-2 steelblue" style="">
+    					    <span class="glyphicon glyphCustom glyphicon-text-width mr-2"></span>
+    					    <div class="pb-1" style="">@LANG('proj.Has Translation')</div>
+    					</div>
+
+                        <div class="mt-1 ml-1">
+                            <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
+                            <label for="checkbox-flip" class="checkbox-xs steelblue" onclick="event.preventDefault(); deck.flipScript();">@LANG('proj.Reverse text and translation')</label>
+                        </div>
+                    @endif
+
 					<div id="elapsedTime" class="mt-5"></div>
 					<div class="statusMsg" class="ml-3"></div>
 
@@ -171,6 +191,7 @@
 					<div id="slideDescription" class="slideDescription" style="font-size: 18px;" onmouseup="getSelectedText(1);" ondblclick="getSelectedText(2);" ontouchend="getSelectedText();"></div>
 					<div class="" style="color: green;" id="selected-word"></div>
 					<div class="" style="color: green;" id="selected-word-definition"></div>
+                    <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
 				</div><!-- panel-run -->
 			</div>
 		  </div>
@@ -204,6 +225,28 @@
 				<div class="middle" id="readFontSizeLabel">{{__('ui.Text Size')}}: <span id="readFontSize">18</span></div>
 				<div class="middle ml-3"><a onclick="zoom(event, 3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-in glyph-zoom-button"></span></a></div>
 			</div>
+
+            @if ($showTranslationControls)
+                <div class="mt-1 ml-1">
+                    <input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#translation-show').toggle();" style="position: static;" />
+                    <label for="checkbox-show" class="checkbox-xs steelblue">@LANG('proj.Show All Translations')</label>
+                </div>
+                <div class="mt-3 text-left">
+                    <div id="translation-show" class="hidden">
+                    <table><tbody>
+                    @foreach($lines['text'] as $line)
+                        <tr class="mb-3">
+                            <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$line}}</td>
+                            @php
+                                $trx = (isset($lines['translation'][$loop->index])) ? $lines['translation'][$loop->index] : '';
+                            @endphp
+                            <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$trx}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody></table>
+                    </div>
+                </div>
+            @endif
 		</div>
 	</div>
 

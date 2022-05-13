@@ -414,7 +414,7 @@ class BookController extends Controller
     // this is read book
     public function readBook(Request $request, Tag $tag)
     {
-		$lines = [];
+		$sentences = [];
         $languageFlag = null;
         $recordId = null;
         $readLocation = null;
@@ -431,10 +431,22 @@ class BookController extends Controller
             if (!isset($readLocation))
                 $readLocation = $chapter->tagRecent();
 
-            $lines = self::getLines($chapter, $lines);
+            $sentences = self::getLinesAll($chapter, $sentences);
         }
 
+        // translations isn't handled for books yet so $lines['translation'] isn't set
+        $lines['text'] = $sentences;
+
 		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, '/books/chapters/' . $tag->id);
+    }
+
+    static public function getLinesAll(Entry $record, $lines)
+    {
+		$lines = array_merge($lines, Spanish::getSentences($record->title));
+		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
+		$lines = array_merge($lines, Spanish::getSentences($record->description));
+
+		return $lines;
     }
 
     // this is read chapter
@@ -451,8 +463,7 @@ class BookController extends Controller
 		    $title = $book->name . ' - ' . $record->title;
 		}
 
-		$lines = [];
-		$lines = self::getLines($record, $lines);
+		$lines = self::getLines($record);
 
 		$backLink = '/books/show/' . $record->permalink;
 
@@ -486,15 +497,6 @@ class BookController extends Controller
 			'labels' => $labels,
 			'historyPath' => '/history/add-public/',
 		]);
-    }
-
-    static public function getLines(Entry $record, $lines)
-    {
-		$lines = array_merge($lines, Spanish::getSentences($record->title));
-		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
-		$lines = array_merge($lines, Spanish::getSentences($record->description));
-
-		return $lines;
     }
 
     public function stats(Request $request, Tag $tag)

@@ -68,17 +68,40 @@ class Controller extends BaseController
         Cookie::queue('languageId', intval($languageId), COOKIE_YEAR);
     }
 
+    static public function getLines(Entry $record)
+    {
+        if ($record->hasTranslation())
+        {
+            $lines['text'] = Spanish::getSentences($record->title);
+            $lines['translation'] = ['proj.(no translation)'];
+
+            if (strlen($record->description_short) > 0)
+            {
+                $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description_short));
+                $lines['translation'] = array_merge($lines['translation'], ['proj.(no translation)']);
+            }
+
+            $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description));
+            $lines['translation'] = array_merge($lines['translation'], Spanish::getSentences($record->description_translation));
+        }
+        else
+        {
+            // the original way to gather sentences
+            $lines['text'] = Spanish::getSentences($record->title);
+            $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description_short));
+            $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description));
+        }
+
+		return $lines;
+    }
+
     static public function reader(Entry $entry, $options)
     {
         $record = $entry;
 		$readLocation = $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
 		Entry::countView($record);
 
-		$lines = [];
-
-		$lines = Spanish::getSentences($record->title);
-		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
-		$lines = array_merge($lines, Spanish::getSentences($record->description));
+        $lines = self::getLines($record);
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),

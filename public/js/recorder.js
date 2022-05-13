@@ -281,6 +281,8 @@ function visualize(stream) {
 }
 
 window.onresize = function() {
+
+    mainSection = (mainSection === null) ? document.querySelector('.main-controls') : mainSection;
     canvas.width = mainSection.offsetWidth;
 }
 
