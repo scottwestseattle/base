@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     use HasFactory;
-		
+
 	static public function hasEmergency()
 	{
 		$rc = false;
 		$path = storage_path('logs/laravel.log');
 		$handle = fopen($path, "r");
-		if ($handle) 
+		if ($handle)
 		{
-			while (($line = fgets($handle)) !== false) 
+			while (($line = fgets($handle)) !== false)
 			{
 				// process the line read.
 				if (stripos($line, 'local.emergency') !== false)
@@ -27,24 +27,24 @@ class Event extends Model
 			}
 
 			fclose($handle);
-		} 
-		else 
+		}
+		else
 		{
 			logError('hasEmergency - error opening log file');
-		} 
+		}
 
 		return $rc;
 	}
-	
+
 	static public function get($filter = null)
 	{
 		$records = [];
 		$rc['emergency'] = 0;
 		$rc['errors'] = 0;
 		$rc['records'] = $records;
-		
+
 		$path = storage_path('logs/laravel.log');
-		
+
 		$file = file_get_contents($path);
 		if ($file !== false)
 		{
@@ -52,26 +52,36 @@ class Event extends Model
 			$info = ($all || $filter == 'info');
 			$errors = ($all || $filter == 'errors');
 			$warnings = ($all || $filter == 'warnings');
-			
-			$lines = explode("\n", $file);
+
+			$lines = [];
+			try
+			{
+    			$lines = explode("\n", $file);
+			}
+            catch(\Exception $e)
+            {
+                $msg = 'Error splitting log file (may be too big): ' . $path;
+                logError($msg, $msg);
+            }
+
 			foreach($lines as $line)
 			{
 				if (strpos($line, 'local.EMERGENCY') !== false)
-				{					
+				{
 					$rc['emergency']++;
 				}
-				
+
 				if ($errors && strpos($line, 'local.ERROR') !== false)
-				{				
+				{
 					$rc['errors']++;
 					$records[] = ['icon' => 'exclamation-diamond', 'color' => 'danger', 'bgColor' => 'default', 'text' => $line];
 				}
 				else if ($info && strpos($line, 'local.INFO') !== false)
-				{					
+				{
 					$records[] = ['icon' => 'info-circle', 'color' => 'success', 'bgColor' => 'default', 'text' => $line];
 				}
 				else if ($warnings && strpos($line, 'local.WARNING') !== false)
-				{					
+				{
 					$records[] = ['icon' => 'exclamation-triangle', 'color' => 'warning', 'bgColor' => 'default', 'text' => $line];
 				}
 				else if ($all && strpos($line, 'local.') !== false)
@@ -79,21 +89,21 @@ class Event extends Model
 					$records[] = ['icon' => 'exclamation-octagon', 'color' => 'warning', 'bgColor' => '#ff6666', 'text' => $line];
 				}
 			}
-	
+
 			$rc['records'] = array_reverse($records);
 		}
 		else
 		{
 			Log::error('error reading log file: ' . $path);
 		}
-		
+
 		return $rc;
 	}
-	
+
 	static public function deleteEvents($filter = null)
 	{
 		$path = storage_path('logs/laravel.log');
-		
+
 		$filter = alpha($filter);
 		if (isset($filter))
 		{
@@ -104,7 +114,7 @@ class Event extends Model
 				$file = file_get_contents($path);
 				if ($file !== false)
 				{
-					$records = [];		
+					$records = [];
 					$lines = explode("\n", $file);
 					$cnt = 0;
 					foreach($lines as $line)
@@ -117,7 +127,7 @@ class Event extends Model
 								$cnt++;
 							}
 							else
-							{					
+							{
 								// save everything else
 								$records[] = $line;
 							}
@@ -125,7 +135,7 @@ class Event extends Model
 						else if ($errors)
 						{
 							if (
-								strpos($line, 'local.INFO') !== false 
+								strpos($line, 'local.INFO') !== false
 							 || strpos($line, 'local.WARNING') !== false
 							 || strpos($line, 'local.EMERGENCY') !== false
 							)
@@ -140,12 +150,12 @@ class Event extends Model
 								$cnt++;
 							}
 							else
-							{					
+							{
 								// skip all of the stack trace detail lines of an ERROR message
 							}
 						}
 					}
-					
+
 					try
 					{
 						// now put the rest of the lines back
@@ -155,14 +165,14 @@ class Event extends Model
 							fwrite($file, $line . "\r\n");
 						}
 						fclose($file);
-						
+
 						if ($emergency)
 							$msg = trans_choice('base.emergency events deleted', $cnt, ['count' => $cnt]);
 						else if ($errors)
 							$msg = trans_choice('base.error events deleted', $cnt, ['count' => $cnt]);
 						else
 							$msg = __('base.events deleted');
-						
+
 						logInfo($msg, $msg);
 					}
 					catch(\Exception $e)
@@ -186,7 +196,7 @@ class Event extends Model
 		}
 		else // delete it all
 		{
-			try 
+			try
 			{
 				// do this instead of unlinking so the empty file will exist
 				$file = fopen($path, "w");
@@ -201,5 +211,5 @@ class Event extends Model
 				logError($msg, $msg);
 			}
 		}
-	}	
+	}
 }

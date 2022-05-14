@@ -12,8 +12,9 @@
 			<p><a href="/events/delete/errors">{{__('base.Delete Errors')}}</a></p>
 		@else
 			<p>{{__('base.No events found')}}</p>
+			<p><a href="/events/delete/">{{__('base.Delete All')}}</a></p>
 		@endif
-		
+
 		@if ($hasEmergencyEvents)
 			<p><a href="/events/delete/emergency">{{__('base.Delete Emergency Events')}}</a></p>
 		@endif
