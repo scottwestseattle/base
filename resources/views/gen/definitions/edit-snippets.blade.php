@@ -12,7 +12,7 @@
 <form method="POST" id="form-edit" action="/definitions/update/{{$record->id}}">
 
     <div class="form-group mt-3">
-        <label for="title">@LANG('proj.Word, Phrase, or Text'):
+        <label for="title">@LANG('proj.Word, Phrase, or Practice Text'):
             <a onclick="event.preventDefault(); $('#title').val(''); $('#title').focus();" href="" tabindex="-1" class="ml-2"><span  style="margin:0px;" class="glyphicon glyphicon-remove" ></span></a>
             <a onclick="translateOnWebsite(event, 'deepl', $('#title').val());" href="" tabindex="-1"  class="small-thin-text ml-2">DeepL</a>
         </label>

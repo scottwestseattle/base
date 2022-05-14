@@ -1561,9 +1561,9 @@ class DefinitionController extends Controller
 			$records = $tag->definitionsUser()->get();
             if (count($records) > 0)
             {
+                // get the language from the first record
                 $r = $records[0];
                 $languageFlag = $r->language_flag;
-                $type = $r->type_flag;
             }
 		}
 		catch (\Exception $e)
@@ -1572,21 +1572,36 @@ class DefinitionController extends Controller
 		}
 
         $sentences = [];
-        $type = DEFTYPE_SNIPPET; // read all as DEF
-        if ($type == DEFTYPE_DICTIONARY)
+        foreach($records as $record)
         {
-            // regular definition
-		    $sentences = self::formatDefinitions($records);
-        }
-		else
-		{
-		    // snippets?
-            foreach($records as $record)
+            $text = null;
+
+            if ($record->type_flag == DEFTYPE_DICTIONARY)
             {
-                $text = Spanish::getSentences($record->title);
-                $sentences = array_merge($sentences, $text);
+                $text = $record->title;
+
+                if (!empty($record->definition))
+                {
+                    // add the first definition
+                    $lines = Spanish::getSentences($record->definition);
+                    if (count($lines) > 0)
+                    {
+                        $text .= ': ' . trim(trim($lines[0], '1.'), '.');
+
+                        // if there is a definition, say the word again at the end of it
+                        $text .= ' (' . $record->title . ')';
+                    }
+                }
             }
-		}
+            else
+            {
+                $text = $record->title;
+            }
+
+            $lines = Spanish::getSentences($text);
+            $sentences = array_merge($sentences, $lines);
+        }
+
 		$lines['text'] = $sentences;
 
 	    $options['return'] = '/favorites';
@@ -1685,12 +1700,16 @@ class DefinitionController extends Controller
             }
             else
             {
+                //
                 // add the word
+                //
                 $text .= $labelDefinition . ':  ';
                 $text .= ucfirst($record->title);
                 $text .= '.  ' . ucfirst($record->title);
 
+                //
                 // add the definition
+                //
                 $d = $record->definition;
                 $d = str_replace('1.', $label1, $d);
                 $d = str_replace('2.', $label2, $d);
@@ -1700,12 +1719,16 @@ class DefinitionController extends Controller
 
                 $text .= '. ' . ucfirst($d);
 
+                //
                 // say the word again
+                //
                 if (!Str::endsWith($text, '.'))
                     $text .= '.';
                 $text .= '  ' . ucfirst($record->title) . '.';
 
+                //
                 // add the examples
+                //
                 if (isset($record->examples))
                 {
                     if (!Str::endsWith($text, '.'))

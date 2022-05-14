@@ -17,7 +17,7 @@
     @foreach($records as $record)
         <tr>
             @if ($record->isSnippet())
-                <td class="icon"><a href='/practice/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
+                <td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
                 <td><a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title, 30)}}</a></td>
             @else
                 <td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>

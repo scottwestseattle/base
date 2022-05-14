@@ -26,7 +26,8 @@ class TagController extends Controller
 	{
         $this->middleware('admin')->except([
             //'index', 'view', 'permalink',
-            'edit', 'update', 'delete',
+            'edit', 'update',
+            'confirmDelete', 'delete',
 
             'addUserFavoriteList',
             'createUserFavoriteList',
@@ -40,9 +41,8 @@ class TagController extends Controller
         ]);
 
         $this->middleware('owner')->only([
-            'edit',
-            'update',
-            'delete',
+            'edit', 'update',
+            'confirmDelete', 'delete',
             'confirmUserFavoriteListDelete',
             'editUserFavoriteList',
         ]);
@@ -209,7 +209,9 @@ class TagController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+        $redirect = (isAdmin()) ? $this->redirectTo : '/favorites';
+
+		return redirect($redirect);
     }
 
     public function undelete(Request $request, $id)

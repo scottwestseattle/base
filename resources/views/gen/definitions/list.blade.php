@@ -70,7 +70,7 @@
                         @if (isset($record->translation_en))
                             <div class="medium-thin-text" >{{Str::limit($record->translation_en, $lengthLimit)}}</div>
                         @else
-                            <a class="small-thin-text red" href="/practice/edit/{{$record->id}}">@LANG('proj.Add Translation')</a>
+                            <a class="small-thin-text red" href="/definitions/edit/{{$record->id}}">@LANG('proj.Add Translation')</a>
                         @endif
                     </div>
                 @else

@@ -67,7 +67,7 @@
                     <tr>
                         <td>@LANG('proj.Practice Text')</td>
                         @if (isAdmin() || App\User::isOwner($record->user_id))
-                            <td><a href="/practice/edit/{{$record->id}}" target="_blank">{{$record->title}}</a></td>
+                            <td><a href="/definitions/edit/{{$record->id}}" target="_blank">{{$record->title}}</a></td>
                         @else
                             <td><a href="/definitions/view/{{$record->permalink}}" target="_blank">{{$record->title}}</a></td>
                         @endif
