@@ -171,4 +171,8 @@ return [
 'Edit System Tag' => '编辑系统标签',
 'Edit Book' => '编辑本书',
 'adjective/adverb' => '形容词或副词',
+'Split Sentences' => '分割成句子',
+'Word, Phrase, or Practice Text' => '单词、短语或练习文本',
+'All favorites removed' => '删除所有收藏夹',
+'Nothing to remove' => '没有任何东西需要移除',
 ];

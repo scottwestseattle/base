@@ -297,10 +297,32 @@ class DateTimeEx
     static public function getShortDateTime($sDate, $format = null)
     {
         $format = isset($format) ? $format : 'M-d H:i';
-
         $rc = self::convertTimezone($sDate, self::$_sTimezone);
 
-        $rc = $rc->format($format);
+        //todo: this is how dates should be localized... but it has to be installed.
+        // use IntlDateFormatter;
+        //$formatter = new IntlDateFormatter('de_DE', IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);
+        //$formatter->setPattern('E d.M.yyyy');
+
+        $l = __('dt.' . $rc->format('l'));
+        $M = __('dt.' . $rc->format('M'));
+        $d = $rc->format('d');
+        $Y = $rc->format('Y');
+
+        //todo: quick fix until we get a better solution
+        if ($format === 'l, M d')
+        {
+			$rc = $l . ', ' . $M . ' ' . $d;
+        }
+        else if ($format === 'M d, Y')
+        {
+
+			$rc = $M . ' ' . $d . ', ' . $Y;
+        }
+        else
+        {
+            $rc = $rc->format($format);
+        }
 
         return $rc;
     }
@@ -334,5 +356,18 @@ class DateTimeEx
 		}
 
 		return !$rc;
+	}
+
+	static public function isToday($sDate)
+	{
+        $tz = new DateTimeZone(self::$_sTimezone);
+
+        $date = new DateTime($sDate);
+        $date->setTimezone($tz);
+
+		$now = new DateTime('NOW');
+        $now->setTimezone($tz);
+
+	    return ($date->format('Y-m-d') === $now->format('Y-m-d'));
 	}
 }

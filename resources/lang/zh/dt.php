@@ -1,0 +1,23 @@
+<?php
+return [
+'Apr' => '一月',
+'Aug' => '八月',
+'Dec' => '十二月',
+'Feb' => '二月',
+'Jan' => '一月',
+'Jul' => '七月',
+'Jun' => '六月',
+'Mar' => '三月',
+'May' => '五月',
+'Nov' => '十一月',
+'Oct' => '十月',
+'Set' => '九月',
+'Today' => '今天',
+'Sunday' => '星期日',
+'Monday' => '星期一',
+'Tuesday' => '星期二',
+'Wednesday' => '星期三',
+'Thursday' => '星期四',
+'Friday' => '星期五',
+'Saturday' => '星期六',
+];

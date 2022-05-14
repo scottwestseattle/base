@@ -168,4 +168,6 @@ return [
 'Oldest' => '最古老的',
 'Newest' => '最新的',
 'Not Translated' => '未翻译',
+'Remove All' => '移除所有',
+'Confirm Remove All' => '确认删除所有',
 ];

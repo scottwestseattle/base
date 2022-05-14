@@ -171,4 +171,8 @@ return [
 'Edit System Tag' => 'Edit System Tag',
 'Edit Book' => 'Edit Book',
 'adjective/adverb' => 'Adjective/Adverb',
+'Split Sentences' => 'Split Sentences',
+'Word, Phrase, or Practice Text' => 'Word, Phrase, or Practice Text',
+'All favorites removed' => 'All favorites removed',
+'Nothing to remove' => 'Nothing to remove',
 ];

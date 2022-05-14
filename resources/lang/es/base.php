@@ -114,7 +114,7 @@ return [
 'Comment' => 'Comentario',
 'Top Level (not Gen)' => 'Nivel superior (no gen)',
 'Routes' => 'Rutas',
-'siteTitle-tools' => 'Herramientas para estudiantes de idiomas',
+'siteTitle-tools' => 'Herramientas para aprender idiomas',
 'siteTitle-spanish50' => 'Aprende español en 50 lecciones',
 'siteTitle-localhost' => 'Este es localhost',
 'All events deleted' => 'Todos los eventos eliminados',

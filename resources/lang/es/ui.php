@@ -168,4 +168,6 @@ return [
 'Oldest' => 'Más viajos',
 'Newest' => 'Más recientes',
 'Not Translated' => 'Sin traducción',
+'Remove All' => 'Eliminar todo',
+'Confirm Remove All' => 'Confirmar eliminar todo',
 ];

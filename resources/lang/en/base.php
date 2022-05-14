@@ -114,7 +114,7 @@ return [
 'Comment' => 'Comment',
 'Top Level (not Gen)' => 'Top Level (not Gen)',
 'Routes' => 'Routes',
-'siteTitle-tools' => 'Tools for Language Learners',
+'siteTitle-tools' => 'Tools for Learning Languages',
 'siteTitle-spanish50' => 'Learn Spanish in 50 Lessons',
 'siteTitle-localhost' => 'This is localhost',
 'All events deleted' => 'All events deleted',

@@ -22,7 +22,7 @@
 
                 $bgLast = $bg;
                 $day = App\DateTimeEx::getShortDateTime($record->created_at, 'm-d-Y');
-                $dayShow = App\DateTimeEx::getShortDateTime($record->created_at, 'l, M d');
+                $dayShow = App\DateTimeEx::isToday($record->created_at) ? __('dt.Today') : App\DateTimeEx::getShortDateTime($record->created_at, 'l, M d');
                 $count = isset($counts[$day]) ? $counts[$day] : 0;
             @endphp
             <tr><td><span class="large-thin-text" style="line-height:50px;">{{$dayShow}} ({{$count}})</span></td></tr>
