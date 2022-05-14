@@ -43,7 +43,22 @@ class History extends Model
 			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
 		}
 
-		return $records;
+        $counts = [];
+        foreach ($records as $record)
+        {
+            $date = \App\DateTimeEx::getShortDateTime($record->created_at, 'm-d-Y');
+            if (!isset($counts[$date]))
+            {
+                $counts[$date] = 0;
+            }
+
+            $counts[$date]++;
+        }
+
+        $history['records'] = $records;
+        $history['counts'] = $counts;
+
+		return $history;
 	}
 
 	static public function add($programName, $programId, $sessionName, $sessionId, $seconds)

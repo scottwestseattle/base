@@ -3,7 +3,7 @@
 @section('menu-submenu')@component('gen.history.menu-submenu')@endcomponent @endsection
 @section('content')
 <div>
-    @component('shared.history', ['history' => $records])@endcomponent
+    @component('shared.history', ['history' => $history])@endcomponent
 </div>
 
 @endsection

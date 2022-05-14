@@ -314,7 +314,8 @@ class HomeController extends Controller
 				flash('danger', trans_choice('base.emergency events found', $events['emergency'], ['count' => $events['emergency']]));
 		}
 
-		$history = History::get(isAdmin() ? 5 : 20);
+		$history = History::get(100);
+        $history['maxDays'] = 5;
 
 		return view('home.dashboard', [
 		    'events' => $events,

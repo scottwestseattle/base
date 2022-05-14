@@ -43,47 +43,25 @@ class HistoryController extends Controller
 
     public function admin(Request $request)
     {
-		$records = [];
-
-		try
-		{
-			$records = History::select()
-				->orderBy('id', 'DESC')
-				->get();
-		}
-		catch (\Exception $e)
-		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
-		}
+		$records = History::get();
+        $history['maxDays'] = 5;
 
 		return view(VIEWS . '.index', [
-			'records' => $records,
+			'history' => $records,
 		]);
     }
 
     public function index(Request $request)
     {
-		$records = [];
-
         if (isAdmin())
         {
             return $this->admin($request);
         }
 
-		try
-		{
-			$records = History::select()
-				->where('user_id', Auth::id())
-				->orderByRaw('id DESC')
-				->get();
-		}
-		catch (\Exception $e)
-		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
-		}
+		$records = History::get();
 
 		return view(VIEWS . '.index', [
-			'records' => $records,
+			'history' => $records,
 		]);
     }
 
