@@ -21,12 +21,10 @@
 	<div>
 	@if ($count > 0)
 		@foreach($book->books as $record)
-		<div class="drop-box-ghost mb-4" style="padding:10px 10px 20px 15px;">
-			<div style="font-size:1.3em; font-weight:normal;">
-				<a href="/books/show/{{$record->permalink}}">{{$record->title}}</a>
-			</div>
+		<div class="drop-box-ghost mb-4" style="padding:10px 10px 0px 15px;">
+			<div class="large-thin-text"><a href="/books/show/{{$record->permalink}}">{{$record->title}}</a></div>
 
-			<div style="padding-bottom:10px; font-size:.8em; font-weight:10;">
+			<div class="small-thin-text middle" style="line-height:30px;">
 				<div style="float:left;">
 					@component('components.icon-read', ['href' => "/books/read/$record->id"])@endcomponent
 					<div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.View', 2)}}</div>

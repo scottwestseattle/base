@@ -55,6 +55,7 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
         <div style="clear: both;" class="mt-2">
 
             <!-- Title -->
+            <div class="large-thin-text">{{$record->source}}</div>
             <h1 name="title">{{$record->title}}</h1>
 
             <!-- Summary -->
@@ -73,10 +74,6 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
         </div>
 
         <div class="mt-4 small-thin-text">
-            @if (strlen($record->source) > 0)
-                <div class="mb-2">{{$record->source}}</div>
-            @endif
-
             @if (strlen($record->source_credit) > 0)
                  <div class="mb-2">{{__('ui.Author')}} {{$record->source_credit}}</div>
             @endif
