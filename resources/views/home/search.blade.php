@@ -50,10 +50,14 @@
                     <tr>
                         <td>{{trans_choice('proj.' . $record->getTypeFlagName($record->type_flag), 2)}}</td>
                         <td>
-                            <a href="/articles/view/{{$record->permalink}}" target="_blank">{{$record->title}}</a>
+                            @if ($record->isBook())
+                                <a href="/books/show/{{$record->permalink}}" target="_blank">{{Str::startsWith($record->title, $record->source) ? '' : $record->source . ', '}}{{$record->title}}</a>
+                            @else
+                                <a href="/articles/view/{{$record->permalink}}" target="_blank">{{$record->title}}</a>
+                            @endif
                             @if (isset($record->matches))
                                 @foreach($record->matches as $match)
-                                <p>{{$match}}</p>
+                                    <div>{!! $match !!}</div>
                                 @endforeach
                             @endif
                         </td>
@@ -66,10 +70,13 @@
                 @foreach($snippets as $record)
                     <tr>
                         <td>@LANG('proj.Practice Text')</td>
+                        @php
+                            $title = str_ireplace($search, highlightText($search), $record->title)
+                        @endphp
                         @if (isAdmin() || App\User::isOwner($record->user_id))
-                            <td><a href="/definitions/edit/{{$record->id}}" target="_blank">{{$record->title}}</a></td>
+                            <td><a href="/definitions/edit/{{$record->id}}" target="_blank">{!! $title !!}</a></td>
                         @else
-                            <td><a href="/definitions/view/{{$record->permalink}}" target="_blank">{{$record->title}}</a></td>
+                            <td><a href="/definitions/view/{{$record->permalink}}" target="_blank">{!! $title !!}</a></td>
                         @endif
                     </tr>
                 @endforeach

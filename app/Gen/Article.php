@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
 use App\Entry;
+use App\Gen\Spanish;
 use App\Site;
 use App\Status;
 
@@ -52,23 +53,42 @@ class Article extends Model
 
 	static public function search($string, $matchWholeWord = false)
 	{
-		$string = strtolower(alphanum($string));
+		$string = alphanum($string);
    		$search = '%' . $string . '%';
+        $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
 
 		$records = $record = Entry::select()
-//				->where('entries.site_id', Site::getId())
 				->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
 				->where(function ($query) use($search) {$query
     				->where('release_flag', '>=', Status::getReleaseFlag())
 					->orWhere('user_id', Auth::id())
 					;})
-				->where(function ($query) use($search) {$query
-					->where('title', 'like', $search)
-					->orWhere('description_short', 'like', $search)
-					->orWhere('description', 'like', $search)
+				->where(function ($query) use($search, $collation) {$query
+                    ->whereRaw('title ' . $collation . ' like "' . $search . '"')
+					->orWhereRaw('description_short ' . $collation . ' like "' . $search . '"')
+					->orWhereRaw('description ' . $collation . ' like "' . $search . '"')
 					;})
 				->orderByRaw('type_flag, title')
 				->get();
+
+        if (isset($records))
+        {
+            foreach($records as $record)
+            {
+                $matches = [];
+
+        		$sentences = Spanish::getSentences($record->description);
+                foreach($sentences as $sentence)
+                {
+                    if (stristr($sentence, $string))
+                    {
+                        $matches[] = str_ireplace($string, highlightText($string), $sentence);
+                    }
+                }
+
+                $record['matches'] = $matches;
+            }
+        }
 
         // do deep search
         if ($matchWholeWord)
@@ -87,7 +107,7 @@ class Article extends Model
                     //if (strpos($sentence, $string) !== false)
                     if ($word == $string)
                     {
-                        $matches[] = $sentence;
+                        $matches[] = str_ireplace($string, selfDecorateText($string), $sentence);
                         break;
                     }
                 }

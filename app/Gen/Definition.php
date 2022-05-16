@@ -10,10 +10,11 @@ use Illuminate\Support\Str;
 use DB;
 use Auth;
 
-use App\Gen\Definition;
 use App\Entry;
-use App\User;
+use App\Gen\Definition;
+use App\Gen\Spanish;
 use App\Tag;
+use App\User;
 
 // parts of speech
 define('DEFINITIONS_POS_NOTSET',        0);
@@ -801,7 +802,7 @@ class Definition extends Model
 	// search checks title and forms
     static public function search($word)
     {
-		$word = alphanum(strtolower($word), /* strict = */ true);
+		$word = alphanum(/*strtolower*/($word), /* strict = */ true);
 		$record = null;
 
 		try
@@ -905,13 +906,10 @@ class Definition extends Model
 		$word = alpha($word);
 		$records = null;
         $search  = $word;
-
 		if (isset($word))
 		{
             try
             {
-                // Actually, if you add COLLATE UTF8_GENERAL_CI to your column's definition,
-                // you can just omit all these tricks: it will work automatically.
                 $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
 
                 $records = Definition::select()

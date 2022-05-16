@@ -1026,3 +1026,10 @@ if (!function_exists('getArrayValue')) {
         return $rc;
     }
 }
+
+if (!function_exists('highlightText')) {
+    function highlightText($text, $fgColor = 'black', $bgColor = 'yellow')
+    {
+        return '<b><span style="color: ' . $fgColor . '; background-color:' . $bgColor . ';">' . $text . '</span></b>';
+    }
+}

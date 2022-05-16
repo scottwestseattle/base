@@ -3,16 +3,22 @@
         $count = count($records);
         $matches = ($count > 1 || $count == 0) ? 'matches' : 'match';
     @endphp
-	<div class="table" style="">
-		<table id="searchDefinitionsResultsTable" class="table-responsive table-condensed medium-text" style="">
+	<div class="table" style="" id="searchDefinitionsResultsTable">
+		<table  class="table-responsive table-condensed medium-text" style="">
 		    <thead>
 		        <tr>
-		            <td style="min-width: 120px;">
+		            <td style="xmin-width: 100px;">
 		                {{$count}} {{$matches}}
 		            </td>
 		            <td>
+		                <input id="searchAll" name="searchAll" type="checkbox" style="position:static;" />
+		                <label for="searchAll">Search All</label>
 		            </td>
 		        </tr>
+		    </thead>
+        </table>
+		<table  class="table-responsive table-condensed medium-text" style="">
+		    <thead>
 		    </thead>
 			<tbody>
 				@foreach($records as $record)
