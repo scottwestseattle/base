@@ -661,6 +661,21 @@ if (!function_exists('getOrSetString')) {
 	}
 }
 
+if (!function_exists('getOrSet')) {
+	function getOrSet($var, $default)
+    {
+        if (is_string($var))
+        {
+            return (isset($var) && strlen($var) > 0) ? $var : $default;
+        }
+        else
+        {
+            // bools, arrays, numbers, etc: just checks if they are set and returns them
+            return isset($var) ? $var : $default;
+        }
+	}
+}
+
 if (!function_exists('timestamp2date')) {
     function timestamp2date($timestamp)
     {

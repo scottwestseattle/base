@@ -24,6 +24,9 @@ use App\User;
 
 define('LOG_CLASS', 'HomeController');
 
+define('SEARCHTYPE_DICTIONARY', 1);
+define('SEARCHTYPE_ARTICLES', 2);
+
 class HomeController extends Controller
 {
 	public function __construct ()
@@ -33,9 +36,8 @@ class HomeController extends Controller
 			'contact',
 			'frontpage',
 			'mvc',
-			'privacy',
-			'search',
-			'terms',
+			'privacy', 'terms',
+			'search', 'searchAjax',
 		]);
 
 		parent::__construct();
@@ -399,22 +401,15 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-		$search = null;
-		$definitions = null;
-		$snippets = null;
-		$entries = null;
-		$lessons = null;
-		$words = null;
-		$wordsUser = null;
 		$isPost = $request->isMethod('post');
-		$count = 0;
-        $options = null;
 
         // turn these on by default
 		$options['articles'] = true;
 		$options['dictionary'] = true;
 		$options['snippets'] = true;
 		$options['word'] = false;
+
+		$results = [];
 
 		if ($isPost)
 		{
@@ -423,64 +418,126 @@ class HomeController extends Controller
 			$options['articles'] = isset($request->articles_flag) ? true : false;
 			$options['dictionary'] = isset($request->dictionary_flag) ? true : false;
 			$options['snippets'] = isset($request->snippets_flag) ? true : false;
-			$search = alphanum($request->searchText);
 
-			if (strlen($search) > 1)
-			{
-				try
-				{
-					if ($search != $request->searchText)
-					{
-						throw new \Exception("dangerous search characters");
-					}
-
-					if ($options['articles'])
-					{
-						$entries = Article::search($search, $options['word']);
-						$count += (isset($entries) ? count($entries) : 0);
-					}
-
-					if ($options['dictionary'])
-					{
-						$definitions = Definition::searchDictionary($search);
-						$count += (isset($definitions) ? count($definitions) : 0);
-					}
-
-					if ($options['snippets'])
-					{
-						$snippets = Definition::searchSnippets($search, $options['word']);
-						$count += (isset($snippets) ? count($snippets) : 0);
-					}
-
-					if (false)
-					{
-						$lessons = Lesson::search($search);
-						$count += (isset($lessons) ? count($lessons) : 0);
-					}
-
-					if (false)
-					{
-						//todo: $words = Word::search($search);
-						//todo: $count += (isset($words) ? count($words) : 0);
-					}
-				}
-				catch (\Exception $e)
-				{
-					$msg = 'Search Internal Error';
-					logException('global search', $e->getMessage(), $msg, ['searchCleaned' => $search]);
-				}
-			}
+            $results = self::searchAll($request->searchText, $options);
 		}
 
 		return view('home.search', [
-		    'options' => $options,
-			'lessons' => $lessons,
-			'definitions' => $definitions,
-			'snippets' => $snippets,
-			'entries' => $entries,
 			'isPost' => $isPost,
-			'count' => $count,
-			'search' => $search,
+		    'options' => $options,
+		    'results' => $results,
 		]);
 	}
+
+
+	//
+	// This handles the search form from the index/search page
+	//
+    public function searchAjaxORIG(Request $request, $text = null)
+    {
+		$text = getOrSetString(alpha($text), null);
+        $records = [];
+
+		try
+		{
+		    if ($resultsFormat != 'heavy' && $resultsFormat != 'light')
+		        throw new \Exception('bad searchAjax results format parm');
+
+			session(['definitionSearch' => $text]);
+			$records = Definition::searchPartial($text);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error finding text';
+            logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), null, ['text' => $text]);
+		}
+
+		return view(VIEWS . '.component-search-results-light', [
+			'records' => $records,
+			'favoriteLists' => Definition::getUserFavoriteLists(),
+		]);
+	}
+
+    public function searchAjax(Request $request, $searchText, $searchType = SEARCHTYPE_DICTIONARY)
+    {
+		$isPost = $request->isMethod('post');
+
+        // turn these on by default
+		$options['dictionary'] = ($searchType == SEARCHTYPE_DICTIONARY);
+		$options['snippets'] = ($searchType == SEARCHTYPE_DICTIONARY);
+		$options['articles'] = ($searchType == SEARCHTYPE_ARTICLES);
+		$options['word'] = false;
+		$options['lessons'] = false;
+
+		$results = [];
+
+		if ($isPost)
+		{
+			// do the search
+			$options['word'] = isset($request->word_flag) ? true : false;
+			$options['articles'] = isset($request->articles_flag) ? true : false;
+			$options['dictionary'] = isset($request->dictionary_flag) ? true : false;
+			$options['snippets'] = isset($request->snippets_flag) ? true : false;
+		}
+
+        $searchText = alphanum($searchText);
+        $options['startsWith'] = (strlen($searchText) <= 3);
+
+        $results = self::searchAll($searchText, $options);
+
+		return view('shared.search-results-light', [
+			'isPost' => $isPost,
+		    'options' => $options,
+		    'results' => $results,
+		]);
+	}
+
+	static private function searchAll($searchText, $options)
+	{
+		$results['definitions'] = null;
+		$results['snippets'] = null;
+		$results['entries'] = null;
+		$results['search'] = null;
+
+        $search = alphanum($searchText);
+		$count = 0;
+
+        try
+        {
+            if ($search != $searchText)
+            {
+                throw new \Exception("dangerous search characters");
+            }
+
+            if ($options['articles'])
+            {
+                $results['entries'] = Article::search($search, $options);
+                $count += (isset($results['entries']) ? count($results['entries']) : 0);
+            }
+
+            if ($options['dictionary'])
+            {
+                $results['definitions'] = Definition::searchDictionary($search, $options);
+                $count += (isset($results['definitions']) ? count($results['definitions']) : 0);
+            }
+
+            if ($options['snippets'])
+            {
+                $results['snippets'] = Definition::searchSnippets($search, $options);
+                $count += (isset($results['snippets']) ? count($results['snippets']) : 0);
+            }
+
+            $results['search'] = $search;
+        }
+        catch (\Exception $e)
+        {
+            $msg = 'Search Internal Error';
+            $exc = $e->getMessage();
+            logException('global search', $exc, $msg, ['searchCleaned' => $search]);
+        }
+
+        $results['count'] = $count;
+
+        return $results;
+    }
 }

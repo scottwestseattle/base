@@ -1,5 +1,5 @@
 <script>
-function showResult(str) {
+function showResult(str, searchArticles) {
   if (str.length==0) {
     document.getElementById("livesearch").innerHTML="";
     document.getElementById("livesearch").style.border="0px";
@@ -12,8 +12,11 @@ function showResult(str) {
       document.getElementById("livesearch").style.border="1px solid #A5ACB2";
     }
   }
-  xmlhttp.open("GET", "/definitions/search-ajax/light/" + str, true);
-  xmlhttp.send();
+    //orig: var url = "/definitions/search-ajax/light/" + str;
+    var url = "/search-ajax/" + str + "/" + (searchArticles ? "2" : "1");
+    //console.log("url: " + url + ", searchArticles: " + searchArticles);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 }
 </script>
 
@@ -66,7 +69,33 @@ function showResult(str) {
     $records = isset($records) ? $records : [];
 @endphp
 <form method="POST" action="/dictionary/create-quick">
-    <input name="title" type="text" class="form-control form-control-sm textEdit" placeholder="{{__('proj.Dictionary Search')}}" onkeyup="showResult(this.value)" autofocus />
+    <input name="searchText" id="searchText" type="text"
+        class="form-control form-control-sm textEdit"
+        placeholder="{{__('proj.Dictionary Search')}}"
+        onkeyup="showResult(this.value, false); $('#searchOptions').show()"
+        onfocus=""
+        onblur=""
+        autofocus
+    />
+    <div id="searchOptions" class="mb-1 hidden">
+        <table class="table-responsive table-condensed medium-text" style="">
+            <thead>
+                <tr>
+                    <td>
+                        <button id="" type="button" class="btn-info btn-xs"
+                        onclick="showResult($('#searchText').val(), true); $('#searchOptions').hide();"
+                        >Search Articles/Books</button>
+                        @if (false)
+                        <input id="searchArticles" name="searchArticles" type="checkbox" style="position:static;"
+                            onclick="showResult($('#searchText').val(), document.getElementById('searchArticles').checked);"
+                        />
+                        <label for="searchArticles">Search Books/Articles</label>
+                        @endif
+                    </td>
+                </tr>
+            </thead>
+        </table>
+    </div>
     <div id="livesearch"></div>
     {{ csrf_field() }}
 </form>

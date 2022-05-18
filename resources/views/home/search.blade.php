@@ -6,6 +6,12 @@
     $dictionaryChecked = (isset($options['dictionary']) && $options['dictionary']) ? 'CHECKED' : '';
     $snippetsChecked = (isset($options['snippets']) && $options['snippets']) ? 'CHECKED' : '';
     $wordChecked = (isset($options['word']) && $options['word']) ? 'CHECKED' : '';
+
+    $definitions = isset($results['definitions']) ? $results['definitions'] : null;
+    $snippets = isset($results['snippets']) ? $results['snippets'] : null;
+    $entries = isset($results['entries']) ? $results['entries'] : null;
+    $count = isset($results['count']) ? $results['count'] : null;
+    $search = isset($results['search']) ? $results['search'] : null;
 @endphp
 <h1>@LANG('ui.Search'){{$isPost ? ' (' . $count . ')' : ''}}</h1>
 

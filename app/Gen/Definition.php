@@ -768,30 +768,36 @@ class Definition extends Model
 	}
 
 	// search checks title and forms
-    static public function searchDictionary($word)
+    static public function searchDictionary($string, $options = null)
     {
-		$word = alpha($word);
+		$string = alpha($string);
 		$records = null;
+        $search = '%' . $string . '%';
 
-		if (isset($word))
+        $startsWith = getOrSet($options['startsWith'], false);
+        if ($startsWith)
+        {
+   	    	$search = '' . $string . '%';
+        }
+
+		if (isset($string))
 		{
             try
             {
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_DICTIONARY)
-                    ->where(function ($query) use ($word){$query
-                        ->where('title', 'LIKE', $word . '%')
-                        ->orWhere('forms', 'LIKE', '%' . $word . '%')
-                        ->orWhere('conjugations_search', 'LIKE', '%' . $word . '%')
-                        ->orWhere('translation_en', 'LIKE', '%' . $word . '%')
-                        ->orWhere('examples', 'LIKE', '%' . $word . '%')
+                    ->where(function ($query) use ($search){$query
+                        ->where('title', 'LIKE', $search)
+                        ->orWhere('forms', 'LIKE', $search)
+                        ->orWhere('conjugations_search', 'LIKE', $search)
+                        ->orWhere('translation_en', 'LIKE', $search)
                         ;})
                     ->orderBy('title')
                     ->get();
             }
             catch (\Exception $e)
             {
-                $msg = 'Error finding word: ' . $word;
+                $msg = 'Search error: ' . $search;
                 logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
             }
 		}
@@ -901,20 +907,27 @@ class Definition extends Model
 	}
 
 	// search checks title and forms
-    static public function searchSnippets($word, $matchWholeWord = false)
+    static public function searchSnippets($string, $options = null)
     {
-		$word = alpha($word);
+		$string = alpha($string);
 		$records = null;
-        $search  = $word;
-		if (isset($word))
+
+		if (isset($string))
 		{
+            $search  = '%' . $string . '%';
+            $startsWith = getOrSet($options['startsWith'], false);
+            if ($startsWith)
+            {
+                $search = '' . $string . '%';
+            }
+
             try
             {
                 $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
 
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->whereRaw('title ' . $collation . ' like "%' . $search . '%"')
+                    ->whereRaw('title ' . $collation . ' like "' . $search . '"')
                     ->orderBy('title')
                     ->get();
             }

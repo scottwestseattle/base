@@ -66,6 +66,7 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 // Search
 Route::get('/search', [HomeController::class, 'search']);
 Route::post('/search', [HomeController::class, 'search']);
+Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchAjax']);
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);

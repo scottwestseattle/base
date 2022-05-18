@@ -51,11 +51,19 @@ class Article extends Model
         return $record;
     }
 
-	static public function search($string, $matchWholeWord = false)
+	static public function search($string, $options = null)
 	{
 		$string = alphanum($string);
-   		$search = '%' . $string . '%';
         $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
+   		$search = '%' . $string . '%';
+
+        $startsWith = getOrSet($options['startsWith'], false);
+        if ($startsWith)
+        {
+   	    	$search = '' . $string . '%';
+        }
+
+        $wholeWord = false; //getOrSet($options['wholeWord'], false); << doesn't work for array indexes
 
 		$records = $record = Entry::select()
 				->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
@@ -91,29 +99,31 @@ class Article extends Model
         }
 
         // do deep search
-        if ($matchWholeWord)
-        foreach($records as $record)
+        if ($wholeWord)
         {
-            $matches = [];
-            $sentences = str_replace(['.', '!', '?'], '|', $record->description);
-            $sentences = explode('|', $sentences);
-            foreach($sentences as $sentence)
+            foreach($records as $record)
             {
-                $sentence = strtolower(trim($sentence));
-
-                $words = explode(' ', $sentence);
-                foreach($words as $word)
+                $matches = [];
+                $sentences = str_replace(['.', '!', '?'], '|', $record->description);
+                $sentences = explode('|', $sentences);
+                foreach($sentences as $sentence)
                 {
-                    //if (strpos($sentence, $string) !== false)
-                    if ($word == $string)
+                    $sentence = strtolower(trim($sentence));
+
+                    $words = explode(' ', $sentence);
+                    foreach($words as $word)
                     {
-                        $matches[] = str_ireplace($string, selfDecorateText($string), $sentence);
-                        break;
+                        //if (strpos($sentence, $string) !== false)
+                        if ($word == $string)
+                        {
+                            $matches[] = str_ireplace($string, selfDecorateText($string), $sentence);
+                            break;
+                        }
                     }
                 }
-            }
 
-            $record['matches'] = $matches;
+                $record['matches'] = $matches;
+            }
         }
 
 		return $records;
