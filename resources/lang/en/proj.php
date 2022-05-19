@@ -175,4 +175,7 @@ return [
 'Word, Phrase, or Practice Text' => 'Word, Phrase, or Practice Text',
 'All favorites removed' => 'All favorites removed',
 'Nothing to remove' => 'Nothing to remove',
+'Show All Translations' => 'Show All Translations',
+'Reverse text and translation' => 'Reverse text and translation',
+'Has Translation' => 'Has Translation',
 ];

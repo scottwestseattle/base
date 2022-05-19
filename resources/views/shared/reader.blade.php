@@ -156,11 +156,6 @@
     					    <span class="glyphicon glyphCustom glyphicon-text-width mr-2"></span>
     					    <div class="pb-1" style="">@LANG('proj.Has Translation')</div>
     					</div>
-
-                        <div class="mt-1 ml-1">
-                            <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
-                            <label for="checkbox-flip" class="checkbox-xs steelblue" onclick="event.preventDefault(); deck.flipScript();">@LANG('proj.Reverse text and translation')</label>
-                        </div>
                     @endif
 
 					<div id="elapsedTime" class="mt-5"></div>
@@ -188,7 +183,7 @@
 					</div>
 
 					<div id="debug"></div>
-					<div id="slideDescription" class="slideDescription" style="font-size: 18px;" onmouseup="getSelectedText(1);" ondblclick="getSelectedText(2);" ontouchend="getSelectedText();"></div>
+					<div id="slideDescription" class="slideDescription" style="font-weight:300; font-size: 18px;" onmouseup="getSelectedText(1);" ondblclick="getSelectedText(2);" ontouchend="getSelectedText();"></div>
 					<div class="" style="color: green;" id="selected-word"></div>
 					<div class="" style="color: green;" id="selected-word-definition"></div>
                     <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
@@ -209,24 +204,30 @@
 	</div>
 
 	<!--------------------------------------------------------------->
-	<!-- tab 3 ------------------------------------------------------->
+	<!-- tab 3 - Settings panel ------------------------------------->
 	<!--------------------------------------------------------------->
 	<div id="tab3" class="tab-body" style="display:none;">
 		<div class="text-center mt-3">
-			<div class="mb-5">
+			<div class="mb-2">
                 <div><span class="small-thin-text" id="language"></span></div>
                 <div id="languages" class="mt-1" style="display:default; font-size:10px;">
                     <select onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
                 </div>
 			</div>
 
-			<div class="">
+			<div class="mb-2">
 				<div class="middle mr-1"><a onclick="zoom(event, -3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-out glyph-zoom-button"></span></a></div>
 				<div class="middle" id="readFontSizeLabel">{{__('ui.Text Size')}}: <span id="readFontSize">18</span></div>
 				<div class="middle ml-3"><a onclick="zoom(event, 3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-in glyph-zoom-button"></span></a></div>
 			</div>
 
             @if ($showTranslationControls)
+
+                <div class="mt-1 ml-1">
+                    <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
+                    <label for="checkbox-flip" class="checkbox-xs steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
+                </div>
+
                 <div class="mt-1 ml-1">
                     <input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#translation-show').toggle();" style="position: static;" />
                     <label for="checkbox-show" class="checkbox-xs steelblue">@LANG('proj.Show All Translations')</label>

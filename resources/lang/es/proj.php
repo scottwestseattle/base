@@ -175,4 +175,7 @@ return [
 'Word, Phrase, or Practice Text' => 'Palabra, frase o texto de práctica',
 'All favorites removed' => 'Todas las favoritas eliminadas',
 'Nothing to remove' => 'Nada para eliminar',
+'Show All Translations' => 'Mostrar traducciones',
+'Reverse text and translation' => 'Texto y traducción al revés',
+'Has Translation' => 'Tiene traducción',
 ];

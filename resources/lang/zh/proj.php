@@ -175,4 +175,7 @@ return [
 'Word, Phrase, or Practice Text' => '单词、短语或练习文本',
 'All favorites removed' => '删除所有收藏夹',
 'Nothing to remove' => '没有任何东西需要移除',
+'Show All Translations' => '显示所有翻译',
+'Reverse text and translation' => '反转文本和翻译',
+'Has Translation' => '它有翻译',
 ];

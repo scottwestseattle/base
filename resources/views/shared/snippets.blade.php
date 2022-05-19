@@ -86,9 +86,9 @@ function showResult(str, searchArticles) {
                         onclick="showResult($('#searchText').val(), true); $('#searchOptions').hide();"
                         >Search Articles/Books</button>
                         @if (false)
-                        <input id="searchArticles" name="searchArticles" type="checkbox" style="position:static;"
-                            onclick="showResult($('#searchText').val(), document.getElementById('searchArticles').checked);"
-                        />
+                            <input id="searchArticles" name="searchArticles" type="checkbox" style="position:static;"
+                                onclick="showResult($('#searchText').val(), document.getElementById('searchArticles').checked);"
+                            />
                         <label for="searchArticles">Search Books/Articles</label>
                         @endif
                     </td>
