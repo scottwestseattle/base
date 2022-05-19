@@ -70,15 +70,17 @@ class Controller extends BaseController
 
     static public function getLines(Entry $record)
     {
+        $noTranslation = __('proj.(no translation)');
+
         if ($record->hasTranslation())
         {
             $lines['text'] = Spanish::getSentences($record->title);
-            $lines['translation'] = ['proj.(no translation)'];
+            $lines['translation'] = [$noTranslation];
 
             if (strlen($record->description_short) > 0)
             {
                 $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description_short));
-                $lines['translation'] = array_merge($lines['translation'], ['proj.(no translation)']);
+                $lines['translation'] = array_merge($lines['translation'], [$noTranslation]);
             }
 
             $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description));

@@ -39,7 +39,9 @@ class DefinitionController extends Controller
             'createQuick',
 
             // definitions
-            'view', 'permalink', 'delete', 'edit', 'update',
+            'view', 'permalink',
+			'confirmDelete', 'delete',
+            'edit', 'update',
 
             // snippets
             'snippets', 'indexSnippets', 'filterSnippets',
@@ -77,7 +79,8 @@ class DefinitionController extends Controller
         $this->middleware('owner')->only([
 			'edit', 'update',
 			'editSnippet', 'updateSnippet',
-			'review', 'readList', 'delete',
+			'review', 'readList',
+			'confirmDelete', 'delete',
 			'unheartAjax', 'removeFavorites',
 		]);
 
