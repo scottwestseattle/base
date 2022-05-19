@@ -178,4 +178,7 @@ return [
 'Show All Translations' => '显示所有翻译',
 'Reverse text and translation' => '反转文本和翻译',
 'Has Translation' => '它有翻译',
+'(no translation)' => '(没有翻译)',
+'Delete Definition' => '删除定义',
+'Delete Practice Text' => '删除实践文本',
 ];

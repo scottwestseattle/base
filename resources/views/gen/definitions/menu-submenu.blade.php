@@ -13,8 +13,8 @@
             </a></li>
         @endif
 		@isset($record)
-		    @if (false)
-                <li class="nav-item"><a class="nav-link" href="/definitions/show/{{$record->id}}">
+		    @if (true)
+                <li class="nav-item"><a class="nav-link" href="/definitions/view/{{$record->permalink}}">
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
                 </a></li>
 			@endif

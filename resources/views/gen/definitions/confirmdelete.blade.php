@@ -1,10 +1,14 @@
 @extends('layouts.app')
-@section('title', __('ui.Delete') . ' ' . trans_choice('view.Definition', 1))
+@section('title', __('proj.Delete Definition'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['record' => $record]) @endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
-	<h1>{{__('ui.Delete')}} {{trans_choice('view.Definition', 1)}}</h1>
+    @if ($record->isSnippet())
+    	<h1>{{__('proj.Delete Practice Text')}}</h1>
+    @else
+    	<h1>{{__('proj.Delete Definition')}}</h1>
+    @endif
 	<form method="POST" action="/definitions/delete/{{ $record->id }}">
 
 		<h4>{{$record->title}}</h4>

@@ -178,4 +178,7 @@ return [
 'Show All Translations' => 'Mostrar traducciones',
 'Reverse text and translation' => 'Texto y traducción al revés',
 'Has Translation' => 'Tiene traducción',
+'(no translation)' => '(sin traducción)',
+'Delete Definition' => 'Eliminar Definición',
+'Delete Practice Text' => 'Eliminar Texto de Práctica',
 ];

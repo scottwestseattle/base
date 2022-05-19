@@ -44,25 +44,29 @@
                 @endif
             </div>
         </td>
+        <td class="icon">
+            <div class="ml-3">
+                @if (isAdmin() || App\User::isOwner($record->user_id))
+                    <a href="/definitions/confirmdelete/{{$record->id}}">@component('components.icon-delete')@endcomponent</a>
+                @endif
+            </div>
+        </td>
         @endif
     </tr></table>
 
 	<div>
 		<h3>
  			<div class="middle">
-			    @if ($record->isSnippet())
-                    <div>{{$record->title}}</div>
-			    @else
-                    <div class="float-left">
-                        {{$record->title}}
+                <div class="float-left">
+                    {{$record->title}}
+                    @if (!$record->isSnippet())
                         @component('components.badge', ['text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent
-                    </div>
-                    <div class="ml-3 small-thin-text middle"><a target='_blank' href="https://dle.rae.es/{{$record->title}}">RAE</a></div>
-                    @if (isAdmin())
-                        <div class="ml-2 small-thin-text middle"><a target='_blank' href="https://www.spanishdict.com/translate/{{$record->title}}">SpanishDict</a></div>
                     @endif
-                    <div class="small-thin-text">{{__(strtolower($record->getPos()))}}</div>
+                </div>
+                @if (isAdmin())
+                    <div class="ml-2 small-thin-text middle"><a target='_blank' href="https://www.spanishdict.com/translate/{{$record->title}}">SpanishDict</a></div>
                 @endif
+                <div class="small-thin-text">{{__(strtolower($record->getPos()))}}</div>
 			</div>
 
 			@if (App\User::isSuperAdmin())

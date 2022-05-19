@@ -178,4 +178,7 @@ return [
 'Show All Translations' => 'Show All Translations',
 'Reverse text and translation' => 'Reverse text and translation',
 'Has Translation' => 'Has Translation',
+'(no translation)' => '(no translation)',
+'Delete Definition' => 'Delete Definition',
+'Delete Practice Text' => 'Delete Practice Text',
 ];
