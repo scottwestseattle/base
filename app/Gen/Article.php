@@ -55,13 +55,7 @@ class Article extends Model
 	{
 		$string = alphanum($string);
         $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
-   		$search = '%' . $string . '%';
-
-        $startsWith = getOrSet($options['startsWith'], false);
-        if ($startsWith)
-        {
-   	    	$search = '' . $string . '%';
-        }
+   		$search = $collation . ' LIKE "%' . $string . '%"';
 
         $wholeWord = false; //getOrSet($options['wholeWord'], false); << doesn't work for array indexes
 
@@ -71,10 +65,10 @@ class Article extends Model
     				->where('release_flag', '>=', Status::getReleaseFlag())
 					->orWhere('user_id', Auth::id())
 					;})
-				->where(function ($query) use($search, $collation) {$query
-                    ->whereRaw('title ' . $collation . ' like "' . $search . '"')
-					->orWhereRaw('description_short ' . $collation . ' like "' . $search . '"')
-					->orWhereRaw('description ' . $collation . ' like "' . $search . '"')
+				->where(function ($query) use($search) {$query
+                    ->whereRaw('title ' . $search)
+					->orWhereRaw('description_short ' . $search)
+					->orWhereRaw('description ' . $search)
 					;})
 				->orderByRaw('type_flag, title')
 				->get();
@@ -86,11 +80,30 @@ class Article extends Model
                 $matches = [];
 
         		$sentences = Spanish::getSentences($record->description);
+
                 foreach($sentences as $sentence)
                 {
                     if (stristr($sentence, $string))
                     {
                         $matches[] = str_ireplace($string, highlightText($string), $sentence);
+                    }
+                    else
+                    {
+                        //
+                        // no match so look for accent chars
+                        //
+                        $string = iconv('UTF-8','ASCII//TRANSLIT', $string);
+dd($string);
+                        //$sentenceUtf = utf8_encode($sentence);
+                        //$stringUtf = utf8_encode($string);
+                        $utf = (strlen($stringUtf) != strlen($string)) ? 'UTF: ' : ''; // if has an accent char
+
+                        if (stristr($sentence, $string))
+                        {
+                            $matches[] = str_ireplace($stringUtf, highlightText($string), $sentence);
+                        }
+
+                        //dd($stringUtf);
                     }
                 }
 
