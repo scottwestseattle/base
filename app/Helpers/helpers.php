@@ -662,7 +662,7 @@ if (!function_exists('getOrSetString')) {
 }
 
 if (!function_exists('getOrSet')) {
-	function getOrSet($var, $default)
+	function getOrSet($var, $default = null)
     {
         if (is_string($var))
         {

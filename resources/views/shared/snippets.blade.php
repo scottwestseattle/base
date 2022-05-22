@@ -14,6 +14,7 @@ function showResult(str, searchArticles) {
   }
     //orig: var url = "/definitions/search-ajax/light/" + str;
     var url = "/search-ajax/" + str + "/" + (searchArticles ? "2" : "1");
+    console.log("search text: " + str);
     //console.log("url: " + url + ", searchArticles: " + searchArticles);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
@@ -69,27 +70,27 @@ function showResult(str, searchArticles) {
     $records = isset($records) ? $records : [];
 @endphp
 <form method="POST" action="/dictionary/create-quick">
-    <input name="searchText" id="searchText" type="text"
-        class="form-control form-control-sm textEdit"
+
+    <input value="" name="title" id="title" type="search"
+        class="form-control form-control-sm form-control-inline py-2 border-right-0 border"
         placeholder="{{__('proj.Dictionary Search')}}"
-        onkeyup="showResult(this.value, false); $('#searchOptions').show()"
-        onfocus=""
-        onblur=""
+        oninput="showResult(this.value, false); $('#searchOptions').show()"
         autofocus
     />
+
     <div id="searchOptions" class="mb-1 hidden">
         <table class="table-responsive table-condensed medium-text" style="">
             <thead>
                 <tr>
                     <td>
                         <button id="" type="button" class="btn-info btn-xs"
-                        onclick="showResult($('#searchText').val(), true); $('#searchOptions').hide();"
+                        onclick="showResult($('#title').val(), true); $('#searchOptions').hide();"
                         >Search Articles/Books</button>
                         @if (false)
                             <input id="searchArticles" name="searchArticles" type="checkbox" style="position:static;"
                                 onclick="showResult($('#searchText').val(), document.getElementById('searchArticles').checked);"
                             />
-                        <label for="searchArticles">Search Books/Articles</label>
+                            <label for="searchArticles">Search Books/Articles</label>
                         @endif
                     </td>
                 </tr>

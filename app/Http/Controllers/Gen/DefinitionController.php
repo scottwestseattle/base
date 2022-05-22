@@ -41,6 +41,7 @@ class DefinitionController extends Controller
             // definitions
             'view', 'permalink',
 			'confirmDelete', 'delete',
+            'add', 'create',
             'edit', 'update',
 
             // snippets
@@ -73,6 +74,8 @@ class DefinitionController extends Controller
         ]);
 
         $this->middleware('auth')->only([
+			'add',
+			'create',
 			'createQuick',
 		]);
 
@@ -180,17 +183,21 @@ class DefinitionController extends Controller
 		return redirect('/definitions/view/' . $record->permalink);
     }
 
-    public function createQuick(Request $request, $snippet = null)
+    public function createQuick(Request $request, $text = null)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 
-		$title = isset($request->title) ? $request->title : $snippet;
-		$title = alphanum(trim($title));
-        if (!isset($title) || strlen($title) == 0)
+		$isPost = $request->isMethod('post');
         {
-			$msg = __('base.text is blank');
-			logException($f, $msg);
-			return redirect('/');
+            $title = getOrSet($request->title);
+        }
+
+        $title = alphanum(trim($title));
+        if (empty($title))
+        {
+            $msg = __('proj.text is blank');
+            logException($f, $msg);
+            return redirect('/');
         }
 
 		$record = Definition::get($title);
@@ -958,8 +965,8 @@ class DefinitionController extends Controller
     {
 		$forms = null;
 
-		$scraped = Spanish::isIrregular($text);
-		if ($scraped['irregular'])
+		$scraped = null; //Spanish::isIrregular($text);
+		if (false && $scraped['irregular'])
 		{
 		    if (isset($scraped['conj']['full']))
 			    $forms = $scraped['conj']['full'];
@@ -971,7 +978,7 @@ class DefinitionController extends Controller
 			$records = Spanish::conjugationsGen($text);
 			if (isset($records))
 			{
-				$forms = $records['forms'];
+                $forms = empty($records['forms']) ? $records['status'] : $records['forms'];
 			}
 		}
 

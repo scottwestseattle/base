@@ -93,9 +93,9 @@ class Article extends Model
                         // no match so look for accent chars
                         //
                         $string = iconv('UTF-8','ASCII//TRANSLIT', $string);
-dd($string);
-                        //$sentenceUtf = utf8_encode($sentence);
-                        //$stringUtf = utf8_encode($string);
+
+                        $sentenceUtf = utf8_encode($sentence);
+                        $stringUtf = utf8_encode($string);
                         $utf = (strlen($stringUtf) != strlen($string)) ? 'UTF: ' : ''; // if has an accent char
 
                         if (stristr($sentence, $string))
