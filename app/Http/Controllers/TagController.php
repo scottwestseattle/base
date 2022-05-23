@@ -89,7 +89,6 @@ class TagController extends Controller
 		try
 		{
 			$record->save();
-
 			logInfo(LOG_CLASS, __('base.New record has been added'), ['record_id' => $record->id]);
 		}
 		catch (\Exception $e)
@@ -98,7 +97,9 @@ class TagController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo . '/view/' . $record->id);
+        $redirect = isAdmin() ? $this->redirectTo . '/view/' . $record->id : '/favorites';
+
+		return redirect($redirect);
     }
 
     public function permalink(Request $request, $permalink)
@@ -321,7 +322,7 @@ class TagController extends Controller
 			logException(__FUNCTION__, $msg, $e->getMessage());
 		}
 
-		return redirect(PREFIX);
+		return redirect('/favorites');
     }
 
     public function editUserFavoriteList(Request $request, Tag $tag)
