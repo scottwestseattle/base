@@ -183,11 +183,11 @@ class DefinitionController extends Controller
 		return redirect('/definitions/view/' . $record->permalink);
     }
 
-    public function createQuick(Request $request, $text = null)
+    public function createQuick(Request $request, $title = null)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 
-		$isPost = $request->isMethod('post');
+		if ($request->isMethod('post'))
         {
             $title = getOrSet($request->title);
         }
@@ -981,7 +981,7 @@ class DefinitionController extends Controller
                 $forms = empty($records['forms']) ? $records['status'] : $records['forms'];
 			}
 		}
-
+        //dd($forms);
 		return $forms;
     }
 
@@ -1389,7 +1389,7 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function readExamples(Request $request, $parms = null)
+    public function readExamples(Request $request)
     {
         $count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
         $action = isset($request['a']) ? intval($request['a']) : 'list';

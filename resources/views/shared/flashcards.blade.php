@@ -4,10 +4,8 @@
 @php
     $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
     $article = isset($article) ? $article : false;
-    if ($article)
-    {
-        $random = 0;
-    }
+    $random = isset($random) && $random ? 1 : 0;
+    $touchPath = isset($touchPath) ? $touchPath : '';
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -35,8 +33,8 @@
 	data-quiztype="{{$record->type_flag}}"
 	data-lessonid="{{$record->id}}"
 @endif
-	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
-	data-random="{{(isset($random) ? $random : 1)}}"
+	data-touchpath="{{$touchPath}}"
+	data-random="{{$random}}"
 ></div>
 
 	<!-------------------------------------------------------->

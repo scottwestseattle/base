@@ -33,7 +33,7 @@
 </div>
 
 <h3 name="" class="" style="margin-bottom:10px;">{{$name}}@component('components.badge', ['text' => count($records)])@endcomponent
-    @if (isAdmin() || App\User::isOwner($tag->user_id))
+    @if (isset($tag) && (isAdmin() || App\User::isOwner($tag->user_id)))
         <span style="" class="small-thin-text pl-3 middle">
             @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/remove-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
         </span>

@@ -109,15 +109,15 @@
     <div class="col-sm-12 col-lg-6 col-xl-4">
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title"><a href="/definitions/read-examples/p?count=20">@LANG('proj.Dictionary Examples')</a></h5>
+                <h5 class="card-title"><a href="/definitions/read-examples?count=20">@LANG('proj.Dictionary Examples')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples/p?count=20&a=read">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?count=20&a=read">
                         @LANG('proj.Reader') (20)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples/p?count=100&a=read">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?count=100&a=read">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples/p?a=read">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?a=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>

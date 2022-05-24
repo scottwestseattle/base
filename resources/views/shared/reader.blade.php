@@ -4,7 +4,7 @@
 @php
     $recordId = isset($recordId) ? $recordId : -1;
     $readLocation = isset($readLocation) ? $readLocation : null;
-    $count = count($lines['text']);
+    $count = isset($options['count']) ? $options['count'] : count($lines['text']);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
     if (!isset($historyPath))
     {

@@ -464,7 +464,14 @@ class ArticleController extends Controller
 
     public function read(Request $request, Entry $entry)
     {
-        return $this->reader($entry, ['return' => PREFIX]);
+        $count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
+        $random = isset($request['random']) ? boolval($request['random']) : false;
+
+        $options['randomOrder'] = $random;
+        $options['count'] = $count;
+        $options['return'] = PREFIX;
+
+        return $this->reader($entry, $options);
     }
 
 	public function flashcards(Request $request, Entry $entry)
@@ -472,6 +479,9 @@ class ArticleController extends Controller
         $record = $entry;
 		$reviewType = 1;
         $quiz = null;
+
+        $count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
+        $random = isset($request['random']) ? boolval($request['random']) : false;
 
 		try
 		{
@@ -491,7 +501,7 @@ class ArticleController extends Controller
 		    'sessionName' => $record->title,
 			'touchPath' => '/history/add-public/',
 			'sentenceCount' => count($quiz),
-			'quizCount' => 0,
+			'quizCount' => $count,
 			'records' => $quiz,
 			'canEdit' => true,
 			'isMc' => true, //$lesson->isMc($reviewType),
@@ -499,6 +509,7 @@ class ArticleController extends Controller
 			'parentTitle' => $record->title,
 			'settings' => $settings,
 			'article' => true,
+			'random' => $random,
 		]);
     }
 

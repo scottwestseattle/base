@@ -96,7 +96,7 @@ Route::group(['prefix' => 'articles'], function () {
 
     // read / flashcards
 	Route::get('/read/{entry}', [ArticleController::class, 'read']);
-	Route::get('/flashcards/{entry}', [ArticleController::class, 'flashcards']);
+	Route::get('/flashcards/{entry}/{count?}', [ArticleController::class, 'flashcards']);
 	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
 
     // edit / update
@@ -536,7 +536,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/review-random-words/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomWords']);
 	Route::get('/review-random-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomVerbs']);
 	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs']);
-	Route::get('/read-examples/{parms?}', [DefinitionController::class, 'readExamples']);
+	Route::get('/read-examples', [DefinitionController::class, 'readExamples']);
 
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);
