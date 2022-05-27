@@ -1,14 +1,9 @@
-SELECT * FROM `definitions`
-WHERE 1
-AND type_flag = 1
-/* AND title like 'snip%' */
-AND examples is null
-
 NEW DB Changes:
-ALTER TABLE `entries` ADD `description_translation` TEXT NULL AFTER `description`
-ALTER TABLE `lessons` ADD `text_translation` TEXT NULL AFTER `text`;
+ALTER TABLE `tags` ADD `use_count` MEDIUMINT NOT NULL DEFAULT '0' AFTER `type_flag`;
 
 Done:
+ALTER TABLE `entries` ADD `description_translation` TEXT NULL AFTER `description`
+ALTER TABLE `lessons` ADD `text_translation` TEXT NULL AFTER `text`;
 ALTER TABLE `sites` CHANGE `options` `options` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'key1;key2;';
 ALTER TABLE `definitions` ADD `title_snippets` VARCHAR(240) NULL AFTER `title_long`;
 DELETE FROM `definitions` WHERE 1 AND deleted_at IS NOT NULL ;

@@ -75,12 +75,13 @@ class Controller extends BaseController
         if ($record->hasTranslation())
         {
             $lines['text'] = Spanish::getSentences($record->title);
-            $lines['translation'] = [$noTranslation];
+            $lines['translation'] = [$record->title]; // not translated
 
             if (strlen($record->description_short) > 0)
             {
-                $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description_short));
-                $lines['translation'] = array_merge($lines['translation'], [$noTranslation]);
+                $short = Spanish::getSentences($record->description_short);
+                $lines['text'] = array_merge($lines['text'], $short);
+                $lines['translation'] = array_merge($lines['translation'], $short); // not translated
             }
 
             $lines['text'] = array_merge($lines['text'], Spanish::getSentences($record->description));
