@@ -464,7 +464,7 @@ class ArticleController extends Controller
 
     public function read(Request $request, Entry $entry)
     {
-        $count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
+        $count = isset($request['count']) ? intval($request['count']) : null;
         $random = isset($request['random']) ? boolval($request['random']) : false;
 
         $options['randomOrder'] = $random;

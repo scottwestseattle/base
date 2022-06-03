@@ -1,7 +1,5 @@
-@extends('layouts.app')
-@section('title', __('ui.Search'))
-@section('content')
 @php
+    $showGlobalSearchBox = false;
     $articlesChecked = (isset($options['articles']) && $options['articles']) ? 'CHECKED' : '';
     $dictionaryChecked = (isset($options['dictionary']) && $options['dictionary']) ? 'CHECKED' : '';
     $snippetsChecked = (isset($options['snippets']) && $options['snippets']) ? 'CHECKED' : '';
@@ -13,6 +11,9 @@
     $count = isset($results['count']) ? $results['count'] : null;
     $search = isset($results['search']) ? $results['search'] : null;
 @endphp
+@extends('layouts.app')
+@section('title', __('ui.Search'))
+@section('content')
 <h1>@LANG('ui.Search'){{$isPost ? ' (' . $count . ')' : ''}}</h1>
 
 <form method="POST" action="/search">

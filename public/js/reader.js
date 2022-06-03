@@ -176,7 +176,7 @@ function deck() {
 
         if (curr < max)
         {
-			//debug("run slide: " + deck.slides[curr].title, _debug);
+			//console.log('runSlide: max: ' + max + ", current: " + curr);
             loadSlide();
 			deck.readSlide();
         }
@@ -577,12 +577,12 @@ async function requestWakeLock()
         wakeLock = await navigator.wakeLock.request();
 
         wakeLock.addEventListener('release', () => {
-            console.log('Screen Wake Lock released:', wakeLock.released);
+            //console.log('Screen Wake Lock released:', wakeLock.released);
         });
 
         msg = 'wake lock on';
         statusMsg.text(msg);
-        console.log(msg);
+        //console.log(msg);
 
     } catch (err) {
         msg = 'wake lock error: ' + `${err.name}, ${err.message}`;
@@ -827,7 +827,7 @@ function read(text, charIndex, textId = '#slideDescription')
         if (_voiceIndex < _voices.length)
         {
             _utter.voice = _voices[_voiceIndex];
-            console.log('reading: voice = ' + _utter.voice);
+            //console.log('reading: voice = ' + _utter.voice);
         }
         else
         {
@@ -1029,8 +1029,8 @@ function end()
 	reset();
 	loadData();
 	deck.start();
-	$("#pause").show();
-	$("#resume").hide();
+	$("#pause").hide();
+	$("#resume").show();
 	$('#readCurrLine').text(deck.labelLine + " " + (curr + 1));
 	showElapsedTime();
 	clearTimeout(_clockTimerId);

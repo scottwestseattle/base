@@ -65,12 +65,11 @@ class DefinitionController extends Controller
 			'reviewRankedVerbs',
 			'reviewSnippets',
 			'readExamples',
+			'stats',
 
             // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
 			'setSnippetCookie', 'readList',
-
-			'stats',
         ]);
 
         $this->middleware('auth')->only([
@@ -254,6 +253,9 @@ class DefinitionController extends Controller
 
 			if (blank($record))
 			    throw new \Exception('permalink not found');
+
+            $record->view_count++;
+            $record->save();
 		}
 		catch (\Exception $e)
 		{
@@ -1328,7 +1330,6 @@ class DefinitionController extends Controller
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error updating tag'));
 		}
 
-
 		return view($settings['view'], [
 			'sentenceCount' => count($qna),
 			'records' => $qna,
@@ -1336,11 +1337,19 @@ class DefinitionController extends Controller
 			'isMc' => true,
 			'returnPath' => '/favorites',
 			'touchPath' => '/history/add-public/',
+			//todo: 'touchPath' => '/definitions/stats/',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
 			'programName' => $settings['programName'],
 			'sessionName' => $record->name,
 			]);
+    }
+
+    // update favorites list usage stats
+    public function stats(Request $request, Tag $tag)
+    {
+        $tag->countUse();
+    	return redirect('/history/add-public/' . $tag->id);
     }
 
     public function doList($name, $reviewType, $records)
@@ -1391,7 +1400,7 @@ class DefinitionController extends Controller
 
     public function readExamples(Request $request)
     {
-        $count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
+        $count = isset($request['count']) ? intval($request['count']) : null;
         $action = isset($request['a']) ? intval($request['a']) : 'list';
 
    		$records = Definition::getIndex(DEFINITIONS_SEARCH_EXAMPLES, $count);
@@ -1499,7 +1508,7 @@ class DefinitionController extends Controller
 		]);
     }
 
-	public function readSnippetsLatest(Request $request, $count = PHP_INT_MAX)
+	public function readSnippetsLatest(Request $request, $count = null)
     {
         return $this->readSnippets($request, $count, 'Latest Practice Text', 'favorites');
     }

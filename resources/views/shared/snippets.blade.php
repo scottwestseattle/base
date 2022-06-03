@@ -1,29 +1,3 @@
-<script>
-function showResult(str, searchArticles) {
-  if (str.length==0) {
-    document.getElementById("livesearch").innerHTML="";
-    document.getElementById("livesearch").style.border="0px";
-    return;
-  }
-  var xmlhttp=new XMLHttpRequest();
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("livesearch").innerHTML=this.responseText;
-      document.getElementById("livesearch").style.border="1px solid #A5ACB2";
-    }
-  }
-    //orig: var url = "/definitions/search-ajax/light/" + str;
-    var url = "/search-ajax/" + str + "/" + (searchArticles ? "2" : "1");
-    console.log("search text: " + str);
-    //console.log("url: " + url + ", searchArticles: " + searchArticles);
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-}
-</script>
-
-<style>
-</style>
-
 @php
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
@@ -69,12 +43,12 @@ function showResult(str, searchArticles) {
     $search = isset($search) ? $search : null;
     $records = isset($records) ? $records : [];
 @endphp
-<form method="POST" action="/dictionary/create-quick">
+<form method="POST" action="/dictionary/create-quick" autocomplete="off">
 
     <input value="" name="title" id="title" type="search"
         class="form-control form-control-sm form-control-inline py-2 border-right-0 border"
         placeholder="{{__('proj.Dictionary Search')}}"
-        oninput="showResult(this.value, false); $('#searchOptions').show()"
+        oninput="showSearchResult(this.value, false); $('#searchOptions').show()"
         autofocus
     />
 
@@ -84,14 +58,8 @@ function showResult(str, searchArticles) {
                 <tr>
                     <td>
                         <button id="" type="button" class="btn-info btn-xs"
-                        onclick="showResult($('#title').val(), true); $('#searchOptions').hide();"
+                        onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
                         >Search Articles/Books</button>
-                        @if (false)
-                            <input id="searchArticles" name="searchArticles" type="checkbox" style="position:static;"
-                                onclick="showResult($('#searchText').val(), document.getElementById('searchArticles').checked);"
-                            />
-                            <label for="searchArticles">Search Books/Articles</label>
-                        @endif
                     </td>
                 </tr>
             </thead>

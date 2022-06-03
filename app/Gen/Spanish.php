@@ -1170,24 +1170,6 @@ class Spanish
 		],
 	];
 
-	static private $_irregularVerbs = [
-		'tropezar',
-		'tener',
-		'poder',
-		'ser',
-		'poner',
-		'estar',
-		'tropezar',
-	];
-
-	static private $_irregularVerbEndings = [
-		'guir',
-		'ger',
-		'gir',
-		'cer',
-		'ucir',
-	];
-
 	static private $_regularVerbsAr = [ // needed for verbs that don't match a pattern
 		'amar',
 	];
@@ -1421,6 +1403,285 @@ class Spanish
 		return $rc;
 	}
 
+    static private function conjugateVerbGAR($verb)
+    {
+        $records = null;
+        $stem = 'gar';
+
+        if (!Str::endsWith($verb, $stem))
+        {
+            return $records;
+        }
+
+	    // Book Case A: Terminan en 'gar'
+	    // cambian la 'g' en 'gu' delante de 'e' / pagar = pagues
+        // preterito:       pagué
+        // presente sub:    pague, pagues, pague, paguemos, paguéis, paguen
+        // pagar, colgar (ue), llegar, navegar, negar (ie), regar (ie), rogar (ue)
+
+        $middle = 'g';
+        $middleIrregular = 'gu';
+        $endings = self::$_verbEndings['ar'];
+
+        // get the regular conjugations
+        $records = self::conjugate($verb, $endings, $stem, $middle);
+
+        // apply irregular conjugations
+        $root = $records['root'];
+
+        // first person preterite changes
+        $records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
+
+        // subjunctive present forms change
+        for ($i = 0; $i < 6; $i++)
+            $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+        // imperative
+        // first person preterite changes
+        $records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
+        $records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
+        $records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
+
+        for ($i = 0; $i < 5; $i++)
+            $records[CONJ_IMP_NEGATIVE][$i] = 'no ' . $root . $middleIrregular . $endings[CONJ_IMP_NEGATIVE][$i];
+
+
+        dump($records[CONJ_IMP_AFFIRMATIVE]);
+        dump($records[CONJ_IMP_NEGATIVE]);
+
+        return $records;
+    }
+
+	static private $_irregularVerbs = [
+	    // from the book:
+	    'andar',
+	    'caber',
+	    'caer',
+	    'conducir',
+	    'dar',
+	    'decir',
+		'estar',
+	    'haber',
+	    'hacer',
+	    'ir',
+	    'oír',
+	    'oler',
+		'poder',
+		'poner',
+	    'querer',
+	    'saber',
+	    'salir',
+		'ser',
+		'tener',
+	    'traer',
+	    'valer',
+	    'venir',
+	    'ver',
+	];
+
+
+    static private function conjugateVerbCAR($verb)
+    {
+        $records = null;
+        $stem = 'car';
+        $verbType = 'ar';
+
+        if (!Str::endsWith($verb, $stem))
+        {
+            return $records;
+        }
+
+	    // Book Case B: Terminan en 'car'
+	    // cambian la 'c' en 'qu' delante de 'e'
+        // preterito:       toque
+        // presente sub:    toque, toques, toque, toquemos, toquéis, toquen
+	    // tocar = toque
+	    // atacar, buscar, comunicar, explicar, indicar, marcar, sacar, tocar
+
+        $middle = 'c';
+        $middleIrregular = 'qu';
+        $endings = self::$_verbEndings[$verbType];
+
+        // get the regular conjugations
+        $records = self::conjugate($verb, $endings, $stem, $middle);
+
+        // apply irregular conjugations
+        $root = $records['root'];
+
+        // only first person preterite changes
+        $records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
+
+        // subjunctive present forms change
+        for ($i = 0; $i < 6; $i++)
+            $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+        //dump($records[CONJ_IND_PRETERITE]);
+        //dump($records[CONJ_SUB_PRESENT]);
+
+        return $records;
+    }
+
+    static private function conjugateVerbGER($verb)
+    {
+        $records = null;
+        $stem = 'ger';
+        $verbType = 'er';
+
+        if (!Str::endsWith($verb, $stem))
+        {
+            return $records;
+        }
+
+	    // Book Case C: Terminan en 'ger'
+	    // cambian la 'g' en 'j' delante de 'o' y 'a' / proteger = protejo
+        // presente ind: protejo
+        // presente sub: proteja, protejas, proteja, protejamos, protejáis, protejan
+	    // coger, corregir, dirigir, escoger, exigir, proteger, recoger
+
+        $middle = 'g';
+        $middleIrregular = 'j';
+        $endings = self::$_verbEndings[$verbType];
+
+        // get the regular conjugations
+        $records = self::conjugate($verb, $endings, $stem, $middle);
+
+        // apply irregular conjugations
+        $root = $records['root'];
+
+        // only first person preterite changes
+        $records[CONJ_IND_PRESENT][0] = $root . $middleIrregular . $endings[CONJ_IND_PRESENT][0];
+
+        // subjunctive present forms change
+        for ($i = 0; $i < 6; $i++)
+            $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+        //dump($records[CONJ_IND_PRESENT]);
+        //dump($records[CONJ_SUB_PRESENT]);
+
+        return $records;
+    }
+
+	static private $_irregularVerbEndings = [
+	    // from the book:
+	    // A. Terminan en 'gar'
+	    'gar',  // cambian la 'g' en 'gu' delante de 'e' / pagar = pagues
+	            // pagar, colgar (ue), llegar, navegar, negar (ie), regar (ie), rogar (ue)
+	    // B. Terminan en 'car'
+	    'car',  // cambian la 'c' en 'qu' delante de 'e' / tocar = toque
+	            // atacar, buscar, comunicar, explicar, indicar, marcar, sacar, tocar
+	    // C. Terminan en 'ger'
+	    'ger',  // cambian la 'g' en 'j' delante de 'o' y 'a' / proteger = protejo
+	            // coger, corregir, dirigir, escoger, exigir, proteger, recoger
+	    // D. Terminan en consonante + 'cer' o 'cir'
+	    // cambian la 'c' en 'z' delante de 'o', y 'a'
+	    // vencer, convencer, esparcir, torcer (ue)
+	    //todo: b c d f g h j k l m n p q r s t v w x z
+        //
+	    // E. Terminan en vocal + 'cer' o 'cir'
+	    // cambian la 'c' en 'zc' delante de 'o' y 'a'
+	    // agradecer, aparecer, carecer, entristecer, establecer, lucir, nacer,
+	    // obedecer, ofrecer, padecer, parecer, permanecer, pertenecer
+	    //todo: a e i o u [aeiou]cer
+	    'cir',
+	    'cer',
+	    //
+	    // F. Terminan en 'zar'
+	    // cambian la 'z' en 'c' delante de 'e': empezar (ie) = empiece
+	    // alcanzar, almorzar (ue), comenzar (ie), cruzar, forzar (ue), gozar, rezar
+	    'zar',
+	    //
+	    // G. Terminan en 'aer', 'eer', 'oer'
+	    // combian la 'i' no tildado en 'y' cuando está entre vocales, creer = creí
+	    // caer, corroer, creer, decaer, leer, poseer, roer
+	    'aer',
+	    'eer',
+	    'oer',
+	    //
+	    // H. Terminan en 'uir' (excepto 'guir' cuando la 'u' es muda)
+	    // cambian la 'i' no acentuada en 'y' cuando está entre vocales: hiur = huyo
+	    // atribuir, concluir, constituir, construir, contribuir, destruir
+	    // disminuir, distribuir, excluir, huir, incluir, influir, restituir, sustituir
+	    'uir',
+        //
+	    // L. Terminan en 'guir'
+	    // cambian la 'gu' en 'g' delante de 'o' y 'a': distinguir = distingo
+	    // conseguir, perseguir, proseguir, seguir
+	    'guir',
+	    //
+	    // J. Terminan en 'guar'
+	    // cambian la 'u' a 'ü' delante de 'e': averiguar = averigüe
+	    // apaciguar, atestiguar, averiguar
+	    'guar',
+	    //
+	    // K. Algunos que terminan en 'iar'
+	    // llevan accento en la 'i' en todas las formas
+	    // singulares y la forma plural de la tercera persona en el presente del
+	    // indicativo y del subjuntivo: enviar = envío
+	    // ampliar, criar, desviar, enfriar, enviar, fiar, guiar,
+	    // telegrafiar, vaciar, variar
+	    'iar',
+	    //
+	    // L. Terminan en 'uar'
+	    // llevan accento en la 'u' en todas las formas singulares
+	    // y la forma plural de la tercer persona en el presente indicative y subjuntivo
+	    // continuar = continúo
+	    // acentuar, actuar, continuar, efectuar, exceptuar, graduar, habituar,
+	    // insinuar, situar
+	    'uar',
+	];
+
+    static private $_consonants = 'bcdfghjklmnñpqrstvwxyz';
+    static private $_vacales = 'aeiouáéíóú';
+    static private function conjugateVerbCER($verb)
+    {
+        $records = null;
+        $stem = 'cer';
+        $verbType = 'er';
+
+        if (!Str::endsWith($verb, $stem))
+        {
+            return $records;
+        }
+
+	    // Book Case D. Terminan en CONSONANTE + 'cer'
+	    // cambian la 'c' en 'z' delante de 'o', y 'a'
+        // vencer:
+	    // present ind: venzo
+	    // present sub: venza, venzas, venza, venzamos, venzáis, venzan
+	    // vencer, convencer, esparcir, torcer (ue)
+	    // todo: bcdfghjklmnpqrstvwxz
+        if (!preg_match('#[' . self::$_consonants . ']' . $stem . '#is', $verb))
+        {
+            return $records;
+        }
+
+        //
+        // conjugate
+        //
+
+        $middle = 'c';
+        $middleIrregular = 'z';
+        $endings = self::$_verbEndings[$verbType];
+
+        // get the regular conjugations
+        $records = self::conjugate($verb, $endings, $stem, $middle);
+
+        // apply irregular conjugations
+        $root = $records['root'];
+
+        // only first person preterite changes
+        $records[CONJ_IND_PRESENT][0] = $root . $middleIrregular . $endings[CONJ_IND_PRESENT][0];
+
+        // subjunctive present forms change
+        for ($i = 0; $i < 6; $i++)
+            $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+        //dump($records[CONJ_IND_PRESENT]);
+        //dump($records[CONJ_SUB_PRESENT]);
+
+        return $records;
+    }
+
     static public function conjugationsGen($text)
     {
 		$records = null;
@@ -1428,6 +1689,8 @@ class Spanish
 		$rc['formsPretty'] = null;
 		$rc['records'] = null;
 		$rc['status'] = null;
+		$rc['irregular'] = true;
+		$errorMsg = ': error conjugating irregular verb ';
 
 		$parts = null;
 		$text = alphanum($text);
@@ -1436,136 +1699,169 @@ class Spanish
 			// find the right pattern
 			if (in_array($text, self::$_irregularVerbs))
 			{
+			    //
 				// Case 1: matches specific verbs in irregular list
-				$rc['status'] = 'irregular verb not implemented yet';
+				//
+				$rc['status'] = 'C1' . $errorMsg . '"' . $text . '"';
+			}
+			else if (!empty($records = self::conjugateVerbGAR($text)))
+			{
+			    // verbs ending in GAR
+			}
+			else if (!empty($records = self::conjugateVerbCAR($text)))
+			{
+			    // verbs ending in CAR
+			}
+			else if (!empty($records = self::conjugateVerbGER($text)))
+			{
+			    // verbs ending in GER
+			}
+			else if (!empty($records = self::conjugateVerbCER($text)))
+			{
+			    // verbs ending in GER
 			}
 			else if (Str::endsWith($text, self::$_irregularVerbEndings))
 			{
+			    //
 				// Case 2: matches irregular pattern
-				$rc['status'] = 'verb with irregular pattern not implemented yet';
-			}
-			// Case 3: ends with 'azar', 'ezar', 'ozar': aplazar, bostezar, gozar
-			else if (strlen($text) > strlen('azar') && Str::endsWith($text, ['azar', 'ozar', 'ezar']))
-			{
-				$stem = 'zar';
-				$middle = 'z';
-				$middleIrregular = 'c';
-				$endings = self::$_verbEndings['ar'];
-
-				// get the regular conjugations
-				$records = self::conjugate($text, $endings, $stem, $middle);
-
-				// apply 4 irregular conjugations
-				$root = $records['root'];
-
-				for ($i = 0; $i < 6; $i++)
-					$records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
-
-				$records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
-				$records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
-				$records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
-				$records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
-			}
-			// Case 3a: recalcar, remolcar
-			else if (strlen($text) > strlen('calcar') && Str::endsWith($text, ['calcar', 'molcar']))
-			{
-				$stem = 'car';
-				$middle = 'c';
-				$middleIrregular = 'qu';
-				$endings = self::$_verbEndings['ar'];
-
-				// get the regular conjugations
-				$records = self::conjugate($text, $endings, $stem, $middle);
-
-				// apply 4 irregular conjugations
-				$root = $records['root'];
-
-				for ($i = 0; $i < 6; $i++)
-					$records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
-
-				$records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
-				$records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
-				$records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
-				$records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
-			}
-			// Case 3b: 'o' stem change: volcar
-			else if (false && strlen($text) > strlen('olcar') && Str::endsWith($text, ['olcar']))
-			{
-			//todo: same as??? 'olver', >>> revolver, revolcar, volver, resolver, devolver
-			//todo: what about: 'over' >> mover: mueve / llover: llueve
-				$stemTrimmer = 'car';
-				$stemChange = 'ue';
-				$middle = 'c';
-				$middleIrregular = 'qu';
-				$endings = self::$_verbEndings['ar'];
-
-				// get the regular conjugations
-				$records = self::conjugate($text, $endings, $stemTrimmer, $middle);
-
-				// apply irregular conjugations
-				$root = $records['root'];
-				$rootIrregular = 'vuelc';
-				// vol
-				// vuelc
-
-				//todo: NOT DONE YET!!! do the irregulars...
-				for ($i = 0; $i < 6; $i++)
-					$records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
-
-				$records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
-				$records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
-				$records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
-				$records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
-			}
-			// Case 4: vegular AR verbs that such as: acarrear, rodear, matar, llamar, tramar, increpar
-			else if (strlen($text) > strlen('rear') && Str::endsWith($text, ['rear', 'dear', 'tar', 'amar', 'ivar', 'epar']))
-			{
-				$stem = 'ar';
-				$middle = '';
-				$endings = self::$_verbEndings[$stem];
-
-				$records = self::conjugate($text, $endings, $stem, $middle);
-			}
-			// Case 5: regular AR verbs that don't match a pattern yet
-			else if (in_array($text, self::$_regularVerbsAr))
-			{
-				$stem = 'ar';
-				$middle = '';
-				$endings = self::$_verbEndings[$stem];
-
-				$records = self::conjugate($text, $endings, $stem, $middle);
-			}
-			// Case 6: conjugate all AR verbs as regular
-			else if (Str::endsWith($text, 'ar'))
-			{
-				$stem = 'ar';
-				$middle = '';
-				$endings = self::$_verbEndings[$stem];
-
-				$records = self::conjugate($text, $endings, $stem, $middle);
-			}
-			// Case 7: conjugate all ER verbs as regular
-			else if (Str::endsWith($text, 'er'))
-			{
-				$stem = 'er';
-				$middle = '';
-				$endings = self::$_verbEndings[$stem];
-
-				$records = self::conjugate($text, $endings, $stem, $middle);
-			}
-			// Case 8: conjugate all IR verbs as regular
-			else if (Str::endsWith($text, 'ir'))
-			{
-				$stem = 'ir';
-				$middle = '';
-				$endings = self::$_verbEndings[$stem];
-
-				$records = self::conjugate($text, $endings, $stem, $middle);
+				//
+				$rc['status'] = 'C2' . $errorMsg . '"' . $text . '"';
 			}
 			else
 			{
-				// verb case not handled yet
-				$rc['status'] = 'verb pattern not implemented yet';
+			    //
+			    // Case 3: regular verbs
+			    //
+				$rc['irregular'] = false;
+
+			    // conjugate all AR verb
+                if (Str::endsWith($text, 'ar'))
+                {
+                    $stem = 'ar';
+                    $middle = '';
+                    $endings = self::$_verbEndings[$stem];
+
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+                }
+                // conjugate ER verb
+                else if (Str::endsWith($text, 'er'))
+                {
+                    $stem = 'er';
+                    $middle = '';
+                    $endings = self::$_verbEndings[$stem];
+
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+                }
+                // conjugate IR verb
+                else if (Str::endsWith($text, 'ir'))
+                {
+                    $stem = 'ir';
+                    $middle = '';
+                    $endings = self::$_verbEndings[$stem];
+
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+                }
+
+                if (true)
+                {
+                    // don't let it go farther
+                }
+                // Case 3: ends with 'azar', 'ezar', 'ozar': aplazar, bostezar, gozar
+                else if (strlen($text) > strlen('azar') && Str::endsWith($text, ['azar', 'ozar', 'ezar']))
+                {
+                    $stem = 'zar';
+                    $middle = 'z';
+                    $middleIrregular = 'c';
+                    $endings = self::$_verbEndings['ar'];
+
+                    // get the regular conjugations
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+
+                    // apply 4 irregular conjugations
+                    $root = $records['root'];
+
+                    for ($i = 0; $i < 6; $i++)
+                        $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+                    $records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
+                    $records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
+                    $records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
+                    $records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
+                }
+                // Case 3a: recalcar, remolcar
+                else if (strlen($text) > strlen('calcar') && Str::endsWith($text, ['calcar', 'molcar']))
+                {
+                    $stem = 'car';
+                    $middle = 'c';
+                    $middleIrregular = 'qu';
+                    $endings = self::$_verbEndings['ar'];
+
+                    // get the regular conjugations
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+
+                    // apply 4 irregular conjugations
+                    $root = $records['root'];
+
+                    for ($i = 0; $i < 6; $i++)
+                        $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+                    $records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
+                    $records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
+                    $records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
+                    $records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
+                }
+                // Case 3b: 'o' stem change: volcar
+                else if (false && strlen($text) > strlen('olcar') && Str::endsWith($text, ['olcar']))
+                {
+                //todo: same as??? 'olver', >>> revolver, revolcar, volver, resolver, devolver
+                //todo: what about: 'over' >> mover: mueve / llover: llueve
+                    $stemTrimmer = 'car';
+                    $stemChange = 'ue';
+                    $middle = 'c';
+                    $middleIrregular = 'qu';
+                    $endings = self::$_verbEndings['ar'];
+
+                    // get the regular conjugations
+                    $records = self::conjugate($text, $endings, $stemTrimmer, $middle);
+
+                    // apply irregular conjugations
+                    $root = $records['root'];
+                    $rootIrregular = 'vuelc';
+                    // vol
+                    // vuelc
+
+                    //todo: NOT DONE YET!!! do the irregulars...
+                    for ($i = 0; $i < 6; $i++)
+                        $records[CONJ_SUB_PRESENT][$i] = $root . $middleIrregular . $endings[CONJ_SUB_PRESENT][$i];
+
+                    $records[CONJ_IND_PRETERITE][0] = $root . $middleIrregular . $endings[CONJ_IND_PRETERITE][0];
+                    $records[CONJ_IMP_AFFIRMATIVE][1] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][1];
+                    $records[CONJ_IMP_AFFIRMATIVE][2] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][2];
+                    $records[CONJ_IMP_AFFIRMATIVE][4] = $root . $middleIrregular . $endings[CONJ_IMP_AFFIRMATIVE][4];
+                }
+                // Case 4: vegular AR verbs that such as: acarrear, rodear, matar, llamar, tramar, increpar
+                else if (strlen($text) > strlen('rear') && Str::endsWith($text, ['rear', 'dear', 'tar', 'amar', 'ivar', 'epar']))
+                {
+                    $stem = 'ar';
+                    $middle = '';
+                    $endings = self::$_verbEndings[$stem];
+
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+                }
+                // Case 5: regular AR verbs that don't match a pattern yet
+                else if (in_array($text, self::$_regularVerbsAr))
+                {
+                    $stem = 'ar';
+                    $middle = '';
+                    $endings = self::$_verbEndings[$stem];
+
+                    $records = self::conjugate($text, $endings, $stem, $middle);
+                }
+                else
+                {
+                    // verb case not handled yet
+                    $rc['status'] = 'verb pattern not implemented yet';
+                }
 			}
 
 			if (isset($records))
@@ -1575,8 +1871,6 @@ class Spanish
 				$rc['records'] = $records;
 			}
 		}
-
-		//dd($rc);
 
 		return $rc;
 	}

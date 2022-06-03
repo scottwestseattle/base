@@ -170,4 +170,7 @@ return [
 'Not Translated' => '未翻译',
 'Remove All' => '移除所有',
 'Confirm Remove All' => '确认删除所有',
+'Default' => '违约',
+'Random' => '随机',
+'Voice' => '语音',
 ];

@@ -181,4 +181,6 @@ return [
 '(no translation)' => '(no translation)',
 'Delete Definition' => 'Delete Definition',
 'Delete Practice Text' => 'Delete Practice Text',
+'Line Order' => 'Line Order',
+'Seconds to pause between lines' => 'Seconds to pause between lines',
 ];

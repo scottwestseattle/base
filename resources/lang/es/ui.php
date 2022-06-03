@@ -170,4 +170,7 @@ return [
 'Not Translated' => 'Sin traducción',
 'Remove All' => 'Eliminar todo',
 'Confirm Remove All' => 'Confirmar eliminar todo',
+'Default' => 'Predeterminado',
+'Random' => 'Random',
+'Voice' => 'Voz',
 ];

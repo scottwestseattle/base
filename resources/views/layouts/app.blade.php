@@ -1,6 +1,7 @@
 @php
     $iconFolder = App\Site::getIconFolder();
     $loadReader = isset($options['loadReader']) && $options['loadReader'];
+    $showGlobalSearchBox = isset($showGlobalSearchBox) ? $showGlobalSearchBox : true; // default to true
 @endphp
 <!DOCTYPE HTML>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -59,7 +60,7 @@
 		@component('layouts.menu-main')@endcomponent
 
 		<!-- Show the Language Menu -->
-		@component('layouts.language')@endcomponent
+		@component('layouts.language', ['showGlobalSearchBox' => $showGlobalSearchBox])@endcomponent
 
 		<!-- Show the admin submenu -->
         @section('menu-submenu')@show

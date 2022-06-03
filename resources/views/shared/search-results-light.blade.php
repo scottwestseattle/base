@@ -22,7 +22,7 @@
         @if (isset($definitions))
             @foreach($definitions as $record)
                 <tr>
-                    <td>@LANG('proj.Dictionary')</td>
+                    <td style="width:150px;">@LANG('proj.Dictionary')</td>
                     <td><a href="/definitions/view/{{$record->permalink}}" target="">{{$record->title}}</a></td>
                 </tr>
             @endforeach
@@ -31,7 +31,7 @@
         @if (isset($snippets))
             @foreach($snippets as $record)
                 <tr>
-                    <td>@LANG('proj.Practice Text')</td>
+                    <td style="width:150px;">@LANG('proj.Practice Text')</td>
                     @php
                         $title = str_ireplace($search, highlightText($search), $record->title)
                     @endphp

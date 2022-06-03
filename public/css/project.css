@@ -1098,3 +1098,26 @@ Dictionary
 .small-thin-hdr, .small-thin-h2 {
 	font-weight:300;
 }
+
+/****************************************
+Misc
+****************************************/
+
+.overlay {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    background-color: lightBlue; /* Black fallback color */
+    overflow-x: hidden; /* Disable horizontal scroll */
+
+    max-width: 500px;
+    width:90%;
+    min-height: 300px;
+    margin: 50px auto 5% auto; /* Will not center vertically and won't work in IE6/7. */
+    top: 0;
+    left: 0;
+    right: 0;
+
+    border: 1px gray solid;
+    border-radius:10px;
+    opacity:.95;
+}

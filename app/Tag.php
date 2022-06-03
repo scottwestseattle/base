@@ -224,4 +224,19 @@ class Tag extends Model
 
 		return $record;
     }
+
+    static public function countUse(Tag $tag)
+    {
+        try
+        {
+            $tag->use_count++;
+            $tag->save();
+        }
+        catch (\Exception $e)
+        {
+            $msg = 'Error updating usage count';
+            logException($msg, $e->getMessage());
+        }
+	}
+
 }

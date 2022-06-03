@@ -1397,19 +1397,19 @@ function getSentences(text)
 
     // Step 1: Remove initials like T.S. Elliot and remove numbers like 1.1 2.2 so they won't be split on
     var result = text.replace(/([a-zA-Z]\.[a-zA-Z])|([0-9]\.[0-9])/g, (match) => {
-        console.log({match});
+        //console.log({match});
         return match.replace(/\./g, '| ');
     });
 
     // Step 2: Try to avoid splitting after Mr. Mrs. Sra. Sr. by looking 2 or 3 letter words starting with an uppercase letter
     result = result.replace(/(^[A-Z][a-zA-Z]{1,2}\.)|( [A-Z][a-zA-Z]{1,2}\.)|( [A-Z]\.)/g, (match) => {
-        console.log({match});
+        //console.log({match});
         return match.replace(/\./g, '| ');
     });
 
     // Step 3: Undo changes to roman numerals like "Siglo XXI." so they WILL be split on
     result = result.replace(/( [IVXLCDM]+\| )/g, (match) => {
-        console.log({match});
+        //console.log({match});
         return match.replace(/\| /g, '. ');
     });
 
@@ -1441,3 +1441,30 @@ function getId(id)
     else
         return id;
 }
+
+function showSearchResult(str, searchArticles)
+{
+    if (str.length==0)
+    {
+        document.getElementById("livesearch").innerHTML="";
+        document.getElementById("livesearch").style.border="0px";
+        return;
+    }
+
+    var xmlhttp=new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange=function() {
+        if (this.readyState==4 && this.status==200) {
+            document.getElementById("livesearch").innerHTML=this.responseText;
+            document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+        }
+    }
+
+    //orig: var url = "/definitions/search-ajax/light/" + str;
+    var url = "/search-ajax/" + str + "/" + (searchArticles ? "2" : "1");
+    //console.log("search text: " + str);
+    //console.log("url: " + url + ", searchArticles: " + searchArticles);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+

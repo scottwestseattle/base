@@ -1,15 +1,13 @@
-@extends('layouts.app')
-@section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
-
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
-<!-- Front Page - *** MAIN FRONTPAGE FOR LANGUAGE SITES *** -->
+<!-- *** MAIN FRONTPAGE FOR LANGUAGE SITES *** -->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 
 @php
+    $showGlobalSearchBox = false;
     $banner = isset($options['banner']) ? $options['banner'] : null;
     $wotd = isset($options['wotd']) ? $options['wotd'] : null;
     $potd = isset($options['potd']) ? $options['potd'] : null;
@@ -20,6 +18,9 @@
     if (isset($aotd))
         $articleText = (Auth::check()) ? trunc($aotd->description, 300) : $aotd->description;
 @endphp
+
+@extends('layouts.app')
+@section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
 
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->

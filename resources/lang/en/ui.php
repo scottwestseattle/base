@@ -170,4 +170,7 @@ return [
 'Not Translated' => 'Not Translated',
 'Remove All' => 'Remove All',
 'Confirm Remove All' => 'Confirm Remove All',
+'Default' => 'Default',
+'Random' => 'Random',
+'Voice' => 'Voice',
 ];

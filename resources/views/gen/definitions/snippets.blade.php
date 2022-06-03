@@ -1,3 +1,6 @@
+@php
+    $showGlobalSearchBox = false;
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Practice Text'))
 @section('content')

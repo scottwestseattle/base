@@ -90,7 +90,7 @@
 			<span class="glyphReader"><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, -3);" href=""><span class="glyphicon glyphicon-zoom-out"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, 3);" href=""><span class="glyphicon glyphicon-zoom-in"></span></a></span>
-			<span class="glyphReader"><a onclick="toggleActiveTab(event, '#tab3', '#tab1', '.tab-body');" href=""><span class="glyphicon glyphicon-cog"></span></a></span>
+			<span class="glyphReader"><a onclick="event.preventDefault(); $('#settings').toggle();" href=""><span class="glyphicon glyphicon-cog"></span></a></span>
 			@if (false && Auth::check())
 				<span class="glyphReader"><a onclick="toggleActiveTab(event, '#tab2', '#tab1', '.tab-body');" href=""><span class=""></span></a></span>
 			@endif
@@ -121,42 +121,8 @@
 				<div><a onclick="event.preventDefault(); runContinueOther()"  href="" class="btn btn-warning mb-3" id="button-continue-reading-other" style="display:none;" role="button">{{__('proj.Continue reading from location on other device')}}</a></div>
 				<div>
 					<a onclick="incLine(event, -50)" href=""><span id="button-decrement-line" class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
-					<div id="readCurrLine" class="middle large-text mb-2" style="min-width:85px;">Line </div>
+					<div id="readCurrLine" class="middle large-text mb-2" style="min-width:85px;">{{trans_choice('ui.Line', 2)}} </div>
 					<a onclick="incLine(event, 50)" href=""><span id="button-increment-line" class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
-
-                    <div>
-                        <label for="read_flag" class="checkbox-big-label">@LANG('ui.Read'):</label>
-                        <select name="read_flag" id="read_flag">
-                            <option value="once">@LANG('proj.Once')</option>
-                            <option value="1">1 {{trans_choice('ui.minute', 1)}}</option>
-                            <option value="5">5 {{trans_choice('ui.minute', 2)}}</option>
-                            <option value="15">15 {{trans_choice('ui.minute', 2)}}</option>
-                            <option value="30">30 {{trans_choice('ui.minute', 2)}}</option>
-                            <option value="45">45 {{trans_choice('ui.minute', 2)}}</option>
-                            <option value="60">60 {{trans_choice('ui.minute', 2)}}</option>
-                            <option value="continuous">@LANG('proj.Continuous')</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <a onclick="inc(event, '#pause_seconds', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
-                        <div class="middle large-text mb-2" style="min-width:85px;">@LANG('proj.Pause Seconds'): <span id="pause_seconds">0</span></div>
-                        <a onclick="inc(event, '#pause_seconds', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
-                    </div>
-
-                    <div>
-                        <input type="radio" id="random_order" name="random_order" value="0" {{$randomOrder ? '' : 'checked'}}>
-                        <label for="random_order">Default Order</label><br>
-                        <input type="radio" id="random_order" name="random_order" value="1" {{$randomOrder ? 'checked' : ''}}>
-                        <label for="random_order">Random Order</label><br>
-                    </div>
-
-                    @if ($hasTranslation)
-    					<div id="" class="mt-2 steelblue" style="">
-    					    <span class="glyphicon glyphCustom glyphicon-text-width mr-2"></span>
-    					    <div class="pb-1" style="">@LANG('proj.Has Translation')</div>
-    					</div>
-                    @endif
 
 					<div id="elapsedTime" class="mt-5"></div>
 					<div class="statusMsg" class="ml-3"></div>
@@ -204,50 +170,87 @@
 	</div>
 
 	<!--------------------------------------------------------------->
-	<!-- tab 3 - Settings panel ------------------------------------->
+	<!-- Settings panel popup   ------------------------------------->
 	<!--------------------------------------------------------------->
-	<div id="tab3" class="tab-body" style="display:none;">
+	<div id="settings" class="overlay" style="display:none;">
 		<div class="text-center mt-3">
 			<div class="mb-2">
-                <div><span class="small-thin-text" id="language"></span></div>
-                <div id="languages" class="mt-1" style="display:default; font-size:10px;">
-                    <select onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
+                <label for="languages" class="checkbox-big-label">{{trans_choice('ui.Voice', 1)}}:</label>
+                <div name="languages" id="languages" class="mt-1" style="display:default;">
+                    <select class="" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
                 </div>
 			</div>
+            <hr />
+            <div>
+                <label for="read_flag" class="checkbox-big-label">@LANG('ui.Read'):</label>
+                <select name="read_flag" id="read_flag">
+                    <option value="once">@LANG('proj.Once')</option>
+                    <option value="1">1 {{trans_choice('ui.minute', 1)}}</option>
+                    <option value="5">5 {{trans_choice('ui.minute', 2)}}</option>
+                    <option value="10">10 {{trans_choice('ui.minute', 2)}}</option>
+                    <option value="15">15 {{trans_choice('ui.minute', 2)}}</option>
+                    <option value="30">30 {{trans_choice('ui.minute', 2)}}</option>
+                    <option value="45">45 {{trans_choice('ui.minute', 2)}}</option>
+                    <option value="60">60 {{trans_choice('ui.minute', 2)}}</option>
+                    <option value="continuous">@LANG('proj.Continuous')</option>
+                </select>
+            </div>
+            <hr />
 
-			<div class="mb-2">
-				<div class="middle mr-1"><a onclick="zoom(event, -3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-out glyph-zoom-button"></span></a></div>
-				<div class="middle" id="readFontSizeLabel">{{__('ui.Text Size')}}: <span id="readFontSize">18</span></div>
-				<div class="middle ml-3"><a onclick="zoom(event, 3)" href=""><span class="glyphicon glyphReader glyphicon-zoom-in glyph-zoom-button"></span></a></div>
-			</div>
+            <div class="">
+                <div>@LANG('proj.Seconds to pause between lines'):</div>
+                <a onclick="inc(event, '#pause_seconds', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
+                <div class="middle mb-2" style="min-width:30px;"><span class="ml-2 mr-2" style="font-size:25px;" id="pause_seconds">0</span></div>
+                <a onclick="inc(event, '#pause_seconds', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
+            </div>
+            <hr />
+            <div class="">
+                <div>@LANG('proj.Line Order'):</div>
+                <input type="radio" id="random_order" name="random_order" value="0" {{$randomOrder ? '' : 'checked'}}>
+                <label for="random_order">@LANG('ui.Default')</label><br>
+                <input type="radio" id="random_order" name="random_order" value="1" {{$randomOrder ? 'checked' : ''}}>
+                <label for="random_order">@LANG('ui.Random')</label><br>
+            </div>
 
-            @if ($showTranslationControls)
+            @if ($hasTranslation || $showTranslationControls)
+                <hr />
 
-                <div class="mt-1 ml-1">
-                    <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
-                    <label for="checkbox-flip" class="checkbox-xs steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
-                </div>
+                @if ($hasTranslation)
+                    <div id="" class="mt-2 steelblue" style="">
+                        <span class="glyphicon glyphCustom glyphicon-text-width mr-2"></span>
+                    </div>
+                @endif
 
-                <div class="mt-1 ml-1">
-                    <input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#translation-show').toggle();" style="position: static;" />
-                    <label for="checkbox-show" class="checkbox-xs steelblue">@LANG('proj.Show All Translations')</label>
-                </div>
-                <div class="mt-3 text-left">
-                    <div id="translation-show" class="hidden">
-                    <table><tbody>
-                    @foreach($lines['text'] as $line)
-                        <tr class="mb-3">
-                            <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$line}}</td>
-                            @php
-                                $trx = (isset($lines['translation'][$loop->index])) ? $lines['translation'][$loop->index] : '';
-                            @endphp
-                            <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$trx}}</td>
-                        </tr>
-                    @endforeach
-                    </tbody></table>
+                @if ($showTranslationControls)
+                <div>
+                    <div class="mt-1 ml-1">
+                        <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
+                        <label for="checkbox-flip" class="checkbox-sm steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
+                    </div>
+
+                    <div class="mt-1 ml-1">
+                        <input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#translation-show').toggle();" style="position: static;" />
+                        <label for="checkbox-show" class="checkbox-sm steelblue">@LANG('proj.Show All Translations')</label>
+                    </div>
+                    <div class="mt-3 text-left">
+                        <div id="translation-show" class="hidden">
+                        <table><tbody>
+                        @foreach($lines['text'] as $line)
+                            <tr class="mb-3">
+                                <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$line}}</td>
+                                @php
+                                    $trx = (isset($lines['translation'][$loop->index])) ? $lines['translation'][$loop->index] : '';
+                                @endphp
+                                <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$trx}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody></table>
+                        </div>
                     </div>
                 </div>
+                @endif
             @endif
+
 		</div>
 	</div>
 

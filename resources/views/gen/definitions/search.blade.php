@@ -1,3 +1,6 @@
+@php
+    $showGlobalSearchBox = false;
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Dictionary Search'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu')@endcomponent @endsection

@@ -181,4 +181,6 @@ return [
 '(no translation)' => '(没有翻译)',
 'Delete Definition' => '删除定义',
 'Delete Practice Text' => '删除实践文本',
+'Line Order' => '线路的顺序',
+'Seconds to pause between lines' => '行与行之间停顿的秒数',
 ];
