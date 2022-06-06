@@ -114,7 +114,7 @@
 			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 				<div style="min-height:300px;">
 
-                @if ($record->isFib())
+                @if ($record->isMc())
 					<div style="margin: 10px 0;">
 						<a href="/lessons/review/{{$record->id}}/2"><button class="btn btn-success">Review ({{$sentenceCount}})</button></a>
 						@if ($sentenceCount > 20)
@@ -135,25 +135,25 @@
                 @endif
 
                 @if (false)
-                    @if ($record->getLessonType() == LESSONTYPE_QUIZ_MC1)
+                    @if ($record->getLessonType() == LESSON_TYPE_QUIZ_MC1)
                     <div style="margin: 20px 0;">
-                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC1}}"><button class="btn btn-primary">Start Quiz</button></a>
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSON_TYPE_QUIZ_MC1}}"><button class="btn btn-primary">Start Quiz</button></a>
                     </div>
-                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC2)
+                    @elseif ($record->getLessonType() == LESSON_TYPE_QUIZ_MC2)
                     <div style="margin: 20px 0;">
-                        <a href="/lessons/review/{{$record->id}}/{{LESSONTYPE_QUIZ_MC2}}"><button class="btn btn-info">Start Quiz</button></a>
+                        <a href="/lessons/review/{{$record->id}}/{{LESSON_TYPE_QUIZ_MC2}}"><button class="btn btn-info">Start Quiz</button></a>
                     </div>
-                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC3)
+                    @elseif ($record->getLessonType() == LESSON_TYPE_QUIZ_MC3)
                     <div style="margin: 20px 0;">
-                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC3}}"><button class="btn btn-info">Start Quiz</button></a>
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSON_TYPE_QUIZ_MC3}}"><button class="btn btn-info">Start Quiz</button></a>
                     </div>
-                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC4)
+                    @elseif ($record->getLessonType() == LESSON_TYPE_QUIZ_MC4)
                     <div style="margin: 20px 0;">
-                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_MC4}}"><button class="btn btn-info">Start Quiz</button></a>
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSON_TYPE_QUIZ_MC4}}"><button class="btn btn-info">Start Quiz</button></a>
                     </div>
-                    @elseif ($record->getLessonType() == LESSONTYPE_QUIZ_MC4)
+                    @elseif ($record->getLessonType() == LESSON_TYPE_QUIZ_MC4)
                     <div style="margin: 20px 0;">
-                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSONTYPE_QUIZ_FIB}}"><button class="btn btn-success">Start Review</button></a>
+                        <a href="/lessons/reviewmc/{{$record->id}}/{{LESSON_TYPE_QUIZ_MC}}"><button class="btn btn-success">Start Review</button></a>
                     </div>
                     @endif
                 @endif

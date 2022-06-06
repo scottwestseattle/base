@@ -122,12 +122,17 @@ function deck() {
 	this.languageLong = "";
 	this.isAdmin = false;
 	this.userId = 0;
+    this.title = 'not set';
 
     // add History
-    this.title = 'not set';
     this.programName = 'not set';
+    this.programId = 0;
+    this.programType = 0;
+    this.programSubType = 0;
     this.sessionName = 'not set';
-    this.historyPath = 'notset.com';
+    this.sessionId = 0;
+    this.historyPath = 'not set';
+    this.historyRoute = 'not set';
 
 	// options
 	this.runState = RUNSTATE_START;
@@ -145,6 +150,21 @@ function deck() {
     this.labelLocationDifferent = 'Location different not set';
 	this.labelLine = 'Line not set';
 	this.labelOf = 'Of not set';
+
+    this.showParameters = function()
+    {
+        if (true)
+        {
+            console.log("historyPath: " + this.historyPath);
+            console.log("programName: " + this.programName);
+            console.log("programId: " + this.programId);
+            console.log("programType: " + this.programType);
+            console.log("programSybType: " + this.programSubType);
+            console.log("sessionName: " + this.sessionName);
+            console.log("sessionId: " + this.sessionId);
+            console.log("historyRoute: " + this.historyRoute);
+        }
+    }
 
 	this.getId = function(index) {
 		return this.slides[this.slides[index].order].id;
@@ -371,8 +391,14 @@ function loadData()
         // for History record
 		deck.title = container.data('title');
 		deck.programName = container.data('programname');
+		deck.programId = container.data('programid');
+		deck.programType = container.data('programtype');
+		deck.programSubType = container.data('programsubtype');
 		deck.sessionName = container.data('sessionname');
+		deck.sessionId = container.data('sessionid');
 		deck.historyPath = container.data('historypath');
+		deck.historyRoute = container.data('historyroute');
+        deck.showParameters();
 
     	// new settings
 		deck.quizTextDone = container.data('quiztext-done');
@@ -1386,5 +1412,5 @@ function getTimeDisplay(seconds)
 
 function addHistory()
 {
-    addHistoryRecord(deck.historyPath, deck.programName, 0, deck.sessionName, deck.contentId, max);
+    addHistoryRecord(deck.historyPath, deck.programName, deck.programId, deck.programType, deck.programSubType, deck.sessionName, deck.sessionId, max, deck.historyRoute);
 }

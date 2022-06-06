@@ -13,6 +13,7 @@ use Log;
 
 use App\Entry;
 use App\Gen\Book;
+use App\Gen\History;
 use App\Gen\Spanish;
 use App\Site;
 use App\Status;
@@ -486,6 +487,8 @@ class BookController extends Controller
         ];
         //dump($labels);
 
+        $history = History::getArray($title, $recordId, HISTORY_TYPE_BOOK, LESSON_TYPE_READER, count($lines));
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $title,
@@ -495,7 +498,7 @@ class BookController extends Controller
 			'contentType' => 'Entry',
 			'languageCodes' => getSpeechLanguage($language),
 			'labels' => $labels,
-			'historyPath' => '/history/add-public/',
+			'history' => $history,
 		]);
     }
 

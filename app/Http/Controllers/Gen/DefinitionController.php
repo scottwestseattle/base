@@ -15,6 +15,7 @@ use Log;
 use App\Entry;
 use App\Gen\Definition;
 use App\Gen\Spanish;
+use App\Gen\History;
 use App\Quiz;
 use App\Site;
 use App\Status;
@@ -862,8 +863,12 @@ class DefinitionController extends Controller
         // get the favorite lists so the entries can be favorited
         $options['favoriteLists'] = Definition::getUserFavoriteLists();
 
+        // not used but needed for reader
+        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
+
 		return view('gen.definitions.snippets', [
 		    'options' => $options,
+		    'history' => $history,
 		]);
     }
 
@@ -1330,18 +1335,20 @@ class DefinitionController extends Controller
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error updating tag'));
 		}
 
+        $count = count($qna);
+        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, History::getReviewTypeInt($reviewType), $count);
+
 		return view($settings['view'], [
-			'sentenceCount' => count($qna),
+			'sentenceCount' => $count,
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
 			'returnPath' => '/favorites',
-			'touchPath' => '/history/add-public/',
-			//todo: 'touchPath' => '/definitions/stats/',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
-			'programName' => $settings['programName'],
-			'sessionName' => $record->name,
+			'touchPath' => '/definitions/stats/',
+			// History
+			'history' => $history,
 			]);
     }
 
@@ -1349,17 +1356,17 @@ class DefinitionController extends Controller
     public function stats(Request $request, Tag $tag)
     {
         $tag->countUse();
-    	return redirect('/history/add-public/' . $tag->id);
+    	return redirect('/history/add-public?programId=' . $tag->id);
     }
 
-    public function doList($name, $reviewType, $records)
+    public function doList($name, $reviewType, $records, $historyType)
     {
         $reviewType = alphanum($reviewType);
 
         if (Quiz::isQuiz($reviewType))
         {
             // flashcards or multiple choice
-            return $this->doReview($records, $reviewType, $name);
+            return $this->doReview($records, $reviewType, $name, $historyType);
         }
         else
         {
@@ -1368,24 +1375,26 @@ class DefinitionController extends Controller
         }
     }
 
-    public function doReview($records, $reviewType, $title)
+    public function doReview($records, $reviewType, $title, $historyType)
     {
 		$qna = Definition::makeQna($records); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 		$sessionName = $title;
 		$title = trans('proj.:count ' . $title, ['count' => count($records)]);
 
+        $count = count($qna);
+        $history = History::getArray($title, 0, $historyType, History::getReviewType($reviewType), $count, ['route' => crackUri(2)]);
+
 		return view($settings['view'], [
-		    'programName' => $settings['programName'],
-		    'sessionName' => $sessionName,
-			'touchPath' => '/history/add-public/',
-			'sentenceCount' => count($qna),
+			'touchPath' => '/definitions/stats',
+			'sentenceCount' => $count,
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
 			'returnPath' => '/favorites',
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
+			'history' => $history,
 			]);
     }
 
@@ -1420,7 +1429,7 @@ class DefinitionController extends Controller
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records);
+		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
     }
 
     public function reviewRankedVerbs(Request $request, $reviewType = null, $count = 20)
@@ -1431,7 +1440,7 @@ class DefinitionController extends Controller
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records);
+		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
     }
 
     public function reviewNewestVerbs(Request $request, $reviewType = null, $count = 20)
@@ -1442,7 +1451,7 @@ class DefinitionController extends Controller
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records);
+		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
     }
 
     public function reviewRandomWords(Request $request, $reviewType = null, $count = 20)
@@ -1453,7 +1462,7 @@ class DefinitionController extends Controller
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records);
+		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
     }
 
 	public function reviewRandomVerbs(Request $request, $reviewType = null, $count = 20)
@@ -1464,7 +1473,7 @@ class DefinitionController extends Controller
 
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records);
+		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
     }
 
 	public function reviewSnippets(Request $request, $reviewType = null, $count = PHP_INT_MAX)
@@ -1475,9 +1484,9 @@ class DefinitionController extends Controller
 
         $records = Definition::getSnippetsReview(['limit' => intval($count), 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
 
-        $title = 'Latest Practice Text';
+        $title = __('proj.Latest Practice Text');
 
-		return $this->doList($title, $reviewType, $records);
+		return $this->doList($title, $reviewType, $records, HISTORY_TYPE_SNIPPETS);
     }
 
     public function getRandomWordAjax(Request $request)
@@ -1556,6 +1565,8 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
+        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, count($lines['text']));
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $title,
@@ -1563,7 +1574,7 @@ class DefinitionController extends Controller
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 			'labels' => $labels,
-			'historyPath' => '/history/add-public/',
+			'history' => $history,
 		]);
     }
 
@@ -1635,6 +1646,8 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
+        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, LESSON_TYPE_READER, count($lines['text']));
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $tag->name,
@@ -1642,7 +1655,7 @@ class DefinitionController extends Controller
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 			'labels' => $labels,
-			'historyPath' => '/history/add-public/',
+			'history' => $history,
 		]);
     }
 
@@ -1667,6 +1680,8 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
+        $history = History::getArray($title, 0, HISTORY_TYPE_DICTIONARY, LESSON_TYPE_READER, count($lines['text']), ['route' => crackUri(2)]);
+
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $title,
@@ -1674,7 +1689,7 @@ class DefinitionController extends Controller
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),
 			'labels' => $labels,
-			'historyPath' => '/history/add-public/',
+			'history' => $history,
 		]);
     }
 

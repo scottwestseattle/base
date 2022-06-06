@@ -13,6 +13,7 @@
         @php
             $bg = App\DateTimeEx::getDayColor($record->created_at);
             // color tester: $bg = App\DateTimeEx::getColor(100 + $loop->iteration);
+            $info = $record->getInfo();
         @endphp
         @if ($bg !== $bgLast)
             @php
@@ -31,7 +32,19 @@
             <td class="p-3">
                 <div class="text-center">
                     <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at, 'M d, Y')}}</div>
-                    <div>{{$record->program_name}}: {{$record->session_name}} ({{$record->seconds}})</div>
+                    @if ($info['hasUrl'])
+                        <div><a class="white" href="{{$info['url']}}">{{$info['subTypeName']}}: {{$info['programName']}}</a> ({{$info['stats']}})</div>
+                    @else
+                        <div>{{$info['subTypeName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
+                    @endif
+                    @if (true)
+                    <div class="small-thin-text">
+                        <div>Id: {{$record->program_id}}, Count: {{$record->count}}, Type: {{$record->type_flag}}, Sub: {{$record->subtype_flag}}</div>
+                        @if (isset($record->session_name))
+                            <div>{{$record->session_name}} ({{$record->session_id}})</div>
+                        @endif
+                    </div>
+                    @endif
                     @if (isAdmin())
                         <div>
                             <a class="white medium-thin-text" href="/history/edit/{{$record->id}}">Edit</a>

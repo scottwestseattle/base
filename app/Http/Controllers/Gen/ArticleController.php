@@ -13,6 +13,7 @@ use Log;
 use App\DateTimeEx;
 use App\Entry;
 use App\Gen\Article;
+use App\Gen\History;
 use App\Gen\Spanish;
 use App\Quiz;
 use App\Site;
@@ -496,10 +497,10 @@ class ArticleController extends Controller
 
 		$settings = Quiz::getSettings($reviewType);
 
+        $history = History::getArray($record->title, $record->id, HISTORY_TYPE_ARTICLE, LESSON_TYPE_QUIZ_FLASHCARDS, $count);
+
 		return view($settings['view'], [
-		    'programName' => 'Translations',
-		    'sessionName' => $record->title,
-			'touchPath' => '/history/add-public/',
+			'touchPath' => '/',
 			'sentenceCount' => count($quiz),
 			'quizCount' => $count,
 			'records' => $quiz,
@@ -510,6 +511,7 @@ class ArticleController extends Controller
 			'settings' => $settings,
 			'article' => true,
 			'random' => $random,
+			'history' => $history,
 		]);
     }
 

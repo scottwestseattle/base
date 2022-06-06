@@ -23,6 +23,7 @@
     		<tr><td><strong><a href="/dashboard" type="button" class="btn btn-sm btn-warning">Debug</a></strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
             <tr><td><strong><a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a></strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
             <tr><td>&nbsp;</td></tr>
+            <tr><td><a href="/test" class="">Test</a></td></tr>
             <tr><td><a href="/clear-cache" class="">Clear Cache</a></td></tr>
             <tr><td><a href="/clear-view" class="">Clear View Cache</a></td></tr>
         </table>
@@ -80,7 +81,7 @@
                 <div><a target="_blank" href="/definitions/scrape-definition/tener">Scrape Definition</a></div>
                 <div><a target="_blank" href="/definitions/conjugationsgenajax/tener">Scrape Conjugation</a></div>
                 <div><a target="_blank" href="/definitions/find/tener">Find Word</a></div>
-                <div><a target="_blank" href="/history/add-public/course-name/0/lesson-name/0/100">Add History</a></div>
+                <div><a target="_blank" href="/history/add-public?programName=Program 1&programId=1&sessionName=Session 2&sessionId=2&count=3&score=4&seconds=5&extra=6&route=practice-text">Add History</a></div>
             </div>
         </div>
 

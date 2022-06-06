@@ -239,13 +239,15 @@ class HistoryController extends Controller
 		]);
     }
 
-    public function rss()
+    public function rss(Request $request)
     {
+        $type = isset($request['type']) ? intval($request['type']) : 0;
+
 		$records = []; // make this countable so view will always work
 
 		try
 		{
-			$records = History::getRss();
+			$records = History::getRss($type);
 
 			//foreach($records as $record)
 			//{
@@ -265,10 +267,11 @@ class HistoryController extends Controller
     }
 
 	// sample url:
-	// http://domain.com/history/add-public/Plancha/14/Day+4/4/750
-    public function addPublic($programName, $programId, $sessionName, $sessionId, $seconds)
+	// http://domain.com/history/add-public?type=2&programName=Plancha&programId=14&sessionName=Day+4&sessionId=4&seconds=750
+    public function addPublic(Request $request)
     {
-		$msg = History::add(urldecode($programName), intval($programId), urldecode($sessionName), intval($sessionId), intval($seconds));
+        $msg = History::add($request);
+		//$msg = History::add($typeFlag, urldecode($programName), $programId, urldecode($sessionName), $sessionId, $seconds);
 
         $rc = '<a href="/history">' . $msg . '</a>';
 

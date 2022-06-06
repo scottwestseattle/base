@@ -55,7 +55,7 @@ Route::get('/privacy', [HomeController::class, 'privacy']);
 Route::get('/contact', [HomeController::class, 'contact']);
 Route::get('/hash', [HomeController::class, 'hash']);
 Route::post('/hash', [HomeController::class, 'hash']);
-Route::get('/sitemap', [SiteController::class, 'sitemap']);
+Route::get('/sites/sitemap', [SiteController::class, 'sitemap']);
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -70,6 +70,7 @@ Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchA
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
+Route::get('/sitemap', [HomeController::class, 'sitemap']);
 
 Route::get('/clear-cache', function() {
     Cache::flush();
@@ -96,8 +97,8 @@ Route::group(['prefix' => 'articles'], function () {
 
     // read / flashcards
 	Route::get('/read/{entry}', [ArticleController::class, 'read']);
-	Route::get('/flashcards/{entry}/{count?}', [ArticleController::class, 'flashcards']);
 	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
+	Route::get('/flashcards/{entry}/{count?}', [ArticleController::class, 'flashcards']);
 
     // edit / update
 	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);
@@ -712,7 +713,8 @@ Route::group(['prefix' => 'history'], function () {
 
 	// add
 	Route::get('/add', [HistoryController::class, 'add']);
-	Route::get('/add-public/{programName}/{programId}/{sessionName}/{sessionId}/{seconds}', [HistoryController::class, 'addPublic']);
+	Route::get('/add-public0/{programName}/{programId}/{sessionName}/{sessionId}/{seconds}', [HistoryController::class, 'addPublic']);
+	Route::get('/add-public/', [HistoryController::class, 'addPublic']);
 
 	Route::post('/create', [HistoryController::class, 'create']);
 

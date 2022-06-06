@@ -6,16 +6,8 @@
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = isset($options['count']) ? $options['count'] : count($lines['text']);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
-    if (!isset($historyPath))
-    {
-        $msg = 'History path not set';
-        logError($msg, $msg);
-        $historyPath = '/history/add-public/';
-    }
-
 	$hasTranslation = isset($lines['translation']) && count($lines['text']) == count($lines['translation']); // translation matches text
 	$showTranslationControls = isset($lines['translation']); // show the translation in case it needs work
-
 @endphp
 
 <!-------------------------------------------------------->
@@ -23,12 +15,9 @@
 <!-------------------------------------------------------->
 <div class="data-misc"
     data-title="{{$title}}"
-    data-sessionname="{{urlencode($title)}}"
-    data-programname="Reader"
-	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
-	data-historypath="{{$historyPath}}"
 	data-count="{{$count}}"
 	data-max="{{$count}}"
+	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-language="{{$languageCodes['short']}}"
 	data-language-long="{{$languageCodes['long']}}"
 	data-type="{{$contentType}}"
@@ -46,6 +35,7 @@
 	data-labelof="{{$labels['of']}}"
 	data-labelreadingtime="{{$labels['readingTime']}}"
 	data-randomorder="{{$randomOrder ? 1 : 0}}"
+    @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
 	<!-------------------------------------------------------->

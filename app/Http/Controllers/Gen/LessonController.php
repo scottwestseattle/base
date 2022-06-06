@@ -11,6 +11,7 @@ use Config;
 use Log;
 
 use App\Gen\Course;
+use App\Gen\History;
 use App\Gen\Lesson;
 use App\Gen\Spanish;
 use App\Image;
@@ -245,7 +246,7 @@ class LessonController extends Controller
 			$lesson->text = LessonController::autoFormat($lesson->text);
 		}
 
-		if ($lesson->isFib())
+		if ($lesson->isMc())
 		{
             $lesson->text = '<span style="font-size:1.2em;">' . self::formatChoices($lesson->text) . '</span>';
 		}
@@ -309,7 +310,7 @@ class LessonController extends Controller
 		$qna = LessonController::makeQuiz($text);
         //dd($qna);
 
-		if (VocabList::import($qna, $lesson->title, $lesson->isMc()))
+		if (VocabList::import($qna, $lesson->title, $lesson->isMcOld()))
     		return redirect('/vocab-lists');
     	else
     	    return back();
@@ -706,7 +707,7 @@ class LessonController extends Controller
 			'questionPromptReverse' => '', // 'What is the question?',
 			'canEdit' => true,
 			'quizText' => $quizText,
-			'isMc' => $lesson->isMc($reviewType),
+			'isMc' => $lesson->isMcOld($reviewType),
 			]);
     }
 
@@ -734,17 +735,23 @@ class LessonController extends Controller
 		$options['question-count'] = intval(getArrayValue($options, 'question-count', 0));
 		$options['font-size'] = getArrayValue($options, 'font-size', '120%');
 
+        $count = count($quiz);
+
+        //todo: not used and not tested
+        $history = History::getArray($lesson->title, $lesson->id, HISTORY_TYPE_LESSON, LESSON_TYPE_QUIZ_MC, $count, ['sessionName' => $lesson->title, 'sessionId' => $lesson->course->id]);
+
 		return view(VIEWS . '.reviewmc', [
 			'record' => $lesson,
 			'prev' => $prev,
 			'next' => $next,
-			'sentenceCount' => count($quiz),
+			'sentenceCount' => $count,
 			'records' => $quiz,
 			'options' => $options,
 			'canEdit' => true,
 			'quizText' => $quizText,
-			'isMc' => $lesson->isMc($reviewType),
+			'isMc' => $lesson->isMcOld($reviewType),
             'returnPath' => PREFIX . '/view',
+            'history' => $history,
 			]);
     }
 
@@ -760,8 +767,10 @@ class LessonController extends Controller
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
 
-       if ($lesson->isMc())
+       if ($lesson->isMcOld())
+       {
             return $this->reviewmc($lesson, $reviewType);
+       }
 
 		try
 		{
@@ -780,17 +789,18 @@ class LessonController extends Controller
 		$settings = Quiz::getSettings($reviewType);
         $title = (isset($lesson->course->title) ? $lesson->course->title . ' - ' : '') . $lesson->title;
 
+        $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $lesson->type_flag, $count, ['sessionName' => $lesson->title, 'sessionId' => $lesson->course->id]);
+
 		return view($settings['view'], [
-		    'programName' => 'Lessons',
-		    'sessionName' => $title,
-			'touchPath' => '/history/add-public/',
+			'history' => $history,
+			'touchPath' => '/',
 			'prev' => $prev,
 			'next' => $next,
 			'sentenceCount' => count($quiz),
 			'quizCount' => $count,
 			'records' => $quiz,
 			'canEdit' => true,
-			'isMc' => true, //$lesson->isMc($reviewType),
+			'isMc' => true, //$lesson->isMcOld($reviewType),
             'returnPath' => '/' . PREFIX . '/view/' . $lesson->id,
 			'parentTitle' => $lesson->title,
 			'settings' => $settings,

@@ -16,43 +16,24 @@ use App\User;
 define('LESSON_FORMAT_DEFAULT', 0);
 define('LESSON_FORMAT_AUTO', 1);
 
-// CURRENT
-define('LESSONTYPE_NOTSET',          0);
-define('LESSONTYPE_TEXT',           10);
-define('LESSONTYPE_VOCAB',          20);
-define('LESSONTYPE_QUIZ_FIB',       30);
-define('LESSONTYPE_QUIZ_FLASHCARDS',31);
-define('LESSONTYPE_QUIZ_TRANSLATION',32);
-
-define('LESSONTYPE_QUIZ_MC1',       40);
-define('LESSONTYPE_QUIZ_MC2',       41);
-define('LESSONTYPE_QUIZ_MC3',       42);
-define('LESSONTYPE_QUIZ_MC4',       43);
-
-define('LESSONTYPE_TIMED_SLIDES',   50);
-define('LESSONTYPE_READING',        60);
-define('LESSONTYPE_LISTS',          70); // favorites lists
-define('LESSONTYPE_OTHER',          99);
-define('LESSONTYPE_DEFAULT',        LESSONTYPE_TEXT);
-
 class Lesson extends Model
 {
 	use SoftDeletes;
 
     const _typeFlags = [
-		LESSONTYPE_NOTSET => 'Not Set',
-		LESSONTYPE_TEXT => 'Text',
-		LESSONTYPE_VOCAB => 'Vocabulary List',
-		LESSONTYPE_QUIZ_FIB => 'Fill in the Blank',
-		LESSONTYPE_QUIZ_FLASHCARDS => 'Flashcards',
-		LESSONTYPE_QUIZ_TRANSLATION => 'Translation',
-//		LESSONTYPE_QUIZ_MC1 => 'Multiple Choice - Set Options (MC1)',
-//		LESSONTYPE_QUIZ_MC2 => 'Multiple Choice - Random Options (MC2)',
-//		LESSONTYPE_QUIZ_MC3 => 'Multiple Choice - New Layout (MC3)',
-		LESSONTYPE_TIMED_SLIDES => 'Timed Slides',
-		LESSONTYPE_READING => 'Reading',
-		LESSONTYPE_LISTS => 'Favorites Lists',
-		LESSONTYPE_OTHER => 'Other',
+		LESSON_TYPE_NOTSET => 'Not Set',
+		LESSON_TYPE_TEXT => 'Text',
+		LESSON_TYPE_VOCAB => 'Vocabulary List',
+		LESSON_TYPE_QUIZ_MC => 'Multiple Choice',
+		LESSON_TYPE_QUIZ_FLASHCARDS => 'Flashcards',
+		LESSON_TYPE_QUIZ_TRANSLATION => 'Translation',
+//		LESSON_TYPE_QUIZ_MC1 => 'Multiple Choice - Set Options (MC1)',
+//		LESSON_TYPE_QUIZ_MC2 => 'Multiple Choice - Random Options (MC2)',
+//		LESSON_TYPE_QUIZ_MC3 => 'Multiple Choice - New Layout (MC3)',
+		LESSON_TYPE_TIMED_SLIDES => 'Timed Slides',
+		LESSON_TYPE_READER => 'Reader',
+		LESSON_TYPE_FAVORITES => 'Favorites Lists',
+		LESSON_TYPE_OTHER => 'Other',
     ];
 
     public function user()
@@ -146,29 +127,29 @@ class Lesson extends Model
 
 		switch($reviewType)
 		{
-			case LESSONTYPE_QUIZ_FIB:
-			case LESSONTYPE_QUIZ_FLASHCARDS:
+			case LESSON_TYPE_QUIZ_MC:
+			case LESSON_TYPE_QUIZ_FLASHCARDS:
 				// FIB doesn't use answer options, so if any, remove them
 				$quiz = self::removeEmbeddedAnswers($quiz, $reviewType);
 				break;
 
-			case LESSONTYPE_QUIZ_MC1:
+			case LESSON_TYPE_QUIZ_MC1: // not used
 				// expects embedded list of answers like [one, two, three] which will be converted to buttons
 				$quiz = self::formatMc1($quiz, $reviewType);
 				break;
 
-			case LESSONTYPE_QUIZ_MC2:
+			case LESSON_TYPE_QUIZ_MC2: // not used
 				// creates random answers and puts them in the questions
 				$quiz = $this->formatMc2($quiz, $reviewType);
 				break;
 
-			case LESSONTYPE_QUIZ_MC3:
+			case LESSON_TYPE_QUIZ_MC3: // not used
 				// create random answers with new quiz layout
 				$quiz = self::formatMc3($quiz, $reviewType);
 				break;
 
-			case LESSONTYPE_QUIZ_MC4:
-				// not used yet, same as LESSONTYPE_QUIZ_MC3
+			case LESSON_TYPE_QUIZ_MC4: // not used
+				// not used yet, same as LESSON_TYPE_QUIZ_MC3
 				$quiz = $this->formatMc4($quiz, $reviewType);
 				break;
 
@@ -416,7 +397,7 @@ class Lesson extends Model
 						//dd($buttons);
 
 						// replace the options with the buttons
-						if ($reviewType == LESSONTYPE_QUIZ_MC1)
+						if ($reviewType == LESSON_TYPE_QUIZ_MC1)
 						{
 							// embed the buttons in the question text
 							//$q = preg_replace("/\[.*\]/is", $buttons, $q);
@@ -488,7 +469,7 @@ class Lesson extends Model
 	{
 	    $rc = false;
 
-	    if ($this->type_flag == LESSONTYPE_TIMED_SLIDES)
+	    if ($this->type_flag == LESSON_TYPE_TIMED_SLIDES)
 	        $rc = true;
 
 	    return $rc;
@@ -498,13 +479,34 @@ class Lesson extends Model
 	{
 	    $rc = false;
 
-	    if ($this->type_flag == LESSONTYPE_LISTS)
+	    if ($this->type_flag == LESSON_TYPE_LISTS)
 	        $rc = true;
 
 	    return $rc;
     }
 
+    // formerly isFib()
     public function isMc($reviewType = null)
+	{
+		$rc = false;
+
+		if (!isset($reviewType))
+			$reviewType = $this->type_flag;
+
+		switch($reviewType)
+		{
+			case LESSON_TYPE_QUIZ_MC:
+				$rc = true;
+				break;
+			default:
+				break;
+		}
+
+		return $rc;
+	}
+
+    // the original mc quizes
+    public function isMcOld($reviewType = null)
 	{
 		$v = false;
 
@@ -513,10 +515,10 @@ class Lesson extends Model
 
 		switch($reviewType)
 		{
-			case LESSONTYPE_QUIZ_MC1:
-			case LESSONTYPE_QUIZ_MC2:
-			case LESSONTYPE_QUIZ_MC3:
-			case LESSONTYPE_QUIZ_MC4:
+			case LESSON_TYPE_QUIZ_MC1:
+			case LESSON_TYPE_QUIZ_MC2:
+			case LESSON_TYPE_QUIZ_MC3:
+			case LESSON_TYPE_QUIZ_MC4:
 				$v = true;
 				break;
 			default:
@@ -528,17 +530,17 @@ class Lesson extends Model
 
     public function isFib()
 	{
-        return($this->type_flag == LESSONTYPE_QUIZ_FIB);
+        return($this->type_flag == LESSON_TYPE_QUIZ_FIB);
 	}
 
     public function isFlashcards()
 	{
-        return($this->type_flag == LESSONTYPE_QUIZ_FLASHCARDS);
+        return($this->type_flag == LESSON_TYPE_QUIZ_FLASHCARDS);
 	}
 
     public function isTranslation()
 	{
-        return($this->type_flag == LESSONTYPE_QUIZ_TRANSLATION);
+        return($this->type_flag == LESSON_TYPE_QUIZ_TRANSLATION);
 	}
 
 	public function getLines($text)
@@ -583,7 +585,7 @@ class Lesson extends Model
 	{
 		$rc = [];
 
-		if ($this->type_flag == LESSONTYPE_VOCAB)
+		if ($this->type_flag == LESSON_TYPE_VOCAB)
 		{
 			$words = self::getLines($this->text);
 			//dd($words);
@@ -599,7 +601,7 @@ class Lesson extends Model
 		$rc['records'] = null;
 		$rc['hasDefinitions'] = false;
 
-		if ($this->type_flag == LESSONTYPE_VOCAB)
+		if ($this->type_flag == LESSON_TYPE_VOCAB)
 		{
 			// if user logged in, get his copy of the vocab for this lesson with definitions
 			$rc['recordsUser'] = Auth::check() ? Word::getLessonUserWords($this->id) : [];
@@ -641,7 +643,7 @@ class Lesson extends Model
 
 		switch($this->type_flag)
 		{
-			case LESSONTYPE_VOCAB:
+			case LESSON_TYPE_VOCAB:
 				$v = true;
 				break;
 			default:
@@ -657,14 +659,14 @@ class Lesson extends Model
 
 		switch($this->type_flag)
 		{
-			case LESSONTYPE_QUIZ_FIB:
-			case LESSONTYPE_QUIZ_FLASHCARDS:
-			case LESSONTYPE_QUIZ_TRANSLATION:
-
-			case LESSONTYPE_QUIZ_MC1:
-			case LESSONTYPE_QUIZ_MC2:
-			case LESSONTYPE_QUIZ_MC3:
-			case LESSONTYPE_QUIZ_MC4:
+			case LESSON_TYPE_QUIZ_MC:
+			case LESSON_TYPE_QUIZ_FLASHCARDS:
+			case LESSON_TYPE_QUIZ_TRANSLATION:
+			// not used yet
+			case LESSON_TYPE_QUIZ_MC1:
+			case LESSON_TYPE_QUIZ_MC2:
+			case LESSON_TYPE_QUIZ_MC3:
+			case LESSON_TYPE_QUIZ_MC4:
 				$v = true;
 				break;
 			default:
@@ -676,7 +678,7 @@ class Lesson extends Model
 
     public function isReading()
 	{
-		return ($this->type_flag == LESSONTYPE_READING);
+		return ($this->type_flag == LESSON_TYPE_READER);
 	}
 
     public function getLessonType()

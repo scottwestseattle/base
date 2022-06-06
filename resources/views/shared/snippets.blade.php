@@ -11,8 +11,8 @@
 	data-count="1"
 	data-touchpath=""
 	data-max="1"
-	data-language={{$options['languageCodes']['short']}}
-	data-language-long={{$options['languageCodes']['long']}}
+	data-language="{{$options['languageCodes']['short']}}"
+	data-language-long="{{$options['languageCodes']['long']}}"
 	data-type="1"
 	data-contenttype="frontpage"
 	data-contentid="1"
@@ -20,6 +20,7 @@
 	data-userid="0"
 	data-readlocation="0"
 	data-useKeyboard="0"
+    @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
 <!-------------------------------------------------------->

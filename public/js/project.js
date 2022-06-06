@@ -1371,21 +1371,39 @@ function shuffle(array)
 	return array;
 }
 
-function addHistoryRecord(url, programName, programId, sessionName, sessionId, score)
+function makeParm(key, value, first = false)
 {
-    //console.log('touchpath: ' + url);
+    rc = key + '=' + value;
 
-    programId = (programId > 0) ? programId : 0;
-    sessionId = (sessionId > 0) ? sessionId : 0;
-    score = (score > 0) ? score : 0;
+    if (!first)
+    {
+        rc = '&' + rc;
+    }
 
-    var parms = programName + '/' + programId + '/' + sessionName + '/' + sessionId + '/' + score;
+    return rc;
+}
+
+function addHistoryRecord(historyPath, programName, programId, programType, programSubType, sessionName, sessionId, count, route, score = 0, seconds = 0, extra = 0)
+{
+    var parms =
+          makeParm('programName', programName, /* first = */ true)
+        + makeParm('programId', programId)
+        + makeParm('programType', programType)
+        + makeParm('programSubType', programSubType)
+        + makeParm('sessionName', sessionName)
+        + makeParm('sessionId', sessionId)
+        + makeParm('route', route)
+        + makeParm('count', count)
+        + makeParm('score', score)
+        + makeParm('seconds', seconds)
+        + makeParm('extra', extra)
+
     // encodeURI(url.replace(/[\W_]+/g, "-"));
 
-    // path looks like: https://domain.com/course/id/lesson/id/score
-    var path = url + parms;
+    // path looks like: https://domain.com?type=1&programName=Course Name&programId=1&programType=10&programSubType=30&sessionName=Fun Lesson&sessionId=1&count=15
+    var path = historyPath + parms;
 
-    //console.log('history: ' + path);
+    console.log('addHistoryRecord: ' + path);
 
     ajaxexec(path);
 }

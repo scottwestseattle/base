@@ -35,7 +35,7 @@
         <!--------------------------------------------------------------------------->
 
         @if ($course->isTimedSlides())
-            <input type="hidden" name="type_flag" id="type_flag" value="{{LESSONTYPE_TIMED_SLIDES}}" />
+            <input type="hidden" name="type_flag" id="type_flag" value="{{LESSON_TYPE_TIMED_SLIDES}}" />
         @else
             <div class="form-group">
             @component('components.control-dropdown-menu', ['record' => $course, 'prefix' => $prefix,

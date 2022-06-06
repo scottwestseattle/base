@@ -17,9 +17,10 @@ class History extends Model
     	return $this->belongsTo(User::class);
     }
 
-    static public function getRss()
+    static public function getRss($type)
     {
 		$records = History::select()
+		    ->where('type_flag', $type)
 			->orderByRaw('created_at DESC')
 			->get();
 
@@ -61,10 +62,23 @@ class History extends Model
 		return $history;
 	}
 
-	static public function add($programName, $programId, $sessionName, $sessionId, $seconds)
+	static public function add($request)
 	{
 	    $msg = '';
 		$record = new History();
+		$notUsed = false;
+
+        $programName = isset($request['programName']) ? alphanum($request['programName']) : null;
+        $programId = isset($request['programId']) ? intval($request['programId']) : 0;
+        $programType = isset($request['programType']) ? intval($request['programType']) : 0;
+        $programSubType = isset($request['programSubType']) ? intval($request['programSubType']) : 0;
+        $sessionName = isset($request['sessionName']) ? alphanum($request['sessionName']) : null;
+        $sessionId = isset($request['sessionId']) ? intval($request['sessionId']) : 0;
+        $route = isset($request['route']) ? cleanUrl($request['route'], $notUsed) : null;
+        $seconds = isset($request['seconds']) ? intval($request['seconds']) : 0;
+        $count = isset($request['count']) ? intval($request['count']) : 0;
+        $score = isset($request['score']) ? intval($request['score']) : 0;
+        $extra = isset($request['extra']) ? intval($request['extra']) : 0;
 
         // inverse quotation mark makes the save fail: ¡
         $programName = str_replace('¡', '', $programName);
@@ -73,10 +87,18 @@ class History extends Model
 		$record->ip_address = ipAddress();
 		$record->program_name = trimNull($programName, true);
 		$record->program_id = intval($programId);
+        $record->type_flag = intval($programType);
+        $record->subtype_flag = intval($programSubType);
 		$record->session_name = trimNull($sessionName, true);;
 		$record->session_id = intval($sessionId);
-		$record->seconds = intval($seconds);
+		$record->route = trimNull($route);
 		$record->user_Id = Auth::id();
+
+        // stats
+		$record->seconds = intval($seconds);
+		$record->count = intval($count);
+		$record->score = intval($score);
+		$record->extra = intval($extra);
 
 		try
 		{
@@ -92,4 +114,229 @@ class History extends Model
 
 		return $msg;
 	}
+
+	public function getStats()
+	{
+	    $rc = -1;
+        $seconds = intval($this->seconds);
+        $score = intval($this->score);
+        $count = intval($this->count);
+        $extra = intval($this->extra);
+
+        if ($seconds > 0)
+            $rc = $seconds;
+        else if ($score > 0)
+            $rc = $score;
+        else if ($count > 0)
+            $rc = $count;
+
+	    return $rc;
+	}
+
+	static public function getSubTypeInfo($subType)
+	{
+	    $name = 'not set';
+	    $action = 'not set';
+	    $actionInt = 0;
+
+	    switch($subType)
+	    {
+            case LESSON_TYPE_QUIZ_MC:
+	            $name = __('proj.Quiz');
+	            $action = 'quiz';
+	            $actionInt = 2;
+	            break;
+            case LESSON_TYPE_QUIZ_FLASHCARDS:
+	            $name = __('proj.Flashcards');
+	            $action = 'flashcards';
+	            $actionInt = 1;
+	            break;
+            case LESSON_TYPE_READER:
+	            $name = __('proj.Reader');
+	            $action = 'read';
+	            break;
+	        case LESSON_TYPE_TIMED_SLIDES:
+	            $name = __('proj.Exercise');
+	            $action = 'slides';
+	            break;
+	        default:
+	            break;
+	    }
+
+	    return ['name' => $name, 'action' => $action, 'actionInt' => $actionInt];
+	}
+
+	public function getProgramName()
+	{
+	    $rc = 'not set';
+
+	    if (strlen($this->program_name) > 0)
+	        $rc = $this->program_name;
+	    else
+	        $rc = self::getTypeInfo($this->type_flag)['name'];
+
+	    return $rc;
+    }
+
+	public function isType($type)
+	{
+	    return ($this->type_flag === $type);
+    }
+
+	public function getInfo()
+	{
+        $action = '';
+        $subTypeName = '';
+
+        if ($this->subtype_flag > 0)
+        {
+            $subTypeInfo = self::getSubTypeInfo($this->subtype_flag);
+            $action = $subTypeInfo['action'];
+            $actionInt = $subTypeInfo['actionInt'];
+            $subTypeName = $subTypeInfo['name'];
+            if ($this->isType(HISTORY_TYPE_DICTIONARY))
+            {
+                $action = $this->route . '?count=' . $this->count . '&a=' . $action;
+            }
+            else if ($this->isType(HISTORY_TYPE_LESSON))
+            {
+                $action = $this->program_id . '/' . $actionInt . '/' . $this->count;
+            }
+            else
+            {
+                if ($this->program_id > 0)
+                {
+                    $action .= '/' . $this->program_id;
+                }
+                else if ($this->count > 0)
+                {
+                    $action .= '/' . $this->count;
+                }
+            }
+        }
+
+        $rc = self::getTypeInfo($this->type_flag, $action);
+        $rc['stats'] = $this->getStats();
+        $rc['programName'] = $this->getProgramName();
+        $rc['subTypeName'] = $subTypeName;
+
+        return $rc;
+    }
+
+	static public function getTypeInfo($type, $action = '')
+	{
+	    $name = 'not found';
+        $url = null;
+
+	    switch($type)
+	    {
+            case HISTORY_TYPE_NOTSET:
+            case HISTORY_TYPE_NOTUSED:
+	            $name = __('project.Not Used');
+	            break;
+            case HISTORY_TYPE_FAVORITES:
+	            $name = trans_choice('proj.Favorite', 2);
+	            $url = '/favorites';
+	            break;
+            case HISTORY_TYPE_ARTICLE:
+	            $name = trans_choice('proj.Article', 1);
+	            $url = '/articles/' . $action;
+	            break;
+            case HISTORY_TYPE_BOOK:
+	            $name = trans_choice('proj.Book', 1);
+	            $url = '/books/' . $action;
+	            break;
+	        case HISTORY_TYPE_LESSON:
+	            $name = trans_choice('proj.Lesson', 2);
+	            $url = '/lessons/review/' . $action;
+	            break;
+	        case HISTORY_TYPE_EXERCISE:
+	            $name = trans_choice('proj.Exercise', 2);
+	            break;
+	        case HISTORY_TYPE_DICTIONARY:
+	            $name = __('proj.Dictionary');
+	            $url = '/definitions/' . $action;
+	            break;
+	        case HISTORY_TYPE_SNIPPETS:
+	            $name = __('proj.Practice Text');
+	            $url = '/snippets/' . $action;
+	            break;
+	        case HISTORY_TYPE_OTHER:
+	            $name = __('proj.Other');
+	            break;
+	        default:
+	            break;
+	    }
+
+	    return ['name' => $name, 'url' => $url, 'hasUrl' => isset($url)];
+	}
+
+    static function getReviewType($parameter)
+    {
+        $parameter = strtolower(alpha($parameter));
+
+        $rc = LESSON_TYPE_QUIZ_MC;
+
+        if ($parameter == 'flashcards')
+            $rc = LESSON_TYPE_QUIZ_FLASHCARDS;
+        else if ($parameter == 'quiz')
+            $rc = LESSON_TYPE_QUIZ_MC;
+
+        return $rc;
+    }
+
+    static function getReviewTypeInt($parameter)
+    {
+        $parameter = intval($parameter);
+
+        $rc = LESSON_TYPE_QUIZ_MC;
+
+        if ($parameter == 1)
+            $rc = LESSON_TYPE_QUIZ_FLASHCARDS;
+        else if ($parameter == 2)
+            $rc = LESSON_TYPE_QUIZ_MC;
+
+        return $rc;
+    }
+
+    static function getArrayShort($programType, $programSubType, $count)
+    {
+        return self::getArray(null, 0, $programType, $programSubType, $count);
+    }
+
+    static function getArray($programName, $programId, $programType, $programSubType, $count, $options = null)
+    {
+        $rc =  [
+            'historyPath' => HISTORY_URL,
+			'programName' => $programName,
+			'programId' => $programId,
+			'programType' => $programType,
+			'programSubType' => $programSubType,
+			'sessionName' => null,
+			'sessionId' => 0,
+			'count' => $count,
+			'score' => 0,
+			'seconds' => 0,
+			'extra' => 0,
+			'route' => null,
+        ];
+
+        if (isset($options['sessionName']))
+            $rc['sessionName'] = $options['sessionName'];
+        if (isset($options['sessionId']))
+            $rc['sessionId'] = $options['sessionId'];
+        if (isset($options['route']))
+            $rc['route'] = $options['route'];
+        if (isset($options['score']))
+            $rc['score'] = $options['score'];
+        if (isset($options['seconds']))
+            $rc['seconds'] = $options['seconds'];
+        if (isset($options['extra']))
+            $rc['extra'] = $options['extra'];
+
+        //dump($rc);
+
+        return $rc;
+    }
+
 }

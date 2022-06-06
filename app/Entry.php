@@ -91,6 +91,22 @@ class Entry extends Model
 		return($this->type_flag == ENTRY_TYPE_ARTICLE);
 	}
 
+	public function getHistoryType()
+	{
+	    $rc = HISTORY_TYPE_OTHER;
+
+	    if ($this->isArticle())
+	    {
+	        $rc = HISTORY_TYPE_ARTICLE;
+	    }
+	    else if ($this->isBook())
+	    {
+    	    $rc = HISTORY_TYPE_BOOK;
+	    }
+
+	    return $rc;
+	}
+
 	public function getViewLink()
 	{
 	    $rc = '';

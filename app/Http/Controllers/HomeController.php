@@ -36,7 +36,7 @@ class HomeController extends Controller
 			'contact',
 			'frontpage',
 			'mvc',
-			'privacy', 'terms',
+			'privacy', 'terms', 'sitemap',
 			'search', 'searchAjax',
 		]);
 
@@ -147,8 +147,12 @@ class HomeController extends Controller
                 $options['snippet'] = $snippet;
         }
 
+        // not used but needed for reader
+        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
+
 		return view($view, [
 		    'options' => $options,
+		    'history' => $history,
 		]);
 	}
 
@@ -540,4 +544,10 @@ class HomeController extends Controller
 
         return $results;
     }
+
+    public function sitemap(Request $request)
+    {
+		return view('home.sitemap', [
+		]);
+	}
 }

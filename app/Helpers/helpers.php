@@ -111,6 +111,30 @@ if (!function_exists('referrer')) {
     }
 }
 
+if (!function_exists('crackUri')) {
+    function crackUri(int $index)
+    {
+        $rc = '';
+
+        if (isset($_SERVER["REQUEST_URI"]))
+        {
+            // crack the URI
+            $crack = explode('/', $_SERVER['REQUEST_URI']);
+            if (count($crack) > $index)
+            {
+                $rc = $crack[$index];
+
+                // crack the parameters
+                $crack = explode('?', $rc);
+                if (count($crack) > 1)
+                    $rc = $crack[0];
+            }
+        }
+
+        return $rc;
+    }
+}
+
 if (!function_exists('logWarning')) {
 
 	function logWarning($msg, $flash = null, $parms = null)
@@ -357,13 +381,14 @@ if (!function_exists('cleanUrl')) {
 
         if (true || isset($url))
         {
-            $clean = alphanum($url, /* strict = */ false, /* allow = */ '\/\:\&\%');
+            $clean = alphanum($url, /* strict = */ false, /* allow = */ '\/\:\&\%\-');
             $changed = ($clean != $url);
         }
 
         return $url;
     }
 }
+
 if (!function_exists('isExpired')) {
 	function isExpired($sDate)
 	{

@@ -5,6 +5,6 @@
 @section('title', __('proj.Practice Text'))
 @section('content')
 
-@component('shared.snippets', ['options' => $options])@endcomponent
+@component('shared.snippets', ['options' => $options, 'history' => $history])@endcomponent
 
 @endsection

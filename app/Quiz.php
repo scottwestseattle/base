@@ -10,21 +10,11 @@ use App;
 use App\User;
 use DateTime;
 
-// Review type
-define('REVIEWTYPE_NOTSET', 0);
-define('REVIEWTYPE_FLASHCARDS', 1);
-define('REVIEWTYPE_FIB', 2);
-define('REVIEWTYPE_MC_RANDOM', 3);
-define('REVIEWTYPE_MC_FIXED', 4);
-define('REVIEWTYPE_MC_MIXED', 5);
-define('REVIEWTYPE_WHEELOFFORTUNE', 6);
-define('REVIEWTYPE_DEFAULT', REVIEWTYPE_MC_RANDOM);
-
 class Quiz
 {
     static private $_type = [
-        'flashcards' => REVIEWTYPE_FLASHCARDS,
-        'quiz' => REVIEWTYPE_MC_RANDOM,
+        'flashcards' => LESSON_TYPE_QUIZ_FLASHCARDS,
+        'quiz' => LESSON_TYPE_QUIZ_MC,
     ];
 
 	// this version puts the answer options into a separate cell
@@ -240,14 +230,25 @@ class Quiz
 		return $array;
 	}
 
+    // convert the url parameter (1 or 2) to the quiz type
 	static public function getReviewTypeFlag($reviewType)
 	{
-	    $type = REVIEWTYPE_NOTSET;
+	    $type = LESSON_TYPE_NOTSET;
 
         if (is_int($reviewType))
         {
             // it's already set so just return it.
-            $type = $reviewType;
+            switch($reviewType)
+            {
+                case 1:
+                    $type = LESSON_TYPE_QUIZ_FLASHCARDS;
+                    break;
+                case 2:
+                    $type = LESSON_TYPE_QUIZ_MC;
+                    break;
+                default:
+                    break;
+            }
         }
         else
         {
@@ -262,10 +263,10 @@ class Quiz
 	static public function isQuiz($reviewType)
 	{
         // url review type looks like 'quiz' or 'flashcards', so get the type_flag and check it
-	    return (self::getReviewTypeFlag($reviewType) > REVIEWTYPE_NOTSET);
+	    return (self::getReviewTypeFlag($reviewType) > LESSON_TYPE_NOTSET);
     }
 
-    // reviewType can either be a string or an int of type REVIEWTYPE_*
+    // reviewType can either be a string or an int of type REVIEW_TYPE_*
 	static public function getSettings($reviewType)
 	{
 		$loadJs = 'qnaReview.js';
@@ -288,18 +289,18 @@ class Quiz
 		$options['font-size'] = Arr::get($options, 'font-size', '120%');
 
         $type = self::getReviewTypeFlag($reviewType);
-		if ($type == REVIEWTYPE_MC_RANDOM)
+		if ($type == LESSON_TYPE_QUIZ_MC)
 		{
 			// use the default settings above
 		}
-		else if ($type == REVIEWTYPE_FLASHCARDS)
+		else if ($type == LESSON_TYPE_QUIZ_FLASHCARDS)
 		{
 			$options['prompt'] = 'Tap or click to continue';
 			$view = 'shared.flashcards';
 			$loadJs = 'qnaFlashcards.js';
 			$programName = 'Flashcards';
 		}
-		else if ($type == REVIEWTYPE_WHEELOFFORTUNE)
+		else if ($type == LESSON_TYPE_QUIZ_WHEELOFFORTUNE)
 		{
 			$options['prompt'] = 'Tap or click to continue';
 			$view = 'shared.wheeloffortune';

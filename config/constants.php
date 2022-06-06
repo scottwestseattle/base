@@ -95,15 +95,41 @@ define('TAG_TYPE_DEF_FAVORITE', 	    3); // one per user so we have empty favori
 define('TAG_TYPE_OTHER',			   	99);
 //define('TAG_TYPE_DEFAULT', TAG_TYPE_SYSTEM); // need this?
 
-// history type
-define('HISTORY_TYPE_NOTSET', 	-1);
-define('HISTORY_TYPE_NOTUSED', 	0);
-define('HISTORY_TYPE_LIST',	    1);
-define('HISTORY_TYPE_ARTICLE', 	2);
-define('HISTORY_TYPE_BOOK',	 	3);
-define('HISTORY_TYPE_LESSON',	4);
-define('HISTORY_TYPE_EXERCISE',	10);
-define('HISTORY_TYPE_OTHER',	99);
+// History
+define('HISTORY_URL', '/history/add-public?');
+
+// History type
+define('HISTORY_TYPE_NOTSET',       -1);
+define('HISTORY_TYPE_NOTUSED',      0);
+define('HISTORY_TYPE_FAVORITES',    10);
+define('HISTORY_TYPE_ARTICLE',      20);
+define('HISTORY_TYPE_BOOK',         30);
+define('HISTORY_TYPE_LESSON',       40);
+define('HISTORY_TYPE_EXERCISE',     50);
+define('HISTORY_TYPE_DICTIONARY',   60);
+define('HISTORY_TYPE_SNIPPETS',     70);
+define('HISTORY_TYPE_OTHER',        100);
+
+// Lesson/Content Type also used for History subtype_flag
+define('LESSON_TYPE_NOTSET',                0);
+define('LESSON_TYPE_TEXT',                  10);
+define('LESSON_TYPE_VOCAB',                 20);
+define('LESSON_TYPE_QUIZ_MC',               30);
+define('LESSON_TYPE_QUIZ_FLASHCARDS',       31);
+define('LESSON_TYPE_QUIZ_TRANSLATION',      32);
+define('LESSON_TYPE_QUIZ_WHEELOFFORTUNE',   33);
+
+define('LESSON_TYPE_QUIZ_MC1',       40);
+define('LESSON_TYPE_QUIZ_MC2',       41);
+define('LESSON_TYPE_QUIZ_MC3',       42);
+define('LESSON_TYPE_QUIZ_MC4',       43);
+
+define('LESSON_TYPE_TIMED_SLIDES',   50);
+define('LESSON_TYPE_READER',         60);
+define('LESSON_TYPE_FAVORITES',      70);
+define('LESSON_TYPE_OTHER',          99);
+define('LESSON_TYPE_DEFAULT',        LESSONTYPE_TEXT);
+
 
 // misc options
 define('USER_ID_NOTSET', 0);

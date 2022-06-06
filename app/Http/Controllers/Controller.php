@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App;
 use App\Entry;
+use App\Gen\History;
 use App\Gen\Spanish;
 use App\Site;
 use Auth;
@@ -115,18 +116,19 @@ class Controller extends BaseController
             'of' => Lang::get('ui.of'),
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
-        //dump($labels);
+
+        $history = History::getArray($record->title, $record->id, $record->getHistoryType(), LESSON_TYPE_READER, count($lines));
 
     	return view('shared.reader', [
     	    'lines' => $lines,
     	    'title' => $record->title,
-			'historyPath' => '/history/add-public/',
 			'recordId' => $record->id,
 			'options' => $options,
 			'readLocation' => Auth::check() ? $readLocation : null,
 			'contentType' => 'Entry',
 			'languageCodes' => getSpeechLanguage($record->language_flag),
 			'labels' => $labels,
+			'history' => $history,
 		]);
     }
 }

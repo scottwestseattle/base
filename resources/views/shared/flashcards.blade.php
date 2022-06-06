@@ -5,14 +5,11 @@
     $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
     $article = isset($article) ? $article : false;
     $random = isset($random) && $random ? 1 : 0;
-    $touchPath = isset($touchPath) ? $touchPath : '';
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->
 <div class="data-misc"
-    data-program-name="{{$programName}}"
-    data-session-name="{{$sessionName}}"
 	data-max="{{$sentenceCount}}"
 	data-quizcount="{{$quizCount}}"
 	data-prompt="@LANG('quiz.' . $settings['options']['prompt'])"
@@ -29,12 +26,9 @@
 	data-quiztext-override-correct="@LANG('quiz.Change to Correct')"
 	data-quiztext-override-wrong="@LANG('quiz.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('quiz.Score Changed')"
-@if (false)
-	data-quiztype="{{$record->type_flag}}"
-	data-lessonid="{{$record->id}}"
-@endif
-	data-touchpath="{{$touchPath}}"
 	data-random="{{$random}}"
+	data-touchpath="{{isset($touchPath) ? $touchPath : ''}}"
+    @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
 	<!-------------------------------------------------------->

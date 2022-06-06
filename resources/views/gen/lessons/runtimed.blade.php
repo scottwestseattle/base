@@ -8,10 +8,10 @@
 <div class="data-misc"
 	data-count="{{count($records)}}"
 	data-type="{{$record->type_flag}}"
-	data-lessonid="{{$record->id}}"
 	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-max="{{count($records)}}"
 	data-bgalbum="{{$bgAlbum}}"
+    @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
 	<!-------------------------------------------------------->
@@ -76,7 +76,7 @@
             <h3 class="mt-2 mb-2">{{isset($records[0]->title_chapter) ? $records[0]->title_chapter : 'Day ' . $record->lesson_number}}</h3>
             <p style="font-size:13px;" class="">{{count($records)}} exercises ({{$displayTime}})</p>
 			@if (Auth::check())
-				<p style="font-size:13px;"><a href="/history/add-public/{{urlencode($record->course->title)}}/{{$record->course->id}}/{{isset($record->title_chapter) ? urlencode($record->title_chapter) : urlencode('Day ' . $record->lesson_number)}}/{{$record->id}}/{{$totalSeconds}}">Add to History</p>
+				<p style="font-size:13px;"><a href="/history/add-public?type=2&programName={{urlencode($record->course->title)}}&programid={{$record->course->id}}&sessionName={{isset($record->title_chapter) ? urlencode($record->title_chapter) : urlencode('Day ' . $record->lesson_number)}}&seconds={{$record->id}}/{{$totalSeconds}}">Add to History</p>
 			@endif
             <a onclick="event.preventDefault(); run()"  href="" class="btn btn-primary mb-3" role="button">Start</a>
         </div>

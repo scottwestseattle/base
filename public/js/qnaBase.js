@@ -101,8 +101,29 @@ function quiz() {
 
     // for History
     this.programName = 'not set';
+    this.programId = 0;
+    this.programType = 0;
+    this.programSubType = 0;
     this.sessionName = 'not set';
+    this.sessionId = 0;
+    this.historyPath = 'not set';
+    this.historyRoute = 'not uset';
     this.touchPath = 'not set';
+
+    this.showParameters = function()
+    {
+        if (true)
+        {
+            console.log("historyPath: " + this.historyPath);
+            console.log("programName: " + this.programName);
+            console.log("programId: " + this.programId);
+            console.log("programType: " + this.programType);
+            console.log("programSybType: " + this.programSubType);
+            console.log("sessionName: " + this.sessionName);
+            console.log("sessionId: " + this.sessionId);
+            console.log("historyRoute: " + this.historyRoute);
+        }
+    }
 
 	this.getQuestionId = function(index) {
 		return this.qna[this.qna[index].order].id;
@@ -332,15 +353,21 @@ function loadData()
 		// done here so we can always get a subset of the available questions and
 		// not just the same subset every time
 		quizCount = container.data('quizcount');
-
-        // for History updates
-		quiz.programName = container.data('programName');
-		quiz.sessionName = container.data('sessionName');
-		quiz.touchPath = container.data('touchpath');
-
 		quiz.promptQuestionNormal = container.data('prompt');
 		quiz.promptQuestionReverse = container.data('prompt-reverse');
 		quiz.promptQuestion = quiz.promptQuestionNormal;
+
+        // for History updates
+		quiz.programType = container.data('programtype');
+		quiz.programSubType = container.data('programsubtype');
+		quiz.programName = container.data('programname');
+		quiz.programId = container.data('programid');
+		quiz.sessionName = container.data('sessionname');
+		quiz.sessionId = container.data('sessionid');
+		quiz.historyPath = container.data('historypath');
+		quiz.historyRoute = container.data('historyroute');
+		quiz.touchPath = container.data('touchpath');
+        quiz.showParameters();
 
 		// new settings
 		quiz.isMc = container.data('ismc');
@@ -644,7 +671,7 @@ function checkAnswerFromButton(id, showOnly = false)
 
 function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = false)
 {
-    console.log('checkAnswer()');
+    //console.log('checkAnswer()');
 
 	setButtonStates(RUNSTATE_CHECKING);
 	$("#question-prompt").hide();
@@ -916,7 +943,7 @@ function touch(q)
 
 function addHistory()
 {
-    addHistoryRecord(quiz.touchPath, quiz.programName, 0, quiz.sessionName, 0, max);
+    addHistoryRecord(quiz.historyPath, quiz.programName, quiz.programId, quiz.programType, quiz.programSubType, quiz.sessionName, quiz.sessionId, max, quiz.historyRoute);
 }
 
 function flip()

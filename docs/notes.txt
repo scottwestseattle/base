@@ -1,7 +1,11 @@
 NEW DB Changes:
-ALTER TABLE `tags` ADD `use_count` MEDIUMINT NOT NULL DEFAULT '0' AFTER `type_flag`;
+ALTER TABLE `histories` ADD `type_flag` TINYINT NOT NULL AFTER `ip_address`;
+ALTER TABLE `histories` ADD `count` INT NULL DEFAULT '0' AFTER `seconds`, ADD `score` INT NULL DEFAULT '0' AFTER `count`, ADD `extra` INT NULL DEFAULT '0' AFTER `score`;
+ALTER TABLE `histories` ADD `subtype_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
+ALTER TABLE `histories` ADD `route` VARCHAR(50) NULL AFTER `session_id`;
 
 Done:
+ALTER TABLE `tags` ADD `use_count` MEDIUMINT NOT NULL DEFAULT '0' AFTER `type_flag`;
 ALTER TABLE `entries` ADD `description_translation` TEXT NULL AFTER `description`
 ALTER TABLE `lessons` ADD `text_translation` TEXT NULL AFTER `text`;
 ALTER TABLE `sites` CHANGE `options` `options` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'key1;key2;';

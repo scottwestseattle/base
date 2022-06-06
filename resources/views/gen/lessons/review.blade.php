@@ -1,7 +1,6 @@
 @extends('layouts.review')
 @section('content')
 @php
-    dump($random);
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -24,8 +23,9 @@
 	data-quiztext-override-wrong="@LANG('content.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('content.Score Changed')"
 	data-lessonid="{{$record->id}}"
-	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-touchPath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-random="{{(isset($random) ? $random : 1)}}"
+    @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
 	<!-------------------------------------------------------->
