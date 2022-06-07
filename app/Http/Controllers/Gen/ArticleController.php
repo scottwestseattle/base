@@ -127,6 +127,7 @@ class ArticleController extends Controller
 		$next = null;
 		$prev = null;
 		$options['wordCount'] = null;
+		$options['letterCount'] = null;
 
 		//todo: $id = isset($record) ? $record->id : null;
 		//todo: $visitor = $this->saveVisitor(LOG_MODEL_ENTRIES, LOG_PAGE_PERMALINK, $id);
@@ -137,6 +138,11 @@ class ArticleController extends Controller
 			$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
 			Entry::countView($record);
 			$options['wordCount'] = str_word_count($record->description); // count it before <br/>'s are added
+
+			// count the letters only, try to get letter count to match deepl letter count
+			$letters = str_replace(["\r"], '', $record->description);
+			//$letters = alphanum($letters);
+			$options['letterCount'] = mb_strlen($letters);
 			$record->description = nl2br($record->description);
 		}
 		else
@@ -153,6 +159,7 @@ class ArticleController extends Controller
 
         //todo: $next = Entry::getNextPrevEntry($record);
         //todo: $prev = Entry::getNextPrevEntry($record, /* next = */ false);
+        //dump($options);
 
 		return view(VIEWS . '.view', [
 			'options' => $options,

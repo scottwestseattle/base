@@ -25,6 +25,7 @@
             <tr><td>&nbsp;</td></tr>
             <tr><td><a href="/test" class="">Test</a></td></tr>
             <tr><td><a href="/clear-cache" class="">Clear Cache</a></td></tr>
+            <tr><td><a href="/clear-sessions" class="">Clear Sessions</a></td></tr>
             <tr><td><a href="/clear-view" class="">Clear View Cache</a></td></tr>
         </table>
 

@@ -82,6 +82,11 @@ Route::get('/clear-view', function() {
     return "Compiled views cleared";
 });
 
+Route::get('/clear-sessions', function () {
+    Session::flush();
+    return "Sessions cleared";
+})->name('flush');
+
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
