@@ -1336,7 +1336,7 @@ class DefinitionController extends Controller
 		}
 
         $count = count($qna);
-        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, History::getReviewTypeInt($reviewType), $count);
+        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, History::getReviewTypeInt($reviewType), $count, ['route' => crackUri(2)]);
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,

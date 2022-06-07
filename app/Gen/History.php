@@ -194,12 +194,22 @@ class History extends Model
             $action = $subTypeInfo['action'];
             $actionInt = $subTypeInfo['actionInt'];
             $subTypeName = $subTypeInfo['name'];
-            if ($this->isType(HISTORY_TYPE_DICTIONARY))
+            if ($this->isType(HISTORY_TYPE_FAVORITES))
             {
-                $action = $this->route . '?count=' . $this->count . '&a=' . $action;
+                // Regular favorites lists created by users
+                $action = $this->route . '/' . $this->program_id .  '/' . $actionInt;
+            }
+            else if ($this->isType(HISTORY_TYPE_DICTIONARY))
+            {
+                // From the "Dictionary" section of "Favorites"
+                if ($this->route == 'read-examples') //todo: fix hardecoded route
+                    $action = $this->route . '?count=' . $this->count . '&a=' . $action;
+                else
+                    $action = $this->route . '/' . $action;
             }
             else if ($this->isType(HISTORY_TYPE_LESSON))
             {
+                // From lesson exercises
                 $action = $this->program_id . '/' . $actionInt . '/' . $this->count;
             }
             else
@@ -236,7 +246,7 @@ class History extends Model
 	            break;
             case HISTORY_TYPE_FAVORITES:
 	            $name = trans_choice('proj.Favorite', 2);
-	            $url = '/favorites';
+	            $url = '/definitions/' . $action;
 	            break;
             case HISTORY_TYPE_ARTICLE:
 	            $name = trans_choice('proj.Article', 1);

@@ -40,6 +40,7 @@
                     @if (true)
                     <div class="small-thin-text">
                         <div>Id: {{$record->program_id}}, Count: {{$record->count}}, Type: {{$record->type_flag}}, Sub: {{$record->subtype_flag}}</div>
+                        <div>Route: {{$record->route}}</div>
                         @if (isset($record->session_name))
                             <div>{{$record->session_name}} ({{$record->session_id}})</div>
                         @endif
