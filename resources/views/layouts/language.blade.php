@@ -8,8 +8,8 @@
           <form method="" action="" autocomplete="off">
             @if ($showGlobalSearchBox)
                 <label>Search: </label>
-                <input value="" name="title" id="title" type="search"
-                    class="xform-control xform-control-xs form-control-inline pl-1 border-right-0 border mini-border mr-2"
+                <input value="" name="searchText" id="searchText" type="search"
+                    class="form-control-inline pl-1 border-right-0 border mini-border mr-2"
                     placeholder="{{__('proj.Dictionary Search')}}"
                     oninput="showSearchResult(this.value, false); $('#searchOptions').show()"
                     style="width:135px;"

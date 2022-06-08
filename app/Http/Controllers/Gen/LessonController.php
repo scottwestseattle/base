@@ -920,6 +920,10 @@ class LessonController extends Controller
         }
         //dd($bgs);
 
+        $history = History::getArray($lesson->title, $lesson->id, HISTORY_TYPE_EXERCISE, LESSON_TYPE_TIMED_SLIDES, count($records), [
+            'sessionName' => $lesson->title, 'sessionId' => $lesson->course->id, 'seconds' => $times['seconds']
+            ]);
+
 		return view(VIEWS . '.runtimed', [
 			'record' => $lesson,
 			'records' => $records,
@@ -928,6 +932,7 @@ class LessonController extends Controller
 			'totalSeconds' => $times['seconds'],
 			'bgs' => $bgs,
 			'bgAlbum' => $album,
+			'history' => $history,
 			]);
     }
 

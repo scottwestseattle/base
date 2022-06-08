@@ -709,8 +709,8 @@ use App\Http\Controllers\Gen\HistoryController;
 // Histories
 Route::group(['prefix' => 'history'], function () {
 	Route::get('/', [HistoryController::class, 'index']);
-	Route::get('/admin', [HistoryController::class, 'admin']);
 	Route::get('/index', [HistoryController::class, 'index']);
+	Route::get('/admin', [HistoryController::class, 'admin']);
     Route::get('/rss', [HistoryController::class, 'rss']);
 
 	// view

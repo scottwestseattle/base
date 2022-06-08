@@ -46,7 +46,7 @@ class HistoryController extends Controller
 		$records = History::get();
         $history['maxDays'] = 5;
 
-		return view(VIEWS . '.index', [
+		return view(VIEWS . '.admin', [
 			'history' => $records,
 		]);
     }
@@ -148,7 +148,16 @@ class HistoryController extends Controller
 		$changes = '';
 
 		$record->program_name = copyDirty($record->program_name, $request->program_name, $isDirty, $changes);
+		$record->program_id = copyDirty($record->program_id, $request->program_id, $isDirty, $changes);
 		$record->session_name = copyDirty($record->session_name, $request->session_name, $isDirty, $changes);
+		$record->session_id = copyDirty($record->session_id, $request->session_id, $isDirty, $changes);
+		$record->route = copyDirty($record->route, $request->route, $isDirty, $changes);
+		$record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
+		$record->subtype_flag = copyDirty($record->subtype_flag, $request->subtype_flag, $isDirty, $changes);
+		$record->count = copyDirty($record->count, $request->count, $isDirty, $changes);
+		$record->seconds = copyDirty($record->seconds, $request->seconds, $isDirty, $changes);
+		$record->score = copyDirty($record->score, $request->score, $isDirty, $changes);
+		$record->extra = copyDirty($record->extra, $request->extra, $isDirty, $changes);
 
 		if ($isDirty)
 		{

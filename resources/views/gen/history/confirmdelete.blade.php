@@ -2,14 +2,14 @@
 @section('title', __('proj.Delete History'))
 @section('menu-submenu')@component('gen.history.menu-submenu', ['record' => $record]) @endcomponent @endsection
 @section('content')
+@php
+@endphp
 <div class="container page-normal">
 
 	<h1>{{__('proj.Delete History')}}</h1>
-	<form method="POST" action="/histories/delete/{{ $record->id }}">
+	<form method="POST" action="/history/delete/{{ $record->id }}">
 
-		<h4>{{$record->title}}</h4>
-
-		<p>{{$record->description }}</p>
+		<h4>{{$record->getProgramName()}}</h4>
 
 		<div class="submit-button">
 			<button type="submit" class="btn btn-primary">@LANG('ui.Confirm Delete')</button>
