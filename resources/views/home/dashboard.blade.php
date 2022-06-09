@@ -64,28 +64,6 @@
         <hr />
         @endif
 
-        <div>
-            <h1 class="">{{__('RSS Links')}}</h1>
-
-            <div class="">
-                <div><a target="_blank" href="/courses/rss">Courses</a></div>
-                <div><a target="_blank" href="/lessons/rss">Lessons</a></div>
-                <div><a target="_blank" href="/history/rss">History</a></div>
-            </div>
-        </div>
-        <hr />
-
-        <div>
-            <h1 class="">{{__('Ajax Links')}}</h1>
-
-            <div class="">
-                <div><a target="_blank" href="/definitions/scrape-definition/tener">Scrape Definition</a></div>
-                <div><a target="_blank" href="/definitions/conjugationsgenajax/tener">Scrape Conjugation</a></div>
-                <div><a target="_blank" href="/definitions/find/tener">Find Word</a></div>
-                <div><a target="_blank" href="/history/add-public?programName=Program 1&programId=1&sessionName=Session 2&sessionId=2&count=3&score=4&seconds=5&extra=6&route=practice-text">Add History</a></div>
-            </div>
-        </div>
-
         @php
             $emergency = intval($events['emergency']);
             $errors = intval($events['errors']);

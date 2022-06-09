@@ -1,6 +1,26 @@
 @php
     $showPrivate = Auth::check() && isset($options['private']) && count($options['private']) > 0;
     $showOther = isAdmin() && isset($options['other']) && count($options['other']) > 0;
+    $setSessionUrl = '/set-session?tag=articlesTab&value=';
+
+    // active tab comes from session
+    $activeTab = isset($options['activeTab']) ? $options['activeTab'] : 1;
+
+    $active1 = 'show active'; //default
+    $active2 = '';
+    $active3 = '';
+
+    if ($showPrivate && $activeTab == 2)
+    {
+        $active2 = 'show active';
+        $active1 = '';
+    }
+    else if ($showOther && $activeTab == 3)
+    {
+        $active3 = 'show active';
+        $active1 = '';
+    }
+
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('proj.Article', 2) )
@@ -8,56 +28,47 @@
 @section('content')
 
 @if ($showPrivate || $showOther)
-<ul class="nav nav-tabs">
-
-    <li class="nav-item">
-        <a id="nav-link-tab1" class="nav-link active" href="#" onclick="setTab(event, 1);">
-            <span class="nav-link-tab">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link nav-link-tab {{$active1}}" onclick="ajaxexec('{{$setSessionUrl . 1}}');" id="articles-tab" data-toggle="tab" href="#articles" role="tab" aria-controls="articles" aria-selected="true">
                 {{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{count($options['public'])}})</span>
-            </span>
-        </a>
-    </li>
+            </a>
+        </li>
+        @if ($showPrivate)
+        <li class="nav-item" role="presentation">
+            <a class="nav-link nav-link-tab {{$active2}}" onclick="ajaxexec('{{$setSessionUrl . 2}}')" id="private-tab" data-toggle="tab" href="#private" role="tab" aria-controls="private" aria-selected="false">
+                @LANG('ui.Private')&nbsp;<span style="font-size:.8em;">({{count($options['private'])}})</span>
+            </a>
+        </li>
+        @endif
+        @if ($showOther)
+        <li class="nav-item" role="presentation">
+            <a class="nav-link nav-link-tab {{$active3}}" onclick="ajaxexec('{{$setSessionUrl . 3}}')" id="others-tab" data-toggle="tab" href="#others" role="tab" aria-controls="others" aria-selected="false">
+                @LANG('proj.Other')&nbsp;<span style="font-size:.8em;">({{count($options['other'])}})</span>
+            </a>
+        </li>
+        @endif
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade {{$active1}}" id="articles" role="tabpanel" aria-labelledby="articles-tab">
+            @component('shared.articles', ['records' => $options['public'], 'release' => 'public'])@endcomponent
+        </div>
 
     @if ($showPrivate)
-    <li class="nav-item">
-        <a id="nav-link-tab2" class="nav-link" href="#" onclick="setTab(event, 2);">
-            <span class="nav-link-tab">
-                @LANG('ui.Private')&nbsp;<span style="font-size:.8em;">({{count($options['private'])}})</span>
-            </span>
-        </a>
-    </li>
+        <div class="tab-pane fade {{$active2}}" id="private" role="tabpanel" aria-labelledby="private-tab">
+            @component('shared.articles', ['records' => $options['private'], 'release' => 'private'])@endcomponent
+        </div>
     @endif
 
     @if ($showOther)
-    <li class="nav-item">
-        <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3);">
-            <span class="nav-link-tab">
-                @LANG('proj.Other')&nbsp;<span style="font-size:.8em;">({{count($options['other'])}})</span>
-            </span>
-        </a>
-    </li>
+        <div class="tab-pane fade {{$active3}}" id="others" role="tabpanel" aria-labelledby="others-tab">
+            @component('shared.articles', ['records' => $options['other'], 'release' => 'other'])@endcomponent
+        </div>
     @endif
-</ul>
 @else
-<h3 class="">
-    {{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{count($options['public'])}})</span>
-</h3>
-@endif
-
-<div style="" id="tab-tab1">
+    <h3 class="">{{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{count($options['public'])}})</span></h3>
     @component('shared.articles', ['records' => $options['public'], 'release' => 'public'])@endcomponent
-</div>
-
-@if ($showPrivate)
-    <div style="display:none" id="tab-tab2">
-        @component('shared.articles', ['records' => $options['private'], 'release' => 'private'])@endcomponent
-    </div>
-@endif
-
-@if ($showOther)
-    <div style="display:none" id="tab-tab3">
-        @component('shared.articles', ['records' => $options['other'], 'release' => 'other'])@endcomponent
-    </div>
 @endif
 
 @endsection

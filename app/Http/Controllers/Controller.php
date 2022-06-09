@@ -58,6 +58,23 @@ class Controller extends BaseController
 		return redirect(substr($request->path(), 2));
 	}
 
+    // generic ajax function to set a Session tag/value pair
+	public function setSession(Request $request)
+	{
+	    $rc = RETURN_CODE_ERROR;
+	    $tag = isset($request['tag']) ? alpha($request['tag']) : null;
+	    $value = isset($request['value']) ? intval($request['value']) : RETURN_CODE_ERROR;
+
+        // save session info
+        if (strlen($tag) > 0 && $value != RETURN_CODE_ERROR)
+        {
+            session([$tag => $value]);
+            $rc = $value;
+        }
+
+        return $rc;
+    }
+
 	static private function setLocale($locale)
 	{
 		session(['locale' => $locale]);

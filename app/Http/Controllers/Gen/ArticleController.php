@@ -80,6 +80,8 @@ class ArticleController extends Controller
             // get other peoples articles
             $parms['release'] = 'other';
             $options['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
+
+            $options['activeTab'] = session('articlesTab');
 		}
 		catch (\Exception $e)
 		{

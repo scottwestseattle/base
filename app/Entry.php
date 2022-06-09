@@ -590,6 +590,10 @@ class Entry extends Model
                     // public
                     $releaseFlag = RELEASEFLAG_PUBLIC;
                     $releaseCondition = '>=';
+
+                    // make sure All match
+                    $ownerId = -1;
+                    $ownerCondition = '>=';
                 }
             }
         }

@@ -1,5 +1,19 @@
 <?php
 
+// General Values
+define('RETURN_CODE_ERROR', -1);
+define('RETURN_CODE_SUCCESS', 1);
+define('USER_ID_NOTSET', 0);
+define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 bytes for db overhead
+define('COOKIE_HOUR', 60);     // Minutes per hour: 60
+define('COOKIE_DAY',  1440);   // Minutes per day:  60 * 24
+define('COOKIE_YEAR', 525600); // Minutes per year: 60 * 24 * 365
+
+// misc options
+define('DESCRIPTION_LIMIT_LENGTH', 30);
+define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
+define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
+
 // language flag
 define('LANGUAGE_NOTSET', -1);
 define('LANGUAGE_EN', 0);
@@ -66,7 +80,6 @@ define('DEFINITIONS_SEARCH_RANKED',                 14);
 define('DEFINITIONS_SEARCH_RANKED_VERBS',           15);
 define('DEFINITIONS_SEARCH_EXAMPLES',               16);
 
-
 // entries
 define('ENTRY_TYPE_NOTSET', 	-1);
 define('ENTRY_TYPE_NOTUSED', 	0);
@@ -129,17 +142,6 @@ define('LESSON_TYPE_READER',         60);
 define('LESSON_TYPE_FAVORITES',      70);
 define('LESSON_TYPE_OTHER',          99);
 define('LESSON_TYPE_DEFAULT',        LESSONTYPE_TEXT);
-
-
-// misc options
-define('USER_ID_NOTSET', 0);
-define('DESCRIPTION_LIMIT_LENGTH', 30);
-define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 byetes for db overhead
-define('COOKIE_HOUR', 60);     // Minutes per hour: 60
-define('COOKIE_DAY',  1440);   // Minutes per day:  60 * 24
-define('COOKIE_YEAR', 525600); // Minutes per year: 60 * 24 * 365
-define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
-define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
 
 return [
     'characters' => [

@@ -192,7 +192,7 @@ a.nodec, .nodec a {
 }
 
 .nav-link-tab {
-    color: gray;
+    color: gray !important;
 }
 
 /***************************************************

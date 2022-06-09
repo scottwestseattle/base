@@ -31,15 +31,16 @@ class HomeController extends Controller
 {
 	public function __construct ()
 	{
-        $this->middleware('auth')->except([
-			'about',
-			'contact',
-			'frontpage',
-			'mvc',
+        $this->middleware('admin')->except([
+			'frontpage', 'about', 'contact',
 			'privacy', 'terms', 'sitemap',
 			'search', 'searchAjax',
-		]);
+			'dashboard',
+	    ]);
 
+        $this->middleware('auth')->only([
+			'dashboard',
+	    ]);
 		parent::__construct();
 	}
 
@@ -548,6 +549,12 @@ class HomeController extends Controller
     public function sitemap(Request $request)
     {
 		return view('home.sitemap', [
+		]);
+	}
+
+    public function test(Request $request)
+    {
+		return view('home.test', [
 		]);
 	}
 }
