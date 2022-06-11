@@ -37,7 +37,7 @@ class DefinitionController extends Controller
         $this->middleware('admin')->except([
 
             // dictionary
-            'createQuick',
+            'createQuick', 'stats',
 
             // definitions
             'view', 'permalink',
@@ -64,9 +64,9 @@ class DefinitionController extends Controller
 			'reviewNewest', 'reviewNewestVerbs',
 			'reviewRandomWords', 'reviewRandomVerbs',
 			'reviewRankedVerbs',
-			'reviewSnippets',
+			'reviewSnippets', 'snippetsFlashcards', 'snippetsQuiz',
 			'readExamples',
-			'stats',
+			'favoritesFlashcards', 'favoritesQuiz',
 
             // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
@@ -1317,6 +1317,16 @@ class DefinitionController extends Controller
 		return redirect('/' . PREFIX . '/list-tag/' . $tag->id);
     }
 
+    public function favoritesFlashcards(Request $request, Tag $tag)
+    {
+        return $this->review($request, $tag, 1);
+    }
+
+    public function favoritesQuiz(Request $request, Tag $tag)
+    {
+        return $this->review($request, $tag, 2);
+    }
+
     public function review(Request $request, Tag $tag, $reviewType = null)
     {
 		$reviewType = intval($reviewType);
@@ -1474,6 +1484,16 @@ class DefinitionController extends Controller
 		return ($reviewType == 'reader')
 		    ? $this->readWords($title, $records)
 		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+    }
+
+	public function snippetsFlashcards(Request $request, $count = PHP_INT_MAX)
+    {
+        return $this->reviewSnippets($request, 'flashcards', $count);
+    }
+
+	public function snippetsQuiz(Request $request, $count = PHP_INT_MAX)
+    {
+        return $this->reviewSnippets($request, 'quiz', $count);
     }
 
 	public function reviewSnippets(Request $request, $reviewType = null, $count = PHP_INT_MAX)

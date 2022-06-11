@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', __('ui.Site Map') )
 @section('content')
 @php
     $classH3 = 'mt-3 mb-1';

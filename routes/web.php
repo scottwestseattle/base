@@ -493,8 +493,12 @@ Route::group(['prefix' => 'dictionary'], function () {
 Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/read-latest/{count?}', [DefinitionController::class, 'readSnippetsLatest']);
 	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
-	Route::get('/review/{reviewType?}/{count?}', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
+
+	// flashcards / quiz have two routes
+	Route::get('/review/{reviewType?}/{count?}', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/flashcards/{count?}', [DefinitionController::class, 'snippetsFlashcards']);
+	Route::get('/quiz/{count?}', [DefinitionController::class, 'snippetsQuiz']);
 });
 
 // Verbs
@@ -538,14 +542,19 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/read-list/{tag}', [DefinitionController::class, 'readList']);
 	Route::get('/read-random-words/{count?}', [DefinitionController::class, 'readRandomWords']);
 	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);
+	Route::get('/read-examples', [DefinitionController::class, 'readExamples']);
+	Route::get('/stats/{tag}', [DefinitionController::class, 'stats']);
+
+    // quiz / flashcards
 	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review']);
+	Route::get('/flashcards/{tag}', [DefinitionController::class, 'favoritesFlashcards']);
+	Route::get('/quiz/{tag}', [DefinitionController::class, 'favoritesQuiz']);
+
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);
 	Route::get('/review-random-words/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomWords']);
 	Route::get('/review-random-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomVerbs']);
 	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs']);
-	Route::get('/read-examples', [DefinitionController::class, 'readExamples']);
-	Route::get('/stats/{tag}', [DefinitionController::class, 'stats']);
 
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);

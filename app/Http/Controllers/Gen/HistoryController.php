@@ -43,8 +43,7 @@ class HistoryController extends Controller
 
     public function admin(Request $request)
     {
-		$records = History::get();
-        $history['maxDays'] = 5;
+		$records = History::getAdmin();
 
 		return view(VIEWS . '.admin', [
 			'history' => $records,

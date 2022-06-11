@@ -41,6 +41,7 @@ class HomeController extends Controller
         $this->middleware('auth')->only([
 			'dashboard',
 	    ]);
+
 		parent::__construct();
 	}
 

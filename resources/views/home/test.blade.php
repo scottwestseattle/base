@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', trans_choice('ui.Test', 2) )
 @section('content')
 @php
 @endphp

@@ -6,7 +6,7 @@
     $records = isset($history['records']) ? $history['records'] : [];
 @endphp
 <div>
-    <h1 class="">{{trans_choice('ui.History', 2)}}</h1>
+    <h1 class="">{{trans_choice('ui.History', 2)}}<span class="title-count">({{count($records)}})</span></h1>
     <table class="table table-striped">
     @foreach ($records as $record)
         @php

@@ -27,14 +27,30 @@ class History extends Model
 		return $records;
 	}
 
-    static public function get($limit = PHP_INT_MAX)
+    static public function getAdmin()
+    {
+        return self::get(PHP_INT_MAX, isAdmin());
+    }
+
+    static public function get($limit = PHP_INT_MAX, $isAdmin = false)
     {
 		$records = [];
+
+        if ($isAdmin)
+        {
+            $userId = -1;
+            $userIdCondition = '>=';
+        }
+        else
+        {
+            $userId = Auth::id();
+            $userIdCondition = '=';
+        }
 
 		try
 		{
 			$records = History::select()
-				->where('user_id', Auth::id())
+				->where('user_id', $userIdCondition, $userId)
 				->orderByRaw('id DESC')
 				->limit($limit)
 				->get();
