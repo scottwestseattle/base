@@ -432,22 +432,13 @@ class BookController extends Controller
             if (!isset($readLocation))
                 $readLocation = $chapter->tagRecent();
 
-            $sentences = self::getLinesAll($chapter, $sentences);
+    		$sentences = array_merge($sentences, $chapter->getSentences());
         }
 
         // translations isn't handled for books yet so $lines['translation'] isn't set
         $lines['text'] = $sentences;
 
 		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, '/books/chapters/' . $tag->id);
-    }
-
-    static public function getLinesAll(Entry $record, $lines)
-    {
-		$lines = array_merge($lines, Spanish::getSentences($record->title));
-		$lines = array_merge($lines, Spanish::getSentences($record->description_short));
-		$lines = array_merge($lines, Spanish::getSentences($record->description));
-
-		return $lines;
     }
 
     // this is read chapter

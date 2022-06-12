@@ -153,4 +153,5 @@ return [
 'Record has been undeleted' => 'Record has been undeleted',
 'Deleted Users' => 'Deleted Users',
 'Entry Type' => 'Entry Type',
+'User Site Map' => 'User Site Map',
 ];

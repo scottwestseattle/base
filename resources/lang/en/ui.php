@@ -146,7 +146,7 @@ return [
 'Finished' => 'Finished',
 'Inactive' => 'Inactive',
 'Test' => 'Test',
-'Voice' => 'Voice|Voices',
+'Voice' => 'Voice',
 'one' => 'one',
 'two' => 'two',
 'three' => 'three',
@@ -172,5 +172,6 @@ return [
 'Confirm Remove All' => 'Confirm Remove All',
 'Default' => 'Default',
 'Random' => 'Random',
-'Voice' => 'Voice',
+'Swap' => 'Swap',
+'Letter' => 'Letter|Letters',
 ];

@@ -145,6 +145,10 @@ class ArticleController extends Controller
 			$letters = str_replace(["\r"], '', $record->description);
 			//$letters = alphanum($letters);
 			$options['letterCount'] = mb_strlen($letters);
+
+			// count the lines
+			$options['lineCount'] = count($record->getSentences());
+
 			$record->description = nl2br($record->description);
 		}
 		else

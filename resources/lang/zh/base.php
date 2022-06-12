@@ -153,4 +153,5 @@ return [
 'Record has been undeleted' => '记录已被撤销',
 'Deleted Users' => '被删除的用户',
 'Entry Type' => '入场类型',
+'User Site Map' => '用户网站地图',
 ];

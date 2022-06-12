@@ -45,6 +45,9 @@
         <div class="mb-2">
             <div class="mb-2">
                 <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                @if ($options['lineCount'] > 25)
+                    <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}?count=20&random=1" >{{__('proj.Start Reading')}}&nbsp;(20)<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                @endif
                 @if ($record->hasTranslation())
 				    <a href="/articles/flashcards/{{$record->id}}"><button class="btn btn-success">@LANG('proj.Flashcards') ({{$sentenceCount}})</button></a>
 				@endif
@@ -53,7 +56,7 @@
             <div class="small-text">
                 <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
                 <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
-                <div style="margin-right:10px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['wordCount']}} {{trans_choice('ui.Word', 2)}}</a></div>
+                <div style="margin-right:10px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
                 <div style="margin-right:10px; float:left;">{{$options['letterCount']}} {{trans_choice('ui.Letter', 2)}}</div>
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true,  'ajax' => true, 'reload' => true])@endcomponent

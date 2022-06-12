@@ -280,7 +280,7 @@ function deck() {
 	}
 
 	this.showSlide = function() {
-        $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + deck.slides.length);
+        $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + max);
         $(".slideDescription").text(deck.getText());
 		$('#selected-word').text('');
 		$('#selected-word-definition').text('');

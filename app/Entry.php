@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
 use App\Gen\Definition;
+use App\Gen\Spanish;
 use App\Status;
 use App\Tag;
 use DB;
@@ -667,4 +668,16 @@ class Entry extends Model
 
 		return $records;
 	}
+
+    public function getSentences()
+    {
+        $lines = [];
+
+		$lines = array_merge($lines, Spanish::getSentences($this->title));
+		$lines = array_merge($lines, Spanish::getSentences($this->description_short));
+		$lines = array_merge($lines, Spanish::getSentences($this->description));
+
+		return $lines;
+    }
+
 }
