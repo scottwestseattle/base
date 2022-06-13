@@ -2,9 +2,6 @@
 @section('title', $options['page_title'] )
 @section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
-@php
-    $sentenceCount = getLineCount($record->description_translation);
-@endphp
     <!------------------------------------>
     <!-- Top Navigation Buttons -->
     <!------------------------------------>
@@ -49,7 +46,10 @@
                     <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}?count=20&random=1" >{{__('proj.Start Reading')}}&nbsp;(20)<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @endif
                 @if ($record->hasTranslation())
-				    <a href="/articles/flashcards/{{$record->id}}"><button class="btn btn-success">@LANG('proj.Flashcards') ({{$sentenceCount}})</button></a>
+				    <a href="/articles/flashcards/{{$record->id}}"><button class="btn btn-success">@LANG('proj.Flashcards') ({{$options['lineCount']}})</button></a>
+                    @if ($options['lineCount'] > 25)
+                        <a type="button" class="btn btn-success" href="/articles/flashcards/{{$record->id}}?count=20&random=1" >{{__('proj.Flashcards')}}&nbsp;(20)<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                    @endif
 				@endif
             </div>
 
