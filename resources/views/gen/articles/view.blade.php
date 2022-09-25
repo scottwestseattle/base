@@ -43,7 +43,7 @@
             <div class="mb-2">
                 <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @if ($options['lineCount'] > 25)
-                    <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}?count=20&random=1" >{{__('proj.Start Reading')}}&nbsp;(20)<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                    <a type="button" class="btn btn-primary mt-1" href="/articles/read/{{$record->id}}?count=20&random=1" >{{__('proj.Start Reading')}}&nbsp;(20)<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @endif
                 @if ($record->hasTranslation())
 				    <a href="/articles/flashcards/{{$record->id}}"><button class="btn btn-success">@LANG('proj.Flashcards') ({{$options['lineCount']}})</button></a>

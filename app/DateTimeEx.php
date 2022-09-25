@@ -10,7 +10,7 @@ use DateTimeZone;
 //
 class DateTimeEx
 {
-    static private $_sTimezone = 'America/Chicago';
+    static private $_sTimezone = 'GMT'; // 'America/Chicago'
 
     static private $colors = [
         'SteelBlue',

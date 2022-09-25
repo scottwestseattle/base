@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('title', __('base.Dashboard'))
 @section('content')
-
+@php
+    $sessionMinutes = intval(Config::get('session.lifetime'));
+    $sessionDays = $sessionMinutes / (60 * 24);
+@endphp
 	@if (!App\User::isConfirmed())
 		<div class="">
 		<h3>You email address has not been confirmed</h3>
@@ -23,6 +26,7 @@
     		<tr><td><strong><a href="/dashboard" type="button" class="btn btn-sm btn-warning">Debug</a></strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
             <tr><td><strong><a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a></strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
             <tr><td>&nbsp;</td></tr>
+            <tr><td><strong>Session Lifetime:&nbsp;&nbsp;</strong></td><td class="">{{$sessionDays}} days ({{$sessionMinutes}} minutes)</td></tr>
             <tr><td><a href="/test" class="">Test</a></td></tr>
             <tr><td><a href="/clear-cache" class="">Clear Cache</a></td></tr>
             <tr><td><a href="/clear-sessions" class="">Clear Sessions</a></td></tr>

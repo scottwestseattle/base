@@ -154,4 +154,5 @@ return [
 'Deleted Users' => 'Deleted Users',
 'Entry Type' => 'Entry Type',
 'User Site Map' => 'User Site Map',
+'Password updated' => 'Password updated',
 ];

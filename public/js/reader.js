@@ -861,7 +861,8 @@ function read(text, charIndex, textId = '#slideDescription')
         }
     }
 
-	_utter.text = text.substring(charIndex);
+	_utter.text = text.substring(charIndex).toLowerCase();
+
 	_utter.onend = function(event) {
 		if (!_readPage && !_paused && !_cancelled)
 			readNext();

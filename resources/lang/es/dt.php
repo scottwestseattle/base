@@ -11,7 +11,7 @@ return [
 'May' => 'May',
 'Nov' => 'Nov',
 'Oct' => 'Oct',
-'Set' => 'Set',
+'Sep' => 'Set',
 'Today' => 'Hoy',
 'Sunday' => 'Domingo',
 'Monday' => 'Lunes',
