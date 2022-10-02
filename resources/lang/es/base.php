@@ -155,4 +155,5 @@ return [
 'Entry Type' => 'Tipo de entrada',
 'User Site Map' => 'Mapa del Sitio - Usuarios',
 'Password updated' => 'Contraseña actualizada',
+'Account' => 'Cuenta',
 ];

@@ -523,6 +523,7 @@ class Entry extends Model
 
 	static public function getRecentList($parms, $limit = PHP_INT_MAX)
 	{
+	    $limit = intval($limit);
 		$type = intval($parms['type']);
 		$languageFlag = $parms['id'];
 		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
@@ -538,9 +539,22 @@ class Entry extends Model
         $ownerCondition = '>=';
 
         // order by
-		$orderBy = (isset($parms['orderBy']) && $parms['orderBy'] == 'date')
-		    ? 'entries.display_date DESC'
-		    : 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
+		$orderBy = 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
+
+		if (isset($parms['orderBy']))
+		{
+    		switch ($parms['orderBy'])
+    		{
+                case 'date':
+                    $orderBy = 'entries.display_date DESC';
+                    break;
+                case 'default':
+                    $orderBy = 'entries.id DESC';
+                    break;
+                default:
+                    break;
+    		}
+		}
 
         if (isset($parms['release']))
         {
@@ -603,6 +617,20 @@ class Entry extends Model
 		{
 			try
 			{
+				$count = DB::table('entries')
+					->leftJoin('entry_tag', function($join) use ($tag) {
+						$join->on('entry_tag.entry_id', '=', 'entries.id');
+						$join->where('entry_tag.user_id', Auth::id()); // works for users not logged in
+						$join->where('entry_tag.tag_id', $tag->id);
+					})
+					->select('entries.*')
+					->whereNull('entries.deleted_at')
+					->where('entries.language_flag', $languageCondition, $languageFlag)
+					->where('entries.type_flag', $type)
+					->where('entries.release_flag', $releaseCondition, $releaseFlag)
+					->where('entries.user_id', $ownerCondition, $ownerId)
+					->count();
+
 				$records = DB::table('entries')
 					->leftJoin('entry_tag', function($join) use ($tag) {
 						$join->on('entry_tag.entry_id', '=', 'entries.id');
@@ -632,7 +660,7 @@ class Entry extends Model
 			logException('removeTags', $e->getMessage(), $msg, ['type_flag' => $type]);
 		}
 
-		return $records;
+		return ['records' => $records, 'count' => $count];
 	}
 
     protected function countView(Entry $entry)

@@ -155,4 +155,5 @@ return [
 'Entry Type' => '入场类型',
 'User Site Map' => '用户网站地图',
 'Password updated' => '更新密码',
+'Account' => '帐户',
 ];

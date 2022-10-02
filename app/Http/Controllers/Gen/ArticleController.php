@@ -56,9 +56,10 @@ class ArticleController extends Controller
 		parent::__construct();
 	}
 
-    public function index(Request $request, $orderBy = null)
+    public function index(Request $request, $orderBy = null, $limit = 10)
     {
         $orderBy = strtolower(alpha($orderBy));
+	    $limit = intval($limit) < 0 ? PHP_INT_MAX : intval($limit);
 		$records = [];
 		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
 
@@ -71,15 +72,15 @@ class ArticleController extends Controller
 		{
             // get public articles
             $parms['release'] = 'public';
-            $options['public'] = Entry::getRecentList($parms);
+            $options['public'] = Entry::getRecentList($parms, $limit);
 
             // get private articles
             $parms['release'] = 'private';
-            $options['private'] = Entry::getRecentList($parms);
+            $options['private'] = Entry::getRecentList($parms, $limit);
 
             // get other peoples articles
             $parms['release'] = 'other';
-            $options['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
+            $options['other'] = isAdmin() ? Entry::getRecentList($parms, $limit) : null;
 
             $options['activeTab'] = session('articlesTab');
 		}

@@ -2,12 +2,16 @@
   <div class="">
     <ul class="nav">
 
-        <li class="nav-item"><a class="nav-link" href="/articles">
-            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
+        <li class="nav-item"><a class="nav-link" href="/articles/index/default/10">
+            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ol" /></svg>
         </a></li>
 
-        <li class="nav-item"><a class="nav-link" href="/articles/index/date">
+        <li class="nav-item"><a class="nav-link" href="/articles/index/date/10">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-down-alt" /></svg>
+        </a></li>
+
+        <li class="nav-item"><a class="nav-link" href="/articles/index/default/-1">
+            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
         </a></li>
 
         <li class="nav-item"><a class="nav-link" href="/articles/add">

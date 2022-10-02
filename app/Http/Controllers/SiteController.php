@@ -59,7 +59,7 @@ class SiteController extends Controller
     public function add()
     {
 		return view(VIEWS . '.add', [
-			'languages' => getLanguageOptions(/* includeAll = */ true),
+			'languages' => getLanguageOptions(/* includeAll = */ isAdmin()),
 			]);
 	}
 
@@ -127,7 +127,7 @@ class SiteController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
-			'languages' => getLanguageOptions(/* includeAll = */ true),
+			'languages' => getLanguageOptions(/* includeAll = */ isAdmin()),
 			]);
     }
 

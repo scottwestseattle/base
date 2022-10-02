@@ -17,7 +17,7 @@
             @endif
 
             @component('components.control-dropdown-language', [
-                'options' => getLanguageOptions(true),
+                'options' => getLanguageOptions(isAdmin()),
                 'selected_option' => getLanguageId(),
                 'field_name' => 'language_flag',
                 'select_class' => 'mini-border mt-2 mr-2',

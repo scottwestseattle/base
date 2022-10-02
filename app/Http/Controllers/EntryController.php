@@ -363,7 +363,7 @@ class EntryController extends Controller
 		$articleCount = 0;
 		$stats = null;
 
-		$records = Entry::getRecentList(ENTRY_TYPE_BOOK);
+		$records = Entry::getRecentList(ENTRY_TYPE_BOOK)['records'];
 		foreach($records as $record)
 		{
 			if ($record->language_flag == LANGUAGE_ES)
@@ -381,10 +381,13 @@ class EntryController extends Controller
 
 		// count possible verbs
 		$possibleVerbs = 0;
-		foreach($stats['sortCount'] as $key => $value)
+		if (isset($stats['sortCount']))
 		{
-			if (Str::endsWith($key, ['ar', 'er', 'ir']))
-				$possibleVerbs++;
+            foreach($stats['sortCount'] as $key => $value)
+            {
+                if (Str::endsWith($key, ['ar', 'er', 'ir']))
+                    $possibleVerbs++;
+            }
 		}
 
 		$stats['wordCount'] = $wordCount;
@@ -394,7 +397,7 @@ class EntryController extends Controller
 			'stats' => $stats,
 			'articleCount' => $articleCount,
 			'possibleVerbs' => $possibleVerbs,
-			'index' => $record->type_flag == ENTRY_TYPE_ARTICLE ? 'articles' : 'books',
+			'index' => 'books',
 		]);
     }
 

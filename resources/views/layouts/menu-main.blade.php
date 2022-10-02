@@ -195,13 +195,7 @@
 					<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
 						<use xlink:href="/img/bootstrap-icons.svg#person" />
 					</svg>
-					<div class="middle ml-1">{{trans_choice('ui.Profile', 2)}}</div>
-				</a>
-				<a class="dropdown-item" href="{{lurl('password/edit/') . Auth::id()}}">
-					<svg class="float-left bi mt-1" width="20" height="20" fill="currentColor" >
-						<use xlink:href="/img/bootstrap-icons.svg#pencil-square" />
-					</svg>
-					<div class="middle ml-2">{{__('ui.Password')}}</div>
+					<div class="middle ml-1">{{trans_choice('base.Account', 1)}}</div>
 				</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item red" href="{{lurl('logout')}}">

@@ -88,7 +88,7 @@ class HomeController extends Controller
         $options['loadReader'] = false; // this loads js and css
         $options['languageCodes'] = getSpeechLanguage($siteLanguage);
         $options['showAllButton'] = true;
-        $options['snippetLanguages'] = getLanguageOptions(true);
+        $options['snippetLanguages'] = getLanguageOptions(isAdmin());
         $options['returnUrl'] = '/';
         $options['articlesPublic'] = [];
         $options['articlesPrivate'] = [];
@@ -245,15 +245,15 @@ class HomeController extends Controller
 
             // get public articles
             $parms['release'] = 'public';
-    		$options['articlesPublic'] = Entry::getRecentList($parms, 5);
+    		$options['articlesPublic'] = Entry::getRecentList($parms, 5)['records'];
 
             // get private articles
             $parms['release'] = 'private';
-            $options['articlesPrivate'] = Entry::getRecentList($parms, 5);
+            $options['articlesPrivate'] = Entry::getRecentList($parms, 5)['records'];
 
             // get other peoples articles
             $parms['release'] = 'other';
-            $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms) : null;
+            $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms, 5)['records'] : null;
 
             // show aotd if it hasn't been shown recently
             if ($showTopBoxes)

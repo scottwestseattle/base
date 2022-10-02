@@ -3,7 +3,7 @@
 @section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
 @section('content')
 <div>
-	<h3>{{trans_choice('ui.Profile', 1)}}</h3>
+	<h3>{{trans_choice('base.Account', 1)}}</h3>
 
     @guest
 
@@ -18,26 +18,25 @@
             $date = $date->format('F j, Y');
     @endphp
 
-    @if (isAdmin())
-
-	<table style="font-size:1.2em;">
-		<tr><td>@LANG('ui.Name'):</td><td><b>{{$user->name}} ({{ $user->id }})</b></td></tr>
-		<tr><td>@LANG('ui.Email'):</td><td><b>{{$user->email}}</b></td></tr>
-		<tr><td>@LANG('ui.Type'):</td><td><b>@LANG('ui.' . $user->getUserType()) ({{$user->user_type}})</b></td></tr>
-		<tr><td>@LANG('ui.Blocked'):&nbsp;&nbsp;</td><td><b>@LANG('ui.' . $user->getBlocked())</b></td></tr>
-		<tr><td>@LANG('ui.Created'):</td><td><b>{{$date}}</b></td></tr>
-	</table>
-
-    @elseif (Auth::check())
+    @if (Auth::check())
 
         <div class="xl-thin-text">
-            <h5>@LANG('ui.Name')</h5>
-            <p>{{Auth::user()->name}}
             <h5>@LANG('ui.Email Address')</h5>
             <p>{{Auth::user()->email}}
+            <h5>@LANG('ui.Password')</h5>
+            <p><a class="" href="{{lurl('password/edit/') . Auth::id()}}">@LANG('base.Update Password')</a></p>
+            <h5>@LANG('ui.Name')</h5>
+            <p>{{Auth::user()->name}}
             <h5>@LANG('ui.Joined')</h5>
             <p>{{$date}}</p>
-            <p>
+
+            @if (isAdmin())
+                <h5>@LANG('ui.Type')</h5>
+                <p>@LANG('ui.' . $user->getUserType()) ({{$user->user_type}})</p>
+
+                <h5>@LANG('ui.Blocked')</h5>
+                <p>@LANG('ui.' . $user->getBlocked())</p>
+            @endif
         </div>
 
     @else

@@ -654,12 +654,12 @@ if (!function_exists('getLanguageOptions')) {
         $languages = [
             LANGUAGE_EN => 'English',
             LANGUAGE_ES => 'Spanish',
-            LANGUAGE_ZH => 'Chinese',
-            LANGUAGE_RU => 'Russian',
-            LANGUAGE_FR => 'French',
-            LANGUAGE_IT => 'Italian',
-            LANGUAGE_DE => 'German',
-            LANGUAGE_KO => 'Korean',
+//            LANGUAGE_ZH => 'Chinese',
+//            LANGUAGE_RU => 'Russian',
+//            LANGUAGE_FR => 'French',
+//            LANGUAGE_IT => 'Italian',
+//            LANGUAGE_DE => 'German',
+//            LANGUAGE_KO => 'Korean',
         ];
 
 	    if ($includeAll)
@@ -673,7 +673,7 @@ if (!function_exists('getLanguageName')) {
 	function getLanguageName($languageFlag)
 	{
 	    return (isset($languageFlag) && $languageFlag >= 0)
-	        ? getLanguageOptions(true)[$languageFlag]
+	        ? getLanguageOptions(isAdmin())[$languageFlag]
 	        : '';
 	}
 }
