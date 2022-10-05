@@ -67,6 +67,7 @@ class ArticleController extends Controller
         $parms['type'] = ENTRY_TYPE_ARTICLE;
         $parms['orderBy'] = $orderBy;
         $options = [];
+        $options['orderBy'] = strlen($orderBy) > 0 ? $orderBy : 'default';
 
 		try
 		{
@@ -140,12 +141,12 @@ class ArticleController extends Controller
 		{
 			$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
 			Entry::countView($record);
+
+			// count the words
 			$options['wordCount'] = str_word_count($record->description); // count it before <br/>'s are added
 
-			// count the letters only, try to get letter count to match deepl letter count
-			$letters = str_replace(["\r"], '', $record->description);
-			//$letters = alphanum($letters);
-			$options['letterCount'] = mb_strlen($letters);
+			// count the letters
+			$options['letterCount'] = countLetters($record->description);
 
 			// count the lines
 			$options['lineCount'] = count($record->getSentences());

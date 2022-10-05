@@ -672,8 +672,10 @@ if (!function_exists('getLanguageOptions')) {
 if (!function_exists('getLanguageName')) {
 	function getLanguageName($languageFlag)
 	{
-	    return (isset($languageFlag) && $languageFlag >= 0)
-	        ? getLanguageOptions(isAdmin())[$languageFlag]
+	    $languageOptions = getLanguageOptions(isAdmin());
+
+	    return (isset($languageFlag) && $languageFlag >= 0 && $languageFlag < count($languageOptions))
+	        ? $languageOptions[$languageFlag]
 	        : '';
 	}
 }
@@ -1071,5 +1073,17 @@ if (!function_exists('highlightText')) {
     function highlightText($text, $fgColor = 'black', $bgColor = 'yellow')
     {
         return '<b><span style="color: ' . $fgColor . '; background-color:' . $bgColor . ';">' . $text . '</span></b>';
+    }
+}
+
+
+if (!function_exists('countLetters')) {
+    function countLetters($text)
+    {
+    	// count the letters only, try to get letter count to match deepl letter count
+		$letters = str_replace(["\r"], '', $text);
+		$letters = mb_strlen($letters);
+
+        return $letters;
     }
 }

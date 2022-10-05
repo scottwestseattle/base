@@ -1,3 +1,6 @@
+@php
+    $orderBy = isset($orderBy) ? $orderBy : 'default';
+@endphp
 @if (isset($records))
 <div class="text-center mt-2">
     <div style="display: inline-block; width:100%">
@@ -37,6 +40,7 @@
 
                             <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                             <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>
+                            <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{countLetters($record->description)}} {{strtolower(trans_choice('ui.Letter', 2))}}</div>
 
                             @if (isAdmin() || App\User::isOwner($record->user_id))
                                 @if (isAdmin())
@@ -65,7 +69,7 @@
 
         @endforeach
         </table>
-        <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/articles">@LANG('ui.Show All')</a></div>
+        <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/articles/index/{{$orderBy}}/-1">@LANG('ui.Show All')</a></div>
     </div>
 </div>
 @endif

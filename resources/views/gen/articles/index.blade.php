@@ -20,6 +20,8 @@
         $active3 = 'show active';
         $active1 = '';
     }
+
+    $orderBy = isset($options['orderBy']) ? $options['orderBy'] : 'default';
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('proj.Article', 2) )
@@ -67,7 +69,7 @@
     @endif
 @else
     <h3 class="">{{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{$options['public']['count']}})</span></h3>
-    @component('shared.articles', ['records' => $options['public']['records'], 'release' => 'public'])@endcomponent
+    @component('shared.articles', ['records' => $options['public']['records'], 'release' => 'public', 'orderBy' => $orderBy])@endcomponent
 @endif
 
 @endsection
