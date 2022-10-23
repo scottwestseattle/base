@@ -545,10 +545,19 @@ class Entry extends Model
 		{
     		switch ($parms['orderBy'])
     		{
-                case 'date':
+                case 'date-asc':
+                    $orderBy = 'entries.display_date ASC';
+                    break;
+                case 'date-desc':
                     $orderBy = 'entries.display_date DESC';
                     break;
-                case 'default':
+                case 'title-asc':
+                    $orderBy = 'entries.title ASC';
+                    break;
+                case 'title-desc':
+                    $orderBy = 'entries.title DESC';
+                    break;
+                case 'default': // not used
                     $orderBy = 'entries.id DESC';
                     break;
                 default:

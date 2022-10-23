@@ -2,13 +2,33 @@
   <div class="">
     <ul class="nav">
 
-        <li class="nav-item"><a class="nav-link" href="/articles/index/default/10">
+        @if (false)
+        <li class="nav-item"><a class="nav-link" href="/articles/index/default/20">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
         </a></li>
+        @endif
 
-        <li class="nav-item"><a class="nav-link" href="/articles/index/date/10">
+        @isset($record)
+        @else
+            <li class="nav-item"><a class="nav-link" href="/articles/index/date-asc/20">
+                <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-up-alt" /></svg>
+            </a></li>
+        @endif
+
+        <li class="nav-item"><a class="nav-link" href="/articles/index/date-desc/20">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-down-alt" /></svg>
         </a></li>
+
+        @isset($record)
+        @else
+            <li class="nav-item"><a class="nav-link" href="/articles/index/title-asc/20">
+                <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-alpha-up-alt" /></svg>
+            </a></li>
+
+            <li class="nav-item"><a class="nav-link" href="/articles/index/title-desc/20">
+                <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-alpha-down-alt" /></svg>
+            </a></li>
+        @endif
 
         @if (false)
         <li class="nav-item"><a class="nav-link" href="/articles/index/default/-1">

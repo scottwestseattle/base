@@ -1003,6 +1003,31 @@ class Definition extends Model
 		return $records;
 	}
 
+    static public function touchId($id)
+    {
+		try
+		{
+            $record = Definition::select()
+                ->where('id', $id)
+                ->first();
+
+            if (isset($record))
+            {
+                $record->touch();
+            }
+            else
+            {
+    			$msg = 'Error touching practice text';
+                logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+            }
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error touching practice text';
+            logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+    }
+
 	static public function getSnippetsReview($options = null)
 	{
 		$records = [];

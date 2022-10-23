@@ -12,16 +12,15 @@
 <form method="POST" id="form-edit" action="/definitions/update/{{$record->id}}">
 
     <div class="form-group">
-        <label for="title" class="control-label">@LANG('proj.Word, Phrase, or Practice Text'):</label>
+        <label for="title" class="control-label mb-0">@LANG('proj.Word, Phrase, or Practice Text'):</label>
         <a onclick="event.preventDefault(); $('#title').val(''); $('#title').focus();" href="" tabindex="-1" class="ml-3"><span id="" class="glyphicon glyphicon-remove" ></span></a>
-        <textarea rows="3" id="title" name="title" class="form-control" autocomplete="off" onfocus="setFocus($(this), '#accent-chars');  $('#wordexists').html('');" onblur="wordExists($(this))" />{{$record->title}}</textarea>
-        <div id="wordexists" class="small-thin-text ml-2 mb-2"></div>
-        <div class="small-thin-text ml-2">{{$record->permalink}}</div>
-        <div class="mb-2 ml-2">
+        <div class="mb-1 ml-2">
             <a onclick="translateOnWebsite(event, 'deepl', $('#title').val());" href="" tabindex="-1" class="small-thin-text">DeepL</a>
             <a onclick="translateOnWebsite(event, 'spanishdict', $('#title').val());" href="" tabindex="-1"  class="small-thin-text ml-2">Span!shD¡ct</a>
             <a onclick="translateOnWebsite(event, 'rae', $('#title').val());" href="" tabindex="-1"  class="small-thin-text ml-2">RAE</a>
         </div>
+        <textarea rows="3" id="title" name="title" class="form-control" autocomplete="off" onfocus="setFocus($(this), '#accent-chars');  $('#wordexists').html('');" onblur="wordExists($(this))" />{{$record->title}}</textarea>
+        <div id="wordexists" class="small-thin-text ml-2 mb-0"></div>
     </div>
 
     <div class="form-group">
@@ -39,6 +38,25 @@
             'selected_option' => $record->pos_flag,
             'onchange' => '$("#pos_flag").val() == ' . DEFINITIONS_POS_SNIPPET . ' ? $("#dictionary_fields").hide() : $("#dictionary_fields").show();',
         ])@endcomponent
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label mb-0">@LANG('ui.Category') (@LANG('ui.optional')):</lable><br/>
+        <div class="mt-1">
+            <div class="float-left mr-3"><input type="checkbox" name="cat1" id="cat1" class="mr-1" /><label>Gender or Number</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat2" id="cat2" class="mr-1" /><label>Preterite</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat3" id="cat3" class="mr-1" /><label>Phrasing</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat4" id="cat4" class="mr-1" /><label>Reflexive</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat5" id="cat5" class="mr-1" /><label>Subjunctive</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat6" id="cat6" class="mr-1" /><label>Object</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat7" id="cat7" class="mr-1" /><label>Preposition</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat8" id="cat8" class="mr-1" /><label>Grammar</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="notes" class="control-label">{{trans_choice('ui.Note', 2)}} (@LANG('ui.optional')):</label>
+        <input type="text" name="notes" id="notes" class="form-control" autocomplete="off" value="{{$record->notes}}"/>
     </div>
 
     <div class="form-group">

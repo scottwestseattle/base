@@ -59,7 +59,7 @@ class TagController extends Controller
 		try
 		{
 			$records = Tag::select()
-				->orderBy('user_id')
+				->orderBy('type_flag')
 				->get();
 		}
 		catch (\Exception $e)

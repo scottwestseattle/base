@@ -391,6 +391,7 @@ class DefinitionController extends Controller
 		$record->definition = copyDirty($record->definition, $request->definition, $isDirty, $changes);
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
+		$record->notes = copyDirty($record->notes, $request->notes, $isDirty, $changes);
 		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
 
 		$forms 	= Spanish::formatForms($request->forms);
@@ -699,7 +700,7 @@ class DefinitionController extends Controller
 		        throw new \Exception($msg); // nope!
 
 			$record->save();
-			self::setSnippetCookie($record->id);
+			$this->setSnippetCookie($record->id);
 
 			$msg = $exists ? __("proj.$tag has been updated") : __("proj.New $tag has been saved");
 			logInfo($f, $msg, ['title' => $record->title, 'id' => $record->id]);
@@ -722,9 +723,16 @@ class DefinitionController extends Controller
 		return back();
     }
 
-	static public function setSnippetCookie($id)
+	public function setSnippetCookieNEW(Request $request, Definition $definition)
+    {
+        //dump($definition->id);
+        Cookie::queue('snippetId', intval($definition->id), COOKIE_YEAR);
+    }
+
+	public function setSnippetCookie($id)
     {
         Cookie::queue('snippetId', intval($id), COOKIE_YEAR);
+        Definition::touchId($id);
     }
 
 	public function viewSnippet($permalink)
@@ -773,6 +781,7 @@ class DefinitionController extends Controller
     {
         $parms['id'] = isset($id) ? intval($id) : null;
         $parms['showForm'] = true;
+        $parms['sort'] = 'desc';
 
         return $this->getSnippets($parms);
     }
@@ -1539,10 +1548,10 @@ class DefinitionController extends Controller
 
 	public function readSnippetsLatest(Request $request, $count = null)
     {
-        return $this->readSnippets($request, $count, 'Latest Practice Text', 'favorites');
+        return $this->readSnippets($request, $count, 'Latest Practice Text', 'favorites', 'id DESC');
     }
 
-	public function readSnippets(Request $request, $count = PHP_INT_MAX, $title = null, $return = null)
+	public function readSnippets(Request $request, $count = PHP_INT_MAX, $title = null, $return = null, $orderBy = null)
     {
         $title = isset($title) ? alphanum($title) : 'Practice Text';
         $return = isset($return) ? alphanum($return) : 'practice';
@@ -1574,6 +1583,9 @@ class DefinitionController extends Controller
 
         $options['return'] = '/' . $return;
         $options['randomOrder'] = true;
+
+        if (isset($orderBy))
+            $options['orderBy'] = $orderBy;
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),

@@ -45,7 +45,7 @@
 			@endif
 
             <div class="entry-title-div mb-3">
-                <input type="text" id="display_order" name="display_order" placeholder="@LANG('proj.Chapter Number')" class="form-control" value="{{isset($chapter) ? $chapter : ''}}"
+                <input type="number" id="display_order" name="display_order" placeholder="@LANG('proj.Chapter Number')" class="form-control" value="{{isset($chapter) ? $chapter : ''}}"
                 />
             </div>
 

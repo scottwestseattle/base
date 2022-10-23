@@ -98,12 +98,26 @@ class BookController extends Controller
     public function addChapter(Tag $tag)
     {
         $book = $tag;
-        $chapter = count($book->entries) + 1;
+
+        // figure out what the next chapter number should be by looking at the last chapter
+        $chapterNbr = -1; //count($book->entries);
+        $count = count($book->entries);
+        if ($count > 0)
+        {
+            $last = $book->entries[$count - 1];
+            $words = explode(' ', $last->title);
+            if (count($words) > 1)
+                $chapterNbr = intval($words[1]);
+        }
+
+        $chapterNbr++; // increment for next chapter number to be added
+
+        //dump($book->entries);
 
 		return view(VIEWS . '.add', [
 			'languageOptions' => getLanguageOptions(),
 			'selectedOption' => getLanguageId(),
-			'chapter' => $chapter,
+			'chapter' => $chapterNbr,
 			'book' => $book,
 			]);
 	}

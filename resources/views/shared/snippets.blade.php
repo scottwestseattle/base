@@ -188,7 +188,7 @@
                                     <div class="red">{{$record->permalink}}</div>
                                 @endif
                             @else
-                                <div class="">{{Str::limit($record->title, 200)}}@if (false) ({{$record->user_id}})@endif</div>
+                                <div class="">{{Str::limit($record->title, 200)}}@if (false) ({{$record->id}})@endif</div>
                             @endif
                             </td>
                         </tr>

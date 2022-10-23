@@ -69,6 +69,9 @@
                         </a>
                     </div>
                 @endif
+                @if (isset($options['translation_matches']) && !$options['translation_matches'])
+                    <div class="red">TRANSLATION DOES NOT MATCH TEXT</div>
+                @endif
             </div>
         </div>
 

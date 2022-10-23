@@ -58,8 +58,9 @@ class ArticleController extends Controller
 
     public function index(Request $request, $orderBy = null, $limit = 10)
     {
-        $orderBy = strtolower(alpha($orderBy));
-	    $limit = intval($limit) < 0 ? PHP_INT_MAX : intval($limit);
+        $orderBy = strtolower(alphanum($orderBy, false, '-'));
+
+        $limit = intval($limit) < 0 ? PHP_INT_MAX : intval($limit);
 		$records = [];
 		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
 
@@ -152,6 +153,13 @@ class ArticleController extends Controller
 			$options['lineCount'] = count($record->getSentences());
 
 			$record->description = nl2br($record->description);
+
+			$options['sentences'] = Spanish::getSentences($record->description);
+			if (strlen($record->description_translation) > 0)
+			{
+	        	$options['sentences_translation'] = Spanish::getSentences($record->description_translation);
+	        	$options['translation_matches'] = (count($options['sentences']) === count($options['sentences_translation']));
+			}
 		}
 		else
 		{

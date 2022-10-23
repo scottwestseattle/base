@@ -8,7 +8,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th></th><th>@LANG('ui.Name')</th><th>{{trans_choice('ui.User', 1)}}</th><th>@LANG('ui.Updated')</th><th></th>
+				<th></th><th>@LANG('ui.Name')</th><th>{{trans_choice('ui.User', 1)}}</th><th>@LANG('ui.Type')</th><th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +25,8 @@
 				    <td>System</td>
 				@endif
 
-				<td>{{$record->updated_at}}</td>
+				<td>{{$record->type_flag}}</td>
+
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/tags/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
 			</tr>
 		@endforeach
