@@ -174,4 +174,7 @@ return [
 'Random' => 'Random',
 'Swap' => 'Swap',
 'Letter' => 'Letter|Letters',
+'Category' => 'Category|Categories',
+'optional' => 'optional',
+'Note' => 'Note|Notes',
 ];

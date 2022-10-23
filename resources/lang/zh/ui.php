@@ -174,4 +174,7 @@ return [
 'Random' => '随机',
 'Swap' => '互换',
 'Letter' => '信件|信件',
+'Category' => '类别|类别',
+'optional' => '可选',
+'Note' => '注意事项|注意事项',
 ];

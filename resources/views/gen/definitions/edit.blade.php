@@ -41,7 +41,7 @@
     </div>
 
     <div class="form-group">
-        <label for="" class="control-label mb-0">@LANG('ui.Category') (@LANG('ui.optional')):</lable><br/>
+        <label for="" class="control-label mb-0">{{trans_choice('ui.Category', 2)}} (@LANG('ui.optional')):</lable><br/>
         <div class="mt-1">
             <div class="float-left mr-3"><input type="checkbox" name="cat1" id="cat1" class="mr-1" /><label>Gender or Number</label></div>
             <div class="float-left mr-3"><input type="checkbox" name="cat2" id="cat2" class="mr-1" /><label>Preterite</label></div>
