@@ -119,7 +119,9 @@ class HomeController extends Controller
         $snippets = Definition::getSnippets([
             'limit' => $snippetsLimit,
             'languageId' => $siteLanguage,
-            'languageFlagCondition' => $languageFlagCondition
+            'languageFlagCondition' => $languageFlagCondition,
+            'userId' => Auth::check() ? Auth::id() : 0,
+            'userIdCondition' => Auth::check() ? '=' : '>=',
         ]);
         $options['records'] = $snippets;
         $options['showForm'] = true;

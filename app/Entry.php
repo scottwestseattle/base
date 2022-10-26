@@ -369,6 +369,8 @@ class Entry extends Model
 		}
     }
 
+    // keeps track of line number in the article during reading
+    // so we can resume reading at the same location
     public function setReadLocation($readLocation)
     {
 		$rc = false;
@@ -387,6 +389,8 @@ class Entry extends Model
 		return $rc;
 	}
 
+    // keeps track of line number in the article during reading
+    // so we can resume reading at the same location
     private function getReadLocation($tagId)
     {
 		$readLocation = 0;

@@ -25,7 +25,7 @@
 				    <td>System</td>
 				@endif
 
-				<td>{{$record->type_flag}}</td>
+				<td>{{$record->getTypeFlagName()}}</td>
 
 				<td class="icon">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/tags/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
 			</tr>

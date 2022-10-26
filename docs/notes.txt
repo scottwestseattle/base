@@ -1,7 +1,9 @@
 
 
 NEW DB Changes:
-update definitions set title_long = null WHERE 1 AND title_long IS NOT NULL 
+ALTER TABLE `codespace_learn`.`definition_user` DROP INDEX `definition_user_definition_id_user_id_unique`, ADD UNIQUE `definition_user_definition_id_user_id_unique` (`definition_id`, `user_id`) USING BTREE;
+ALTER TABLE `definition_user` ADD `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;
+update definitions set title_long = null WHERE 1 AND title_long IS NOT NULL
 ALTER TABLE `definitions` CHANGE `title_long` `notes` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '';
 
 

@@ -62,6 +62,15 @@ class User extends Authenticatable
 		USER_SUPER_ADMIN => 'Super Admin',
 	];
 
+    //
+    // Relationships
+    //
+    public function definitions()
+   {
+		// many to many
+        return $this->belongsToMany('App\Gen\Definition'); //->orderBy('created_at');
+    }
+
 	public function isBlocked()
 	{
 		return($this->blocked_flag == 1);

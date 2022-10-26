@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Auth;
 use Config;
 use Cookie;
+use DB;
 use Lang;
 use Log;
 
@@ -257,6 +258,8 @@ class DefinitionController extends Controller
 
             $record->view_count++;
             $record->save();
+
+            $record->tagUser();
 		}
 		catch (\Exception $e)
 		{
@@ -418,6 +421,19 @@ class DefinitionController extends Controller
 			{
 				$record->save();
 				logInfo($f, __('proj.Definition has been updated'), ['title' => $record->title, 'id' => $record->id, 'changes' => $changes]);
+
+                // apply any category tags that are set
+                if ($record->isSnippet())
+                {
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_GENDER, $request->cat1);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_PRETERITE, $request->cat2);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_PHRASING, $request->cat3);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_REFLEXIVE, $request->cat4);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_SUBJUNCTIVE, $request->cat5);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_OBJECT, $request->cat6);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_PREPOSITION, $request->cat7);
+                    $record->tagCategory(SNIPPET_CATEGORY_ESP_GRAMMAR, $request->cat8);
+                }
 			}
 			catch (\Exception $e)
 			{
@@ -731,8 +747,18 @@ class DefinitionController extends Controller
 
 	public function setSnippetCookie($id)
     {
+        // set the cookie so it will be loaded in the big frontpage edit box
         Cookie::queue('snippetId', intval($id), COOKIE_YEAR);
+
+        // touch the record to move to top of list
         Definition::touchId($id);
+
+        if (Auth::check())
+        {
+            // update it's view and timestamp for the user
+            Definition::tagDefinitionUser($id);
+        }
+
     }
 
 	public function viewSnippet($permalink)
@@ -798,7 +824,7 @@ class DefinitionController extends Controller
         $sort = isset($parms['sort']) ? alpha(strtolower($parms['sort'])) : null;
         if ($sort === 'help')
         {
-            dump("sort: asc|desc|atoz|ztoa|incomplete|help");
+            dump("sort: asc|desc|atoz|ztoa|incomplete|owner|help");
         }
 
         if (isset($sort))
@@ -867,13 +893,14 @@ class DefinitionController extends Controller
             $options['snippet'] = Definition::getByType(DEFTYPE_SNIPPET, $id, 'id');
 
         $options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
-        //dump($options);
 
         // get the favorite lists so the entries can be favorited
         $options['favoriteLists'] = Definition::getUserFavoriteLists();
 
         // not used but needed for reader
         $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
+
+        //dd($options);
 
 		return view('gen.definitions.snippets', [
 		    'options' => $options,

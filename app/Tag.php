@@ -23,6 +23,7 @@ class Tag extends Model
         TAG_TYPE_SYSTEM         => 'System Tag',
         TAG_TYPE_BOOK           => 'Book',
         TAG_TYPE_DEF_FAVORITE   => 'Favorite',
+        TAG_TYPE_DEF_CATEGORY   => 'Category',
         TAG_TYPE_OTHER          => 'Other',
 	];
 

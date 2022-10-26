@@ -51,6 +51,7 @@
             <div class="float-left mr-3"><input type="checkbox" name="cat6" id="cat6" class="mr-1" /><label>Object</label></div>
             <div class="float-left mr-3"><input type="checkbox" name="cat7" id="cat7" class="mr-1" /><label>Preposition</label></div>
             <div class="float-left mr-3"><input type="checkbox" name="cat8" id="cat8" class="mr-1" /><label>Grammar</label></div>
+            <div class="float-left mr-3"><input type="checkbox" name="cat9" id="cat9" class="mr-1" /><label>Article</label></div>
         </div>
     </div>
 

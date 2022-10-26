@@ -107,6 +107,11 @@ class Definition extends Model
 		}
 	}
 
+    public function users()
+    {
+		return $this->belongsToMany('App\User');
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Tags - User Definition Favorite lists
@@ -963,6 +968,8 @@ class Definition extends Model
 
 	static public function getSnippets($parms = null)
 	{
+	    //dump($parms);
+
 		$records = [];
 
 		$limit = isset($parms['limit']) ? $parms['limit'] : PHP_INT_MAX;
@@ -1172,5 +1179,49 @@ class Definition extends Model
 	    }
 
 	    return $rc;
+	}
+
+    static public function tagDefinitionUser($id)
+    {
+        $record = Definition::select()
+            ->where('id', $id)
+            ->get();
+
+        if (isset($record) && count($record) > 0)
+        {
+            $record = $record[0];
+            $record->tagUser();
+        }
+    }
+
+    public function tagUser()
+    {
+        $ud = DB::table('definition_user')
+            ->select()
+            ->where('user_id', Auth::id())
+            ->where('definition_id', $this->id)
+            ->get();
+
+        if (isset($ud) && count($ud) > 0)
+        {
+            DB::table('definition_user')
+                ->where('user_id', Auth::id())
+                ->where('definition_id', $this->id)
+                ->update(['views' => $ud[0]->views + 1]);
+        }
+        else
+        {
+            $this->users()->attach(Auth::id(), ['views' => 1]);
+            $this->refresh();
+        }
+    }
+
+	public function tagCategory($categoryId, $checked)
+	{
+	    if (isset($checked))
+	    {
+            dd($categoryId);
+		    $this->tags()->attach($tag->id, ['user_id' => Auth::id()]);
+	    }
 	}
 }

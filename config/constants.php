@@ -80,6 +80,17 @@ define('DEFINITIONS_SEARCH_RANKED',                 14);
 define('DEFINITIONS_SEARCH_RANKED_VERBS',           15);
 define('DEFINITIONS_SEARCH_EXAMPLES',               16);
 
+// Snippet Categories
+define('SNIPPET_CATEGORY_NOTSET',                   0);
+define('SNIPPET_CATEGORY_ESP_GENDER',               1);
+define('SNIPPET_CATEGORY_ESP_PRETERITE',            2);
+define('SNIPPET_CATEGORY_ESP_PHRASING',             3);
+define('SNIPPET_CATEGORY_ESP_REFLEXIVE',            4);
+define('SNIPPET_CATEGORY_ESP_SUBJUNCTIVE',          5);
+define('SNIPPET_CATEGORY_ESP_OBJECT',               6);
+define('SNIPPET_CATEGORY_ESP_PREPOSITION',          7);
+define('SNIPPET_CATEGORY_ESP_GRAMMAR',              8);
+
 // entries
 define('ENTRY_TYPE_NOTSET', 	-1);
 define('ENTRY_TYPE_NOTUSED', 	0);
@@ -103,10 +114,10 @@ define('TAG_BOOK', 'book');
 define('TAG_TYPE_NOTSET',			   	0);
 define('TAG_TYPE_SYSTEM',				1); // one for everybody, ex: recent article
 //define('TAG_TYPE_RECENT_ARTICLE',	   	1); // old way
-define('TAG_TYPE_BOOK',				   	2); //not implented yet: need one per book
+define('TAG_TYPE_BOOK',				   	2); // one per book to hold the chapters (entries) together
 define('TAG_TYPE_DEF_FAVORITE', 	    3); // one per user so we have empty favorites list
+define('TAG_TYPE_DEF_CATEGORY', 	    4); // definition categories to show what a snippet is demonstrating
 define('TAG_TYPE_OTHER',			   	99);
-//define('TAG_TYPE_DEFAULT', TAG_TYPE_SYSTEM); // need this?
 
 // History
 define('HISTORY_URL', '/history/add-public?');
