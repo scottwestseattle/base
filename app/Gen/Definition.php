@@ -973,26 +973,31 @@ class Definition extends Model
 		$records = [];
 
 		$limit = isset($parms['limit']) ? $parms['limit'] : PHP_INT_MAX;
+		$start = isset($parms['start']) ? $parms['start'] : 0;
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
+		$sort = isset($parms['sort']) ? $parms['sort'] : 'owner';
 		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'updated_at DESC';
-        //dump($orderBy);
+        // dump($orderBy);
 
 		try
 		{
-		    if ($userId == 0)
+		    if ($userId == 0 || $sort != 'owner')
 		    {
 		        //
-		        // non-logged-in users see the most recently viewed records (updated_at DESC)
+		        // non-logged-in users OR non-owner default sort:
+		        // show the most recently viewed records (updated_at DESC) OR show the specified sort
 		        // it's done this way so that if they view one then it moves to the top of their list
 		        // otherwise the order would always be same (id DESC) until somebody adds a new one
 		        //
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
                     ->where('language_flag', $languageFlagCondition, $languageId)
+    				->where('definitions.user_id', $userIdCondition, $userId)
                     ->orderByRaw($orderBy)
+                    ->offset($start)
                     ->limit($limit)
                     ->get();
 		    }
@@ -1001,6 +1006,8 @@ class Definition extends Model
                 //
                 // logged-in users see their records only, most recently viewed (by them only) first
                 //
+                $orderBy = 'definition_user.updated_at DESC, definitions.id DESC';
+
 				$records = Definition::select('definitions.*')
 					->leftJoin('definition_user', function($join) {
     					$join->on('definition_user.definition_id', '=', 'definitions.id');
@@ -1008,7 +1015,8 @@ class Definition extends Model
 					})
                     ->where('type_flag', DEFTYPE_SNIPPET)
     				->where('definitions.user_id', $userId)
-	    			->orderByRaw('definition_user.updated_at DESC, definitions.id DESC')
+	    			->orderByRaw($orderBy)
+	    			->offset($start)
                     ->limit($limit)
 		    		->get();
 

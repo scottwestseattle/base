@@ -1,13 +1,11 @@
-
-
 NEW DB Changes:
+update `definitions` set release_flag = 100 WHERE 1 and release_flag < 100 and type_flag = 1
+
+Done:
 ALTER TABLE `codespace_learn`.`definition_user` DROP INDEX `definition_user_definition_id_user_id_unique`, ADD UNIQUE `definition_user_definition_id_user_id_unique` (`definition_id`, `user_id`) USING BTREE;
 ALTER TABLE `definition_user` ADD `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;
 update definitions set title_long = null WHERE 1 AND title_long IS NOT NULL
 ALTER TABLE `definitions` CHANGE `title_long` `notes` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '';
-
-
-Done:
 ALTER TABLE `histories` ADD `type_flag` TINYINT NOT NULL AFTER `ip_address`;
 ALTER TABLE `histories` ADD `count` INT NULL DEFAULT '0' AFTER `seconds`, ADD `score` INT NULL DEFAULT '0' AFTER `count`, ADD `extra` INT NULL DEFAULT '0' AFTER `score`;
 ALTER TABLE `histories` ADD `subtype_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;

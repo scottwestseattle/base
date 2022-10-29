@@ -470,7 +470,7 @@ Route::group(['prefix' => 'favorites'], function () {
 
 // Practice text (Snippets)
 Route::group(['prefix' => 'practice'], function () {
-    Route::get('/index/{count?}', [DefinitionController::class, 'indexSnippets']);
+    Route::get('/index/', [DefinitionController::class, 'indexSnippets']);
     Route::get('/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
     Route::get('/show/{definition}', [DefinitionController::class, 'showSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);

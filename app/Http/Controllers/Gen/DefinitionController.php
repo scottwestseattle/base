@@ -796,11 +796,9 @@ class DefinitionController extends Controller
 		return $this->getSnippets($request);
     }
 
-	public function indexSnippets($count = PHP_INT_MAX)
+	public function indexSnippets(Request $request)
     {
-        $parms[$count] = intval($count);
-
-        return $this->getSnippets($parms);
+        return $this->getSnippets($request);
     }
 
 	public function snippets($id = null)
@@ -816,7 +814,8 @@ class DefinitionController extends Controller
     {
         $options = [];
 
-        $count = isset($parms['count']) ? $parms['count'] : PHP_INT_MAX;
+        $count = isset($parms['count']) ? $parms['count'] : 50;
+        $start = isset($parms['start']) ? $parms['start'] : 0;
         $showForm = isset($parms['showForm']) ? $parms['showForm'] : false;
         $id = isset($parms['id']) ? $parms['id'] : null;
 
@@ -864,7 +863,7 @@ class DefinitionController extends Controller
                     }
                     break;
                 case 'owner':
-                    $orderBy = 'id DESC';
+                    // use the default orderBy in Definition
                     if (Auth::check())
                     {
                         $options['userId'] = Auth::id();
@@ -880,10 +879,11 @@ class DefinitionController extends Controller
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
 
         $options['limit']                   = $count;
+        $options['start']                   = $start;
         $options['languageId']              = $siteLanguage;
         $options['languageFlagCondition']   = $languageFlagCondition;
         $options['orderBy']                 = $orderBy;
-
+        $options['sort']                    = $sort;
         //
         // get the snippets for the appropriate langauge
         //
@@ -894,7 +894,7 @@ class DefinitionController extends Controller
 
         // get all the stuff for the speak and record module
         $options['showForm'] = $showForm;
-        $options['showAllButton'] = false;
+        $options['showAllButton'] = true;
         $options['loadReader'] = true;
         $options['siteLanguage'] = $siteLanguage;
         $options['snippetLanguages'] = getLanguageOptions();
@@ -914,7 +914,7 @@ class DefinitionController extends Controller
         // not used but needed for reader
         $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
 
-        //dd($options);
+        //dump($options);
 
 		return view('gen.definitions.snippets', [
 		    'options' => $options,

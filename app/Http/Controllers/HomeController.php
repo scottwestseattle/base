@@ -157,6 +157,8 @@ class HomeController extends Controller
         // not used but needed for reader
         $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
 
+        //dump($options);
+
 		return view($view, [
 		    'options' => $options,
 		    'history' => $history,

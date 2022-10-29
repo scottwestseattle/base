@@ -1,8 +1,12 @@
 @php
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
-@endphp
 
+    $rpp = 50;
+    $nextCount = (isset($options['count'])) ? $options['count'] : $rpp;
+    $nextStart = (isset($options['start'])) ? $options['start'] + $rpp : 0;
+    $sort = (isset($options['sort'])) ? $options['sort'] : '';
+@endphp
 
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -232,7 +236,7 @@
             @endif
             </table>
             @if ($options['showAllButton'])
-                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice">@LANG('ui.Show All')</a></div>
+                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice/index?sort={{$sort}}&start={{$nextStart}}&count={{$nextCount}}">@LANG('ui.Show More')</a></div>
             @endif
         </div>
     </div>
