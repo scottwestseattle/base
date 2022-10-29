@@ -973,16 +973,22 @@ class Definition extends Model
 		$records = [];
 
 		$limit = isset($parms['limit']) ? $parms['limit'] : PHP_INT_MAX;
-		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'updated_at DESC';
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
+		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'updated_at DESC';
+        //dump($orderBy);
 
 		try
 		{
 		    if ($userId == 0)
 		    {
+		        //
+		        // non-logged-in users see the most recently viewed records (updated_at DESC)
+		        // it's done this way so that if they view one then it moves to the top of their list
+		        // otherwise the order would always be same (id DESC) until somebody adds a new one
+		        //
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
                     ->where('language_flag', $languageFlagCondition, $languageId)
@@ -992,13 +998,21 @@ class Definition extends Model
 		    }
             else
             {
-                $records = Definition::select()
+                //
+                // logged-in users see their records only, most recently viewed (by them only) first
+                //
+				$records = Definition::select('definitions.*')
+					->leftJoin('definition_user', function($join) {
+    					$join->on('definition_user.definition_id', '=', 'definitions.id');
+						$join->on('definition_user.user_id', 'definitions.user_id'); // works for users not logged in
+					})
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where('language_flag', $languageFlagCondition, $languageId)
-                    ->where('user_id', $userIdCondition, $userId)
-                    ->orderByRaw($orderBy)
+    				->where('definitions.user_id', $userId)
+	    			->orderByRaw('definition_user.updated_at DESC, definitions.id DESC')
                     ->limit($limit)
-                    ->get();
+		    		->get();
+
+                //dump($records);
             }
 		}
 		catch (\Exception $e)

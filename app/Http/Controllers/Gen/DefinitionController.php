@@ -827,6 +827,18 @@ class DefinitionController extends Controller
             dump("sort: asc|desc|atoz|ztoa|incomplete|owner|help");
         }
 
+        // default is user's snippets
+        if (Auth::check())
+        {
+            $options['userId'] = Auth::id();
+            $options['userIdCondition'] = '=';
+        }
+        else
+        {
+            $options['userId'] = 0;
+            $options['userIdCondition'] = '>=';
+        }
+
         if (isset($sort))
         {
             switch($sort)
@@ -872,7 +884,9 @@ class DefinitionController extends Controller
         $options['languageFlagCondition']   = $languageFlagCondition;
         $options['orderBy']                 = $orderBy;
 
+        //
         // get the snippets for the appropriate langauge
+        //
         $snippets = Definition::getSnippets($options);
 
         // the records

@@ -116,6 +116,9 @@ class HomeController extends Controller
             $snippetsLimit = 10;
         }
 
+        //
+        // get the latest snippets
+        //
         $snippets = Definition::getSnippets([
             'limit' => $snippetsLimit,
             'languageId' => $siteLanguage,
@@ -140,7 +143,7 @@ class HomeController extends Controller
         //dump($options);
 
         //
-        // get the latest snippets
+        // get the active snippet
         //
         $options['snippet'] = null;
         $snippetId = intval(Cookie::get('snippetId'));

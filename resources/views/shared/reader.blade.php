@@ -6,7 +6,7 @@
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = isset($options['count']) ? $options['count'] : count($lines['text']);
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
-	$hasTranslation = isset($lines['translation']) && count($lines['text']) == count($lines['translation']); // translation matches text
+	$hasTranslation = isset($lines['translation']);// && count($lines['text']) == count($lines['translation']); // translation matches text
 	$showTranslationControls = isset($lines['translation']); // show the translation in case it needs work
 @endphp
 
