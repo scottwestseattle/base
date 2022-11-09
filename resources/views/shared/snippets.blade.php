@@ -6,6 +6,7 @@
     $nextCount = (isset($options['count'])) ? $options['count'] : $rpp;
     $nextStart = (isset($options['start'])) ? $options['start'] + $rpp : 0;
     $sort = (isset($options['sort'])) ? $options['sort'] : '';
+    $autofocus = (isset($options['autofocus']) && $options['autofocus']) ? 'autofocus' : '';
 @endphp
 
 <!-------------------------------------------------------->
@@ -54,7 +55,7 @@
         class="form-control form-control-sm form-control-inline py-2 border-right-0 border"
         placeholder="{{__('proj.Dictionary Search')}}"
         oninput="showSearchResult(this.value, false); $('#searchOptions').show()"
-        autofocus
+        {{$autofocus}}
     />
 
     <div id="searchOptions" class="mb-1 hidden">

@@ -305,11 +305,6 @@ Super Light Green: #eff7f0
 	color: white;
 }
 
-.bg-white {
-	background-color: white;
-	color: #fe5b4c;
-}
-
 .gold {
 	color:gold;
 }
@@ -334,8 +329,17 @@ Super Light Green: #eff7f0
 	color:red;
 }
 
+.bg-white {
+	background-color: white;
+	color: #fe5b4c;
+}
+
 .bg-yellow {
     background-color: yellow;
+}
+
+.bg-moon-sky {
+    background-color: #365cb0;
 }
 
 .bg-purple {
@@ -1120,4 +1124,97 @@ Misc
     border: 1px gray solid;
     border-radius:10px;
     opacity:.95;
+}
+
+/****************************************
+Front Page Feature Boxes
+****************************************/
+
+.fpbox-header
+{
+  width:100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px 10px 20px 10px;
+  color: white;
+  background: linear-gradient(180deg, #4993FD, #015AA4);
+}
+
+.fpbox-container
+{
+  width:100%;
+  height: auto;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.fpbox-container .fpbox
+{
+  position: relative;
+  background: #fff;
+  padding: 10px 10px 10px;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.fpbox-container .fpbox:nth-child(1)
+{
+    background: linear-gradient(45deg, #741a7c, #e739f7); /* purple */
+}
+.fpbox-container .fpbox:nth-child(2)
+{
+    background: linear-gradient(45deg, #036eb7, #64eaff); /* blue */
+}
+.fpbox-container .fpbox:nth-child(3)
+{
+    background: linear-gradient(45deg,#c34c3d, #fc8273); /* mars */
+}
+.fpbox-container .fpbox:nth-child(4)
+{
+    background: linear-gradient(45deg, #086d35, #00ff72); /* green */
+}
+
+.fpbox-container .fpbox h2
+{
+  position: relative;
+  margin: 0 0 10px 0;
+  padding: 0;
+  font-size: 30px;
+  color: #fff;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+.fpbox-container .fpbox h3
+{
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.fpbox-container .fpbox p
+{
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 14px;
+}
+
+.h1-fp
+{
+	font-size: 40px;
+	font-weight: 250;
+}
+
+.h2-fp
+{
+	font-size: 26px;
+	font-weight: 230;
 }

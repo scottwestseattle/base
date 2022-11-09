@@ -5,7 +5,6 @@
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
-
 @php
     $showGlobalSearchBox = false;
     $banner = isset($options['banner']) ? $options['banner'] : null;
@@ -17,11 +16,11 @@
     $articleText = null;
     if (isset($aotd))
         $articleText = (Auth::check()) ? trunc($aotd->description, 300) : $aotd->description;
+    //dump($options);
 @endphp
 
 @extends('layouts.app')
 @section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
-
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 <!-- Page Header -->
@@ -29,7 +28,69 @@
 <!--------------------------------------------------------------------------------------->
 
 @section('header')
+
+@if (false)
 <div style="width:100%; background-color: white; background-position: center; background-repeat: no-repeat; background-image:url('/img/spanish/load-loop.gif'); " >
+@else
+<div style="width:100%; background-color: white;">
+@endif
+<!--------------------------------------------------------------------------------------->
+<!-- Sales Banner for Guests only -->
+<!--------------------------------------------------------------------------------------->
+@guest
+    @if (\App\Site::hasOption('fpheader'))
+        <!-- Header Photo -->
+        <div class="fpbox-header text-center">
+            <h1 class="h1-fp pt-1">{{domainName()}}</h1>
+            <h2 class="h2-fp"><b>{{App\Site::getTitle()}}</h2>
+            @if (\App\Site::hasOption('fpsteps'))
+            <button type="submit" class="btn btn-success" type="button">@LANG('ui.More Information')</button>
+            @endif
+        </div>
+
+        @if (\App\Site::hasOption('fpsteps'))
+        <!-- Fancy Step Boxes -->
+        <div class="fpbox-container">
+            <div class="fpbox">
+                <h2>Step 1</h2>
+                <h3>Online Classes</h3>
+                <p>Attend up to 5 classes per week for daily practice and evaluation.</p>
+            </div>
+            <div class="fpbox">
+                <h2>Step 2</h2>
+                <h3>Teacher Feedback</h3>
+                <p>Get detailed feedback after each class from the teacher in quiz format.</p>
+            </div>
+            <div class="fpbox">
+                <h2>Step 3</h2>
+                <h3>Online Tools</h3>
+                <p>Use our powerful tools to memorize and implement corrections.</p>
+            </div>
+            <div class="fpbox">
+                <h2>Step 4</h2>
+                <h3>Master English</h3>
+                <p>Master English through daily practice and repetition for a low monthly fee.</p>
+            </div>
+        </div>
+        @endif
+
+    @endif
+
+    @if (false)
+    <div class="bg-mars white text-center" style="min-height:300px;
+        max-height:800px;
+        background-image: url(/img/spacer.png);
+        background-repeat: no-repeat;
+        background-size:cover;
+        background-position:top;
+        ">
+        @if (false)
+        <h1 class="h1-landing-page pt-5">{{domainName()}}</h1>
+        <h2 class="h2-landing-page">Take your Second Language to the next level</h2>
+        @endif
+    </div>
+    @endif
+@endguest
 
 <!--------------------------------------------------------------------------------------->
 <!-- Banner Photo -->
@@ -45,7 +106,6 @@
 <!--------------------------------------------------------------------------------------->
 @if (false && !Auth::check())
     <div class="bg-purple text-center py-2 px-3" style="">
-        <!-- img src="/img/logos/logo-{{domainName()}}.png" style="max-width:100px;"/ -->
         <form method="POST" action="/subscribe" class="mt-2">
             <div class="form-group text-center mb-1">
                 <div class="input-group mt-2" style="max-width:600px; margin:0 auto;">
@@ -141,12 +201,21 @@
             </a>
         </div>
 
+        @if (\App\Site::hasOption('books'))
         <div class="" style="{{$style}}">
             <a class="purple" href="/books">
                 <div class="glyphicon glyphicon-book" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{trans_choice('proj.Book', 2)}}</div>
             </a>
         </div>
+        @else
+        <div class="" style="{{$style}}">
+            <a class="purple" href="/favorites">
+                <div class="glyphicon glyphicon-heart" style="font-size:35px;"></div>
+                <div class="" style="font-size:10px;">{{trans_choice('ui.Favorite', 2)}}</div>
+            </a>
+        </div>
+        @endif
 
         <div class="" style="{{$style}}">
             <a class="purple" href="/dictionary">
@@ -155,12 +224,30 @@
             </a>
         </div>
 
+        @if (\App\Site::hasOption('courses'))
         <div class="" style="{{$style}}">
             <a class="purple" href="/courses">
                 <div class="glyphicon glyphicon-education" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{trans_choice('proj.Course', 2)}}</div>
             </a>
         </div>
+        @else
+            @if (Auth::check())
+            <div class="" style="{{$style}}">
+                <a class="purple" href="/logout">
+                    <div class="glyphicon glyphicon-log-out" style="font-size:35px;"></div>
+                    <div class="" style="font-size:10px;">{{__('ui.Log-out')}}</div>
+                </a>
+            </div>
+            @else
+            <div class="" style="{{$style}}">
+                <a class="purple" href="/login">
+                    <div class="glyphicon glyphicon-user" style="font-size:35px;"></div>
+                    <div class="" style="font-size:10px;">{{__('ui.Login')}}</div>
+                </a>
+            </div>
+            @endif
+        @endif
 
     </div>
 @endif

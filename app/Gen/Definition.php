@@ -982,6 +982,12 @@ class Definition extends Model
 		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'updated_at DESC';
         // dump($orderBy);
 
+        if (isAdmin()) // show all records
+        {
+    		$userId = 0;
+	    	$userIdCondition = '>=';
+        }
+
 		try
 		{
 		    if ($userId == 0 || $sort != 'owner')
@@ -1000,6 +1006,8 @@ class Definition extends Model
                     ->offset($start)
                     ->limit($limit)
                     ->get();
+
+                //dump($records);
 		    }
             else
             {
@@ -1014,6 +1022,7 @@ class Definition extends Model
 						$join->on('definition_user.user_id', 'definitions.user_id'); // works for users not logged in
 					})
                     ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('language_flag', $languageFlagCondition, $languageId)
     				->where('definitions.user_id', $userId)
 	    			->orderByRaw($orderBy)
 	    			->offset($start)

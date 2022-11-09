@@ -75,9 +75,11 @@ class HomeController extends Controller
             //if (isset($record->language_flag))
             //    $siteLanguage = $record->language_flag;
 
-            $options['title'] = $record->description;
+            //$options['site'] = $record;
 
             $view = 'home.' . $record->frontpage;
+
+            //dump($record);
 		}
 		catch (\Exception $e)
 		{
@@ -140,7 +142,6 @@ class HomeController extends Controller
         //$options['language'] = isset($options['snippet']) ? $options['snippet']->language_flag : $siteLanguage;
         $options['language'] = $siteLanguage;
         $options['loadReader'] = true; // this loads js and css
-        //dump($options);
 
         //
         // get the active snippet
@@ -157,7 +158,8 @@ class HomeController extends Controller
         // not used but needed for reader
         $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
 
-        //dump($options);
+        $options['languageDetails'] = Site::getLanguage();
+        $options['autofocus'] = false;
 
 		return view($view, [
 		    'options' => $options,

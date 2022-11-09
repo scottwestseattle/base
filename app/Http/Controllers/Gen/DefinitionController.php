@@ -914,6 +914,9 @@ class DefinitionController extends Controller
         // not used but needed for reader
         $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
 
+        // set focus on search box
+        $options['autofocus'] = true;
+
         //dump($options);
 
 		return view('gen.definitions.snippets', [
