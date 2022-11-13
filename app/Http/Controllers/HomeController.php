@@ -251,18 +251,19 @@ class HomeController extends Controller
 		{
 		    $parms = Site::getLanguage();
 		    $parms['type'] = ENTRY_TYPE_ARTICLE;
+            $parms['limit'] = 5;
 
             // get public articles
             $parms['release'] = 'public';
-    		$options['articlesPublic'] = Entry::getRecentList($parms, 5)['records'];
+    		$options['articlesPublic'] = Entry::getRecentList($parms)['records'];
 
             // get private articles
             $parms['release'] = 'private';
-            $options['articlesPrivate'] = Entry::getRecentList($parms, 5)['records'];
+            $options['articlesPrivate'] = Entry::getRecentList($parms)['records'];
 
             // get other peoples articles
             $parms['release'] = 'other';
-            $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms, 5)['records'] : null;
+            $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms)['records'] : null;
 
             // show aotd if it hasn't been shown recently
             if ($showTopBoxes)

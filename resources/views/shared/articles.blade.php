@@ -1,11 +1,13 @@
 @php
     $orderBy = isset($orderBy) ? $orderBy : 'default';
+    $count = isset($options['count']) ? $options['count'] : LIST_LIMIT_DEFAULT;
+    $start = isset($options['start']) ? $options['start'] + $count : 0;
+    $showingAll = false; //count($records) < $count;
 @endphp
 @if (isset($records))
 <div class="text-center mt-2">
     <div style="display: inline-block; width:100%">
         <table style="width:100%;">
-        <?php $count = 0; ?>
         @foreach($records as $record)
 
         <tr class="drop-box-ghost-small" style="vertical-align:middle;">
@@ -69,7 +71,9 @@
 
         @endforeach
         </table>
-        <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/articles/index/{{$orderBy}}/-1">@LANG('ui.Show All')</a></div>
+        @if (!$showingAll)
+            <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/articles/index?sort={{$orderBy}}&start={{$start}}&count={{$count}}">@LANG('ui.Show More')</a></div>
+        @endif
     </div>
 </div>
 @endif

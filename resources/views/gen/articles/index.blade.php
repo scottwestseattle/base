@@ -22,6 +22,17 @@
     }
 
     $orderBy = isset($options['orderBy']) ? $options['orderBy'] : 'default';
+
+    // count of public records
+    $count = count($options['public']['records']);
+    $countPublic = $count;
+    $countFrom = $options['start'] + 1;
+    $countTo = $options['start'] + $count;
+    if ($count !== $options['public']['count'])
+    {
+        $countPublic = $countFrom . '-' . $countTo . ' of ' . $options['public']['count'];
+    }
+
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('proj.Article', 2) )
@@ -32,7 +43,7 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link nav-link-tab {{$active1}}" onclick="ajaxexec('{{$setSessionUrl . 1}}');" id="articles-tab" data-toggle="tab" href="#articles" role="tab" aria-controls="articles" aria-selected="true">
-                {{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{$options['public']['count']}})</span>
+            {{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{$countPublic}})</span>
             </a>
         </li>
         @if ($showPrivate)
@@ -68,8 +79,8 @@
         </div>
     @endif
 @else
-    <h3 class="">{{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{$options['public']['count']}})</span></h3>
-    @component('shared.articles', ['records' => $options['public']['records'], 'release' => 'public', 'orderBy' => $orderBy])@endcomponent
+    <h3 class="">{{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{$countPublic}})</span></h3>
+    @component('shared.articles', ['records' => $options['public']['records'], 'options' => $options, 'release' => 'public', 'orderBy' => $orderBy])@endcomponent
 @endif
 
 @endsection

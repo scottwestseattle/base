@@ -403,7 +403,7 @@
 @endif
 
 <div style="" id="tab-tab1">
-    @component('shared.articles', ['records' => $options['articlesPublic'], 'release' => 'public'])@endcomponent
+    @component('shared.articles', ['records' => $options['articlesPublic'], 'options' => $options, 'release' => 'public'])@endcomponent
 </div>
 
 @if ($showPrivate)

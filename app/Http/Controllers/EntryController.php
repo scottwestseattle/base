@@ -363,7 +363,7 @@ class EntryController extends Controller
 		$articleCount = 0;
 		$stats = null;
 
-		$records = Entry::getRecentList(ENTRY_TYPE_BOOK)['records'];
+		$records = Entry::getRecentList('type' => ENTRY_TYPE_BOOK, 'id' => getLanguageId()])['records'];
 		foreach($records as $record)
 		{
 			if ($record->language_flag == LANGUAGE_ES)

@@ -65,7 +65,7 @@ class BookController extends Controller
     {
 		//todo: $this->saveVisitor(LOG_MODEL_BOOKS, LOG_PAGE_INDEX);
 
-		$records = Entry::getRecentList(['type' => ENTRY_TYPE_BOOK, 'id' => getLanguageId()], 5)['records'];
+		$records = Entry::getRecentList(['type' => ENTRY_TYPE_BOOK, 'id' => getLanguageId(), 'limit' => 5])['records'];
 		$books = Entry::getBookTags();
 
     	return view(VIEWS . '.index', [

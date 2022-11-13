@@ -56,35 +56,42 @@ class ArticleController extends Controller
 		parent::__construct();
 	}
 
-    public function index(Request $request, $orderBy = null, $limit = 10)
+    public function index(Request $request)
     {
-        $orderBy = strtolower(alphanum($orderBy, false, '-'));
+        //
+        // get the url parameters
+        //
+        $orderBy = isset($request['sort']) ? $request['sort'] : 'default';
+        $orderBy = strtolower(alphanum($orderBy, false, '-')); // convert to alphanum and allow '-'
 
+        $start = isset($request['start']) ? intval($request['start']) : 0;
+
+        $limit = isset($request['count']) ? intval($request['count']) : LIST_LIMIT_DEFAULT;
         $limit = intval($limit) < 0 ? PHP_INT_MAX : intval($limit);
-		$records = [];
+
 		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
 
         $parms = Site::getLanguage();
         $parms['type'] = ENTRY_TYPE_ARTICLE;
         $parms['orderBy'] = $orderBy;
-        $options = [];
-        $options['orderBy'] = strlen($orderBy) > 0 ? $orderBy : 'default';
+        $parms['start'] = $start;
+        $parms['limit'] = $limit;
 
 		try
 		{
             // get public articles
             $parms['release'] = 'public';
-            $options['public'] = Entry::getRecentList($parms, $limit);
+            $parms['public'] = Entry::getRecentList($parms);
 
             // get private articles
             $parms['release'] = 'private';
-            $options['private'] = Entry::getRecentList($parms, $limit);
+            $parms['private'] = Entry::getRecentList($parms);
 
             // get other peoples articles
             $parms['release'] = 'other';
-            $options['other'] = isAdmin() ? Entry::getRecentList($parms, $limit) : null;
+            $parms['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
 
-            $options['activeTab'] = session('articlesTab');
+            $parms['activeTab'] = session('articlesTab');
 		}
 		catch (\Exception $e)
 		{
@@ -92,7 +99,7 @@ class ArticleController extends Controller
 		}
 
 		return view(VIEWS . '.index', [
-			'options' => $options,
+			'options' => $parms,
 		]);
     }
 

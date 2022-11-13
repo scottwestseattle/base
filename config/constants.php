@@ -1,6 +1,7 @@
 <?php
 
 // General Values
+define('LIST_LIMIT_DEFAULT', 50);
 define('RETURN_CODE_ERROR', -1);
 define('RETURN_CODE_SUCCESS', 1);
 define('USER_ID_NOTSET', 0);

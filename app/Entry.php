@@ -525,9 +525,11 @@ class Entry extends Model
         return $records;
     }
 
-	static public function getRecentList($parms, $limit = PHP_INT_MAX)
+	static public function getRecentList($parms)
 	{
-	    $limit = intval($limit);
+	    $start = isset($parms['start']) ? intval($parms['start']) : 0;
+	    $limit = isset($parms['limit']) ? intval($parms['limit']) : LIST_LIMIT_DEFAULT;
+
 		$type = intval($parms['type']);
 		$languageFlag = $parms['id'];
 		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
@@ -657,6 +659,7 @@ class Entry extends Model
 					->where('entries.release_flag', $releaseCondition, $releaseFlag)
 					->where('entries.user_id', $ownerCondition, $ownerId)
 					->orderByRaw($orderBy)
+					->offset($start)
 					->limit($limit)
 					->get();
 

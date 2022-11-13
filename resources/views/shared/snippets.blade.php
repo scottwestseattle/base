@@ -223,6 +223,9 @@
                                     @if (isAdmin())
                                         <div class="small-thin-text float-left ml-2">({{$owner}})</div>
                                     @endif
+
+                                    <span class="ml-2 small-thin-text">{{trans_choice('ui.View', 2)}}: {{$record->view_count}}</span>
+
                                 </div>
                             </td>
                         </tr>
