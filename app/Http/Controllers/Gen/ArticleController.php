@@ -61,7 +61,7 @@ class ArticleController extends Controller
         //
         // get the url parameters
         //
-        $orderBy = isset($request['sort']) ? $request['sort'] : 'default';
+        $orderBy = isset($request['sort']) ? $request['sort'] : null;
         $orderBy = strtolower(alphanum($orderBy, false, '-')); // convert to alphanum and allow '-'
 
         $start = isset($request['start']) ? intval($request['start']) : 0;

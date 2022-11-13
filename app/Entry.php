@@ -544,32 +544,31 @@ class Entry extends Model
         $ownerId = 0;
         $ownerCondition = '>=';
 
-        // order by
-		$orderBy = 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC';
+        //
+        // orderBy
+        //
+		$parms['orderBy'] = (isset($parms['orderBy'])) ? $parms['orderBy'] : null; // make sure it exists
 
-		if (isset($parms['orderBy']))
-		{
-    		switch ($parms['orderBy'])
-    		{
-                case 'date-asc':
-                    $orderBy = 'entries.display_date ASC';
-                    break;
-                case 'date-desc':
-                    $orderBy = 'entries.display_date DESC';
-                    break;
-                case 'title-asc':
-                    $orderBy = 'entries.title ASC';
-                    break;
-                case 'title-desc':
-                    $orderBy = 'entries.title DESC';
-                    break;
-                case 'default': // not used
-                    $orderBy = 'entries.id DESC';
-                    break;
-                default:
-                    break;
-    		}
-		}
+        switch ($parms['orderBy'])
+        {
+            case 'date-asc':
+                $orderBy = 'entries.display_date ASC';
+                break;
+            case 'date-desc':
+                $orderBy = 'entries.display_date DESC';
+                break;
+            case 'title-asc':
+                $orderBy = 'entries.title ASC';
+                break;
+            case 'title-desc':
+                $orderBy = 'entries.title DESC';
+                break;
+            default:
+                $orderBy = Auth::check()
+                    ? 'entry_tag.created_at DESC, entries.display_date DESC, entries.id DESC'
+                    : 'entries.updated_at DESC';
+                break;
+        }
 
         if (isset($parms['release']))
         {
@@ -627,6 +626,9 @@ class Entry extends Model
                 }
             }
         }
+
+        //dump($orderBy);
+        //dump($parms);
 
 		if (isset($tag)) // should always exist
 		{
