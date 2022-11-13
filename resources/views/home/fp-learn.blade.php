@@ -183,9 +183,9 @@
 <!-- Big Shortcuts widget -->
 <!--------------------------------------------------------------------------------------->
 @if (isset($options['showWidgets']) && $options['showWidgets'])
-    <div class="d-block d-md-none d-flex justify-content-center text-center bg-none mb-2 mt-0">
+    <div class="d-block d-lg-none d-flex justify-content-center text-center bg-none mb-2 mt-0" style="xmax-width: 500px;">
 @php
-    $style = 'width: 20%;';
+    $style = 'width: 20%; max-width:90px;';
 @endphp
         <div class="" style="{{$style}}">
             <a class="purple" href="/practice">
@@ -224,13 +224,13 @@
             </a>
         </div>
 
-        @if (\App\Site::hasOption('courses'))
-        <div class="" style="{{$style}}">
-            <a class="purple" href="/courses">
-                <div class="glyphicon glyphicon-education" style="font-size:35px;"></div>
-                <div class="" style="font-size:10px;">{{trans_choice('proj.Course', 2)}}</div>
-            </a>
-        </div>
+        @if (isAdmin() || \App\Site::hasOption('courses'))
+            <div class="" style="{{$style}}">
+                <a class="purple" href="/courses">
+                    <div class="glyphicon glyphicon-education" style="font-size:35px;"></div>
+                    <div class="" style="font-size:10px;">{{trans_choice('proj.Course', 2)}}</div>
+                </a>
+            </div>
         @else
             @if (Auth::check())
             <div class="" style="{{$style}}">
