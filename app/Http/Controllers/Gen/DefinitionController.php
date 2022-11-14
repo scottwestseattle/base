@@ -1412,6 +1412,7 @@ class DefinitionController extends Controller
 			'touchPath' => '/definitions/stats/',
 			// History
 			'history' => $history,
+			//'random' => true,
 			]);
     }
 

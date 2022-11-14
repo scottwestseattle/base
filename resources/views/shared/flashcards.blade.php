@@ -170,6 +170,10 @@
 				<input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#panel-show').toggle();" />
 				<label for="checkbox-show" class="checkbox-xs steelblue">@LANG('ui.Show All')</label>
 			</div>
+			<div class="mt-1 ml-1">
+				<input type="checkbox" name="checkbox-random" id="checkbox-random" onclick="updateRandom();" {{$random ? 'checked' : ''}} />
+				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
+			</div>
 		</div>
 
 		<!-- BUTTONS ROW 2 -->

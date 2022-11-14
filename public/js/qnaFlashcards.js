@@ -23,6 +23,13 @@ $( document ).ready(function() {
 	quiz.showAnswersClick();
 	quiz.typeAnswersClick();
 
+    //
+    // this will override the random setting based on the last state of the checkbox
+    //
+	checked = (localStorage.getItem('checkbox-random') == 'true');
+	$('#checkbox-random').prop('checked', checked);
+    updateRandom(/* reloadOrder = */ false); // load order will be called again after this
+
 	$("#checkbox-type-answers").prop('checked', startWithTypeAnswers());
 
 	quiz.showPanel();

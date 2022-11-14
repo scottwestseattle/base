@@ -15,6 +15,7 @@
 /public/img/flags
 /public/error_log
 /docs/raw
+/docs/graphics
 Homestead.json
 Homestead.yaml
 npm-debug.log

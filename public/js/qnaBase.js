@@ -112,7 +112,7 @@ function quiz() {
 
     this.showParameters = function()
     {
-        if (true)
+        if (false)
         {
             console.log("historyPath: " + this.historyPath);
             console.log("programName: " + this.programName);
@@ -303,7 +303,7 @@ var quiz = new quiz();
 
 function loadData()
 {
-	console.log('>>> loadData');
+	//console.log('>>> loadData');
 
 	//
 	// load qna arrays from the html tag 'data-' attributes, for example: data-question, data-answer, data-prompt
@@ -384,6 +384,8 @@ function loadData()
 		//quiz.lessonId = container.data('lessonid');
 
 		quiz.random = (container.data('random') !== undefined) ? container.data('random') : true;
+        //console.log('loadData: random = ' + quiz.random);
+
 		i++;
     });
 
@@ -410,15 +412,17 @@ function loadOrder()
 	for (var i = 0; i < max; i++)
 		quiz.qna[i].order = order[i];
 
-    if (true)
+    if (false)
     {
         var s = "";
         for (var i = 0; i < max; i++)
             s += quiz.qna[i].order + ",";
+
+        console.log('loadOrder: random = ' + quiz.random);
         console.log(s);
     }
 
-	// sbw now apply the count since all questions have been randomized
+	// now apply the count since all questions have been randomized
     if (quizCount > 0 && quizCount < max)
     {
         max = quizCount;
@@ -485,7 +489,7 @@ function stopQuiz()
 
 function resetQuiz()
 {
-	console.log('>>> RESET QUIZ');
+	//console.log('>>> RESET QUIZ');
 
 	clear();
 
@@ -583,8 +587,28 @@ function reloadQuestion()
 	var checked = $('#checkbox-flip').prop('checked') ? 'true' : '';
 	localStorage.setItem('checkbox-flip', checked);
 
-	var checked = $('#checkbox-use-definition').prop('checked') ? 'true' : '';
+	checked = $('#checkbox-use-definition').prop('checked') ? 'true' : '';
 	localStorage.setItem('checkbox-use-definition', checked);
+}
+
+function updateRandom(reloadOrder = true)
+{
+    // set it from the checkbox
+	var random = $('#checkbox-random').prop('checked');
+
+	// save it for a page reload
+	localStorage.setItem('checkbox-random', random ? 'true' : '');
+
+    //console.log('updateRandom: random = ' + random);
+    if (quiz.random != random)
+    {
+        // set it on the quiz
+        quiz.random = random;
+
+        // update the question order to randomize
+        if (reloadOrder)
+            loadOrder();
+    }
 }
 
 function toStringBoolArray(a)
