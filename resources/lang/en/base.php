@@ -114,8 +114,8 @@ return [
 'Comment' => 'Comment',
 'Top Level (not Gen)' => 'Top Level (not Gen)',
 'Routes' => 'Routes',
-'siteTitle-tools' => 'Tools for Learning Languages',
-'siteTitle-spanish50' => 'Learn Spanish in 50 Lessons',
+'siteTitle-codespace' => 'Tools for Learning Languages',
+'siteTitle-lunalanguage' => 'Intensive English program for Intermediate and Advanced students',
 'siteTitle-localhost' => 'This is localhost',
 'All events deleted' => 'All events deleted',
 'Subscribe to mailing list' => 'Subscribe to mailing list',
@@ -156,4 +156,5 @@ return [
 'User Site Map' => 'User Site Map',
 'Password updated' => 'Password updated',
 'Account' => 'Account',
+'Site Title' => 'Tools for Learning Languages',
 ];

@@ -177,4 +177,6 @@ return [
 'Category' => 'Category|Categories',
 'optional' => 'optional',
 'Note' => 'Note|Notes',
+'Show More' => 'Show More',
+'Match' => 'Match|Matches',
 ];

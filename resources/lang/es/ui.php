@@ -177,4 +177,6 @@ return [
 'Category' => 'Categoría|Categorías',
 'optional' => 'opcional',
 'Note' => 'Nota|Notas',
+'Show More' => 'Mostrar más',
+'Match' => 'Coincidencia|Coincidencias',
 ];

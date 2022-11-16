@@ -177,4 +177,6 @@ return [
 'Category' => '类别|类别',
 'optional' => '可选',
 'Note' => '注意事项|注意事项',
+'Show More' => '显示更多',
+'Match' => '巧合|巧合',
 ];

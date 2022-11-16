@@ -749,7 +749,8 @@ class Definition extends Model
 				->where('deleted_at', null)
     			->where('type_flag', DEFTYPE_DICTIONARY)
 				->where(function ($query) use ($word){$query
-					->where('title', 'LIKE', $word . '%')							// exact match of title
+					->where('title', 'LIKE', $word . '%')							// partial match of title
+					->orWhere('translation_en', 'LIKE', $word . '%')				// partial match of translation
 					->orWhere('forms', 'LIKE', '%;' . $word . ';%')					// exact match of ";word;"
 					->orWhere('conjugations_search', 'LIKE', '%;' . $word . '%;%') 	// exact match of ";word;"
 					;})
@@ -932,7 +933,11 @@ class Definition extends Model
 
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->whereRaw('title ' . $collation . ' like "' . $search . '"')
+                    ->where(function ($query) use ($collation, $search) {
+                        $query
+                        ->whereRaw('title ' . $collation . ' like "' . $search . '"')
+                        ->orWhereRaw('translation_en ' . $collation . ' like "' . $search . '"')
+                        ;})
                     ->orderBy('title')
                     ->get();
             }

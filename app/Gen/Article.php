@@ -69,6 +69,7 @@ class Article extends Model
                     ->whereRaw('title ' . $search)
 					->orWhereRaw('description_short ' . $search)
 					->orWhereRaw('description ' . $search)
+					->orWhereRaw('description_translation ' . $search)
 					;})
 				->orderByRaw('type_flag, title')
 				->get();

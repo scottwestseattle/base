@@ -1431,11 +1431,20 @@ function getSentences(text)
         return match.replace(/\| /g, '. ');
     });
 
-    result = result.match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+    // do the general split:
+    // 1. [Match from one or more non-sentences terminating char TO one or more a sentence terminating char]
+    // 2. OR [match from one or more non terminaters to the end of the text]
+    result = result.match(/([^\.!\?\r\n]+[\.!\?\r\n]+)|([^\.!\?]+$)/g);
+    //console.log(result);
 
     result.forEach(function (line) {
-        rc += line.replace(/\| /g, '.').trim() + '\r\n\r\n';
+        // create the new lines double-spaced
+        line = line.trim();
+        if (line.length > 0) // skip blank lines
+            rc += line.replace(/\| /g, '.').trim() + '\r\n\r\n';
     });
+
+    //console.log('getSentences: ' + Date.now());
 
     return rc;
 }

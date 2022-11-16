@@ -4,7 +4,7 @@
     $entries = isset($results['entries']) ? $results['entries'] : null;
     $count = isset($results['count']) ? $results['count'] : null;
     $search = isset($results['search']) ? $results['search'] : null;
-    $matches = ($count > 1 || $count == 0) ? 'matches' : 'match';
+    $matches = strtolower(trans_choice('ui.Match', ($count > 1 || $count == 0) ? 2 : 1));
 @endphp
 <div class="table" style="" id="searchDefinitionsResultsTable">
     <table  class="table-responsive table-condensed medium-text" style="">

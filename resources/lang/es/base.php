@@ -114,8 +114,8 @@ return [
 'Comment' => 'Comentario',
 'Top Level (not Gen)' => 'Nivel superior (no gen)',
 'Routes' => 'Rutas',
-'siteTitle-tools' => 'Herramientas para aprender idiomas',
-'siteTitle-spanish50' => 'Aprende español en 50 lecciones',
+'siteTitle-codespace' => 'Herramientas para aprender idiomas',
+'siteTitle-lunalanguage' => 'Programas intensivos de inglés para estudiantes de nivel intermedio y avanzado',
 'siteTitle-localhost' => 'Este es localhost',
 'All events deleted' => 'Todos los eventos eliminados',
 'Subscribe to mailing list' => 'Suscríbir a la lista de correo',
@@ -156,4 +156,5 @@ return [
 'User Site Map' => 'Mapa del Sitio - Usuarios',
 'Password updated' => 'Contraseña actualizada',
 'Account' => 'Cuenta',
+'Site Title' => 'Herramientas para aprender idiomas',
 ];

@@ -114,8 +114,8 @@ return [
 'Comment' => '评论',
 'Top Level (not Gen)' => '顶层',
 'Routes' => '路线',
-'siteTitle-tools' => '语言学习者工具',
-'siteTitle-spanish50' => '在50课中学习西班牙语',
+'siteTitle-codespace' => '语言学习者工具',
+'siteTitle-lunalanguage' => '中级和高级学生的强化英语课程',
 'siteTitle-localhost' => '这是本地主机',
 'All events deleted' => '所有事件已删除',
 'Subscribe to mailing list' => '订阅邮件列表',
@@ -156,4 +156,5 @@ return [
 'User Site Map' => '用户网站地图',
 'Password updated' => '更新密码',
 'Account' => '帐户',
+'Site Title' => '语言学习者工具',
 ];

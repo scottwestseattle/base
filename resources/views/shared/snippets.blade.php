@@ -66,6 +66,16 @@
                         <button id="" type="button" class="btn-info btn-xs"
                         onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
                         >Search Articles/Books</button>
+
+                        @if (false)
+                        <input type="checkbox" name="search_articles" id="" class="mr-1"
+                            style="display:inline;"
+                            onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
+                        />
+                    	<label for="search_articles" class="checkbox-label small-thin-text"
+                            onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
+                    	>Search Articles/Books</label>
+                    	@endif
                     </td>
                 </tr>
             </thead>
