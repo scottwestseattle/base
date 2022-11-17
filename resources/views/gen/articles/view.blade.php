@@ -1,3 +1,6 @@
+@php
+    $translation = isset($options['translation']) ? $options['translation'] : null;
+@endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
 @section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
@@ -69,8 +72,15 @@
                         </a>
                     </div>
                 @endif
+                @if (isset($translation))
+                    <div class="mr-2 float-left purple">
+                        <a href="" onclick="event.preventDefault(); $('#description').toggle(); $('#translation').toggle(); " class="btn btn-xs btn-success" role="button">
+                            <div class="middle mr-0" style="xmargin-bottom:2px;">{{trans_choice('ui.Translation', 2)}}</div>
+                        </a>
+                    </div>
+                @endif
                 @if (isset($options['translation_matches']) && !$options['translation_matches'])
-                    <div class="red">TRANSLATION DOES NOT MATCH TEXT</div>
+                    <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT</div>
                 @endif
             </div>
         </div>
@@ -89,7 +99,12 @@
 
             <div class="entry-div" style="margin-top:20px; width:100%; font-size:1.1em;">
                 <div class="entry" style="width:100%;">
-                    <span name="description" class="">{!! $record->description !!}</span>
+                    <span id="description" name="description" class="">{!! $record->description !!}</span>
+                    @if (isset($translation))
+                        <span id="translation" name="translation" class="hidden">
+                            @component('shared.flashcards-view', ['records' => $translation])@endcomponent
+                        </span>
+                    @endif
                 </div>
             </div>
 

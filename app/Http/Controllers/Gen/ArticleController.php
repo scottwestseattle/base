@@ -166,6 +166,7 @@ class ArticleController extends Controller
 			{
 	        	$options['sentences_translation'] = Spanish::getSentences($record->description_translation);
 	        	$options['translation_matches'] = (count($options['sentences']) === count($options['sentences_translation']));
+	        	$options['translation'] =  $flashcards = Quiz::makeFlashcards($record->description, $record->description_translation);
 			}
 		}
 		else
@@ -318,6 +319,10 @@ class ArticleController extends Controller
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
 		$display_date       = $request->source_link;
+
+        // brute force cleaning: remove any blank lines with spaces because they throw off the quizes and line based operations
+        $description        = str_replace("\r\n \r\n", "\r\n\r\n", $description);
+        $description_trx    = str_replace("\r\n \r\n", "\r\n\r\n", $description_trx);
 
 		// put the date together from the mon day year pieces
 		$filter = DateTimeEx::getDateFilter($request);

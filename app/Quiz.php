@@ -109,6 +109,7 @@ class Quiz
     {
 		$records = [];
 
+        // split lines
 		$questions = preg_split('/\r\n/', $questions, -1, PREG_SPLIT_NO_EMPTY);
 		$answers = preg_split('/\r\n/', $answers, -1, PREG_SPLIT_NO_EMPTY);
 		$qna = [];
