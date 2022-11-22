@@ -299,6 +299,8 @@ sudo chown scottwilkinson app/*.php;
 sudo chown scottwilkinson app/Gen/*.php;
 sudo chown scottwilkinson app/Http/Controllers/*.php;
 sudo chown scottwilkinson app/Http/Controllers/Gen/*.php;
+sudo chown scottwilkinson resources/views/gen/stats;
+sudo chown scottwilkinson resources/views/gen/stats/*.php;
 sudo chown scottwilkinson resources/views/gen/templates;
 sudo chown scottwilkinson resources/views/gen/templates/*.php;
 sudo chmod 666 app/*.php;

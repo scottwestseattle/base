@@ -12,6 +12,8 @@
     @foreach ($records as $record)
         @php
             $bg = App\DateTimeEx::getDayColor($record->created_at);
+            $bgLight = App\DateTimeEx::getDayColorLight($bg);
+
             // color tester: $bg = App\DateTimeEx::getColor(100 + $loop->iteration);
             $info = $record->getInfo();
         @endphp
@@ -28,7 +30,7 @@
             @endphp
             <tr><td><span class="large-thin-text" style="line-height:50px;">{{$dayShow}} ({{$count}})</span></td></tr>
         @endif
-        <tr class="mb-3" style="border: 1px white solid; background-color:{{$bg}}; color:white;">
+        <tr class="mb-3" style="border: 0px white solid; xbackground-color:{{$bg}}; color:white; background: linear-gradient(180deg, {{$bgLight}}, {{$bg}});">
             <td class="p-3">
                 <div class="text-center">
                     <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at, 'M d, Y')}}</div>

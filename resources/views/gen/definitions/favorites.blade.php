@@ -17,6 +17,34 @@
 
 @if (count($favorites) > 0)
 <div class="card-deck">
+<!--------------------------------------------------------------------->
+<!-- All Favorites                                                   -->
+<!--------------------------------------------------------------------->
+@if (isset($favoritesCnt) && $favoritesCnt > 0)
+<div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
+    <div class="mb-3 mr-0">
+        <div class="card-body drop-box-ghost">
+            <h5 class="card-title">
+                <a href="/definitions/favorites-review?count={{$favoritesCnt}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
+            </h5>
+            <p class="card-text">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count={{$favoritesCnt}}">
+                    @LANG('proj.Flashcards') ({{$favoritesCnt}})<span class="glyphicon glyphicon-flash ml-1"></span>
+                </a>
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20">
+                    @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
+                </a>
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count={{$favoritesCnt}}">
+                    @LANG('proj.Reader') ({{$favoritesCnt}})<span class="glyphicon glyphicon-volume-up ml-1"></span>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+@endif
+<!--------------------------------------------------------------------->
+<!-- Favorites Lists                                                 -->
+<!--------------------------------------------------------------------->
 @foreach($favorites as $record)
 <div class="col-sm-12 col-lg-6 col-xl-4"><!-- xl = 3 cols, lg = 2 cols, sm = 1 col -->
     <div class="mb-3 mr-0">
@@ -90,7 +118,7 @@
     <div class="col-sm-12 col-lg-6 col-xl-4">
         <div class="mb-3 mr-0">
             <div class="card-body drop-box-ghost">
-                <h5 class="card-title"><a href="/practice/index/20">@LANG('proj.Latest Practice Text')</a></h5>
+                <h5 class="card-title"><a href="/practice/index?count=20&sort='desc'">@LANG('proj.Latest Practice Text')</a></h5>
                 <p class="card-text">
                     <a class="btn btn-primary btn-xs" role="button" href="/snippets/review/flashcards/20">
                         @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>

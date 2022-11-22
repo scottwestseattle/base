@@ -109,7 +109,7 @@ class Definition extends Model
 
     public function users()
     {
-		return $this->belongsToMany('App\User');
+		return $this->belongsToMany('App\User')->wherePivot('user_id', Auth::id()); //->orderBy('title');
     }
 
 	//////////////////////////////////////////////////////////////////////
@@ -194,35 +194,35 @@ class Definition extends Model
 		}
     }
 
+    //todo: not used, just counts the tags, no help
+    static public function getUserFavoriteCount()
+    {
+        $count = DB::table('tags')
+            ->leftJoin('definition_tag', function($join) {
+                $join->on('definition_tag.tag_id', '=', 'tags.id');
+                $join->where('definition_tag.user_id', Auth::id());
+            })
+            ->select(DB::raw('tags.id, tags.name, tags.user_id, count(definition_tag.tag_id) as wc'))
+                ->whereNull('tags.deleted_at')
+                ->where('tags.user_id', Auth::id())
+                ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
+                ->groupBy('tags.id', 'tags.name', 'tags.user_id')
+                ->count();
+
+        return $count;
+    }
+
     static public function getUserFavoriteLists()
     {
 		$records = null;
 
 		try
 		{
-		    if (false)
-		    {
-		        // first way, all this just to get the count???
-                $records = DB::table('tags')
-                    ->leftJoin('definition_tag', function($join) {
-                        $join->on('definition_tag.tag_id', '=', 'tags.id');
-                        $join->where('definition_tag.user_id', Auth::id());
-                    })
-                    ->select(DB::raw('tags.id, tags.name, tags.user_id, count(definition_tag.tag_id) as wc'))
-                        ->whereNull('tags.deleted_at')
-                        ->where('tags.user_id', Auth::id())
-                        ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
-                        ->groupBy('tags.id', 'tags.name', 'tags.user_id')
-                        ->get();
-            }
-            else
-            {
-                $records = Tag::select()
-                    ->where('tags.user_id', Auth::id())
-                    ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
-                    ->orderByRaw('updated_at DESC')
-                    ->get();
-            }
+            $records = Tag::select()
+                ->where('tags.user_id', Auth::id())
+                ->where('type_flag', TAG_TYPE_DEF_FAVORITE)
+                ->orderByRaw('updated_at DESC')
+                ->get();
 		}
 		catch (\Exception $e)
 		{
@@ -899,7 +899,6 @@ class Definition extends Model
 	//
 	//////////////////////////////////////////////////////////////////////
 
-	// search checks title and forms
     public function isSnippet()
     {
         $rc = false;
@@ -910,6 +909,11 @@ class Definition extends Model
 		}
 
 		return $rc;
+	}
+
+    static public function isSnippetStatic($record)
+    {
+		return ($record->type_flag == DEFTYPE_SNIPPET);
 	}
 
 	// search checks title and forms
@@ -1042,6 +1046,38 @@ class Definition extends Model
 			$msg = 'Error getting practice text';
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
 		}
+
+		return $records;
+	}
+
+	static public function getUserFavorites($parms = null)
+	{
+	    //dump($parms);
+
+		$records = [];
+
+		$count = isset($parms['count']) ? $parms['count'] : PHP_INT_MAX;
+		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
+		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
+		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
+
+		$q = '
+            SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at FROM `tags`
+            JOIN definition_tag as dt on dt.tag_id = tags.id
+            JOIN definitions as def on def.id = dt.definition_id
+            LEFT JOIN stats on stats.definition_id = def.id
+            WHERE 1
+            AND tags.user_id = ?
+            AND tags.type_flag = ?
+            AND tags.deleted_at IS NULL
+            AND def.deleted_at IS NULL
+            AND def.language_flag = ?
+            ORDER by stats.qna_at, stats.viewed_at, def.id
+            LIMIT ?
+		';
+
+        $records = DB::select($q, [Auth::id(), TAG_TYPE_DEF_FAVORITE, $languageId, $count]);
+		//dd($records);
 
 		return $records;
 	}
@@ -1217,7 +1253,7 @@ class Definition extends Model
 	    return $rc;
 	}
 
-    static public function tagDefinitionUser($id)
+    static public function tagDefinitionUser($id, $stats = null)
     {
         $record = Definition::select()
             ->where('id', $id)
@@ -1226,28 +1262,40 @@ class Definition extends Model
         if (isset($record) && count($record) > 0)
         {
             $record = $record[0];
-            $record->tagUser();
+            $record->tagUser($stats);
         }
     }
 
-    public function tagUser()
+    public function tagUser($stats = null)
     {
-        $ud = DB::table('definition_user')
+        $correct = isset($stats['correct']) ? $stats['correct'] : 0;
+
+        $record = DB::table('definition_user')
             ->select()
             ->where('user_id', Auth::id())
             ->where('definition_id', $this->id)
             ->get();
 
-        if (isset($ud) && count($ud) > 0)
+        if (isset($record) && count($record) > 0)
         {
+            //
+            // stats record already exists, update it
+            //
             DB::table('definition_user')
                 ->where('user_id', Auth::id())
                 ->where('definition_id', $this->id)
-                ->update(['views' => $ud[0]->views + 1]);
+                ->update([
+                    'views' => $record[0]->views + 1,
+                    'quiz_attempts' => $record[0]->quiz_attempts + 1,
+                    'quiz_correct' => $record[0]->quiz_correct + $correct
+                ]);
         }
         else
         {
-            $this->users()->attach(Auth::id(), ['views' => 1]);
+            //
+            // no stats record, create one
+            //
+            $this->users()->attach(Auth::id(), ['views' => 1, 'quiz_correct' => $correct, 'quiz_attempts' => 1]);
             $this->refresh();
         }
     }

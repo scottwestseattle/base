@@ -792,8 +792,6 @@ class LessonController extends Controller
         $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $lesson->type_flag, $count, ['sessionName' => $lesson->title, 'sessionId' => $lesson->course->id]);
 
 		return view($settings['view'], [
-			'history' => $history,
-			'touchPath' => '/',
 			'prev' => $prev,
 			'next' => $next,
 			'sentenceCount' => count($quiz),
@@ -805,6 +803,8 @@ class LessonController extends Controller
 			'parentTitle' => $lesson->title,
 			'settings' => $settings,
 			'random' => $lesson->isTranslation() ? 0 : 1,
+			'history' => $history,
+			'touchPath' => null, //todo: need to implement stats
 			]);
     }
 

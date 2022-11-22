@@ -1132,7 +1132,7 @@ function touch(q)
     if (deck.touchPath.length > 0) // if touchPath set
     {
         var path = '/' + deck.touchPath + '/' + q.id;
-        ajaxexec(path);
+        //ajaxexec(path); //todo: implement
 
         //alert('id: ' + q.id + ', word: ' + q.a);
     }

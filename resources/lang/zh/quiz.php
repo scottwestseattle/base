@@ -30,4 +30,5 @@ return [
 'I know it, remove from review' => 'I know it, remove from review',
 'Remove' => '删除，我知道它',
 'Repeat' => '重复，我不知道它',
+'Random Order' => '随机顺序',
 ];

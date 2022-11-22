@@ -1,6 +1,6 @@
 @php
 	$lists = isset($lists) ? $lists : [];
-	$tagCount = count($record->tags);
+	$tagCount = isset($record->tags) ? count($record->tags) : 0;
 	$tagFromId = ($tagCount > 0) ? $record->tags->first()->id : 0;
 	$id = isset($id) ? $id : 1;
 	$heart = ($tagCount > 0) ? 'heart' : 'heart-empty';

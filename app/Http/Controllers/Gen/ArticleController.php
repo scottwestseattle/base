@@ -535,7 +535,6 @@ class ArticleController extends Controller
         $history = History::getArray($record->title, $record->id, HISTORY_TYPE_ARTICLE, LESSON_TYPE_QUIZ_FLASHCARDS, $count);
 
 		return view($settings['view'], [
-			'touchPath' => '/',
 			'sentenceCount' => count($quiz),
 			'quizCount' => $count,
 			'records' => $quiz,
@@ -547,6 +546,7 @@ class ArticleController extends Controller
 			'article' => true,
 			'random' => $random,
 			'history' => $history,
+			'touchPath' => null, // no stats because it's an article instead of definitions
 		]);
     }
 

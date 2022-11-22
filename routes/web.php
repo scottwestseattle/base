@@ -544,11 +544,15 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);
 	Route::get('/read-examples', [DefinitionController::class, 'readExamples']);
 	Route::get('/stats/{tag}', [DefinitionController::class, 'stats']);
+	Route::get('/update-stats/{definition}', [DefinitionController::class, 'updateStats']);
 
     // quiz / flashcards
 	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review']);
 	Route::get('/flashcards/{tag}', [DefinitionController::class, 'favoritesFlashcards']);
 	Route::get('/quiz/{tag}', [DefinitionController::class, 'favoritesQuiz']);
+
+	// actions on all favorites: read, qna, flashcards
+	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview']);
 
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);
@@ -746,4 +750,41 @@ Route::group(['prefix' => 'history'], function () {
 	// undelete
 	Route::get('/deleted', [HistoryController::class, 'deleted']);
 	Route::get('/undelete/{id}', [HistoryController::class, 'undelete']);
+});
+
+// GENERATED for Stat model
+use App\Http\Controllers\Gen\StatController;
+
+// Stats
+Route::group(['prefix' => 'stats'], function () {
+	Route::get('/', [StatController::class, 'index']);
+	Route::get('/admin', [StatController::class, 'admin']);
+	Route::get('/index', [StatController::class, 'index']);
+
+	// view
+	Route::get('/view/{permalink}', [StatController::class, 'permalink']);
+	Route::get('/show/{stat}', [StatController::class, 'view']);
+
+	// add
+	Route::get('/add', [StatController::class, 'add']);
+	Route::post('/create', [StatController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{stat}', [StatController::class, 'edit']);
+	Route::post('/update/{stat}', [StatController::class, 'update']);
+	Route::get('/update-stats', [StatController::class, 'updateStats']);
+
+	// publish
+	Route::get('/publish/{stat}', [StatController::class, 'publish']);
+	Route::post('/publishupdate/{stat}', [StatController::class, 'updatePublish']);
+	Route::get('/publishupdate/{stat}', [StatController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{stat}', [StatController::class, 'confirmDelete']);
+	Route::post('/delete/{stat}', [StatController::class, 'delete']);
+	Route::get('/delete/{stat}', [StatController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [StatController::class, 'deleted']);
+	Route::get('/undelete/{id}', [StatController::class, 'undelete']);
 });

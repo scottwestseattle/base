@@ -30,4 +30,5 @@ return [
 'I know it, remove from review' => 'I know it, remove from review',
 'Remove' => 'I got it RIGHT',
 'Repeat' => 'I got it WRONG',
+'Random Order' => 'Random Order',
 ];

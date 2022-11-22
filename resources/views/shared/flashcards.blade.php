@@ -5,6 +5,7 @@
     $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
     $article = isset($article) ? $article : false;
     $random = isset($random) && $random ? 1 : 0;
+    $touchPath = isset($touchPath) ? $touchPath : null;
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -27,7 +28,7 @@
 	data-quiztext-override-wrong="@LANG('quiz.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('quiz.Score Changed')"
 	data-random="{{$random}}"
-	data-touchpath="{{isset($touchPath) ? $touchPath : ''}}"
+	data-touchpath="{{$touchPath}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

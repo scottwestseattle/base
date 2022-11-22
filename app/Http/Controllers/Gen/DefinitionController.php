@@ -9,14 +9,16 @@ use Illuminate\Support\Str;
 use Auth;
 use Config;
 use Cookie;
+use DateTime;
 use DB;
 use Lang;
 use Log;
 
 use App\Entry;
 use App\Gen\Definition;
-use App\Gen\Spanish;
 use App\Gen\History;
+use App\Gen\Spanish;
+use App\Gen\Stat;
 use App\Quiz;
 use App\Site;
 use App\Status;
@@ -38,7 +40,7 @@ class DefinitionController extends Controller
         $this->middleware('admin')->except([
 
             // dictionary
-            'createQuick', 'stats',
+            'createQuick', 'stats', 'updateStats',
 
             // definitions
             'view', 'permalink',
@@ -68,6 +70,7 @@ class DefinitionController extends Controller
 			'reviewSnippets', 'snippetsFlashcards', 'snippetsQuiz',
 			'readExamples',
 			'favoritesFlashcards', 'favoritesQuiz',
+			'favoritesReview',
 
             // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
@@ -78,6 +81,7 @@ class DefinitionController extends Controller
 			'add',
 			'create',
 			'createQuick',
+			'favoritesReview',
 		]);
 
         $this->middleware('owner')->only([
@@ -260,6 +264,9 @@ class DefinitionController extends Controller
             $record->save();
 
             $record->tagUser();
+
+            $request['definition_id'] = $record->id;
+            Stat::updateUserStats($request);
 		}
 		catch (\Exception $e)
 		{
@@ -347,6 +354,10 @@ class DefinitionController extends Controller
 		}
 
         $lists = Definition::getUserFavoriteLists();
+
+        $parms['definition_id'] = $definition->id;
+        $parms['views'] = 1;
+        Stat::updateUserStats($parms);
 
 		return view(VIEWS . '.view', [
 			'record' => $record,
@@ -759,6 +770,7 @@ class DefinitionController extends Controller
             Definition::tagDefinitionUser($id);
         }
 
+        Stat::updateUserStats(['views' => 1, 'definition_id' => $id]);
     }
 
 	public function viewSnippet($permalink)
@@ -1401,6 +1413,8 @@ class DefinitionController extends Controller
         $count = count($qna);
         $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, History::getReviewTypeInt($reviewType), $count, ['route' => crackUri(2)]);
 
+        //dump($settings);
+
 		return view($settings['view'], [
 			'sentenceCount' => $count,
 			'records' => $qna,
@@ -1409,9 +1423,9 @@ class DefinitionController extends Controller
 			'returnPath' => '/favorites',
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
-			'touchPath' => '/definitions/stats/',
 			// History
 			'history' => $history,
+			'touchPath' => '/stats/update-stats'
 			//'random' => true,
 			]);
     }
@@ -1421,6 +1435,37 @@ class DefinitionController extends Controller
     {
         $tag->countUse();
     	return redirect('/history/add-public?programId=' . $tag->id);
+    }
+
+    // update favorites list usage stats
+    public function updateStats(Request $request, Definition $definition)
+    {
+        // check if the definition id is set in the url parameters
+        $request['definition_id'] = $definition->id;
+        Stat::updateUserStats($request);
+    }
+
+    // new: review all favorites not by list
+    public function favoritesReview(Request $request)
+    {
+        // set up the parms
+        $parms = crackParms($request);
+        $siteLanguage = Site::getLanguage()['id'];
+        $parms['languageId'] = $siteLanguage;
+		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
+        $parms['languageFlagCondition'] = $languageFlagCondition;
+
+        $reviewType = (isset($parms['action'])) ? $parms['action'] : null;
+
+        $records = Definition::getUserFavorites($parms);
+        $title = 'Review All';
+
+		if ($reviewType == 'flashcards')
+		    return $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+		else if ($reviewType == 'reader')
+            return $this->readWords($title, $records);
+        else
+            return $this->list($title, $records);
     }
 
     public function doList($name, $reviewType, $records, $historyType)
@@ -1450,7 +1495,6 @@ class DefinitionController extends Controller
         $history = History::getArray($title, 0, $historyType, History::getReviewType($reviewType), $count, ['route' => crackUri(2)]);
 
 		return view($settings['view'], [
-			'touchPath' => '/definitions/stats',
 			'sentenceCount' => $count,
 			'records' => $qna,
 			'canEdit' => true,
@@ -1459,6 +1503,8 @@ class DefinitionController extends Controller
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
 			'history' => $history,
+			'touchPath' => '/stats/update-stats',
+			'random' => false,
 			]);
     }
 
@@ -1867,17 +1913,13 @@ class DefinitionController extends Controller
 		// definitions favorites
 		$favorites = Definition::getUserFavoriteLists();
 
-        // user's words and phrases: DEFTYPE_USER
-        //todo $userWords = Definition::???
-
-		// articles/books look ups
-		//todo: $entries = Entry::getDefinitionsUser();
-
-        // newest words
-        //$newest = Defintions::getNewest(20);
+		$favoritesCnt = 0;
+		foreach ($favorites as $record)
+            $favoritesCnt += count($record->definitions);
 
 		return view(VIEWS . '.favorites', [
 			'favorites' => $favorites,
+			'favoritesCnt' => $favoritesCnt,
 			'newest' => true,
 		]);
     }

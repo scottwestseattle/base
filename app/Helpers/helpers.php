@@ -1087,3 +1087,25 @@ if (!function_exists('countLetters')) {
         return $letters;
     }
 }
+
+if (!function_exists('crackParms')) {
+    function crackParms($request)
+    {
+        $parms = null;
+
+        if (isset($request['count']))
+            $parms['count'] = $request['count'];
+
+        if (isset($request['start']))
+            $parms['start'] = $request['start'];
+
+        if (isset($request['sort']))
+            $parms['sort'] = $request['sort'];
+
+        if (isset($request['action']))
+            $parms['action'] = $request['action'];
+
+        return $parms;
+    }
+}
+

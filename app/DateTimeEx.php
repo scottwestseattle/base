@@ -13,14 +13,58 @@ class DateTimeEx
     static private $_sTimezone = 'GMT'; // 'America/Chicago'
 
     static private $colors = [
-        'SteelBlue',
-        'DarkCyan',
-        'IndianRed',
-        'MediumPurple',
-        'LightSeaGreen',
-        'DodgerBlue',
-        'PaleVioletRed',
+        '#4682b4', // 'SteelBlue',
+        '#008b8b', // 'DarkCyan',
+        '#cd5c5c', // 'IndianRed',
+        '#9370db', // 'MediumPurple',
+        '#20b2aa', // 'LightSeaGreen',
+        '#1e90ff', // 'DodgerBlue',
+        '#db7093', // 'PaleVioletRed',
     ];
+
+    static private $colorsFull = [
+        '#4682b4' => '#5a96c8', // 'SteelBlue',
+        '#008b8b' => '#149f9f', // 'DarkCyan',
+        '#cd5c5c' => '#e17070', // 'IndianRed',
+        '#9370db' => '#a784ef', // 'MediumPurple',
+        '#20b2aa' => '#34c6be', // 'LightSeaGreen',
+        '#1e90ff' => '#32a4ff', // 'DodgerBlue',
+        '#db7093' => '#ef84a7', // 'PaleVioletRed',
+    ];
+
+	static public function getDayColorLight($key)
+	{
+	    return self::$colorsFull[$key];
+    }
+
+    static public function adjustBrightness($hex, $steps)
+    {
+        // Steps should be between -255 and 255. Negative = darker, positive = lighter
+        $steps = max(-255, min(255, $steps));
+
+        // Normalize into a six character long hex string
+        $hex = str_replace('#', '', $hex);
+        if (strlen($hex) == 3) {
+            $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+        }
+
+        // Split into three parts: R, G and B
+        $color_parts = str_split($hex, 2);
+        $return = '#';
+
+        foreach ($color_parts as $color) {
+            $color   = hexdec($color); // Convert to decimal
+            $color   = max(0,min(255,$color + $steps)); // Adjust color
+            $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+        }
+
+        return $return;
+    }
+
+	static public function getDayColors()
+	{
+	    return self::$colors;
+    }
 
     static public function getDateControlDates()
     {
@@ -222,11 +266,6 @@ class DateTimeEx
 		return $date;
 	}
 
-	static public function getDayColors()
-	{
-	    return self::$colors;
-    }
-
 	static public function getColor($index)
 	{
 	    $index = $index % count(self::$colors);
@@ -255,6 +294,17 @@ class DateTimeEx
 		}
 
 		$rc = self::$colors[$day];
+
+        // calculate light version of the color for the gradient
+        if (false)
+        {
+            foreach(self::$colors as $color)
+            {
+                $bgLight = self::adjustBrightness($color, 20);
+                dump($color . ", " . $bgLight);
+            }
+            dd('done');
+        }
 
         return $rc;
     }
@@ -369,5 +419,13 @@ class DateTimeEx
         $now->setTimezone($tz);
 
 	    return ($date->format('Y-m-d') === $now->format('Y-m-d'));
+	}
+
+	static public function getTimestamp()
+	{
+        $now = new DateTime();
+        $now = $now->format('Y-m-d H:i:s');
+
+	    return $now;
 	}
 }

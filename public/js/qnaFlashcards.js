@@ -53,7 +53,6 @@ function updateScoreCount(correct)
 	if (correct)
 	{
 	    // default is correct (when it's clicked after answer is shown)
-	    quiz.setCorrect(true);
 	    right++;
 	}
 	else
@@ -62,9 +61,11 @@ function updateScoreCount(correct)
 	    wrong++;
 	}
 
-	//console.log('right: ' + right);
-	//console.log('wrong: ' + wrong);
-	//console.log('total: ' + (right + wrong));
+    quiz.setCorrect(correct);
+
+	console.log('right: ' + right);
+	console.log('wrong: ' + wrong);
+	console.log('total: ' + (right + wrong));
 }
 
 function flipCard(e, correct = true)

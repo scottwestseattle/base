@@ -295,7 +295,9 @@ function quiz() {
 	}
 
 	this.setCorrect = function(correct) {
-		this.qna[this.qna[curr].order].correct = correct;
+	    var q = this.qna[this.qna[curr].order];
+		q.correct = correct;
+		touch(q, correct);
     }
 }
 
@@ -782,7 +784,7 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 				rightAnswer = true;
 
 				// mark the question since it was answered correctly
-				touch(quiz.qna[quiz.qna[curr].order]);
+				//touch(quiz.qna[quiz.qna[curr].order]);
 			}
 		}
 		else
@@ -951,17 +953,19 @@ function accentFold (s)
 	return ret;
 }
 
-function touch(q)
+function touch(q, correct = false)
 {
-	//debug('touching', true);
-
     // if it's a word, update it's last display time
-    if (false && quiz.touchPath.length > 0) // if touchPath set
+    if (quiz.touchPath !== null && quiz.touchPath.length > 0) // if touchPath set
     {
-        var path = '/' + quiz.touchPath + '/' + q.id;
-        ajaxexec(path);
+        var path = quiz.touchPath + '?definition_id=' + q.id + '&qna_attempts=1' + '&qna_correct=' + (correct ? 1 : 0);
+        ajaxexec(path); //todo: finish implementing
 
-        debug('touch: id: ' + q.id + ', word: ' + q.a, true);
+        console.log('touch() ajax path: ' + path);
+    }
+    else
+    {
+    	console.log('touch() path not set');
     }
 }
 

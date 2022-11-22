@@ -46,6 +46,9 @@
 <table style="width:100%;" class="table">
     <tbody>
     @foreach($records as $record)
+        @php
+        $isSnippet = App\Gen\Definition::isSnippetStatic($record);
+        @endphp
         <tr id="row{{$record->id}}">
             <td class="icon">
                 @component('gen.definitions.component-heart', [
@@ -58,13 +61,13 @@
             <td class="icon">
                 <div class="ml-3">
                     @if (isAdmin() || App\User::isOwner($record->user_id))
-                        <a href="/{{$record->isSnippet() ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
+                        <a href="/{{$isSnippet ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
                     @endif
                 </div>
             </td>
 
             <td style="width:100%;">
-                @if ($record->isSnippet())
+                @if ($isSnippet)
                     <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title, $lengthLimit)}}</a>
                     <div>
                         @if (isset($record->translation_en))
@@ -83,6 +86,8 @@
                         @endif
                     </div>
                 @endif
+
+                <div class="small-thin-text" style="">Flashcard Views: {{empty($record->qna_attempts) ? 0 : $record->qna_attempts }}, Last: {{empty($record->qna_at) ? 'never' : $record->qna_at}}</div>
 
                 @if (isAdmin())
                     <div class="small-thin-text" style="">{{$record->updated_at}}</div>
