@@ -955,6 +955,36 @@ class Definition extends Model
 		return $records;
 	}
 
+	static public function addDefinition($parms)
+	{
+        $f = __CLASS__ . ':' . __FUNCTION__;
+		$record = new Definition();
+
+		$record->title 			= isset($parms['title']) ? $parms['title'] : null; // let it throw if not set
+		$record->user_id 		= Auth::id();
+		$record->language_flag 	= LANGUAGE_ES;
+		$record->translation_en	= isset($parms['translation_en']) ? $parms['translation_en'] : null;
+		$record->permalink		= createPermalink($record->title);
+		$record->wip_flag		= WIP_DEFAULT;
+		$record->pos_flag   	= isset($parms['pos_flag']) ? $parms['pos_flag'] : DEFINITIONS_POS_SNIPPET;
+		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+
+		try
+		{
+			$record->save();
+
+			$msg = __('base.New record has been added');
+			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
+		}
+		catch (\Exception $e)
+		{
+			$msg = isset($msg) ? $msg : __('proj.Error adding new definition');
+			logException($f, $e->getMessage(), $msg, ['title' => $record->title]);
+		}
+
+		return $record;
+	}
+
 	static public function getSnippet($value)
 	{
 		$record = null;
@@ -1057,12 +1087,20 @@ class Definition extends Model
 		$records = [];
 
 		$count = isset($parms['count']) ? $parms['count'] : PHP_INT_MAX;
+		$start = isset($parms['start']) ? $parms['start'] : 0;
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
+        $orderBy = 'stats.qna_at, stats.viewed_at, definitions.id';
 
+		$tagId = isset($parms['tag']) ? $parms['tag'] : 0;
+		$tagIdCondition = $tagId > 0 ? '=' : '>=';
+
+        if (false)
+        {
 		$q = '
-            SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at FROM `tags`
+            SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at
+            FROM `tags`
             JOIN definition_tag as dt on dt.tag_id = tags.id
             JOIN definitions as def on def.id = dt.definition_id
             LEFT JOIN stats on stats.definition_id = def.id
@@ -1077,7 +1115,34 @@ class Definition extends Model
 		';
 
         $records = DB::select($q, [Auth::id(), TAG_TYPE_DEF_FAVORITE, $languageId, $count]);
-		//dd($records);
+        }
+        else
+        {
+            $records = Tag::select('tags.user_id as user_Id', 'definitions.id as id', 'tags.id as tag_id', 'definitions.*',
+                'stats.qna_attempts', 'stats.qna_correct', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads')
+                ->join('definition_tag', function($join) {
+                    $join->on('definition_tag.tag_id', 'tags.id');
+                })
+                ->join('definitions', function($join) {
+                    $join->on('definitions.id', 'definition_tag.definition_id');
+                })
+                ->leftJoin('stats', function($join) {
+                    $join->on('stats.definition_id', 'definitions.id');
+                })
+                ->where('tags.user_id', Auth::id())
+                ->where('tags.type_flag', TAG_TYPE_DEF_FAVORITE)
+                ->where('tags.id', $tagIdCondition, $tagId)
+                ->where('tags.deleted_at', NULL)
+                ->where('definitions.deleted_at', NULL)
+                ->where('definitions.language_flag', $languageFlagCondition, $languageId)
+                ->orderByRaw($orderBy)
+                ->offset($start)
+                ->limit($count)
+                ->get();
+                //    ->toSql();
+
+            //dump(count($records));
+        }
 
 		return $records;
 	}

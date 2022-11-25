@@ -73,9 +73,14 @@
                     </div>
                 @endif
                 @if (isset($translation))
-                    <div class="mr-2 float-left purple">
+                    <div class="mr-2 float-left">
                         <a href="" onclick="event.preventDefault(); $('#description').toggle(); $('#translation').toggle(); " class="btn btn-xs btn-success" role="button">
-                            <div class="middle mr-0" style="xmargin-bottom:2px;">{{trans_choice('ui.Translation', 2)}}</div>
+                            <div class="middle mr-0" style="">{{trans_choice('ui.Translation', 2)}}</div>
+                        </a>
+                    </div>
+                    <div class="mr-2 float-left">
+                        <a href="/definitions/convert-text-to-favorites/{{$record->id}}" class="btn btn-xs btn-primary" role="button">
+                            <div class="middle mr-0" style="">{{trans_choice('proj.Convert to Favorites', 2)}}</div>
                         </a>
                     </div>
                 @endif

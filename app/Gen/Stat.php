@@ -19,19 +19,27 @@ class Stat extends Model
     	return $this->belongsTo(User::class);
     }
 
-    static public function updateUserStats($request)
+    static public function addRead($definition_id)
     {
-        // must be logged
-        if (Auth::check())
-        {
-            return self::updateStats($request);
-        }
+        return self::updateStats(['definition_id' => $definition_id, 'reads' => 1]);
     }
 
-    static private function updateStats($request)
+    static public function addView($definition_id)
+    {
+        return self::updateStats(['definition_id' => $definition_id, 'views' => 1]);
+    }
+
+    static public function updateStats($request)
     {
 	    $msg = '';
 		$notUsed = false;
+
+        // must be logged
+        if (!Auth::check())
+        {
+            $msg = 'user not logged in';
+            return $msg;
+        }
 
         $definitionId = isset($request['definition_id']) ? abs(intval($request['definition_id'])) : 0;
 

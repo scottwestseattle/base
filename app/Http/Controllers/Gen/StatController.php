@@ -186,10 +186,9 @@ class StatController extends Controller
 		return redirect($this->redirectTo);
     }
 
-
 	static public function updateStats(Request $request)
 	{
-	    $msg = Stat::updateUserStats($request);
+	    $msg = Stat::updateStats($request);
 
 		return $msg;
 	}

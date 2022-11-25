@@ -420,7 +420,6 @@ Route::group(['prefix' => 'tags'], function () {
 	Route::post('/create-user-favorite-list', [TagController::class, 'createUserFavoriteList']);
 	Route::get('/confirm-user-favorite-list-delete/{tag}', [TagController::class, 'confirmUserFavoriteListDelete']);
 	Route::get('/edit-user-favorite-list/{tag}', [TagController::class, 'editUserFavoriteList']);
-
 });
 
 // GENERATED for Visitor model
@@ -553,6 +552,7 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// actions on all favorites: read, qna, flashcards
 	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview']);
+	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites']);
 
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);

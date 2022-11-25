@@ -16,17 +16,17 @@
         <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
             @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}/1">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tag={{$tag->id}}">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/read-list/{{$tag->id}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?action=reader&count=20&tag={{$tag->id}}">
             @LANG('proj.Reader')<span class="ml-1 glyphicon glyphicon-volume-up"></span>
         </a>
     @else
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/quiz">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=quiz">
             @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{$_SERVER['REQUEST_URI']}}/flashcards">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=flashcards">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
     @endif
@@ -87,7 +87,16 @@
                     </div>
                 @endif
 
-                <div class="small-thin-text" style="">Flashcard Views: {{empty($record->qna_attempts) ? 0 : $record->qna_attempts }}, Last: {{empty($record->qna_at) ? 'never' : $record->qna_at}}</div>
+                @php
+                $attempts = empty($record->qna_attempts) ? 0 : $record->qna_attempts;
+                $qna_at = empty($record->qna_at) ? 'never' : $record->qna_at;
+                $views = empty($record->views) ? 0 : $record->views;
+                @endphp
+                @if ($attempts > 0)
+                    <div class="small-thin-text" style="">Flashcard Views: {{$attempts}}, Last: {{$qna_at}}</div>
+                @else
+                    <div class="small-thin-text" style="">Views: {{$views}}, {{(($views > 0) ? 'Last: ' . $record->viewed_at . '' : 'Created: ' . $record->created_at)}}</div>
+                @endif
 
                 @if (isAdmin())
                     <div class="small-thin-text" style="">{{$record->updated_at}}</div>

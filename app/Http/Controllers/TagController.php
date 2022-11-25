@@ -306,21 +306,9 @@ class TagController extends Controller
 
     public function createUserFavoriteList(Request $request)
     {
-		try
-		{
-			$record = new Tag();
-			$record->name = alphanum($request->name);
-			$record->type_flag = TAG_TYPE_DEF_FAVORITE;
-			$record->user_id = Auth::id();
-			$record->save();
+        $name = alphanum($request->name);
 
-			logInfo(__FUNCTION__, __('proj.New list has been added'), ['name' => $record->name, 'id' => $record->id]);
-		}
-		catch (\Exception $e)
-		{
-			$msg = 'Error adding new list';
-			logException(__FUNCTION__, $msg, $e->getMessage());
-		}
+        Tag::createUserFavoriteList($name);
 
 		return redirect('/favorites');
     }

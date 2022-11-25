@@ -74,7 +74,7 @@ class DefinitionController extends Controller
 
             // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
-			'setSnippetCookie', 'readList',
+			'setSnippetCookie', 'readList', 'convertTextToFavorites'
         ]);
 
         $this->middleware('auth')->only([
@@ -82,6 +82,7 @@ class DefinitionController extends Controller
 			'create',
 			'createQuick',
 			'favoritesReview',
+            'convertTextToFavorites',
 		]);
 
         $this->middleware('owner')->only([
@@ -89,7 +90,7 @@ class DefinitionController extends Controller
 			'editSnippet', 'updateSnippet',
 			'review', 'readList',
 			'confirmDelete', 'delete',
-			'unheartAjax', 'removeFavorites',
+			'unheartAjax', 'removeFavorites', 'convertTextToFavorites',
 		]);
 
 		parent::__construct();
@@ -141,7 +142,7 @@ class DefinitionController extends Controller
 
 		$record->user_id 		= Auth::id();
 		$record->language_flag 	= LANGUAGE_ES;
-		$record->title 			= $request->title;
+		$record->title 			= $title;
 		$record->forms 			= Spanish::formatForms($request->forms);
 		$record->definition		= $request->definition;
 		$record->translation_en	= $request->translation_en;
@@ -264,9 +265,6 @@ class DefinitionController extends Controller
             $record->save();
 
             $record->tagUser();
-
-            $request['definition_id'] = $record->id;
-            Stat::updateUserStats($request);
 		}
 		catch (\Exception $e)
 		{
@@ -355,9 +353,7 @@ class DefinitionController extends Controller
 
         $lists = Definition::getUserFavoriteLists();
 
-        $parms['definition_id'] = $definition->id;
-        $parms['views'] = 1;
-        Stat::updateUserStats($parms);
+        Stat::addView($record->id);
 
 		return view(VIEWS . '.view', [
 			'record' => $record,
@@ -768,9 +764,8 @@ class DefinitionController extends Controller
         {
             // update it's view and timestamp for the user
             Definition::tagDefinitionUser($id);
+            Stat::addView($id);
         }
-
-        Stat::updateUserStats(['views' => 1, 'definition_id' => $id]);
     }
 
 	public function viewSnippet($permalink)
@@ -1396,7 +1391,7 @@ class DefinitionController extends Controller
     {
 		$reviewType = intval($reviewType);
 		$record = $tag;
-		$qna = Definition::makeQna($record->definitionsUser); // splits text into questions and answers
+		$qna = Definition::makeQna(Definition::getUserFavorites(['tagId' => $tag->id])); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 
 		try
@@ -1442,7 +1437,7 @@ class DefinitionController extends Controller
     {
         // check if the definition id is set in the url parameters
         $request['definition_id'] = $definition->id;
-        Stat::updateUserStats($request);
+        Stat::updateStats($request);
     }
 
     // new: review all favorites not by list
@@ -1450,6 +1445,8 @@ class DefinitionController extends Controller
     {
         // set up the parms
         $parms = crackParms($request);
+
+        // language parms
         $siteLanguage = Site::getLanguage()['id'];
         $parms['languageId'] = $siteLanguage;
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
@@ -1623,7 +1620,10 @@ class DefinitionController extends Controller
 		$records = []; // make this countable so view will always work
 		try
 		{
-			$records = $tag->definitionsUser()->get();
+			//$records = $tag->definitionsUser()->get();
+
+            $records = Definition::getUserFavorites(['tag' => $tag->id]);
+			//dd($records[0]);
 		}
 		catch (\Exception $e)
 		{
@@ -2005,4 +2005,45 @@ class DefinitionController extends Controller
 		return __('base.' . $msg);
     }
 
+	public function convertTextToFavorites(Request $request, Entry $entry)
+    {
+		$record = $entry;
+        $records = null;
+
+        //
+		// split text into text and translations
+		//
+		try
+		{
+    		$records = Quiz::makeFlashcards($record->description, $record->description_translation);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error making flashcards';
+   			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+			return back();
+		}
+
+        if (!empty($records))
+        {
+            // create the favorites list tag
+            $name = alphanum($record->title);
+            $tag = Tag::createUserFavoriteList($name);
+
+            if (!empty($tag))
+            {
+                // add the snippets to the favorites list
+                foreach($records as $r)
+                {
+                    $definition = Definition::addDefinition(['title' => $r['q'], 'translation_en' => $r['a']]);
+                    if (!empty($definition))
+                    {
+                        $definition->addTag($tag->id);
+                    }
+                }
+            }
+        }
+
+    	return redirect('/definitions/list-tag/' . $tag->id);
+    }
 }

@@ -803,10 +803,9 @@ function ajaxexec(url, resultsId = '', resultsInput = false, resultsCallback = n
 		}
 	};
 
+    //console.log('ajaxexec: ' + url);
 	xhttp.open("GET", url, true);
 	xhttp.send();
-
-	//alert(url);
 }
 
 function ajaxPost(url, formId, resultId)

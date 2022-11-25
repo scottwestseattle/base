@@ -20,6 +20,10 @@
 			</div>
 		</div>
 
+        @if (false)
+        @component('shared.text-translation', ['record' => null])@endcomponent
+        @endif
+
 		{{ csrf_field() }}
 
 	</form>

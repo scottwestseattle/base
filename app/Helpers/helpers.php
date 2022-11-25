@@ -1105,6 +1105,9 @@ if (!function_exists('crackParms')) {
         if (isset($request['action']))
             $parms['action'] = $request['action'];
 
+        if (isset($request['tag']))
+            $parms['tag'] = $request['tag'];
+
         return $parms;
     }
 }
