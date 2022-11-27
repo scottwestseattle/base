@@ -1,6 +1,13 @@
 @php
     $name = isset($name) ? $name : (isset($tag) ? $tag->name : 'name not set');
+    $tagId = isset($tag) ? $tag->id : 0;
+    $count = $parms['count'];
+    $start = $parms['start'];
+    $order = isset($parms['order']) ? $parms['order'] : null;
+    $nextStart = $start + $count;
     $lengthLimit = 125;
+    $moreButtonUrl = empty($tagId) ? 'favorites-review/' : 'list-tag/' . $tagId;
+
     //$lists = isset($lists) ? $lists : [];
 @endphp
 @extends('layouts.app')
@@ -34,6 +41,8 @@
 
 <h3 name="" class="" style="margin-bottom:10px;">{{$name}}@component('components.badge', ['text' => count($records)])@endcomponent
     @if (isset($tag) && (isAdmin() || App\User::isOwner($tag->user_id)))
+        <span style="" class="small-thin-text pl-3 middle"><a href="/definitions/list-tag/{{$tag->id}}?count=50&order=desc">Newest</a></span>
+        <span style="" class="small-thin-text pl-3 middle"><a href="/definitions/list-tag/{{$tag->id}}?count=50&order=asc">Oldest</a></span>
         <span style="" class="small-thin-text pl-3 middle">
             @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/remove-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
         </span>
@@ -106,5 +115,7 @@
     @endforeach
     </tbody>
 </table>
+
+<div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/definitions/{{$moreButtonUrl}}?start={{$nextStart}}&count={{$count}}&order={{$order}}">@LANG('ui.Show More')</a></div>
 
 @endsection

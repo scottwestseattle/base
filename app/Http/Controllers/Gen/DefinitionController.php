@@ -798,7 +798,7 @@ class DefinitionController extends Controller
 
 	public function filterSnippets(Request $request, $parms)
     {
-        // $request parameters are accessed as: $request['sort']
+        // $request parameters are accessed as: $request['order']
 
 		return $this->getSnippets($request);
     }
@@ -812,7 +812,7 @@ class DefinitionController extends Controller
     {
         $parms['id'] = isset($id) ? intval($id) : null;
         $parms['showForm'] = true;
-        $parms['sort'] = 'desc';
+        $parms['order'] = 'desc';
 
         return $this->getSnippets($parms);
     }
@@ -826,12 +826,8 @@ class DefinitionController extends Controller
         $showForm = isset($parms['showForm']) ? $parms['showForm'] : false;
         $id = isset($parms['id']) ? $parms['id'] : null;
 
-        $orderBy = null;
-        $sort = isset($parms['sort']) ? alpha(strtolower($parms['sort'])) : null;
-        if ($sort === 'help')
-        {
-            dump("sort: asc|desc|atoz|ztoa|incomplete|owner|help");
-        }
+        $order = isset($parms['order']) ? alpha(strtolower($parms['order'])) : null;
+        $orderBy = Definition::crackOrder($parms, null);
 
         // default is user's snippets
         if (Auth::check())
@@ -845,43 +841,6 @@ class DefinitionController extends Controller
             $options['userIdCondition'] = '>=';
         }
 
-        if (isset($sort))
-        {
-            switch($sort)
-            {
-                case 'asc':
-                    $orderBy = 'id';
-                    break;
-                case 'desc':
-                    $orderBy = 'id DESC';
-                    break;
-                case 'atoz':
-                    $orderBy = 'title';
-                    break;
-                case 'ztoa':
-                    $orderBy = 'title DESC';
-                    break;
-                case 'incomplete':
-                    $orderBy = 'translation_en, id';
-                    if (Auth::check())
-                    {
-                        $options['userId'] = Auth::id();
-                        $options['userIdCondition'] = '=';
-                    }
-                    break;
-                case 'owner':
-                    // use the default orderBy in Definition
-                    if (Auth::check())
-                    {
-                        $options['userId'] = Auth::id();
-                        $options['userIdCondition'] = '=';
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
 
@@ -890,7 +849,7 @@ class DefinitionController extends Controller
         $options['languageId']              = $siteLanguage;
         $options['languageFlagCondition']   = $languageFlagCondition;
         $options['orderBy']                 = $orderBy;
-        $options['sort']                    = $sort;
+        $options['order']                    = $order;
         //
         // get the snippets for the appropriate langauge
         //
@@ -1391,7 +1350,7 @@ class DefinitionController extends Controller
     {
 		$reviewType = intval($reviewType);
 		$record = $tag;
-		$qna = Definition::makeQna(Definition::getUserFavorites(['tagId' => $tag->id])); // splits text into questions and answers
+		$qna = Definition::makeQna(Definition::getUserFavorites(['tag' => $tag->id])); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 
 		try
@@ -1462,7 +1421,7 @@ class DefinitionController extends Controller
 		else if ($reviewType == 'reader')
             return $this->readWords($title, $records);
         else
-            return $this->list($title, $records);
+            return $this->list($title, $records, $parms);
     }
 
     public function doList($name, $reviewType, $records, $historyType)
@@ -1505,11 +1464,12 @@ class DefinitionController extends Controller
 			]);
     }
 
-    private function list($name, $records)
+    private function list($name, $records, $parms = null)
     {
 		return view(VIEWS . '.list', [
 		    'name' => $name,
 			'records' => $records,
+			'parms' => $parms,
 			'lists' => Definition::getUserFavoriteLists(),
 		]);
     }
@@ -1617,13 +1577,16 @@ class DefinitionController extends Controller
 
     public function listTag(Request $request, Tag $tag)
     {
+        $parms = crackParms($request);
+        $parms['tag'] = $tag->id;
+
 		$records = []; // make this countable so view will always work
 		try
 		{
 			//$records = $tag->definitionsUser()->get();
 
-            $records = Definition::getUserFavorites(['tag' => $tag->id]);
-			//dd($records[0]);
+			//dump($parms);
+            $records = Definition::getUserFavorites($parms);
 		}
 		catch (\Exception $e)
 		{
@@ -1632,6 +1595,7 @@ class DefinitionController extends Controller
 
 		return view(VIEWS . '.list', [
 			'records' => $records,
+			'parms' => $parms,
 			'tag' => $tag,
 			'lists' => Definition::getUserFavoriteLists(),
 		]);

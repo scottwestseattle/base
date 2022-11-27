@@ -1080,6 +1080,39 @@ class Definition extends Model
 		return $records;
 	}
 
+	static public function crackOrder($parms, $default)
+    {
+        $orderBy = 'id';
+        $order = isset($parms['order']) ? alpha(strtolower($parms['order'])) : $default;
+        if ($order === 'help')
+        {
+            dump("order: asc|desc|atoz|ztoa|incomplete|owner|help");
+        }
+
+        switch($order)
+        {
+            case 'asc':
+                $orderBy = 'id';
+                break;
+            case 'desc':
+                $orderBy = 'id DESC';
+                break;
+            case 'atoz':
+                $orderBy = 'title';
+                break;
+            case 'ztoa':
+                $orderBy = 'title DESC';
+                break;
+            case 'incomplete':
+                $orderBy = 'translation_en, id';
+                break;
+            default:
+                break;
+        }
+
+        return $orderBy;
+    }
+
 	static public function getUserFavorites($parms = null)
 	{
 	    //dump($parms);
@@ -1091,8 +1124,7 @@ class Definition extends Model
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
-        $orderBy = 'stats.qna_at, stats.viewed_at, definitions.id';
-
+        $orderBy = self::crackOrder($parms, 'stats.qna_at, stats.viewed_at, definitions.id');
 		$tagId = isset($parms['tag']) ? $parms['tag'] : 0;
 		$tagIdCondition = $tagId > 0 ? '=' : '>=';
 

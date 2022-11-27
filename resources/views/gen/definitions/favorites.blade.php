@@ -2,7 +2,9 @@
 @section('title', trans_choice('ui.List', 2))
 @section('menu-submenu')@component('tags.menu-submenu')@endcomponent @endsection
 @section('content')
-
+@php
+    $order = 'desc';
+@endphp
 <!--------------------------------------------------------------------->
 <!-- Favorites Lists                                                 -->
 <!--------------------------------------------------------------------->
@@ -25,7 +27,7 @@
     <div class="mb-3 mr-0">
         <div class="card-body drop-box-ghost">
             <h5 class="card-title">
-                <a href="/definitions/favorites-review?count={{$favoritesCnt}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
+                <a href="/definitions/favorites-review?order={{$order}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
             </h5>
             <p class="card-text">
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count={{$favoritesCnt}}">
@@ -50,7 +52,7 @@
     <div class="mb-3 mr-0">
         <div class="card-body drop-box-ghost">
             <h5 class="card-title">
-                <a href="/definitions/list-tag/{{$record->id}}">{{$record->name}}</a>@component('components.badge', ['text' => count($record->definitions)])@endcomponent
+                <a href="/definitions/list-tag/{{$record->id}}?order={{$order}}">{{$record->name}}</a>@component('components.badge', ['text' => count($record->definitions)])@endcomponent
             </h5>
             <p class="card-text">
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">

@@ -1093,14 +1093,11 @@ if (!function_exists('crackParms')) {
     {
         $parms = null;
 
-        if (isset($request['count']))
-            $parms['count'] = $request['count'];
+        $parms['count'] = (isset($request['count'])) ? $request['count'] : LIST_LIMIT_DEFAULT;
+        $parms['start'] = (isset($request['start'])) ? $request['start'] : 0;
 
-        if (isset($request['start']))
-            $parms['start'] = $request['start'];
-
-        if (isset($request['sort']))
-            $parms['sort'] = $request['sort'];
+        if (isset($request['order']))
+            $parms['order'] = $request['order'];
 
         if (isset($request['action']))
             $parms['action'] = $request['action'];

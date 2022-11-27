@@ -5,7 +5,7 @@
     $rpp = 50;
     $nextCount = (isset($options['count'])) ? $options['count'] : $rpp;
     $nextStart = (isset($options['start'])) ? $options['start'] + $rpp : 0;
-    $sort = (isset($options['sort'])) ? $options['sort'] : '';
+    $sort = (isset($options['order'])) ? $options['order'] : '';
     $autofocus = (isset($options['autofocus']) && $options['autofocus']) ? 'autofocus' : '';
 @endphp
 
