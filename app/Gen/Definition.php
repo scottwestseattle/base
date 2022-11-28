@@ -178,10 +178,15 @@ class Definition extends Model
 
     public function removeTags()
     {
+        $rc = false;
+
 		foreach($this->tags as $tag)
 		{
 			$this->removeTag($tag->id);
+			$rc = true;
 		}
+
+		return $rc;
 	}
 
     public function removeTag($tagId)

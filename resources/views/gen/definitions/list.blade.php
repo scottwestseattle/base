@@ -7,8 +7,7 @@
     $nextStart = $start + $count;
     $lengthLimit = 125;
     $moreButtonUrl = empty($tagId) ? 'favorites-review/' : 'list-tag/' . $tagId;
-
-    //$lists = isset($lists) ? $lists : [];
+    $lists = isset($lists) ? $lists : [];
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('ui.List', 2))

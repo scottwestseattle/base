@@ -175,6 +175,9 @@
 				<input type="checkbox" name="checkbox-random" id="checkbox-random" onclick="updateRandom();" {{$random ? 'checked' : ''}} />
 				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
 			</div>
+			<div class="mt-1 ml-1 small-thin-text">
+                <a id="goToQuestion" href="/definitions/view/" target="_blank">{{__('proj.Go To Question')}}</a>
+			</div>
 		</div>
 
 		<!-- BUTTONS ROW 2 -->

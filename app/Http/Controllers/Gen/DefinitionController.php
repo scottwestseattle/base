@@ -532,6 +532,11 @@ class DefinitionController extends Controller
 
 		try
 		{
+			if ($record->removeTags())
+            {
+    			logInfo($f, __('base.Tag(s) removed before delete'), ['record_id' => $record->id]);
+            }
+
 			$record->delete();
 			logInfo($f, __('base.Record has been deleted'), ['record_id' => $record->id]);
 		}
@@ -1396,7 +1401,8 @@ class DefinitionController extends Controller
     {
         // check if the definition id is set in the url parameters
         $request['definition_id'] = $definition->id;
-        Stat::updateStats($request);
+        $msg = Stat::updateStats($request);
+        return $msg;
     }
 
     // new: review all favorites not by list

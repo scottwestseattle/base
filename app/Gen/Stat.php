@@ -29,6 +29,7 @@ class Stat extends Model
         return self::updateStats(['definition_id' => $definition_id, 'views' => 1]);
     }
 
+    // test link: http://localhost/definitions/update-stats/9404
     static public function updateStats($request)
     {
 	    $msg = '';
@@ -42,6 +43,22 @@ class Stat extends Model
         }
 
         $definitionId = isset($request['definition_id']) ? abs(intval($request['definition_id'])) : 0;
+
+        //
+        // make sure the def hasn't already been deleted in another window
+        //
+		try
+		{
+			$record = Definition::select()
+				->where('id', $definitionId)
+				->count();
+		}
+		catch (\Exception $e)
+		{
+		    $msg = 'proj.Error getting definition record to set stats for, may be already deleted.';
+			logException(LOG_CLASS, $e->getMessage(), __($msg));
+			return $msg;
+		}
 
         //
         // check if the stat record exists for this definition and user
