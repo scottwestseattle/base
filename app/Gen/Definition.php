@@ -1111,6 +1111,21 @@ class Definition extends Model
             case 'incomplete':
                 $orderBy = 'translation_en, id';
                 break;
+            case 'attempts':
+                $orderBy = 'stats.qna_attempts DESC, id DESC';
+                break;
+            case 'score':
+                $orderBy = 'stats.qna_score DESC, id DESC';
+                break;
+            case 'views':
+                $orderBy = 'stats.views DESC, id DESC';
+                break;
+            case 'reads':
+                $orderBy = 'stats.reads DESC, id DESC';
+                break;
+            case 'reads':
+                $orderBy = 'stats.score DESC, id DESC';
+                break;
             default:
                 break;
         }
@@ -1135,28 +1150,29 @@ class Definition extends Model
 
         if (false)
         {
-		$q = '
-            SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at
-            FROM `tags`
-            JOIN definition_tag as dt on dt.tag_id = tags.id
-            JOIN definitions as def on def.id = dt.definition_id
-            LEFT JOIN stats on stats.definition_id = def.id
-            WHERE 1
-            AND tags.user_id = ?
-            AND tags.type_flag = ?
-            AND tags.deleted_at IS NULL
-            AND def.deleted_at IS NULL
-            AND def.language_flag = ?
-            ORDER by stats.qna_at, stats.viewed_at, def.id
-            LIMIT ?
-		';
+            // raw sql
+            $q = '
+                SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at
+                FROM `tags`
+                JOIN definition_tag as dt on dt.tag_id = tags.id
+                JOIN definitions as def on def.id = dt.definition_id
+                LEFT JOIN stats on stats.definition_id = def.id
+                WHERE 1
+                AND tags.user_id = ?
+                AND tags.type_flag = ?
+                AND tags.deleted_at IS NULL
+                AND def.deleted_at IS NULL
+                AND def.language_flag = ?
+                ORDER by stats.qna_at, stats.viewed_at, def.id
+                LIMIT ?
+            ';
 
-        $records = DB::select($q, [Auth::id(), TAG_TYPE_DEF_FAVORITE, $languageId, $count]);
+            $records = DB::select($q, [Auth::id(), TAG_TYPE_DEF_FAVORITE, $languageId, $count]);
         }
         else
         {
             $records = Tag::select('tags.user_id as user_Id', 'definitions.id as id', 'tags.id as tag_id', 'definitions.*',
-                'stats.qna_attempts', 'stats.qna_correct', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads')
+                'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads')
                 ->join('definition_tag', function($join) {
                     $join->on('definition_tag.tag_id', 'tags.id');
                 })
@@ -1176,9 +1192,9 @@ class Definition extends Model
                 ->offset($start)
                 ->limit($count)
                 ->get();
-                //    ->toSql();
+                //->toSql();
 
-            //dump(count($records));
+            //dump(($orderBy));
         }
 
 		return $records;

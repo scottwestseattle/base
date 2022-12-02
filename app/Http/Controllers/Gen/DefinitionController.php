@@ -1830,43 +1830,50 @@ class DefinitionController extends Controller
                 //
                 // add the word
                 //
-                $text .= $labelDefinition . ':  ';
-                $text .= ucfirst($record->title);
-                $text .= '.  ' . ucfirst($record->title);
-
-                //
-                // add the definition
-                //
-                $d = $record->definition;
-                $d = str_replace('1.', $label1, $d);
-                $d = str_replace('2.', $label2, $d);
-                $d = str_replace('3.', $label3, $d);
-                $d = str_replace('4.', $label4, $d);
-                $d = str_replace('5.', $label5, $d);
-
-                $text .= '. ' . ucfirst($d);
-
-                //
-                // say the word again
-                //
-                if (!Str::endsWith($text, '.'))
-                    $text .= '.';
-                $text .= '  ' . ucfirst($record->title) . '.';
-
-                //
-                // add the examples
-                //
-                if (isset($record->examples))
+                if (Definition::isSnippetStatic($record))
                 {
-                    if (!Str::endsWith($text, '.'))
-                        $text .= '.';
+                    $text = ucfirst($record->title);
+                }
+                else
+                {
+                    $text .= $labelDefinition . ':  ';
+                    $text .= ucfirst($record->title);
+                    $text .= '.  ' . ucfirst($record->title);
 
-                    $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
+                    //
+                    // add the definition
+                    //
+                    $d = $record->definition;
+                    $d = str_replace('1.', $label1, $d);
+                    $d = str_replace('2.', $label2, $d);
+                    $d = str_replace('3.', $label3, $d);
+                    $d = str_replace('4.', $label4, $d);
+                    $d = str_replace('5.', $label5, $d);
 
-                    // repeat the word one more time
+                    $text .= '. ' . ucfirst($d);
+
+                    //
+                    // say the word again
+                    //
                     if (!Str::endsWith($text, '.'))
                         $text .= '.';
                     $text .= '  ' . ucfirst($record->title) . '.';
+
+                    //
+                    // add the examples
+                    //
+                    if (isset($record->examples))
+                    {
+                        if (!Str::endsWith($text, '.'))
+                            $text .= '.';
+
+                        $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
+
+                        // repeat the word one more time
+                        if (!Str::endsWith($text, '.'))
+                            $text .= '.';
+                        $text .= '  ' . ucfirst($record->title) . '.';
+                    }
                 }
 
                 $lines[] = $text;

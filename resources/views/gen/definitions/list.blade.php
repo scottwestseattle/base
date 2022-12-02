@@ -1,8 +1,9 @@
 @php
     $name = isset($name) ? $name : (isset($tag) ? $tag->name : 'name not set');
     $tagId = isset($tag) ? $tag->id : 0;
-    $count = $parms['count'];
-    $start = $parms['start'];
+    $parms['tagId'] = $tagId;
+    $count = isset($parms['count']) ? $parms['count'] : LIST_LIMIT_DEFAULT;
+    $start = isset($parms['start']) ? $parms['start'] : 0;
     $order = isset($parms['order']) ? $parms['order'] : null;
     $nextStart = $start + $count;
     $lengthLimit = 125;
@@ -40,10 +41,11 @@
 
 <h3 name="" class="" style="margin-bottom:10px;">{{$name}}@component('components.badge', ['text' => count($records)])@endcomponent
     @if (isset($tag) && (isAdmin() || App\User::isOwner($tag->user_id)))
-        <span style="" class="small-thin-text pl-3 middle"><a href="/definitions/list-tag/{{$tag->id}}?count=50&order=desc">Newest</a></span>
-        <span style="" class="small-thin-text pl-3 middle"><a href="/definitions/list-tag/{{$tag->id}}?count=50&order=asc">Oldest</a></span>
-        <span style="" class="small-thin-text pl-3 middle">
-            @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/remove-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
+        <span class="small-thin-text pl-0 middle">
+            @component('gen.definitions.component-order', ['parms' => $parms])@endcomponent
+        </span>
+        <span class="small-thin-text pl-3 middle">
+           @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/remove-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
         </span>
     @endif
 </h3>
@@ -96,15 +98,21 @@
                 @endif
 
                 @php
+                $score = empty($record->qna_score) ? 0 : $record->qna_score;
                 $attempts = empty($record->qna_attempts) ? 0 : $record->qna_attempts;
                 $qna_at = empty($record->qna_at) ? 'never' : $record->qna_at;
                 $views = empty($record->views) ? 0 : $record->views;
+                $reads = empty($record->reads) ? 0 : $record->reads;
                 @endphp
-                @if ($attempts > 0)
+                @if (true)
+                    <div class="small-thin-text steelblue" style="">Quiz: {{$attempts}}, Score: {{round($score * 100.0, 1)}}%, Views: {{$views}}, Reads: {{$reads}}, Created: {{$record->created_at}}</div>
+                @elseif ($attempts > 0)
                     <div class="small-thin-text" style="">Flashcard Views: {{$attempts}}, Last: {{$qna_at}}</div>
                 @else
                     <div class="small-thin-text" style="">Views: {{$views}}, {{(($views > 0) ? 'Last: ' . $record->viewed_at . '' : 'Created: ' . $record->created_at)}}</div>
                 @endif
+
+
 
                 @if (isAdmin())
                     <div class="small-thin-text" style="">{{$record->updated_at}}</div>

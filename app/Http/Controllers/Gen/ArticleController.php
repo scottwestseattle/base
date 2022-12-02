@@ -159,15 +159,19 @@ class ArticleController extends Controller
 			// count the lines
 			$options['lineCount'] = count($record->getSentences());
 
-			$record->description = nl2br($record->description);
-
 			$options['sentences'] = Spanish::getSentences($record->description);
 			if (strlen($record->description_translation) > 0)
 			{
 	        	$options['sentences_translation'] = Spanish::getSentences($record->description_translation);
 	        	$options['translation_matches'] = (count($options['sentences']) === count($options['sentences_translation']));
-	        	$options['translation'] =  $flashcards = Quiz::makeFlashcards($record->description, $record->description_translation);
+
+                if (count($options['sentences']) >= count($options['sentences_translation']))
+    	        	$options['translation'] = Quiz::makeFlashcards($record->description, $record->description_translation);
+    	        else
+    	        	$options['translation'] = Quiz::makeFlashcards($record->description_translation, $record->description);
 			}
+
+			$record->description = nl2br($record->description);
 		}
 		else
 		{
@@ -313,8 +317,8 @@ class ArticleController extends Controller
 
 		$title 				= $request->title;
 		$description_short	= $request->description_short;
-		$description		= Str::limit($request->description, MAX_DB_TEXT_COLUMN_LENGTH);
-		$description_trx	= Str::limit($request->description_translation, MAX_DB_TEXT_COLUMN_LENGTH);
+		$description		= Str::limit(strip_tags($request->description), MAX_DB_TEXT_COLUMN_LENGTH);
+		$description_trx	= Str::limit(strip_tags($request->description_translation), MAX_DB_TEXT_COLUMN_LENGTH);
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;

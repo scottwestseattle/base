@@ -505,14 +505,14 @@ table.table-fat tr td {
 Fancy Text
 ***************************************************/
 
-.xs-text {
+.xs-text, .xs-thin-text {
 	font-size: 10px;
 }
 
 .small-text, .small-thin-text {
 	font-size:12px;
 }
-.small-thin-text, .small-thin-hdr, .small-thin-h2 {
+.xs-thin-text, .small-thin-text, .small-thin-hdr, .small-thin-h2 {
 	font-weight:200;
 }
 

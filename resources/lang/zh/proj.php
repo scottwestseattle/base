@@ -183,4 +183,6 @@ return [
 'Delete Practice Text' => '删除实践文本',
 'Line Order' => '线路的顺序',
 'Seconds to pause between lines' => '行与行之间停顿的秒数',
+'Convert to Favorites' => '转换到收藏夹',
+'Go To Question' => '转到问题',
 ];

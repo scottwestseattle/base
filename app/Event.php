@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+define('MAX_LOG_FILE_SIZE', 700000000);
+
 class Event extends Model
 {
     use HasFactory;
@@ -45,7 +47,10 @@ class Event extends Model
 
 		$path = storage_path('logs/laravel.log');
 
-		$file = file_get_contents($path);
+        // sometimes it gets too big to read
+        $logFileSize = filesize($path);
+        $file = ($logFileSize <= MAX_LOG_FILE_SIZE) ? file_get_contents($path) : false;
+
 		if ($file !== false)
 		{
 			$all = (!isset($filter));
@@ -94,7 +99,8 @@ class Event extends Model
 		}
 		else
 		{
-			Log::error('error reading log file: ' . $path);
+			$msg = 'error reading log file: ' . $path . ' (size: ' . $logFileSize . ')  <a href="/events/delete">Delete</a>';
+            logError($msg, $msg);
 		}
 
 		return $rc;
@@ -111,7 +117,10 @@ class Event extends Model
 			$errors = ($filter == 'errors');
 			if ($emergency || $errors)
 			{
-				$file = file_get_contents($path);
+                // sometimes it gets too big to read
+                $logFileSize = filesize($path);
+                $file = ($logFileSize <= MAX_LOG_FILE_SIZE) ? file_get_contents($path) : false;
+
 				if ($file !== false)
 				{
 					$records = [];
@@ -183,7 +192,7 @@ class Event extends Model
 				}
 				else
 				{
-					$msg = 'Error reading log file: ' . $path;
+        			$msg = 'error reading log file: ' . $path . ' (size: ' . $logFileSize . ')';
 					logError($msg, $msg);
 				}
 			}

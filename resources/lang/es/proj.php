@@ -183,4 +183,6 @@ return [
 'Delete Practice Text' => 'Eliminar Texto de Práctica',
 'Line Order' => 'Orden de las líneas',
 'Seconds to pause between lines' => 'Segundos de pausa entre líneas',
+'Convert to Favorites' => 'Convertir en favoritos',
+'Go To Question' => 'Ir a la pregunta',
 ];
