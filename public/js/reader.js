@@ -454,6 +454,15 @@ function loadOrder()
 	return order;
 }
 
+function getCurrentId()
+{
+    var randomOrder = $('input[name="random_order"]:checked').val();
+    //console.log('random order: ' + randomOrder);
+    var index = (randomOrder == "1") ? deck.slideOrder[curr] : curr;
+
+    return deck.slides[index].id;
+}
+
 function getCurrentSlide()
 {
     var randomOrder = $('input[name="random_order"]:checked').val();
@@ -826,7 +835,7 @@ var _speechTimerId = null;
 var _clockTimerId = null;
 var _pauseTimerId = null;
 var _utter = null;
-function read(text, charIndex, textId = '#slideDescription')
+function read(text, charIndex, textId = '#slideDescription' /* used to highlight the current word */)
 {
 	_cancelled = false;
 	clearTimeout(_speechTimerId);
@@ -864,8 +873,14 @@ function read(text, charIndex, textId = '#slideDescription')
 	_utter.text = text.substring(charIndex).toLowerCase();
 
 	_utter.onend = function(event) {
+
+        //console.log('onend - slide: ' + getCurrentId());
+   	    touch(getCurrentId()); // have to touch it here before it changes ids below
+
 		if (!_readPage && !_paused && !_cancelled)
+		{
 			readNext();
+		}
 		else if (_readPage)
 		{
 		    // clear the word highlight
@@ -1126,15 +1141,20 @@ function updateStatus()
 */
 }
 
-function touch(q)
+function touch(id)
 {
-    // if it's a word, update it's last display time
-    if (deck.touchPath.length > 0) // if touchPath set
+    // if it's a definition, update read count
+    if (deck.touchPath !== null && deck.touchPath.length > 0) // if touchPath set
     {
-        var path = '/' + deck.touchPath + '/' + q.id;
-        //ajaxexec(path); //todo: implement
+        var path = deck.touchPath + '?definition_id=' + id + '&reads=1';
 
-        //alert('id: ' + q.id + ', word: ' + q.a);
+        ajaxexec(path); // touch it and update stats
+
+        console.log('reader::touch() ajax path: ' + path);
+    }
+    else
+    {
+    	console.log('reader::touch() path not set');
     }
 }
 

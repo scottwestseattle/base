@@ -1087,13 +1087,14 @@ class Definition extends Model
 
 	static public function crackOrder($parms, $default)
     {
-        $orderBy = 'id';
-        $order = isset($parms['order']) ? alpha(strtolower($parms['order'])) : $default;
+        $order = isset($parms['order']) ? strtolower(alphanum($parms['order'], false, '-')) : $default;
+
         if ($order === 'help')
         {
             dump("order: asc|desc|atoz|ztoa|incomplete|owner|help");
         }
 
+        $orderBy = 'id';
         switch($order)
         {
             case 'asc':
@@ -1120,11 +1121,14 @@ class Definition extends Model
             case 'views':
                 $orderBy = 'stats.views DESC, id DESC';
                 break;
+            case 'views-asc':
+                $orderBy = 'stats.views, id';
+                break;
             case 'reads':
                 $orderBy = 'stats.reads DESC, id DESC';
                 break;
-            case 'reads':
-                $orderBy = 'stats.score DESC, id DESC';
+            case 'reads-asc':
+                $orderBy = 'stats.reads, id';
                 break;
             default:
                 break;

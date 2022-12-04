@@ -1759,9 +1759,15 @@ class DefinitionController extends Controller
 
 		$words = self::formatDefinitions($records, $examplesOnly);
 		$lines['text'] = $words;
+		$ids = [];
+		foreach($records as $record)
+		    $ids[] = $record->id;
+		$lines['ids'] = $ids;
 
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
+
 	    $options['return'] = '/favorites';
+        $options['touchPath'] = '/stats/update-stats';
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),

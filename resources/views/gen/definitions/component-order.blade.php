@@ -19,8 +19,10 @@
             <li><a class="dropdown-item {{c($order, 'asc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=asc">Oldest</a></li>
             <li><a class="dropdown-item {{c($order, 'attempts')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=attempts">Attempts</a></li>
             <li><a class="dropdown-item {{c($order, 'score')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=score">Score</a></li>
-            <li><a class="dropdown-item {{c($order, 'views')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=views">Views</a></li>
-            <li><a class="dropdown-item {{c($order, 'reads')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=reads">Reads</a></li>
+            <li><a class="dropdown-item {{c($order, 'views')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=views">Views - Most</a></li>
+            <li><a class="dropdown-item {{c($order, 'views-asc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=views-asc">Views - Fewest</a></li>
+            <li><a class="dropdown-item {{c($order, 'reads')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=reads">Reads - Most</a></li>
+            <li><a class="dropdown-item {{c($order, 'reads-asc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=reads-asc">Reads - Fewest</a></li>
         </ul>
     </div>
 </div>

@@ -23,17 +23,17 @@
         <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
             @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tag={{$tag->id}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=flashcards&count=20&order={{$order}}">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?action=reader&count=20&tag={{$tag->id}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=reader&order={{$order}}&count=10000">
             @LANG('proj.Reader')<span class="ml-1 glyphicon glyphicon-volume-up"></span>
         </a>
     @else
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=quiz">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=quiz&order={{$order}}">
             @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=flashcards">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=flashcards&order={{$order}}">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
     @endif

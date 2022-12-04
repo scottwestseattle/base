@@ -959,13 +959,13 @@ function touch(q, correct = false)
     if (quiz.touchPath !== null && quiz.touchPath.length > 0) // if touchPath set
     {
         var path = quiz.touchPath + '?definition_id=' + q.id + '&qna_attempts=1' + '&qna_correct=' + (correct ? 1 : 0);
-        ajaxexec(path); //todo: finish implementing
+        ajaxexec(path); // touch it and update stats
 
-        console.log('touch() ajax path: ' + path);
+        console.log('qnabase::touch() ajax path: ' + path);
     }
     else
     {
-    	console.log('touch() path not set');
+    	console.log('qnabase::touch() path not set');
     }
 }
 

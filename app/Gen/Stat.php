@@ -93,7 +93,6 @@ class Stat extends Model
         $reads = isset($request['reads']) ? abs(intval($request['reads'])) : 0;
         $qna_attempts = isset($request['qna_attempts']) ? abs(intval($request['qna_attempts'])) : 0;
         $qna_correct = isset($request['qna_correct']) ? abs(intval($request['qna_correct'])) : 0;
-
         //
         // stats: if they're not set a 0 will be added
         //
@@ -102,6 +101,7 @@ class Stat extends Model
 		if ($views > 0) // if views is updated, set viewed_at field
             $record->viewed_at = $now;
 
+        // add reads
 		$record->reads += $reads;
 
         //
@@ -109,7 +109,9 @@ class Stat extends Model
         //
 		$record->qna_correct    += $qna_correct;
 		$record->qna_attempts   += $qna_attempts;
-        $record->qna_score = ($record->qna_correct > 0) ? ($record->qna_correct / $record->qna_attempts) : 0.0;
+
+        $qna_score = ($record->qna_correct > 0) ? ($record->qna_correct / $record->qna_attempts) : 0.0;
+        $record->qna_score = $qna_score;
 		if ($qna_attempts > 0) // if qna, set qna_at field
             $record->qna_at = $now;
 
@@ -122,7 +124,13 @@ class Stat extends Model
 
 			$record->save();
 			$msg = 'Stats record added or updated';
-            logInfo($msg, null, $parms = ['program' => $record->program_name, 'session' => $record->session_name, 'seconds' => $record->seconds]);
+            logInfo($msg, null, $parms = ['definition_id' => $definitionId,
+                'views' => $views,
+                'reads' => $reads,
+                'qna_attempts' => $qna_attempts,
+                'qna_correct' => $qna_correct,
+                'qna_score' => $qna_score,
+                ]);
 		}
 		catch (\Exception $e)
 		{

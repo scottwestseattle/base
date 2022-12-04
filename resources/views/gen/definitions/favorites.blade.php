@@ -30,13 +30,13 @@
                 <a href="/definitions/favorites-review?order={{$order}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
             </h5>
             <p class="card-text">
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count={{$favoritesCnt}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count={{$favoritesCnt}}&order={{$order}}">
                     @LANG('proj.Flashcards') ({{$favoritesCnt}})<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&order={{$order}}">
                     @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count={{$favoritesCnt}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count={{$favoritesCnt}}&order={{$order}}">
                     @LANG('proj.Reader') ({{$favoritesCnt}})<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
             </p>
@@ -58,10 +58,10 @@
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">
                     @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tag={{$record->id}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tag={{$record->id}}&order={{$order}}">
                     @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count=20&tag={{$record->id}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count=10000&tag={{$record->id}}&order={{$order}}">
                     @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
                 <a href='/tags/edit/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>

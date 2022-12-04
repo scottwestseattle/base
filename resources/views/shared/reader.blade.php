@@ -17,7 +17,7 @@
     data-title="{{$title}}"
 	data-count="{{$count}}"
 	data-max="{{$count}}"
-	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-touchpath="{{(isset($options['touchPath']) ? $options['touchPath'] : '')}}"
 	data-language="{{$languageCodes['short']}}"
 	data-language-long="{{$languageCodes['long']}}"
 	data-type="{{$contentType}}"
@@ -42,12 +42,15 @@
 	<!-- Add the body lines to read -->
 	<!-------------------------------------------------------->
 @foreach($lines['text'] as $line)
+    @php
+        $id = isset($lines['ids'][$loop->index]) ? $lines['ids'][$loop->index] : -5;
+    @endphp
 	<div class="data-slides"
 	    data-title="{{$line}}"
 	    data-number="1"
 	    data-description="{{$line}}"
 	    data-translation="{{$hasTranslation ? $lines['translation'][$loop->index] : ''}}"
-	    data-id="{{$recordId}}"
+	    data-id="{{$id}}"
 	    data-seconds="10"
 	    data-between="2"
 	    data-countdown="1"
