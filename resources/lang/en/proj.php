@@ -184,5 +184,5 @@ return [
 'Line Order' => 'Line Order',
 'Seconds to pause between lines' => 'Seconds to pause between lines',
 'Convert to Favorites' => 'Convert to Favorites',
-'Go To Question' => 'Go To Question',
+'Go To Entry' => 'Go To Entry',
 ];

@@ -1420,7 +1420,8 @@ class DefinitionController extends Controller
         $reviewType = (isset($parms['action'])) ? $parms['action'] : null;
 
         $records = Definition::getUserFavorites($parms);
-        $title = 'Review All';
+
+        $title = (empty($parms['tag']) || empty($records[0]->tag_name)) ? 'Review All' : $records[0]->tag_name;
 
 		if ($reviewType == 'flashcards')
 		    return $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
@@ -1844,7 +1845,7 @@ class DefinitionController extends Controller
                 {
                     $text .= $labelDefinition . ':  ';
                     $text .= ucfirst($record->title);
-                    $text .= '.  ' . ucfirst($record->title);
+                    $text .= ', ' . ucfirst($record->title) . '';
 
                     //
                     // add the definition
@@ -1856,29 +1857,29 @@ class DefinitionController extends Controller
                     $d = str_replace('4.', $label4, $d);
                     $d = str_replace('5.', $label5, $d);
 
-                    $text .= '. ' . ucfirst($d);
+                    $text .= '; ' . ucfirst($d);
 
                     //
                     // say the word again
                     //
-                    if (!Str::endsWith($text, '.'))
-                        $text .= '.';
-                    $text .= '  ' . ucfirst($record->title) . '.';
+                    if (!Str::endsWith($text, ';'))
+                        $text .= ';';
+                    $text .= '  ' . ucfirst($record->title) . ';';
 
                     //
                     // add the examples
                     //
                     if (isset($record->examples))
                     {
-                        if (!Str::endsWith($text, '.'))
-                            $text .= '.';
+                        if (!Str::endsWith($text, ';'))
+                            $text .= ';';
 
                         $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
 
                         // repeat the word one more time
-                        if (!Str::endsWith($text, '.'))
-                            $text .= '.';
-                        $text .= '  ' . ucfirst($record->title) . '.';
+                        if (!Str::endsWith($text, ';'))
+                            $text .= ';';
+                        $text .= '  ' . ucfirst($record->title) . ';';
                     }
                 }
 

@@ -15,6 +15,7 @@ LIMIT 10
 
 
 NEW DB Changes:
+ALTER TABLE `stats` ADD `read_at` TIMESTAMP NULL AFTER `viewed_at`;
 ALTER TABLE `stats` ADD `qna_at` TIMESTAMP NULL AFTER `qna_score`;
 ALTER TABLE `stats` ADD `qna_score` FLOAT NULL AFTER `qna_correct`;
 

@@ -105,6 +105,7 @@ $(document).keyup(function(event) {
         else if(event.keyCode == 39) // right arrow
         {
             next();
+            touchViews();
         }
     }
 
@@ -875,7 +876,7 @@ function read(text, charIndex, textId = '#slideDescription' /* used to highlight
 	_utter.onend = function(event) {
 
         //console.log('onend - slide: ' + getCurrentId());
-   	    touch(getCurrentId()); // have to touch it here before it changes ids below
+   	    touchReads(); // have to touch it here before it changes ids below
 
 		if (!_readPage && !_paused && !_cancelled)
 		{
@@ -1141,14 +1142,36 @@ function updateStatus()
 */
 }
 
-function touch(id)
+
+function touchReads()
+{
+    touch(true);
+}
+
+function touchViews()
+{
+    touch(false, true);
+}
+
+function touch(reads, views = false)
 {
     // if it's a definition, update read count
     if (deck.touchPath !== null && deck.touchPath.length > 0) // if touchPath set
     {
-        var path = deck.touchPath + '?definition_id=' + id + '&reads=1';
+        var path = deck.touchPath + '?definition_id=' + getCurrentId();
 
-        ajaxexec(path); // touch it and update stats
+        if (reads)
+        {
+            path += '&reads=1';
+        }
+
+        if (views)
+        {
+            path += '&views=1';
+        }
+
+        if (reads || views)
+            ajaxexec(path); // touch it and update stats
 
         console.log('reader::touch() ajax path: ' + path);
     }

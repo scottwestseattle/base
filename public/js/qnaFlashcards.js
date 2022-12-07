@@ -104,10 +104,15 @@ function showQuestion()
 	var a = getAnswer();
 	var extra = getExtra();
 
-    // set up 'Go To Question' link
+    // set up 'Go To Question' and 'Delete Question' links
     var id = quiz.qna[quiz.qna[curr].order].id;
+
     var href = '/definitions/show/' + id;
 	$('#goToQuestion').attr("href", href);
+
+    var href = '/definitions/confirmdelete/' + id;
+	$('#deleteQuestion').attr("href", href);
+
     //console.log('href: ' + $('#goToQuestion').attr("href"));
 
 	// show question

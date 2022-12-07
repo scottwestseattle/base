@@ -100,12 +100,15 @@
                 @php
                 $score = empty($record->qna_score) ? 0 : $record->qna_score;
                 $attempts = empty($record->qna_attempts) ? 0 : $record->qna_attempts;
-                $qna_at = empty($record->qna_at) ? 'never' : $record->qna_at;
                 $views = empty($record->views) ? 0 : $record->views;
                 $reads = empty($record->reads) ? 0 : $record->reads;
+                $qna_at = empty($record->qna_at) ? '' : ', Quiz: ' . $record->qna_at;
+                $viewed_at = empty($record->viewed_at) ? '' : ', Viewed: ' . $record->viewed_at;
+                $read_at = empty($record->read_at) ? '' : ', Read: ' . $record->read_at;
                 @endphp
                 @if (true)
-                    <div class="small-thin-text steelblue" style="">Quiz: {{$attempts}}, Score: {{round($score * 100.0, 1)}}%, Views: {{$views}}, Reads: {{$reads}}, Created: {{$record->created_at}}</div>
+                    <div class="small-thin-text steelblue" style="">Quiz: {{$attempts}}, Score: {{round($score * 100.0, 1)}}%, Views: {{$views}}, Reads: {{$reads}}</div>
+                    <div class="small-thin-text steelblue" style="">Created: {{$record->created_at}}{{$qna_at}}{{$viewed_at}}{{$read_at}}</div>
                 @elseif ($attempts > 0)
                     <div class="small-thin-text" style="">Flashcard Views: {{$attempts}}, Last: {{$qna_at}}</div>
                 @else

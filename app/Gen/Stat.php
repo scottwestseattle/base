@@ -98,11 +98,13 @@ class Stat extends Model
         //
         $now = DateTimeEx::getTimestamp();
 		$record->views += $views;
-		if ($views > 0) // if views is updated, set viewed_at field
+		if ($views > 0) // if views is updated, update viewed_at field
             $record->viewed_at = $now;
 
         // add reads
 		$record->reads += $reads;
+		if ($reads > 0) // if reads is updated, update read_at field
+            $record->read_at = $now;
 
         //
         // qna stats / calculate the score
@@ -112,7 +114,7 @@ class Stat extends Model
 
         $qna_score = ($record->qna_correct > 0) ? ($record->qna_correct / $record->qna_attempts) : 0.0;
         $record->qna_score = $qna_score;
-		if ($qna_attempts > 0) // if qna, set qna_at field
+		if ($qna_attempts > 0) // if qna done, update qna_at field
             $record->qna_at = $now;
 
 		try

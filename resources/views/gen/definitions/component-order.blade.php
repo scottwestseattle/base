@@ -17,7 +17,8 @@
         <ul class="small-thin-text dropdown-menu dropdown-menu-right" style="z-index:10000; background-color:white;">
             <li><a class="dropdown-item {{c($order, 'desc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=desc">Newest</a></li>
             <li><a class="dropdown-item {{c($order, 'asc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=asc">Oldest</a></li>
-            <li><a class="dropdown-item {{c($order, 'attempts')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=attempts">Attempts</a></li>
+            <li><a class="dropdown-item {{c($order, 'attempts')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=attempts">Attempts - Most</a></li>
+            <li><a class="dropdown-item {{c($order, 'attempts-asc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=attempts-asc">Attempts - Fewest</a></li>
             <li><a class="dropdown-item {{c($order, 'score')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=score">Score</a></li>
             <li><a class="dropdown-item {{c($order, 'views')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=views">Views - Most</a></li>
             <li><a class="dropdown-item {{c($order, 'views-asc')}}" href="/definitions/list-tag/{{$id}}?count={{$count}}&order=views-asc">Views - Fewest</a></li>

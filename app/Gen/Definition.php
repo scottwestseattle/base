@@ -1091,7 +1091,7 @@ class Definition extends Model
 
         if ($order === 'help')
         {
-            dump("order: asc|desc|atoz|ztoa|incomplete|owner|help");
+            dump("order: asc|desc|atoz|ztoa|incomplete|attempts|attempts-asc|score|views|views-asc|reads|reads-asc");
         }
 
         $orderBy = 'id';
@@ -1115,6 +1115,9 @@ class Definition extends Model
             case 'attempts':
                 $orderBy = 'stats.qna_attempts DESC, id DESC';
                 break;
+            case 'attempts-asc':
+                $orderBy = 'stats.qna_attempts, stats.qna_at, id';
+                break;
             case 'score':
                 $orderBy = 'stats.qna_score DESC, id DESC';
                 break;
@@ -1122,13 +1125,13 @@ class Definition extends Model
                 $orderBy = 'stats.views DESC, id DESC';
                 break;
             case 'views-asc':
-                $orderBy = 'stats.views, id';
+                $orderBy = 'stats.views, stats.viewed_at, id';
                 break;
             case 'reads':
                 $orderBy = 'stats.reads DESC, id DESC';
                 break;
             case 'reads-asc':
-                $orderBy = 'stats.reads, id';
+                $orderBy = 'stats.reads, stats.read_at, id';
                 break;
             default:
                 break;
@@ -1156,7 +1159,7 @@ class Definition extends Model
         {
             // raw sql
             $q = '
-                SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at
+                SELECT def.*, stats.qna_attempts, stats.viewed_at, stats.qna_at, stats.views_at, stats.reads_at
                 FROM `tags`
                 JOIN definition_tag as dt on dt.tag_id = tags.id
                 JOIN definitions as def on def.id = dt.definition_id
@@ -1175,8 +1178,9 @@ class Definition extends Model
         }
         else
         {
-            $records = Tag::select('tags.user_id as user_Id', 'definitions.id as id', 'tags.id as tag_id', 'definitions.*',
-                'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads')
+            $records = Tag::select('tags.user_id as user_Id', 'tags.id as tag_id', 'tags.name as tag_name',
+                'definitions.id as id', 'definitions.*',
+                'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at')
                 ->join('definition_tag', function($join) {
                     $join->on('definition_tag.tag_id', 'tags.id');
                 })
@@ -1199,6 +1203,7 @@ class Definition extends Model
                 //->toSql();
 
             //dump(($orderBy));
+            //dump(($records));
         }
 
 		return $records;
