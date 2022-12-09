@@ -344,6 +344,11 @@ class DateTimeEx
         return $rc;
     }
 
+    static public function getShortDate($sDate, $format = null)
+    {
+        return self::getShortDateTime($sDate, 'M-d');
+    }
+
     static public function getShortDateTime($sDate, $format = null)
     {
         $format = isset($format) ? $format : 'M-d H:i';

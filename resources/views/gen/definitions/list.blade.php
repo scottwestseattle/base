@@ -102,13 +102,26 @@
                 $attempts = empty($record->qna_attempts) ? 0 : $record->qna_attempts;
                 $views = empty($record->views) ? 0 : $record->views;
                 $reads = empty($record->reads) ? 0 : $record->reads;
-                $qna_at = empty($record->qna_at) ? '' : ', Quiz: ' . $record->qna_at;
-                $viewed_at = empty($record->viewed_at) ? '' : ', Viewed: ' . $record->viewed_at;
-                $read_at = empty($record->read_at) ? '' : ', Read: ' . $record->read_at;
+
+                $created_at = 'Created: ' . App\DateTimeEx::getShortDate($record->created_at);
+                $qna_at = empty($record->qna_at) ? '' : 'Quiz: ' . App\DateTimeEx::getShortDate($record->qna_at);
+                $viewed_at = empty($record->viewed_at) ? '' : 'Viewed: ' . App\DateTimeEx::getShortDate($record->viewed_at);
+                $read_at = empty($record->read_at) ? '' : 'Read: ' . App\DateTimeEx::getShortDate($record->read_at);
+                $class = 'ml-0 badge-dark badge-green badge-small';
                 @endphp
                 @if (true)
-                    <div class="small-thin-text steelblue" style="">Quiz: {{$attempts}}, Score: {{round($score * 100.0, 1)}}%, Views: {{$views}}, Reads: {{$reads}}</div>
-                    <div class="small-thin-text steelblue" style="">Created: {{$record->created_at}}{{$qna_at}}{{$viewed_at}}{{$read_at}}</div>
+                    <div class="small-thin-text steelblue" style="">
+                        @component('components.badge', ['class' => $class, 'text' => 'Quiz: ' . $attempts])@endcomponent
+                        @component('components.badge', ['class' => $class, 'text' => 'Score: ' . round($score * 100.0, 1) . '%'])@endcomponent
+                        @component('components.badge', ['class' => $class, 'text' => 'Views: ' . $views])@endcomponent
+                        @component('components.badge', ['class' => $class, 'text' => 'Reads: ' . $reads])@endcomponent
+                    </div>
+                    <div class="small-thin-text steelblue" style="">
+                        @component('components.badge', ['class' => $class, 'text' => $created_at])@endcomponent
+                        @component('components.badge', ['class' => $class, 'text' => $qna_at])@endcomponent
+                        @component('components.badge', ['class' => $class, 'text' => $viewed_at])@endcomponent
+                        @component('components.badge', ['class' => $class, 'text' => $read_at])@endcomponent
+                    </div>
                 @elseif ($attempts > 0)
                     <div class="small-thin-text" style="">Flashcard Views: {{$attempts}}, Last: {{$qna_at}}</div>
                 @else

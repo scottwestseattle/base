@@ -13,7 +13,6 @@ AND def.language_flag = 1
 ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
 LIMIT 10
 
-
 NEW DB Changes:
 ALTER TABLE `stats` ADD `read_at` TIMESTAMP NULL AFTER `viewed_at`;
 ALTER TABLE `stats` ADD `qna_at` TIMESTAMP NULL AFTER `qna_score`;

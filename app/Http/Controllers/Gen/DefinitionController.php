@@ -46,7 +46,7 @@ class DefinitionController extends Controller
             'view', 'permalink',
 			'confirmDelete', 'delete',
             'add', 'create',
-            'edit', 'update',
+            'edit', 'update', 'editOrShow',
 
             // snippets
             'snippets', 'indexSnippets', 'filterSnippets',
@@ -359,6 +359,16 @@ class DefinitionController extends Controller
 			'record' => $record,
 			'favoriteLists' => $lists,
 			]);
+    }
+
+	public function editOrShow(Definition $definition)
+    {
+		$record = $definition;
+
+        if ($record->user_id == Auth::id()) // if it's mine
+            return redirect('/definitions/edit/' . $record->id);
+        else
+            return redirect('/definitions/show/' . $record->id);
     }
 
 	public function edit(Definition $definition)

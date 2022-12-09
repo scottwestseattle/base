@@ -515,6 +515,7 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// edit
 	Route::get('/edit/{definition}', [DefinitionController::class, 'edit']);
+	Route::get('/edit-or-show/{definition}', [DefinitionController::class, 'editOrShow']);
 	Route::post('/update/{definition}', [DefinitionController::class, 'update']);
 
 	// publish
