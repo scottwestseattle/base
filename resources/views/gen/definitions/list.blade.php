@@ -40,10 +40,10 @@
 </div>
 
 <h3 name="" class="" style="margin-bottom:10px;">{{$name}}@component('components.badge', ['text' => count($records)])@endcomponent
+    <span class="small-thin-text pl-0 middle">
+        @component('gen.definitions.component-order', ['parms' => $parms])@endcomponent
+    </span>
     @if (isset($tag) && (isAdmin() || App\User::isOwner($tag->user_id)))
-        <span class="small-thin-text pl-0 middle">
-            @component('gen.definitions.component-order', ['parms' => $parms])@endcomponent
-        </span>
         <span class="small-thin-text pl-3 middle">
            @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/remove-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
         </span>

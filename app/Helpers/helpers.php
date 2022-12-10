@@ -313,6 +313,8 @@ if (!function_exists('alpha')) {
 if (!function_exists('alphanum')) {
 	function alphanum($text, $strict = false, $plus = null)
 	{
+	    $text = trim($text);
+
 		if (isset($text))
 		{
 			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
@@ -1089,21 +1091,39 @@ if (!function_exists('countLetters')) {
 }
 
 if (!function_exists('crackParms')) {
-    function crackParms($request)
+    function crackParms($request, $defaults = null)
     {
         $parms = null;
 
-        $parms['count'] = (isset($request['count'])) ? $request['count'] : LIST_LIMIT_DEFAULT;
+        // these are always set
+        $parms['count'] = (isset($request['count'])) ? $request['count'] : (isset($defaults['count']) ? $defaults['count'] : LIST_LIMIT_DEFAULT);
         $parms['start'] = (isset($request['start'])) ? $request['start'] : 0;
 
+        // these are set ONLY if in the $request OR in the $defaults
         if (isset($request['order']))
             $parms['order'] = $request['order'];
+        else if (isset($defaults['order']))
+            $parms['order'] = $defaults['order'];
 
         if (isset($request['action']))
             $parms['action'] = $request['action'];
+        else if (isset($defaults['action']))
+            $parms['action'] = $defaults['action'];
 
         if (isset($request['tag']))
             $parms['tag'] = $request['tag'];
+        else if (isset($defaults['tag']))
+            $parms['tag'] = $defaults['tag'];
+
+        if (isset($request['title']))
+            $parms['title'] = $request['title'];
+        else if (isset($defaults['title']))
+            $parms['title'] = $defaults['title'];
+
+        if (isset($request['return']))
+            $parms['return'] = $request['return'];
+        else if (isset($defaults['return']))
+            $parms['return'] = $defaults['return'];
 
         return $parms;
     }

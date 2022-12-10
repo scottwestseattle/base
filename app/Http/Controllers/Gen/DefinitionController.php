@@ -1618,16 +1618,14 @@ class DefinitionController extends Controller
 		]);
     }
 
-	public function readSnippetsLatest(Request $request, $count = null)
+	public function readSnippets(Request $request)
     {
-        return $this->readSnippets($request, $count, 'Latest Practice Text', 'favorites', 'id DESC');
-    }
+        $parms = crackParms($request, ['title' => __('proj.Practice Text'), 'return' => 'practice']);
+        //dump($parms);
 
-	public function readSnippets(Request $request, $count = PHP_INT_MAX, $title = null, $return = null, $orderBy = null)
-    {
-        $title = isset($title) ? alphanum($title) : 'Practice Text';
-        $return = isset($return) ? alphanum($return) : 'practice';
-        $count = intval($count);
+        $title = $parms['title'];
+        $return = $parms['return'];
+        $count = $parms['count'];
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
         $records = Definition::getSnippets(['limit' => $count, 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
@@ -2001,27 +1999,46 @@ class DefinitionController extends Controller
 
 	public function convertTextToFavorites(Request $request, Entry $entry)
     {
-		$record = $entry;
+        $record = $entry;
+        $parms = null;
         $records = null;
 
         //
-		// split text into text and translations
-		//
-		try
-		{
-    		$records = Quiz::makeFlashcards($record->description, $record->description_translation);
-		}
-		catch (\Exception $e)
-		{
-			$msg = 'Error making flashcards';
-   			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
-			return back();
-		}
+        // split text into text and translations
+        //
+        try
+        {
+            $records = Quiz::makeFlashcards($record->description, $record->description_translation);
+            $parms['translation'] = $records;
+        }
+        catch (\Exception $e)
+        {
+            $msg = 'Error making flashcards';
+            logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+            return back();
+        }
 
+   		if ($request->isMethod('post'))
+        {
+            // do the conversion
+            $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
+           	return redirect('/definitions/list-tag/' . $parms['tagId']);
+        }
+
+		return view(VIEWS . '.convert-text-to-favorites', [
+			'record' => $record,
+			'parms' => $parms,
+		]);
+
+        return redirect('favorites');
+    }
+
+    private function doConvertTextToFavorites($request, $title, $records)
+    {
         if (!empty($records))
         {
             // create the favorites list tag
-            $name = alphanum($record->title);
+            $name = alphanum($title);
             $tag = Tag::createUserFavoriteList($name);
 
             if (!empty($tag))
@@ -2038,6 +2055,6 @@ class DefinitionController extends Controller
             }
         }
 
-    	return redirect('/definitions/list-tag/' . $tag->id);
+        return ['tagId' => $tag->id];
     }
 }

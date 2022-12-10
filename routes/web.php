@@ -474,7 +474,6 @@ Route::group(['prefix' => 'practice'], function () {
     Route::get('/show/{definition}', [DefinitionController::class, 'showSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
     Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
-	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 	Route::get('/filter/{parms}', [DefinitionController::class, 'filterSnippets']);
     Route::get('/{id?}', [DefinitionController::class, 'snippets']);
@@ -490,8 +489,7 @@ Route::group(['prefix' => 'dictionary'], function () {
 
 // Snippets
 Route::group(['prefix' => 'snippets'], function () {
-	Route::get('/read-latest/{count?}', [DefinitionController::class, 'readSnippetsLatest']);
-	Route::get('/read/{count?}', [DefinitionController::class, 'readSnippets']);
+	Route::get('/read', [DefinitionController::class, 'readSnippets']);
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 
 	// flashcards / quiz have two routes
@@ -554,6 +552,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	// actions on all favorites: read, qna, flashcards
 	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview']);
 	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites']);
+	Route::post('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites']);
 
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);

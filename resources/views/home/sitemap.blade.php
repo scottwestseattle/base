@@ -60,8 +60,8 @@
     <div><a target="_blank" href="/favorites">Favorites</a></div>
     <div><a target="_blank" href="/tags/add-user-favorite-list">Add Favorites List</a></div>
     <hr/>
-    <div><a target="_blank" href="/snippets/read-latest/20">Latest Practice Text - Read (20)</a></div>
-    <div><a target="_blank" href="/snippets/read-latest/100">Latest Practice Text - Read (100)</a></div>
+    <div><a target="_blank" href="/snippets/read?count=20&order=desc">Latest Practice Text - Read (20)</a></div>
+    <div><a target="_blank" href="/snippets/read?count=100&order=desc">Latest Practice Text - Read (100)</a></div>
     <div><a target="_blank" href="/snippets/review/flashcards/20">Latest Practice Text - Flashcards (20)</a></div>
     <hr/>
     <div><a target="_blank" href="/definitions/read-examples?count=20">Dictionary Examples - List (20)</a></div>
@@ -103,7 +103,7 @@
     <h3 class="{{$classH3}}">Practice Text</h3>
     <div><a target="_blank" href="/practice">Practice Text</a></div>
     <div><a target="_blank" href="/snippets/read">Snippets Read</a></div>
-    <div><a target="_blank" href="/snippets/read/5">Snippets Read (5)</a></div>
+    <div><a target="_blank" href="/snippets/read?count=5">Snippets Read (5)</a></div>
     <div><a target="_blank" href="/snippets/review/flashcards">Snippets Flashcards</a></div>
     <div><a target="_blank" href="/snippets/review/flashcards/20">Snippets Flashcards (20)</a></div>
     <hr/>

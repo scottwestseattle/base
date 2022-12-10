@@ -3,6 +3,8 @@
     $count = isset($options['count']) ? $options['count'] : LIST_LIMIT_DEFAULT;
     $start = isset($options['start']) ? $options['start'] + $count : 0;
     $showingAll = false; //count($records) < $count;
+    $class = 'ml-0 badge-dark badge-green badge-small';
+    $style = 'margin-right:3px; font-size:10px; margin-top:5px; float:left;';
 @endphp
 @if (isset($records))
 <div class="text-center mt-2">
@@ -39,10 +41,9 @@
                             <div class="float-left mr-3">
                                 <img width="25" src="/img/flags/{{getSpeechLanguage($record->language_flag)['code']}}.png" />
                             </div>
-
-                            <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
-                            <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{strtolower(trans_choice('ui.Word', 2))}}</a></div>
-                            <div style="margin-right:10px; font-size:10px; margin-top:5px; float:left;">{{countLetters($record->description)}} {{strtolower(trans_choice('ui.Letter', 2))}}</div>
+                            <div class="" style="{{$style}}">@component('components.badge', ['class' => $class, 'text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent</div>
+                            <div class="" style="{{$style}}"><a href="/entries/stats/{{$record->id}}">@component('components.badge', ['class' => $class, 'text' => str_word_count($record->description) . ' ' . strtolower(trans_choice('ui.Word', 2))])@endcomponent</div></a>
+                            <div class="" style="{{$style}}">@component('components.badge', ['class' => $class, 'text' => countLetters($record->description) . ' ' . strtolower(trans_choice('ui.Letter', 2))])@endcomponent</div>
 
                             @if (isAdmin() || App\User::isOwner($record->user_id))
                                 @if (isAdmin())

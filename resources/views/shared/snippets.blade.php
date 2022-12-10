@@ -140,7 +140,7 @@
 @if (isset($options['records']) && count($options['records']) > 0)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
-        @component('components.icon-read', ['href' => "/snippets/read", 'float' => 'float-left'])@endcomponent
+        @component('components.icon-read', ['href' => "/snippets/read?order=desc", 'float' => 'float-left'])@endcomponent
     </h3>
     <div style="clear:both;">
         <div class="medium-text" style="margin-bottom:3px;">

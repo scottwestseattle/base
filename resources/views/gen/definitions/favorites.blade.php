@@ -125,10 +125,10 @@
                     <a class="btn btn-primary btn-xs" role="button" href="/snippets/review/flashcards/20">
                         @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/read-latest/20">
+                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/read?count=20&order=desc&return=favorites">
                         @LANG('proj.Reader') (20)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/read-latest/100">
+                    <a class="btn btn-primary btn-xs" role="button" href="/snippets/read?count=100&order=desc&return=favorites">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
