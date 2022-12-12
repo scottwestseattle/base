@@ -83,6 +83,17 @@ class Definition extends Model
         return isset($pos) && $pos > DEFINITIONS_POS_NOTSET ? self::$_pos[$pos] : '';
     }
 
+    static public function getIds($records)
+    {
+		$ids = [];
+
+		if (isset($records) && count($records) > 0)
+            foreach($records as $record)
+                $ids[] = $record->id;
+
+		return $ids;
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Relationships
@@ -1012,19 +1023,18 @@ class Definition extends Model
 
 	static public function getSnippets($parms = null)
 	{
-	    //dump($parms);
-
 		$records = [];
 
-		$limit = isset($parms['limit']) ? $parms['limit'] : PHP_INT_MAX;
+		$limit = isset($parms['count']) ? $parms['count'] : LIST_LIMIT_DEFAULT;
 		$start = isset($parms['start']) ? $parms['start'] : 0;
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
-		$sort = isset($parms['sort']) ? $parms['sort'] : 'owner';
-		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'updated_at DESC';
-        // dump($orderBy);
+		$order = isset($parms['order']) ? $parms['order'] : 'owner';
+		$orderBy = self::crackOrder($parms, 'desc');
+        //dump('orderBy: ' . $orderBy);
+        //dump($parms);
 
         if (isAdmin()) // show all records
         {
@@ -1034,7 +1044,7 @@ class Definition extends Model
 
 		try
 		{
-		    if ($userId == 0 || $sort != 'owner')
+		    if ($userId == 0 || $order != 'owner')
 		    {
 		        //
 		        // non-logged-in users OR non-owner default sort:

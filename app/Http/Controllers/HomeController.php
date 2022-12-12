@@ -122,7 +122,7 @@ class HomeController extends Controller
         // get the latest snippets
         //
         $snippets = Definition::getSnippets([
-            'limit' => $snippetsLimit,
+            'count' => $snippetsLimit,
             'languageId' => $siteLanguage,
             'languageFlagCondition' => $languageFlagCondition,
             'userId' => Auth::check() ? Auth::id() : 0,

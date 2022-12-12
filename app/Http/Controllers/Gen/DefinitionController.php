@@ -820,6 +820,7 @@ class DefinitionController extends Controller
 
 	public function indexSnippets(Request $request)
     {
+        $request['showForm'] = true;
         return $this->getSnippets($request);
     }
 
@@ -859,7 +860,7 @@ class DefinitionController extends Controller
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
 
-        $options['limit']                   = $count;
+        $options['count']                   = $count;
         $options['start']                   = $start;
         $options['languageId']              = $siteLanguage;
         $options['languageFlagCondition']   = $languageFlagCondition;
@@ -1621,14 +1622,14 @@ class DefinitionController extends Controller
 	public function readSnippets(Request $request)
     {
         $parms = crackParms($request, ['title' => __('proj.Practice Text'), 'return' => 'practice']);
+        $parms['languageId'] = Site::getLanguage()['id'];
+		$parms['languageFlagCondition'] = ($parms['languageId'] == LANGUAGE_ALL) ? '<=' : '=';
         //dump($parms);
 
         $title = $parms['title'];
         $return = $parms['return'];
         $count = $parms['count'];
-        $siteLanguage = Site::getLanguage()['id'];
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
-        $records = Definition::getSnippets(['limit' => $count, 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+        $records = Definition::getSnippets($parms);
 
         if (count($records) > 0)
         {
@@ -1641,18 +1642,29 @@ class DefinitionController extends Controller
 
         $text = [];
         $translations = [];
+        $ids = [];
         foreach($records as $record)
         {
-    		$text = array_merge($text, Spanish::getSentences($record->title));
-
-            // these don't match yet because some snippets have more than one sentence
-    		$trx = (strlen($record->translation_en) > 0) ? $record->translation_en : '(none)';
-    		$translations = array_merge($translations, Spanish::getSentences($trx));
+            if (false) // old way which split each snippet into sentences
+            {
+                // these don't match yet because some snippets have more than one sentence
+                $text = array_merge($text, Spanish::getSentences($record->title));
+                $trx = (strlen($record->translation_en) > 0) ? $record->translation_en : '(none)';
+                $translations = array_merge($translations, Spanish::getSentences($trx));
+            }
+            else
+            {
+                // new way: treat each snippet separately no matter what it contains (done to keep stats and translations in sync)
+                $text[] = $record->title;
+                $translations[] = $record->translation_en;
+        		$ids[] = $record->id;
+            }
         }
-        $lines = ['text' => $text, 'translations' => $translations];
+        $lines = ['text' => $text, 'translations' => $translations, 'ids' => $ids];
 
         $options['return'] = '/' . $return;
         $options['randomOrder'] = true;
+        $options['touchPath'] = '/stats/update-stats';
 
         if (isset($orderBy))
             $options['orderBy'] = $orderBy;
@@ -1768,10 +1780,7 @@ class DefinitionController extends Controller
 
 		$words = self::formatDefinitions($records, $examplesOnly);
 		$lines['text'] = $words;
-		$ids = [];
-		foreach($records as $record)
-		    $ids[] = $record->id;
-		$lines['ids'] = $ids;
+		$lines['ids'] = Definition::getIds($records);
 
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
 

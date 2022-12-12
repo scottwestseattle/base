@@ -1,11 +1,9 @@
 @php
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
-
-    $rpp = 50;
-    $nextCount = (isset($options['count'])) ? $options['count'] : $rpp;
-    $nextStart = (isset($options['start'])) ? $options['start'] + $rpp : 0;
-    $sort = (isset($options['order'])) ? $options['order'] : '';
+    $count = (isset($options['count']) && $options['count'] > 0) ? $options['count'] : LIST_LIMIT_DEFAULT;
+    $nextStart = (isset($options['start'])) ? $options['start'] + $count : 0;
+    $order = (isset($options['order'])) ? $options['order'] : 'desc';
     $autofocus = (isset($options['autofocus']) && $options['autofocus']) ? 'autofocus' : '';
 @endphp
 
@@ -140,7 +138,7 @@
 @if (isset($options['records']) && count($options['records']) > 0)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
-        @component('components.icon-read', ['href' => "/snippets/read?order=desc", 'float' => 'float-left'])@endcomponent
+        @component('components.icon-read', ['href' => "/snippets/read?count=$count&order=$order", 'float' => 'float-left'])@endcomponent
     </h3>
     <div style="clear:both;">
         <div class="medium-text" style="margin-bottom:3px;">
@@ -148,13 +146,13 @@
             <span class="ml-2" style="vertical-align:bottom;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
             <a class="ml-2 btn btn-success btn-xs" onclick="$('#filter-menu').toggle()" type="button">Filter</a>
             <div id="filter-menu" class="hidden mt-2">
-                <span class=""     style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=asc&count=50">@LANG('ui.Oldest')</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=desc&count=50">@LANG('ui.Newest')</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=atoz&count=50">A-Z</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=ztoa&count=50">Z-A</a></span>
+                <span class=""     style="vertical-align:bottom;"><a href="/practice/index?order=asc&count=50">@LANG('ui.Oldest')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=desc&count=50">@LANG('ui.Newest')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=atoz&count=50">A-Z</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=ztoa&count=50">Z-A</a></span>
                 @if (Auth::check())
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=owner&count=50">@LANG('proj.My Text')</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/filter/parms?sort=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=owner&count=50">@LANG('proj.My Text')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
                 @endif
             </div>
         </div>
@@ -162,11 +160,9 @@
         <div class="text-center mt-3" style="">
         <div style="display: inline-block; width:100%">
             <table style="width:100%;">
-            <?php $count = 0; ?>
 
             @if (isset($options['records']))
             @foreach($options['records'] as $record)
-
             @php
                 $iconColor = 'default';
                 $linkColor = 'purple';
@@ -234,7 +230,9 @@
                                         <div class="small-thin-text float-left ml-2">({{$owner}})</div>
                                     @endif
 
-                                    <span class="ml-2 small-thin-text">{{trans_choice('ui.View', 2)}}: {{$record->view_count}}</span>
+                                    @if (Auth::check())
+                                        <span class="ml-2 small-thin-text">{{trans_choice('ui.View', 2)}}: {{$record->view_count}}</span>
+                                    @endif
 
                                 </div>
                             </td>
@@ -250,7 +248,7 @@
             @endif
             </table>
             @if ($options['showAllButton'])
-                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice/index?sort={{$sort}}&start={{$nextStart}}&count={{$nextCount}}">@LANG('ui.Show More')</a></div>
+                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice/index?order={{$order}}&start={{$nextStart}}&count={{$count}}">@LANG('ui.Show More')</a></div>
             @endif
         </div>
     </div>
