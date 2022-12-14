@@ -1099,7 +1099,7 @@ function loadSlide()
 	saveReadLocation(curr);
 	deck.setStates(RUNSTATE_RUN);
 	deck.showSlide();
-	updateStatus();
+	updateLinks();
 }
 
 function onKeypress(e)
@@ -1116,32 +1116,19 @@ function onKeypress(e)
 	}
 }
 
-function updateStatus()
+function updateLinks()
 {
-/*
-	var total = right + wrong;
-	var percent = total > 0 ? (right / total) * 100 : 0;
-	percent = percent.toFixed(2).replace(/\.?0*$/,'');
+    // set up 'Go To Entry' and 'Delete Entry' links
+    var id = getCurrentId();
 
-	$("#statsCount").html("<span class='quizStats'>" + deck.quizTextQuestion + ": " + nbr + "/" + statsMax + "</span>");
-	$("#statsScore").html("<span class='quizStats'>" + deck.quizTextdone + ": " + right + "/" + total + " (" + percent + "%)</span>");
-	$("#statsDebug").html("<span class='quizStats'>"
-		+ "round=" + round
-		+ ", right=" + right
-		+ ", wrong=" + wrong
-		+ ", curr=" + curr
-		+ ", order=" + deck.slides[curr].title
-		+ ", nbr=" + nbr
-		+ ", max=" + max
-		+ ", statsMax=" + statsMax
-		+ "<br/>"
-		+ "<br/>"
-		+ "<span style='font-size: 55%; '>"
-		+ "</span>"
-		+ "</span>");
-*/
+    var href = '/definitions/edit-or-show/' + id;
+	$('#goToEntry').attr("href", href);
+
+    var href = '/definitions/confirmdelete/' + id;
+	$('#deleteEntry').attr("href", href);
+
+    console.log('href: ' + $('#goToEntry').attr("href"));
 }
-
 
 function touchReads()
 {

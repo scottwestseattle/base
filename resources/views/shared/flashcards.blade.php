@@ -176,10 +176,10 @@
 				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
 			</div>
 			<div class="mt-1 ml-1 small-thin-text">
-                <a id="goToQuestion" href="" target="_blank">{{__('proj.Go To Entry')}}</a>
+                <a id="goToEntry" href="" target="_blank">{{__('proj.Go To Entry')}}</a>
 			</div>
 			<div class="mt-1 ml-1 small-thin-text">
-                <a id="deleteQuestion" href="" target="_blank">{{__('base.Delete Entry')}}</a>
+                <a id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
 			</div>
 		</div>
 

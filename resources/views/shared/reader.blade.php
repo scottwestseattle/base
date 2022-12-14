@@ -8,6 +8,7 @@
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
 	$hasTranslation = isset($lines['translation']);// && count($lines['text']) == count($lines['translation']); // translation matches text
 	$showTranslationControls = isset($lines['translation']); // show the translation in case it needs work
+	$mobileOnly = false && isMobile() ? '' : 'hidden'; // off for now
 @endphp
 
 <!-------------------------------------------------------->
@@ -137,8 +138,10 @@
 					<div><span class="medium-thin-text" id="title">{{$title}}</span></div>
 					<div class="small-thin-text">
 						<span id="slideCount"></span>
-						<span id="clock" class="ml-3">00:00</span>
-						<span class="statusMsg ml-3">Wake not set</span>
+						<span id="clock" class="ml-2">00:00</span>
+						<span id="" class="ml-2"><a id="goToEntry" href="" target="_blank">{{__('proj.Go To Entry')}}</a></span>
+						<span id="" class="ml-2"><a id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a></span>
+						<span class="statusMsg ml-3 {{$mobileOnly}}">Wake not set</span>
 					</div>
 
 					<div id="debug"></div>

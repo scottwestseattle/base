@@ -104,16 +104,16 @@ function showQuestion()
 	var a = getAnswer();
 	var extra = getExtra();
 
-    // set up 'Go To Question' and 'Delete Question' links
+    // set up 'Go To Entry' and 'Delete Entry' links
     var id = quiz.qna[quiz.qna[curr].order].id;
 
     var href = '/definitions/edit-or-show/' + id;
-	$('#goToQuestion').attr("href", href);
+	$('#goToEntry').attr("href", href);
 
     var href = '/definitions/confirmdelete/' + id;
-	$('#deleteQuestion').attr("href", href);
+	$('#deleteEntry').attr("href", href);
 
-    //console.log('href: ' + $('#goToQuestion').attr("href"));
+    //console.log('href: ' + $('#goToEntry').attr("href"));
 
 	// show question
 	$("#prompt").html(q);
