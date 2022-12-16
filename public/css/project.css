@@ -1115,7 +1115,7 @@ Misc
 .overlay {
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    background-color: lightBlue; /* Black fallback color */
+    background-color: LightGray; /* Black fallback color */
     overflow-x: hidden; /* Disable horizontal scroll */
 
     max-width: 500px;
@@ -1129,6 +1129,33 @@ Misc
     border: 1px gray solid;
     border-radius:10px;
     opacity:.95;
+}
+
+.popup-search {
+    position: fixed;
+    overflow-y:auto;
+    max-height: 90%;
+    z-index:1;
+    top:  50px;
+    left: 5px;
+
+    background: #e3e3e3;
+
+    max-width: 500px;
+    width: 95%;
+    padding: 10px;
+
+    border: 1px LightGray solid;
+    border-radius:5px;
+}
+
+.popup-search a {
+    color: #0071f8;
+}
+
+.popup-search input {
+    max-width:95%;
+    margin-left:10px;
 }
 
 /****************************************

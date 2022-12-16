@@ -60,7 +60,7 @@
 		@component('layouts.menu-main')@endcomponent
 
 		<!-- Show the Language Menu -->
-		@component('layouts.language', ['showGlobalSearchBox' => $showGlobalSearchBox])@endcomponent
+		@component('layouts.language', ['showGlobalSearchBox' => false /* removed: $showGlobalSearchBox */])@endcomponent
 
 		<!-- Show the admin submenu -->
         @section('menu-submenu')@show

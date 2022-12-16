@@ -1074,7 +1074,7 @@ if (!function_exists('getArrayValue')) {
 if (!function_exists('highlightText')) {
     function highlightText($text, $fgColor = 'black', $bgColor = 'yellow')
     {
-        return '<b><span style="color: ' . $fgColor . '; background-color:' . $bgColor . ';">' . $text . '</span></b>';
+        return '<b><span style="color: ' . $fgColor . '; background-color:' . $bgColor . ';">' . strtolower($text) . '</span></b>';
     }
 }
 

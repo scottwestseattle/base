@@ -10,6 +10,9 @@ define('COOKIE_HOUR', 60);     // Minutes per hour: 60
 define('COOKIE_DAY',  1440);   // Minutes per day:  60 * 24
 define('COOKIE_YEAR', 525600); // Minutes per year: 60 * 24 * 365
 
+define('CASE_INSENSITIVE', 'COLLATE UTF8MB4_GENERAL_CI');   // MYSQL case insensitive
+define('COLLATE_ACCENTS', 'COLLATE utf8mb4_unicode_ci');    // MYSQL ignore accent chars
+
 // misc options
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);

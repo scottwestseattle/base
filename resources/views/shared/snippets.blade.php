@@ -40,8 +40,9 @@
 >
 </div>
 
+@if (false)
 <!--------------------------------------------------------------------------------------->
-<!-- The Search form -->
+<!-- The Search form *** REPLACED BY SEARCH IN MAIN MENU *** -->
 <!--------------------------------------------------------------------------------------->
 @php
     $search = isset($search) ? $search : null;
@@ -52,17 +53,17 @@
     <input value="" name="title" id="title" type="search"
         class="form-control form-control-sm form-control-inline py-2 border-right-0 border"
         placeholder="{{__('proj.Dictionary Search')}}"
-        oninput="showSearchResult(this.value, false); $('#searchOptions').show()"
+        oninput="showSearchResult(this.value, false, 'livesearch'); $('#searchOptions').show()"
         {{$autofocus}}
     />
 
     <div id="searchOptions" class="mb-1 hidden">
-        <table class="table-responsive table-condensed medium-text" style="">
+        <table class="table-responsive table-condensed medium-text" style="border: 0px solid #A5ACB2;">
             <thead>
                 <tr>
                     <td>
                         <button id="" type="button" class="btn-info btn-xs"
-                        onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
+                        onclick="showSearchResult($('#title').val(), true, 'livesearch'); $('#searchOptions').hide();"
                         >Search Articles/Books</button>
 
                         @if (false)
@@ -82,15 +83,19 @@
     <div id="livesearch"></div>
     {{ csrf_field() }}
 </form>
+@endif
 
 <!--------------------------------------------------------------------------------------->
 <!-- The Speech / Record form -->
 <!--------------------------------------------------------------------------------------->
 @if ($showForm)
-<div class="record-form text-center mt-2 p-1">
+<div class="record-form text-center p-1">
 
 	<form method="POST" action="/definitions/create-snippet">
-        <h3 class="practice-title mt-0 pt-0">@LANG('proj.Practice Speaking')</h3>
+        <div class="">
+            <button class="btn btn-xs btn-primary float-left mt-2" style="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" >{{__('ui.Add')}}</button>
+        </div>
+        <h3 class="practice-title mt-0 pt-0" style="" >@LANG('proj.Practice Speaking')</h3>
 		<div class="">
 		    <div style="">
             <textarea

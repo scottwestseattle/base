@@ -508,7 +508,8 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/index', [DefinitionController::class, 'index']);
 
 	// add
-	Route::get('/add/{word?}', [DefinitionController::class, 'add']);
+	Route::get('/add/{word}', [DefinitionController::class, 'add']);
+	Route::post('/add', [DefinitionController::class, 'add']);
 	Route::post('/create', [DefinitionController::class, 'create']);
 
 	// edit

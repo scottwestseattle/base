@@ -117,9 +117,16 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function add($word = null)
+    public function add(Request $request, $word = null)
     {
-		$word = alpha($word);
+		if ($request->isMethod('post'))
+        {
+             $word = alpha($request->title);
+        }
+        else
+        {
+    		$word = alpha($word);
+        }
 
 		return view(VIEWS . '.add', [
 				'word' => $word,
@@ -198,7 +205,9 @@ class DefinitionController extends Controller
             $title = getOrSet($request->title);
         }
 
+        // title can come from commandl like or from form
         $title = alphanum(trim($title));
+
         if (empty($title))
         {
             $msg = __('proj.text is blank');

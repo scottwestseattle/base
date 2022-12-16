@@ -30,8 +30,6 @@ define('DEFINITIONS_POS_PHRASE',        50);
 define('DEFINITIONS_POS_SNIPPET',       51);
 define('DEFINITIONS_POS_OTHER',         60);
 
-define('COLLATE_ACCENTS', 'COLLATE utf8mb4_unicode_ci');
-
 class Definition extends Model
 {
 	use SoftDeletes;
@@ -761,14 +759,16 @@ class Definition extends Model
 
 		try
 		{
+		    $like = 'LIKE ' . CASE_INSENSITIVE;
+
 			$records = Definition::select()
 				->where('deleted_at', null)
     			->where('type_flag', DEFTYPE_DICTIONARY)
-				->where(function ($query) use ($word){$query
-					->where('title', 'LIKE', $word . '%')							// partial match of title
-					->orWhere('translation_en', 'LIKE', $word . '%')				// partial match of translation
-					->orWhere('forms', 'LIKE', '%;' . $word . ';%')					// exact match of ";word;"
-					->orWhere('conjugations_search', 'LIKE', '%;' . $word . '%;%') 	// exact match of ";word;"
+				->where(function ($query) use ($like, $word){$query
+					->where('title', $like, $word . '%')    // partial match of title
+					->orWhere('translation_en', $like, $word . '%')				// partial match of translation
+					->orWhere('forms', $like, '%;' . $word . ';%')					// exact match of ";word;"
+					->orWhere('conjugations_search', $like, '%;' . $word . '%;%') 	// exact match of ";word;"
 					;})
 				->orderBy('title')
 				->get();
@@ -806,16 +806,20 @@ class Definition extends Model
 		{
             try
             {
+    		    $search = ' ' . CASE_INSENSITIVE . ' LIKE "' . $search . '"';
+
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_DICTIONARY)
                     ->where(function ($query) use ($search){$query
-                        ->where('title', 'LIKE', $search)
-                        ->orWhere('forms', 'LIKE', $search)
-                        ->orWhere('conjugations_search', 'LIKE', $search)
-                        ->orWhere('translation_en', 'LIKE', $search)
+                        ->whereRaw('title' . $search)
+                        ->orWhereRaw('forms' . $search)
+                        ->orWhereRaw('conjugations_search' . $search)
+                        ->orWhereRaw('translation_en' . $search)
                         ;})
                     ->orderBy('title')
                     ->get();
+                    //->toSql();
+                    //dd($records);
             }
             catch (\Exception $e)
             {
@@ -949,14 +953,12 @@ class Definition extends Model
 
             try
             {
-                $collation = 'COLLATE UTF8MB4_GENERAL_CI'; // case insensitive
-
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where(function ($query) use ($collation, $search) {
+                    ->where(function ($query) use ($search) {
                         $query
-                        ->whereRaw('title ' . $collation . ' like "' . $search . '"')
-                        ->orWhereRaw('translation_en ' . $collation . ' like "' . $search . '"')
+                        ->whereRaw('title ' . CASE_INSENSITIVE . ' like "' . $search . '"')
+                        ->orWhereRaw('translation_en ' . CASE_INSENSITIVE . ' like "' . $search . '"')
                         ;})
                     ->orderBy('title')
                     ->get();

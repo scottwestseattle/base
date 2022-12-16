@@ -30,13 +30,46 @@
 		</a>
 @endauth
 
-		<a class="navbar-item" href="/search">
+		<a class="navbar-item" href="/search" onclick="event.preventDefault(); $('#popup-search').toggle(); $('#popup-search-text').focus();">
 			<div>
 				<svg class="" width="20" height="20" fill="currentColor" >
 					<use xlink:href="/img/bootstrap-icons.svg#search" />
 				</svg>
 			</div>
 		</a>
+
+<!--------------------------------------------------------------------------------------->
+<!-- The Search form -->
+<!--------------------------------------------------------------------------------------->
+@php
+    $search = isset($search) ? $search : null;
+    $records = isset($records) ? $records : [];
+@endphp
+
+	<div id="popup-search" class="popup-search hidden">
+        <form method="POST" action="/definitions/add" autocomplete="off">
+
+            <input value="" name="title" id="popup-search-text" type="search"
+                class="form-control form-control-sm form-control-inline py-2 xborder-right-0 border"
+                placeholder="{{__('proj.Dictionary Search')}}"
+                oninput="showSearchResult(this.value, false, 'popup-search-results'); $('#popup-search-options').show()"
+            />
+
+            <div class="" style="height: 10px;"></div>
+
+            <div id="popup-search-options" class="mb-1 hidden">
+                <button id="popup-search-button-articles" type="button" class="btn-info btn-xs"
+                onclick="showSearchResult($('#popup-search-text').val(), true, 'popup-search-results'); $('#popup-search-options').hide();"
+                >Search Articles/Books</button>
+            </div>
+
+            <div id="popup-search-results" class=""></div>
+            {{ csrf_field() }}
+        </form>
+	</div>
+<!--------------------------------------------------------------------------------------->
+<!-- End of Search form -->
+<!--------------------------------------------------------------------------------------->
 
 @if (false) // doesn't fit
 		<a class="navbar-item" href="/practice">

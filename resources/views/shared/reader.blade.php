@@ -171,14 +171,13 @@
 	<div id="settings" class="overlay" style="display:none;">
 		<div class="text-center mt-3">
 			<div class="mb-2">
-                <label for="languages" class="checkbox-big-label">{{trans_choice('ui.Voice', 1)}}:</label>
-                <div name="languages" id="languages" class="mt-1" style="display:default;">
+                <label for="languages" class="checkbox-big-label mb-0">{{trans_choice('ui.Voice', 1)}}:</label>
+                <div name="languages" id="languages" class="middle center" style="">
                     <select class="" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
                 </div>
 			</div>
-            <hr />
-            <div>
-                <label for="read_flag" class="checkbox-big-label">@LANG('ui.Read'):</label>
+            <div class="m-0" style="">
+                <label for="read_flag" class="checkbox-big-label" style="margin:0;">@LANG('ui.Read'):</label>
                 <select name="read_flag" id="read_flag">
                     <option value="once">@LANG('proj.Once')</option>
                     <option value="1">1 {{trans_choice('ui.minute', 1)}}</option>
@@ -192,15 +191,14 @@
                 </select>
             </div>
             <hr />
-
-            <div class="">
+            <div class="m-0">
                 <div>@LANG('proj.Seconds to pause between lines'):</div>
                 <a onclick="inc(event, '#pause_seconds', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
                 <div class="middle mb-2" style="min-width:30px;"><span class="ml-2 mr-2" style="font-size:25px;" id="pause_seconds">0</span></div>
                 <a onclick="inc(event, '#pause_seconds', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
             </div>
             <hr />
-            <div class="">
+            <div class="m-0">
                 <div>@LANG('proj.Line Order'):</div>
                 <input type="radio" id="random_order" name="random_order" value="0" {{$randomOrder ? '' : 'checked'}}>
                 <label for="random_order">@LANG('ui.Default')</label><br>
@@ -223,29 +221,14 @@
                         <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
                         <label for="checkbox-flip" class="checkbox-sm steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
                     </div>
-
-                    <div class="mt-1 ml-1">
-                        <input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#translation-show').toggle();" style="position: static;" />
-                        <label for="checkbox-show" class="checkbox-sm steelblue">@LANG('proj.Show All Translations')</label>
-                    </div>
-                    <div class="mt-3 text-left">
-                        <div id="translation-show" class="hidden">
-                        <table><tbody>
-                        @foreach($lines['text'] as $line)
-                            <tr class="mb-3">
-                                <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$line}}</td>
-                                @php
-                                    $trx = (isset($lines['translation'][$loop->index])) ? $lines['translation'][$loop->index] : '';
-                                @endphp
-                                <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$trx}}</td>
-                            </tr>
-                        @endforeach
-                        </tbody></table>
-                        </div>
-                    </div>
                 </div>
                 @endif
             @endif
+
+            <hr/>
+            <div class="submit-button mb-2">
+                <button type="" onclick="$('#settings').toggle();" class="btn btn-primary btn-sm">@LANG('ui.Close')</button>
+            </div>
 
 		</div>
 	</div>

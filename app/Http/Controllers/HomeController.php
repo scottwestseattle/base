@@ -518,9 +518,11 @@ class HomeController extends Controller
         $search = alphanum($searchText);
 		$count = 0;
 
+        //dump($options);
+
         try
         {
-            if ($search != $searchText)
+            if (strlen($search) != strlen($searchText))
             {
                 throw new \Exception("dangerous search characters");
             }
