@@ -656,10 +656,10 @@ if (!function_exists('getLanguageOptions')) {
         $languages = [
             LANGUAGE_EN => 'English',
             LANGUAGE_ES => 'Spanish',
+            LANGUAGE_IT => 'Italian',
 //            LANGUAGE_ZH => 'Chinese',
 //            LANGUAGE_RU => 'Russian',
 //            LANGUAGE_FR => 'French',
-//            LANGUAGE_IT => 'Italian',
 //            LANGUAGE_DE => 'German',
 //            LANGUAGE_KO => 'Korean',
         ];

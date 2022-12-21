@@ -57,11 +57,12 @@
 
             <div class="" style="height: 10px;"></div>
 
-            <div id="popup-search-options" class="mb-1 hidden">
-                <button id="popup-search-button-articles" type="button" class="btn-info btn-xs"
+            <div id="popup-search-options" class="mb-1 hidden float-left mr-1">
+                <button id="popup-search-button-articles" type="button" class="btn btn-info btn-xs"
                 onclick="showSearchResult($('#popup-search-text').val(), true, 'popup-search-results'); $('#popup-search-options').hide();"
                 >Search Articles/Books</button>
             </div>
+            <button onclick="event.preventDefault(); $('#popup-search').hide();" class="btn btn-success btn-xs">Close</button>
 
             <div id="popup-search-results" class=""></div>
             {{ csrf_field() }}

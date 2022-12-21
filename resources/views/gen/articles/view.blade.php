@@ -1,5 +1,13 @@
 @php
     $translation = isset($options['translation']) ? $options['translation'] : null;
+    $translationMatches = true;
+    if (isset($options['translation_matches']) && !$options['translation_matches'])
+    {
+        $translationMatches = false;
+        $cntSentences = count($options['sentences']);
+        $cntTranslations = count($options['sentences_translation']);
+    }
+
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
@@ -84,8 +92,8 @@
                         </a>
                     </div>
                 @endif
-                @if (isset($options['translation_matches']) && !$options['translation_matches'])
-                    <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT</div>
+                @if (!$translationMatches)
+                    <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT ({{$cntSentences}}<>{{$cntTranslations}})</div>
                 @endif
             </div>
         </div>
