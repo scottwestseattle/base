@@ -14,11 +14,6 @@
 
 			<input type="hidden" name="referer" value={{array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER["HTTP_REFERER"] : ''}} />
 
-
-			<div class="mb-3" style="clear:both;">
-				<button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
-			</div>
-
 			<div id="en" style="display:default;">
 
                 @if (isAdmin())
@@ -45,25 +40,9 @@
 
                 @endif
 
-				<div class="entry-title-div mb-3">
-					<label class="tiny">@LANG('proj.Source'):</label>
-					<input type="text" id="source" name="source" placeholder="Source" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source}}" />
-				</div>
-
-				<div class="entry-title-div mb-3">
-					<label class="tiny">@LANG('ui.Author'):</label>
-					<input type="text" id="source_credit" name="source_credit" placeholder="Author" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source_credit}}" />
-				</div>
-
-				<div class="entry-title-div mb-3">
-					<label class="tiny">@LANG('proj.Source Link'):</label>
-					<input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" value="{{$record->source_link}}" />
-				</div>
-
-				<div class="entry-description-div mb-3">
-					<label class="tiny">@LANG('ui.Summary'):</label>
-					<textarea id="description_short" name="description_short" class="form-control entry-description-text" onfocus="setFocus($(this), '#accent-chars')" >{{ $record->description_short }}</textarea>
-				</div>
+                <div class="my-2" style="clear:both;">
+                    <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
+                </div>
 
                 <div class="mb-3">
                     <ul class="nav nav-tabs">
@@ -75,6 +54,9 @@
                         </li>
                         <li class="nav-item">
                             <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3); ajaxexec('/articles/flashcards/view/{{$record->id}}', 'tab-tab3')"><span class="nav-link-tab">{{trans_choice('ui.Show All', 1)}}</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="nav-link-tab4" class="nav-link" href="#" onclick="setTab(event, 4);"><span class="nav-link-tab">{{'ui.Settings'}}</span></a>
                         </li>
                     </ul>
 
@@ -100,6 +82,27 @@
                     </div>
                     <div id="tab-tab3" class="pt-2" style="clear:both; display:none; min-height:500px; overflow-y:auto;">
                         <!-- List of flashcards - will be replaced by ajax on every click -->
+                    </div>
+                    <div id="tab-tab4" class="pt-2" style="clear:both; display:none;">
+                        <div class="entry-title-div mb-3">
+                            <label class="tiny">@LANG('proj.Source'):</label>
+                            <input type="text" id="source" name="source" placeholder="Source" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source}}" />
+                        </div>
+
+                        <div class="entry-title-div mb-3">
+                            <label class="tiny">@LANG('ui.Author'):</label>
+                            <input type="text" id="source_credit" name="source_credit" placeholder="Author" class="form-control" onfocus="setFocus($(this), '#accent-chars')" value="{{$record->source_credit}}" />
+                        </div>
+
+                        <div class="entry-title-div mb-3">
+                            <label class="tiny">@LANG('proj.Source Link'):</label>
+                            <input type="text" id="source_link" name="source_link" placeholder="Source Link" class="form-control" value="{{$record->source_link}}" />
+                        </div>
+
+                        <div class="entry-description-div mb-3">
+                            <label class="tiny">@LANG('ui.Summary'):</label>
+                            <textarea id="description_short" name="description_short" class="form-control entry-description-text" onfocus="setFocus($(this), '#accent-chars')" >{{ $record->description_short }}</textarea>
+                        </div>
                     </div>
                 </div>
 

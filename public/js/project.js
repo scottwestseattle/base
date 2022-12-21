@@ -921,8 +921,10 @@ function setTab(event, tab)
 	{
 		$('#tab-tab2').hide();
 		$('#tab-tab3').hide();
+		$('#tab-tab4').hide();
 		$('#nav-link-tab2').removeClass('active');
 		$('#nav-link-tab3').removeClass('active');
+		$('#nav-link-tab4').removeClass('active');
 
 		$('#tab-tab1').show();
 		$('#nav-link-tab1').addClass('active');
@@ -931,8 +933,10 @@ function setTab(event, tab)
 	{
 		$('#tab-tab1').hide();
 		$('#tab-tab3').hide();
+		$('#tab-tab4').hide();
 		$('#nav-link-tab1').removeClass('active');
 		$('#nav-link-tab3').removeClass('active');
+		$('#nav-link-tab4').removeClass('active');
 
 		$('#tab-tab2').show();
 		$('#nav-link-tab2').addClass('active');
@@ -941,11 +945,25 @@ function setTab(event, tab)
 	{
 		$('#tab-tab1').hide();
 		$('#tab-tab2').hide();
+		$('#tab-tab4').hide();
 		$('#nav-link-tab1').removeClass('active');
 		$('#nav-link-tab2').removeClass('active');
+		$('#nav-link-tab4').removeClass('active');
 
 		$('#tab-tab3').show();
 		$('#nav-link-tab3').addClass('active');
+	}
+	else if (tab == 4)
+	{
+		$('#tab-tab1').hide();
+		$('#tab-tab2').hide();
+		$('#tab-tab3').hide();
+		$('#nav-link-tab1').removeClass('active');
+		$('#nav-link-tab2').removeClass('active');
+		$('#nav-link-tab3').removeClass('active');
+
+		$('#tab-tab4').show();
+		$('#nav-link-tab4').addClass('active');
 	}
 }
 
@@ -1468,12 +1486,12 @@ function getId(id)
         return id;
 }
 
-function showSearchResult(str, searchArticles, output)
+function showSearchResult(str, searchArticles, outputId,)
 {
     if (str.length==0)
     {
-        document.getElementById(output).innerHTML="";
-        document.getElementById(output).style.border="0px";
+        document.getElementById(outputId).innerHTML="";
+        document.getElementById(outputId).style.border="0px";
         return;
     }
 
@@ -1481,12 +1499,12 @@ function showSearchResult(str, searchArticles, output)
 
     xmlhttp.onreadystatechange=function() {
         if (this.readyState==4 && this.status==200) {
-            document.getElementById(output).innerHTML=this.responseText;
-            // document.getElementById(output).style.border="0px solid #A5ACB2";
+            document.getElementById(outputId).innerHTML=this.responseText;
+            // document.getElementById(outputId).style.border="0px solid #A5ACB2";
         }
     }
 
-    //orig: var url = "/definitions/search-ajax/light/" + str;
+    //NEW: var url = "/search-ajax?search=" + str + "&option=" + (searchArticles ? "2" : "1") + "&format=" + (formatDictionary ? "2" : "1");
     var url = "/search-ajax/" + str + "/" + (searchArticles ? "2" : "1");
     //console.log("search text: " + str);
     //console.log("url: " + url + ", searchArticles: " + searchArticles);

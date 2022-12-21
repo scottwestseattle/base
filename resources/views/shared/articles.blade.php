@@ -2,7 +2,7 @@
     $orderBy = isset($orderBy) ? $orderBy : 'default';
     $count = isset($options['count']) ? $options['count'] : LIST_LIMIT_DEFAULT;
     $start = isset($options['start']) ? $options['start'] + $count : 0;
-    $showingAll = false; //count($records) < $count;
+    $showingAll = count($records) == 0 && true; //count($records) < $count;
     $class = 'ml-0 badge-dark badge-green badge-small';
     $style = 'margin-right:3px; font-size:10px; margin-top:5px; float:left;';
 @endphp

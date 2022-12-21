@@ -541,8 +541,8 @@ class Entry extends Model
         $releaseCondition = '>=';
 
         // user
-        $ownerId = 0;
-        $ownerCondition = '>=';
+        $ownerId = Auth::id();
+        $ownerCondition = '=';
 
         //
         // orderBy
@@ -629,6 +629,8 @@ class Entry extends Model
 
         //dump($orderBy);
         //dump($parms);
+        //dump($languageFlag);
+        //dump($languageCondition);
 
 		if (isset($tag)) // should always exist
 		{
@@ -664,8 +666,6 @@ class Entry extends Model
 					->offset($start)
 					->limit($limit)
 					->get();
-
-				//dd($records);
 			}
 			catch (\Exception $e)
 			{

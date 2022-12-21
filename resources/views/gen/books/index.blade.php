@@ -22,7 +22,7 @@
 @endphp
 <div class="container page-normal">
 
-	<h1>{{trans_choice('proj.Book', 2)}} ({{count($books)}})</h1>
+	<h1>{{trans_choice('proj.Book', 2)}}<span class="title-count">({{count($books)}})</span></h1>
 
     <div class="row mb-3">
         @foreach($books as $record)
@@ -60,9 +60,9 @@
         @endforeach
     </div>
 
+	@if (isset($records) && count($records) > 0)
 	<h1>@LANG('proj.Latest Chapters Viewed')</h1>
 	<div>
-	@if (isset($records))
 		@foreach($records as $record)
 		<div class="drop-box-ghost mb-4" style="padding:10px 10px 0px 15px;">
 		    <div class="medium-thin-text" >{{$record->source}}</div>
@@ -98,8 +98,8 @@
 			</div>
 		</div>
 		@endforeach
-	@endif
 	</div>
+	@endif
 
 </div>
 

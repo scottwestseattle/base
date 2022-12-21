@@ -13,12 +13,16 @@ AND def.language_flag = 1
 ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
 LIMIT 10
 
-NEW DB Changes:
+===== NEW DB Changes =====
+UPDATE `entries` SET language_flag = 1 WHERE 1 AND type_flag = 3
+ALTER TABLE `tags` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'see \'LANGUAGE_*\' for values ' AFTER `type_flag`;
+UPDATE `tags` SET language_flag = 1 WHERE 1 AND type_flag = 2
+ALTER TABLE `users` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+===== Done =====
 ALTER TABLE `stats` ADD `read_at` TIMESTAMP NULL AFTER `viewed_at`;
 ALTER TABLE `stats` ADD `qna_at` TIMESTAMP NULL AFTER `qna_score`;
 ALTER TABLE `stats` ADD `qna_score` FLOAT NULL AFTER `qna_correct`;
-
-Done:
 update `definitions` set release_flag = 100 WHERE 1 and release_flag < 100 and type_flag = 1
 ALTER TABLE `codespace_learn`.`definition_user` DROP INDEX `definition_user_definition_id_user_id_unique`, ADD UNIQUE `definition_user_definition_id_user_id_unique` (`definition_id`, `user_id`) USING BTREE;
 ALTER TABLE `definition_user` ADD `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;

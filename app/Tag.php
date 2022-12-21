@@ -9,6 +9,7 @@ use Auth;
 use DB;
 
 use App\Entry;
+use App\Site;
 
 // system Tag names (made unique)
 define('TAG_NAME_WOTD', 'WOTD-4f96d5');
@@ -216,10 +217,12 @@ class Tag extends Model
     {
 		$type = intval($type);
 		$orderBy = ($orderBy != null) ? $orderBy : 'id ASC';
+	    $language = Site::getLanguage();
 
 		$records = $record = Tag::select()
 				->where('deleted_at', null)
 				->where('type_flag', $type)
+				->where('language_flag', $language['id'])
 				->orderByRaw($orderBy)
 				->get();
 

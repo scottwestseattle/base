@@ -23,10 +23,8 @@
         <div class="xl-thin-text">
             <h5>@LANG('ui.Email Address')</h5>
             <p>{{Auth::user()->email}}
-            <h5>@LANG('ui.Password')</h5>
-            <p><a class="" href="{{lurl('password/edit/') . Auth::id()}}">@LANG('base.Update Password')</a></p>
             <h5>@LANG('ui.Name')</h5>
-            <p>{{Auth::user()->name}}
+            <p>{{Auth::user()->name}}</p>
             <h5>@LANG('ui.Joined')</h5>
             <p>{{$date}}</p>
 
@@ -39,13 +37,11 @@
             @endif
         </div>
 
-    @else
-
-
     @endif
 
     <div class="mt-3">
-        <a type="button" class="btn btn-primary" href="/logout">@LANG('ui.Log-out')</a>
+        <a type="button" class="btn btn-primary" href="/users/edit/{{Auth::id()}}">@LANG('ui.Edit')</a>
+        <a type="button" class="btn btn-primary" href="/password/edit/{{Auth::id()}}">@LANG('base.Update Password')</a>
     </div>
 
 </div>

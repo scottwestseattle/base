@@ -27,7 +27,10 @@
 
 	<div class="mb-3">
 		<form method="POST" action="/dictionary/create">
-			<input type="text" id="title" name="title" value="{{$search}}" class="form-control" autocomplete="off" onfocus="$(this).select(); setFocus($(this));" onkeyup="searchDefinitions(event, '#title', '#searchResults', '/definitions/search-ajax/heavy/');" autofocus />
+			<input type="text" id="title" name="title" value="{{$search}}" class="form-control" autocomplete="off"
+			onfocus="$(this).select(); setFocus($(this));"
+            oninput="showSearchResult(this.value, false, 'searchResults');"
+			autofocus />
 		</form>
 	</div>
 

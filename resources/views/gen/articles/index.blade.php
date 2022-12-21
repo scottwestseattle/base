@@ -79,7 +79,7 @@
         </div>
     @endif
 @else
-    <h3 class="">{{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{$countPublic}})</span></h3>
+    <h1 class="">{{trans_choice('proj.Article', 2)}}<span class="title-count"">({{$countPublic}})</span></h1>
     @component('shared.articles', ['records' => $options['public']['records'], 'options' => $options, 'release' => 'public', 'orderBy' => $orderBy])@endcomponent
 @endif
 
