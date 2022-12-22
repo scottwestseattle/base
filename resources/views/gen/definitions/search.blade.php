@@ -6,13 +6,13 @@
 @section('menu-submenu')@component('gen.definitions.menu-submenu')@endcomponent @endsection
 @section('content')
 
-	<h1>@LANG('proj.Dictionary') (<span id="searchDefinitionsResultsCount">{{count($records)}}</span>)
+	<h1>@LANG('proj.Dictionary')<span class="title-count" id="searchDefinitionsResultsCount">({{count($records)}})</span>
 		<span style="" class="small-thin-text mb-2">
 			<a href="/dictionary/search/1">A-Z</a>
 			<a class="ml-2" href="/dictionary/search/2">Z-A</a>
-			<a class="ml-2" href="/dictionary/search/14">{{__('proj.Most Common')}}</a>
+			<a class="ml-2" href="/dictionary/search/14">{{__('proj.Ranked')}}</a>
 			<a class="ml-2" href="/dictionary/search/9">{{trans_choice('proj.Verb', 2)}}</a>
-			<a class="ml-2" href="/dictionary/search/15">{{__('proj.Verbs (most common)')}}</a>
+			<a class="ml-2" href="/dictionary/search/15">{{__('proj.Verbs (Ranked)')}}</a>
 			<a class="ml-2" href="/dictionary/search/3">{{__('proj.Newest')}}</a>
 			<a class="ml-2" href="/dictionary/search/4">{{__('proj.Recent')}}</a>
 			<a class="ml-2" href="/dictionary/search/10">{{__('proj.All')}}</a>
@@ -29,7 +29,7 @@
 		<form method="POST" action="/dictionary/create">
 			<input type="text" id="title" name="title" value="{{$search}}" class="form-control" autocomplete="off"
 			onfocus="$(this).select(); setFocus($(this));"
-            oninput="showSearchResult(this.value, false, 'searchResults');"
+            oninput="showSearchResult(this.value, {{SEARCHTYPE_DEFINITIONS}}, 'title', 'searchResults');"
 			autofocus />
 		</form>
 	</div>

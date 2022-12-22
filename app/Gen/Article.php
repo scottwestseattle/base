@@ -61,6 +61,7 @@ class Article extends Model
 
 		$records = $record = Entry::select()
 				->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
+				->where('language_flag', getLanguageId())
 				->where(function ($query) use($search) {$query
     				->where('release_flag', '>=', Status::getReleaseFlag())
 					->orWhere('user_id', Auth::id())

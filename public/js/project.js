@@ -1486,7 +1486,7 @@ function getId(id)
         return id;
 }
 
-function showSearchResult(str, searchArticles, outputId,)
+function showSearchResult(str, searchType, inputId, outputId)
 {
     if (str.length==0)
     {
@@ -1495,20 +1495,38 @@ function showSearchResult(str, searchArticles, outputId,)
         return;
     }
 
-    var xmlhttp=new XMLHttpRequest();
+    inputId = '#' + inputId;
+
+    let wordInput = $(inputId).val();
+
+    wordInput = '"' + wordInput + '":';
+    let xmlhttp=new XMLHttpRequest();
 
     xmlhttp.onreadystatechange=function() {
         if (this.readyState==4 && this.status==200) {
-            document.getElementById(outputId).innerHTML=this.responseText;
+
+            document.getElementById(outputId).innerHTML="";
+
+            // search text in return string looks like: "tener":
+            if (this.responseText.search(wordInput) === -1)
+            {
+                console.log('input NOT found in output: ' + wordInput);
+            }
+            else
+            {
+                console.log('input found in output: ' + wordInput);
+                document.getElementById(outputId).innerHTML=this.responseText;
+            }
+
+
+            //console.log(this.responseText);
             // document.getElementById(outputId).style.border="0px solid #A5ACB2";
         }
     }
 
-    //NEW: var url = "/search-ajax?search=" + str + "&option=" + (searchArticles ? "2" : "1") + "&format=" + (formatDictionary ? "2" : "1");
-    var url = "/search-ajax/" + str + "/" + (searchArticles ? "2" : "1");
-    //console.log("search text: " + str);
-    //console.log("url: " + url + ", searchArticles: " + searchArticles);
+    var url = "/search-ajax/" + str + "/" + searchType;
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
+    console.log("sent url: " + url + ", searchArticles: " + searchType);
 }
 

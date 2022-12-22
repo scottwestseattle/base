@@ -1,3 +1,7 @@
+@php
+    // books options looks like: books-es
+    $books = 'books-' . App\Site::getLanguage()['code'];
+@endphp
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top app-color-primary">
 	<a class="navbar-brand" href="/">
 		<div class="brand logo middle">
@@ -52,14 +56,14 @@
             <input value="" name="title" id="popup-search-text" type="search"
                 class="form-control form-control-sm form-control-inline py-2 xborder-right-0 border"
                 placeholder="{{__('proj.Dictionary Search')}}"
-                oninput="showSearchResult(this.value, false, 'popup-search-results'); $('#popup-search-options').show()"
+                oninput="showSearchResult(this.value, {{SEARCHTYPE_DICTIONARY}}, 'popup-search-text', 'popup-search-results'); $('#popup-search-options').show()"
             />
 
             <div class="" style="height: 10px;"></div>
 
             <div id="popup-search-options" class="mb-1 hidden float-left mr-1">
                 <button id="popup-search-button-articles" type="button" class="btn btn-info btn-xs"
-                onclick="showSearchResult($('#popup-search-text').val(), true, 'popup-search-results'); $('#popup-search-options').hide();"
+                onclick="showSearchResult($('#popup-search-text').val(), {{SEARCHTYPE_ENTRIES}}, 'popup-search-text', 'popup-search-results'); $('#popup-search-options').hide();"
                 >Search Articles/Books</button>
             </div>
             <button onclick="event.preventDefault(); $('#popup-search').hide();" class="btn btn-success btn-xs">Close</button>
@@ -111,7 +115,7 @@
         @if (isAdmin() || \App\Site::site()->hasOption('articles'))
 		    <li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('proj.Article', 2)}}</a></li>
 		@endif
-        @if (isAdmin() || \App\Site::site()->hasOption('books'))
+        @if (isAdmin() || \App\Site::site()->hasOption($books))
     		<li class="nav-item"><a class="nav-link" href="{{lurl('books')}}">{{trans_choice('proj.Book', 2)}}</a></li>
 		@endif
         @if (isAdmin() || \App\Site::site()->hasOption('dictionary'))

@@ -27,14 +27,22 @@
 		</div>
 
 		<div class="form-group">
-			<label for="frontpage" class="control-label">@LANG('view.Frontpage'):</label>
-			<input type="text" name="frontpage" class="form-control" placeholder="{{__('view.Enter frontpage view file name')}}" />
+			<label for="frontpage" class="control-label">@LANG('ui.Front Page'):</label>
+			<input type="text" name="frontpage" class="form-control" value="fp-learn" />
+			<p class='medium-thin-text'>Options: fp-learn, fp-language (has errors)</p>
 		</div>
 
 		<div class="form-group">
-			<label for="description" class="control-label">@LANG('base.Description'):</label>
-			<textarea name="description" class="form-control"></textarea>
-		<div>
+			<label for="description" class="control-label">@LANG('ui.Description'):</label>
+			<input type="text" name="description" class="form-control" value="base.siteTitle-tools" />
+			<p class='medium-thin-text'>Options: base.siteTitle-lunalanguage, base.siteTitle-codespace, base.siteTitle-localhost, base.siteTitle-tools, </p>
+		</div>
+
+		<div class="form-group">
+			<label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
+			<input type="text" name="options" class="form-control" value="articles;books-es;books-en;books-it;dictionary;fpheader;fpsteps;" />
+			<p class='medium-thin-text'>Options: articles;books-es;books-en;books-it;dictionary;fpheader;fpsteps;</p>
+		</div>
 
 		<div class="form-group">
 			<button type="submit" name="update" class="mt-3 btn btn-primary">@LANG('base.Add')</button>

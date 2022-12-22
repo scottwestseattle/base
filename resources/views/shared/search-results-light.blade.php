@@ -49,11 +49,11 @@
                 <tr>
                     <td>{{trans_choice('proj.' . $record->getTypeFlagName($record->type_flag), 2)}}</td>
                     <td>
-                        @if ($record->isBook())
-                            <a href="/books/show/{{$record->permalink}}" target="">{{Str::startsWith($record->title, $record->source) ? '' : $record->source . ', '}}{{$record->title}}</a>
-                        @else
-                            <a href="/articles/view/{{$record->permalink}}" target="">{{$record->title}}</a>
-                        @endif
+                    @if ($record->isBook())
+                        <div><a href="/books/show/{{$record->permalink}}">{{Str::startsWith($record->title, $record->source) ? '' : $record->source . ', '}}{{$record->title}}</a></div>
+                    @else
+                        <div><a href="/articles/view/{{$record->permalink}}">{{$record->title}}</a></div>
+                    @endif
                         @if (isset($record->matches))
                             @foreach($record->matches as $match)
                                 <div>{!! $match !!}</div>

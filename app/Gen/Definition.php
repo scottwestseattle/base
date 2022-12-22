@@ -13,6 +13,7 @@ use Auth;
 use App\Entry;
 use App\Gen\Definition;
 use App\Gen\Spanish;
+use App\Site;
 use App\Tag;
 use App\User;
 
@@ -418,14 +419,18 @@ class Definition extends Model
 	static public function getNewest($limit)
 	{
 		$records = self::getIndex(DEFINITIONS_SEARCH_NEWEST, $limit);
-
-		// get random indexes
-		$random = self::getRandomIndexes($limit, count($records));
+        $count = count($records);
 		$recs = [];
 
-		// copy words using random indexes
-		foreach($random as $a)
-			$recs[] = $records[$a];
+        if ($count > 0)
+        {
+            // get random indexes
+            $random = self::getRandomIndexes($limit, $count);
+
+            // copy words using random indexes
+            foreach($random as $a)
+                $recs[] = $records[$a];
+        }
 
         return $recs;
 	}
@@ -433,14 +438,18 @@ class Definition extends Model
 	static public function getNewestVerbs($limit)
 	{
 		$records = self::getIndex(DEFINITIONS_SEARCH_NEWEST_VERBS, $limit);
-
-		// get random indexes
-		$random = self::getRandomIndexes($limit, count($records));
+        $count = count($records);
 		$recs = [];
 
-		// copy words using random indexes
-		foreach($random as $a)
-			$recs[] = $records[$a];
+        if ($count > 0)
+        {
+            // get random indexes
+            $random = self::getRandomIndexes($limit, $count);
+
+            // copy words using random indexes
+            foreach($random as $a)
+                $recs[] = $records[$a];
+        }
 
         return $recs;
 	}
@@ -458,14 +467,18 @@ class Definition extends Model
 	static public function getRandomWords($limit)
 	{
 		$records = self::getIndex(DEFINITIONS_SEARCH_RANDOM_WORDS);
-
-		// get random indexes
-		$random = self::getRandomIndexes($limit, count($records));
+        $count = count($records);
 		$recs = [];
 
-		// copy words using random indexes
-		foreach($random as $a)
-			$recs[] = $records[$a];
+        if ($count > 0)
+        {
+            // get random indexes
+            $random = self::getRandomIndexes($limit, $count);
+
+            // copy words using random indexes
+            foreach($random as $a)
+                $recs[] = $records[$a];
+        }
 
 		// return the random words
 		return $recs;
@@ -474,14 +487,18 @@ class Definition extends Model
 	static public function getRandomVerbs($limit)
 	{
 		$records = self::getIndex(DEFINITIONS_SEARCH_RANDOM_VERBS);
-
-		// get random indexes
-		$random = self::getRandomIndexes($limit, count($records));
+        $count = count($records);
 		$recs = [];
 
-		// copy words using random indexes
-		foreach($random as $a)
-			$recs[] = $records[$a];
+        if ($count > 0)
+        {
+            // get random indexes
+            $random = self::getRandomIndexes($limit, $count);
+
+            // copy words using random indexes
+            foreach($random as $a)
+                $recs[] = $records[$a];
+        }
 
 		// return the random words
 		return $recs;
@@ -524,6 +541,8 @@ class Definition extends Model
 		$records = [];
 		$orderBy = 'title';
 		$verbs = false;
+		$languageFlag = getLanguageId();
+
 		switch($sort)
 		{
 			case DEFINITIONS_SEARCH_REVERSE:
@@ -576,14 +595,8 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
     			    ->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
     			    ->where('pos_flag', DEFINITIONS_POS_VERB)
-					//->where(function ($query) {$query
-					//	->where('title', 'like', '%ar')
-					//	->orWhere('title', 'like', '%er')
-					//	->orWhere('title', 'like', '%ir')
-					//	;})
-					->whereNotNull('conjugations_search')
-					->whereNotNull('conjugations')
 					->where('rank', $rankCondition, $rankValue)
 					->limit($limit)
 					->orderByRaw($orderBy)
@@ -593,6 +606,7 @@ class Definition extends Model
 			{
 				$records = Definition::select()
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->whereNull('deleted_at')
 					->whereNull('translation_en')
 					->orderByRaw($orderBy)
@@ -614,6 +628,7 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->where('wip_flag', '<', WIP_FINISHED)
 					->where('pos_flag', DEFINITIONS_POS_VERB)
 					->where(function ($query) {$query
@@ -629,6 +644,7 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->where('wip_flag', '<', WIP_FINISHED)
 					->orderByRaw($orderBy)
 					->limit($limit)
@@ -639,6 +655,7 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->whereNotNull('definition')
 					->whereNotNull('translation_en')
 					->orderByRaw($orderBy)
@@ -650,16 +667,19 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->whereNotNull('examples')
 					->orderByRaw($orderBy)
 					->limit($limit)
 					->get();
-			}			else if ($sort == DEFINITIONS_SEARCH_RANKED)
+			}
+			else if ($sort == DEFINITIONS_SEARCH_RANKED)
 			{
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('rank', '>', 0)
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->orderByRaw($orderBy)
 					->limit($limit)
 					->get();
@@ -669,6 +689,7 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('language_flag', $languageFlag)
 					->orderByRaw($orderBy)
 					->limit($limit)
 					->get();
@@ -761,9 +782,13 @@ class Definition extends Model
 		{
 		    $like = 'LIKE ' . CASE_INSENSITIVE;
 
+            $languageFlag = getLanguageId();
+            //dump($languageFlag);
+
 			$records = Definition::select()
 				->where('deleted_at', null)
     			->where('type_flag', DEFTYPE_DICTIONARY)
+				->where('language_flag', $languageFlag)
 				->where(function ($query) use ($like, $word){$query
 					->where('title', $like, $word . '%')    // partial match of title
 					->orWhere('translation_en', $like, $word . '%')				// partial match of translation
@@ -810,6 +835,7 @@ class Definition extends Model
 
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_DICTIONARY)
+                    ->where('language_flag', getLanguageId())
                     ->where(function ($query) use ($search){$query
                         ->whereRaw('title' . $search)
                         ->orWhereRaw('forms' . $search)
@@ -955,6 +981,7 @@ class Definition extends Model
             {
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
+                    ->where('language_flag', getLanguageId())
                     ->where(function ($query) use ($search) {
                         $query
                         ->whereRaw('title ' . CASE_INSENSITIVE . ' like "' . $search . '"')

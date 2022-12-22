@@ -1,6 +1,8 @@
 <?php
 
-// General Values
+//
+// Generic Gloval Values
+//
 define('LIST_LIMIT_DEFAULT', 50);
 define('RETURN_CODE_ERROR', -1);
 define('RETURN_CODE_SUCCESS', 1);
@@ -9,14 +11,17 @@ define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 bytes for db overhead
 define('COOKIE_HOUR', 60);     // Minutes per hour: 60
 define('COOKIE_DAY',  1440);   // Minutes per day:  60 * 24
 define('COOKIE_YEAR', 525600); // Minutes per year: 60 * 24 * 365
-
 define('CASE_INSENSITIVE', 'COLLATE UTF8MB4_GENERAL_CI');   // MYSQL case insensitive
 define('COLLATE_ACCENTS', 'COLLATE utf8mb4_unicode_ci');    // MYSQL ignore accent chars
-
-// misc options
 define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
 define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
+
+// query sorting
+define('ORDERBY_APPROVED', 0);
+define('ORDERBY_TITLE', 1);
+define('ORDERBY_DATE', 2);
+define('ORDERBY_VIEWS', 3);
 
 // language flag
 define('LANGUAGE_NOTSET', -1);
@@ -48,7 +53,9 @@ define('WIP_TEST', 30);
 define('WIP_FINISHED', 100);
 define('WIP_DEFAULT', WIP_DEV);
 
+//
 // word types
+//
 define('WORDTYPE_LESSONLIST',           1);
 define('WORDTYPE_LESSONLIST_USERCOPY',  2);
 define('WORDTYPE_USERLIST',             3);
@@ -56,7 +63,9 @@ define('WORDTYPE_VOCABLIST',            4);
 define('WORDTYPE_SNIPPET',              5);
 define('WORDTYPE_USERLIST_LIMIT',       20);
 
+//
 // defintion types
+//
 define('DEFTYPE_NOTSET',        0);
 define('DEFTYPE_SNIPPET',       1);
 define('DEFTYPE_DICTIONARY',    10);
@@ -66,6 +75,15 @@ define('DEFTYPE_OTHER',         200);
 define('DEF_HASH_LENGTH',        50);
 define('DEF_PERMALINK_WORDS',     6);
 
+// Search targets
+define('SEARCH_MIN_LENGTH', 2); // search min length to use as 'starts with'
+
+define('SEARCHTYPE_DEFINITIONS',    1); // word definitions
+define('SEARCHTYPE_SNIPPETS',       2); // snippets only
+define('SEARCHTYPE_DICTIONARY',     3); // words and snippets
+define('SEARCHTYPE_ENTRIES',        4); // books and articles
+
+// Search options
 define('DEFINITIONS_SEARCH_NOTSET',                 0);
 define('DEFINITIONS_SEARCH_ALPHA',                  1);
 define('DEFINITIONS_SEARCH_REVERSE',                2);
@@ -95,7 +113,9 @@ define('SNIPPET_CATEGORY_ESP_OBJECT',               6);
 define('SNIPPET_CATEGORY_ESP_PREPOSITION',          7);
 define('SNIPPET_CATEGORY_ESP_GRAMMAR',              8);
 
+//
 // entries
+//
 define('ENTRY_TYPE_NOTSET', 	-1);
 define('ENTRY_TYPE_NOTUSED', 	0);
 define('ENTRY_TYPE_ENTRY', 		1);
@@ -104,13 +124,9 @@ define('ENTRY_TYPE_BOOK',	 	3);
 define('ENTRY_TYPE_LESSON',	 	4);
 define('ENTRY_TYPE_OTHER',		99);
 
-// query sorting
-define('ORDERBY_APPROVED', 0);
-define('ORDERBY_TITLE', 1);
-define('ORDERBY_DATE', 2);
-define('ORDERBY_VIEWS', 3);
-
+//
 // Tags
+//
 define('TAG_RECENT', 'recent');
 define('TAG_BOOK', 'book');
 
@@ -123,7 +139,9 @@ define('TAG_TYPE_DEF_FAVORITE', 	    3); // one per user so we have empty favori
 define('TAG_TYPE_DEF_CATEGORY', 	    4); // definition categories to show what a snippet is demonstrating
 define('TAG_TYPE_OTHER',			   	99);
 
+//
 // History
+//
 define('HISTORY_URL', '/history/add-public?');
 
 // History type
@@ -138,7 +156,9 @@ define('HISTORY_TYPE_DICTIONARY',   60);
 define('HISTORY_TYPE_SNIPPETS',     70);
 define('HISTORY_TYPE_OTHER',        100);
 
+//
 // Lesson/Content Type also used for History subtype_flag
+//
 define('LESSON_TYPE_NOTSET',                0);
 define('LESSON_TYPE_TEXT',                  10);
 define('LESSON_TYPE_VOCAB',                 20);

@@ -6,16 +6,6 @@
         <span class='mini-menu'>
 
           <form method="" action="" autocomplete="off">
-            @if ($showGlobalSearchBox)
-                <label>Search: </label>
-                <input value="" name="searchText" id="searchText" type="search"
-                    class="form-control-inline pl-1 border-right-0 border mini-border mr-2"
-                    placeholder="{{__('proj.Dictionary Search')}}"
-                    oninput="showSearchResult(this.value, false); $('#searchOptions').show()"
-                    style="width:135px;"
-                />
-            @endif
-
             @component('components.control-dropdown-language', [
                 'options' => getLanguageOptions(isAdmin()),
                 'selected_option' => getLanguageId(),
@@ -30,9 +20,4 @@
     </div>
 </div>
 
-@if ($showGlobalSearchBox)
-<div class="container page-normal" style="">
-    <div id="livesearch"></div>
-</div>
-@endif
 

@@ -26,16 +26,19 @@
 		<div class="form-group">
 			<label for="frontpage" class="control-label">@LANG('ui.Front Page'):</label>
 			<input type="text" name="frontpage" class="form-control" placeholder="{{__('view.Enter frontpage view file name')}}" value="{{$record->frontpage}}" />
+			<p class='medium-thin-text'>Options: fp-learn, fp-language (has errors)</p>
 		</div>
 
 		<div class="form-group">
 			<label for="description" class="control-label">@LANG('ui.Description'):</label>
-			<textarea name="description" class="form-control">{{$record->description}}</textarea>
+			<input type="text" name="description" class="form-control" value="{{$record->description}}" />
+			<p class='medium-thin-text'>Options: base.siteTitle-lunalanguage, base.siteTitle-codespace, base.siteTitle-tools, base.siteTitle-localhost</p>
 		</div>
 
 		<div class="form-group">
 			<label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
-			<textarea name="options" class="form-control">{{$record->options}}</textarea>
+			<input type="text" name="options" class="form-control" value="{{$record->options}}" />
+			<p class='medium-thin-text'>Options: articles;books-es;books-en;books-it;dictionary;fpheader;fpsteps;</p>
 		</div>
 
 		<div class="submit-button">

@@ -69,8 +69,9 @@ class SiteController extends Controller
 
 		$record->user_id 		= Auth::id();
 		$record->title 			= trimNull($request->title);
-		$record->description	= trimNull($request->description);
 		$record->frontpage  	= trimNull($request->frontpage);
+		$record->description	= trimNull($request->description);
+		$record->options        = trimNull($request->options);
         $record->language_flag  = $request->language_flag;
 
 		try

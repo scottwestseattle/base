@@ -40,51 +40,6 @@
 >
 </div>
 
-@if (false)
-<!--------------------------------------------------------------------------------------->
-<!-- The Search form *** REPLACED BY SEARCH IN MAIN MENU *** -->
-<!--------------------------------------------------------------------------------------->
-@php
-    $search = isset($search) ? $search : null;
-    $records = isset($records) ? $records : [];
-@endphp
-<form method="POST" action="/dictionary/create-quick" autocomplete="off">
-
-    <input value="" name="title" id="title" type="search"
-        class="form-control form-control-sm form-control-inline py-2 border-right-0 border"
-        placeholder="{{__('proj.Dictionary Search')}}"
-        oninput="showSearchResult(this.value, false, 'livesearch'); $('#searchOptions').show()"
-        {{$autofocus}}
-    />
-
-    <div id="searchOptions" class="mb-1 hidden">
-        <table class="table-responsive table-condensed medium-text" style="border: 0px solid #A5ACB2;">
-            <thead>
-                <tr>
-                    <td>
-                        <button id="" type="button" class="btn-info btn-xs"
-                        onclick="showSearchResult($('#title').val(), true, 'livesearch'); $('#searchOptions').hide();"
-                        >Search Articles/Books</button>
-
-                        @if (false)
-                        <input type="checkbox" name="search_articles" id="" class="mr-1"
-                            style="display:inline;"
-                            onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
-                        />
-                    	<label for="search_articles" class="checkbox-label small-thin-text"
-                            onclick="showSearchResult($('#title').val(), true); $('#searchOptions').hide();"
-                    	>Search Articles/Books</label>
-                    	@endif
-                    </td>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div id="livesearch"></div>
-    {{ csrf_field() }}
-</form>
-@endif
-
 <!--------------------------------------------------------------------------------------->
 <!-- The Speech / Record form -->
 <!--------------------------------------------------------------------------------------->

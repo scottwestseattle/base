@@ -703,6 +703,7 @@ class Entry extends Model
 		$records = $record = Entry::select()
 				->where('entries.site_id', Site::getId())
 				//->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
+				->where('language_flag', getLanguageId())
 				->where('release_flag', '>=', Status::getReleaseFlag())
 				->where(function ($query) use($search) {$query
 					->where('title', 'like', $search)

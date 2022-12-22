@@ -24,9 +24,6 @@ use App\User;
 
 define('LOG_CLASS', 'HomeController');
 
-define('SEARCHTYPE_DICTIONARY', 1);
-define('SEARCHTYPE_ARTICLES', 2);
-
 class HomeController extends Controller
 {
 	public function __construct ()
@@ -445,59 +442,32 @@ class HomeController extends Controller
 		]);
 	}
 
-
-	//
-	// This handles the search form from the index/search page
-	//
-    public function searchAjaxORIG(Request $request, $text = null)
-    {
-		$text = getOrSetString(alpha($text), null);
-        $records = [];
-
-		try
-		{
-		    if ($resultsFormat != 'heavy' && $resultsFormat != 'light')
-		        throw new \Exception('bad searchAjax results format parm');
-
-			session(['definitionSearch' => $text]);
-			$records = Definition::searchPartial($text);
-		}
-		catch (\Exception $e)
-		{
-			$msg = 'Error finding text';
-            logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), null, ['text' => $text]);
-		}
-
-		return view(VIEWS . '.component-search-results-light', [
-			'records' => $records,
-			'favoriteLists' => Definition::getUserFavoriteLists(),
-		]);
-	}
-
     public function searchAjax(Request $request, $searchText, $searchType = SEARCHTYPE_DICTIONARY)
     {
+        $searchType = intval($searchType);
 		$isPost = $request->isMethod('post');
 
         // turn these on by default
-		$options['dictionary'] = ($searchType == SEARCHTYPE_DICTIONARY);
-		$options['snippets'] = ($searchType == SEARCHTYPE_DICTIONARY);
-		$options['articles'] = ($searchType == SEARCHTYPE_ARTICLES);
+		$options['dictionary'] = ($searchType === SEARCHTYPE_DEFINITIONS || $searchType === SEARCHTYPE_DICTIONARY);
+		$options['snippets'] = ($searchType === SEARCHTYPE_SNIPPETS || $searchType === SEARCHTYPE_DICTIONARY);
+		$options['entries'] = ($searchType === SEARCHTYPE_ENTRIES);
 		$options['word'] = false;
 		$options['lessons'] = false;
+		$options['language'] = getLanguageId(); // not used but shows the current session language when it's dumped
 
 		$results = [];
 
 		if ($isPost)
 		{
 			// do the search
-			$options['word'] = isset($request->word_flag) ? true : false;
-			$options['articles'] = isset($request->articles_flag) ? true : false;
 			$options['dictionary'] = isset($request->dictionary_flag) ? true : false;
 			$options['snippets'] = isset($request->snippets_flag) ? true : false;
+			$options['entries'] = isset($request->articles_flag) ? true : false;
+			$options['word'] = isset($request->word_flag) ? true : false;
 		}
 
         $searchText = alphanum($searchText);
-        $options['startsWith'] = (strlen($searchText) <= 3);
+        $options['startsWith'] = (strlen($searchText) <= SEARCH_MIN_LENGTH);
 
         $results = self::searchAll($searchText, $options);
 
@@ -527,12 +497,6 @@ class HomeController extends Controller
                 throw new \Exception("dangerous search characters");
             }
 
-            if ($options['articles'])
-            {
-                $results['entries'] = Article::search($search, $options);
-                $count += (isset($results['entries']) ? count($results['entries']) : 0);
-            }
-
             if ($options['dictionary'])
             {
                 $results['definitions'] = Definition::searchDictionary($search, $options);
@@ -543,6 +507,12 @@ class HomeController extends Controller
             {
                 $results['snippets'] = Definition::searchSnippets($search, $options);
                 $count += (isset($results['snippets']) ? count($results['snippets']) : 0);
+            }
+
+            if ($options['entries'])
+            {
+                $results['entries'] = Article::search($search, $options);
+                $count += (isset($results['entries']) ? count($results['entries']) : 0);
             }
 
             $results['search'] = $search;

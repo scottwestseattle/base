@@ -14,12 +14,14 @@ ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
 LIMIT 10
 
 ===== NEW DB Changes =====
-UPDATE `entries` SET language_flag = 1 WHERE 1 AND type_flag = 3
-ALTER TABLE `tags` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'see \'LANGUAGE_*\' for values ' AFTER `type_flag`;
-UPDATE `tags` SET language_flag = 1 WHERE 1 AND type_flag = 2
-ALTER TABLE `users` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 
 ===== Done =====
+UPDATE `entries` SET language_flag = 1 WHERE 1 AND type_flag = 3
+UPDATE `tags` SET language_flag = 1 WHERE 1 AND type_flag = 2
+ALTER TABLE `tags` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'see \'LANGUAGE_*\' for values ' AFTER `type_flag`;
+ALTER TABLE `users` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'values = LANGUAGE_*' AFTER `view_id`;
+ALTER TABLE `users` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE `stats` ADD `read_at` TIMESTAMP NULL AFTER `viewed_at`;
 ALTER TABLE `stats` ADD `qna_at` TIMESTAMP NULL AFTER `qna_score`;
 ALTER TABLE `stats` ADD `qna_score` FLOAT NULL AFTER `qna_correct`;

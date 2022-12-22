@@ -1,6 +1,6 @@
 @php
     $showGlobalSearchBox = false;
-    $articlesChecked = (isset($options['articles']) && $options['articles']) ? 'CHECKED' : '';
+    $articlesChecked = (isset($options['entries']) && $options['entries']) ? 'CHECKED' : '';
     $dictionaryChecked = (isset($options['dictionary']) && $options['dictionary']) ? 'CHECKED' : '';
     $snippetsChecked = (isset($options['snippets']) && $options['snippets']) ? 'CHECKED' : '';
     $wordChecked = (isset($options['word']) && $options['word']) ? 'CHECKED' : '';

@@ -96,6 +96,9 @@ class DefinitionController extends Controller
 		parent::__construct();
 	}
 
+    //
+    // NOT THE MAIN INDEX PAGE - See search() function
+    //
     public function index(Request $request)
     {
 		$records = [];
@@ -947,7 +950,7 @@ class DefinitionController extends Controller
 	}
 
 	//
-	// This is now the main index/search page
+	// This is now the main index page
 	//
     public function search(Request $request, $sort = null)
     {
@@ -977,7 +980,7 @@ class DefinitionController extends Controller
 			if (isset($search) && strlen($search) > 0)
 				$records = Definition::searchPartial($search);
 			else
-				$records = Definition::getIndex($sort, 20);
+				$records = Definition::getIndex($sort, LIST_LIMIT_DEFAULT);
 		}
 		catch (\Exception $e)
 		{
