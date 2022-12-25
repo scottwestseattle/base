@@ -29,9 +29,25 @@ class Site extends Model
 
     static public function site()
     {
-        if (!isset(self::$_site))
+        if (!isset(self::$_site)) // only do it once and keep it
         {
-            self::$_site = self::get();
+            try
+            {
+                self::$_site = self::get();
+                //dump('load site: ' . self::$_site);
+
+                if (empty(self::$_site))
+                    throw new \Exception('Site not found');
+
+                if (blank(self::$_site->frontpage))
+                    throw new \Exception('Site frontpage not set');
+            }
+            catch (\Exception $e)
+            {
+                $dn = domainName();
+                logException(__CLASS__, $e->getMessage(), __('base.Error loading site'), ['domain' => $dn]);
+            }
+
             if (!isset(self::$_site))
             {
                 // make a dummy site, only happens if site record hasn't been added yet
@@ -39,9 +55,9 @@ class Site extends Model
                 self::$_site->title = 'Add Site Record';
                 self::$_site->description = 'Not set, add site record';
                 self::$_site->language_flag = LANGUAGE_ALL;
+                self::$_site->frontpage = 'fp-learn';
             }
         }
-        //dump('site: ' . self::$_site);
 
         return self::$_site;
     }

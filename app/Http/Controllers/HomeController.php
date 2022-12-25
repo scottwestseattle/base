@@ -50,31 +50,18 @@ class HomeController extends Controller
 	    // Get the site info for the current domain
 	    //
 	    $siteLanguage = getLanguageId();
-        $options = [];
 		try
 		{
-			$record = Site::site();
-
-            if (!isset($record))
-                throw new \Exception('Site not found');
-
-            if (blank($record->frontpage))
-                throw new \Exception('Site frontpage not set');
+			$frontpage = Site::site()->frontpage;
 
             //
             // get the frontpage from the site record
             //
-            $viewFile = resource_path() . '/views/home/' . $record->frontpage . '.blade.php';
+            $viewFile = resource_path() . '/views/home/' . $frontpage . '.blade.php';
             if (!file_exists($viewFile))
                 throw new \Exception('Site frontpage file not found: ' . $viewFile);
 
-            // don't set the site language by default
-            //if (isset($record->language_flag))
-            //    $siteLanguage = $record->language_flag;
-
-            //$options['site'] = $record;
-
-            $view = 'home.' . $record->frontpage;
+            $view = 'home.' . $frontpage;
 
             //dump($record);
 		}
@@ -84,24 +71,27 @@ class HomeController extends Controller
 			logException(LOG_CLASS, $e->getMessage(), __('base.Error loading site'), ['domain' => $dn]);
 		}
 
-        $options['loadReader'] = false; // this loads js and css
-        $options['languageCodes'] = getSpeechLanguage($siteLanguage);
-        $options['showAllButton'] = true;
-        $options['snippetLanguages'] = getLanguageOptions(isAdmin());
-        $options['returnUrl'] = '/';
-        $options['articlesPublic'] = [];
-        $options['articlesPrivate'] = [];
+        $options = [
+            'loadReader' => false,
+            'languageCodes' => getSpeechLanguage($siteLanguage),
+            'showAllButton' => true,
+            'snippetLanguages' => getLanguageOptions(isAdmin()),
+            'returnUrl' => '/',
+            'articlesPublic' => [],
+            'articlesPrivate' => [],
+            'showForm' => true,
+        ];
 
         //
         // get articles, banner and other options according to the language
         //
         if ($siteLanguage == LANGUAGE_ALL)
         {
-            $options = self::getOptionsLanguage($options);
+            $options = array_merge($options, self::getOptionsLanguage($options));
         }
         else
         {
-            $options = self::getOptions($options, $siteLanguage);
+            $options = array_merge($options, self::getOptions($options, $siteLanguage));
         }
 
         //
@@ -118,15 +108,18 @@ class HomeController extends Controller
         //
         // get the latest snippets
         //
-        $snippets = Definition::getSnippets([
+        $options = array_merge($options, [
             'count' => $snippetsLimit,
             'languageId' => $siteLanguage,
             'languageFlagCondition' => $languageFlagCondition,
-            'userId' => Auth::check() ? Auth::id() : 0,
-            'userIdCondition' => Auth::check() ? '=' : '>=',
         ]);
-        $options['records'] = $snippets;
-        $options['showForm'] = true;
+
+        // get USER'S and PUBLIC snippets
+        $options['userId'] = Auth::check() ? Auth::id() : 0;
+        $options['userIdCondition'] = '=';
+        $options['releaseFlag'] = RELEASEFLAG_PUBLIC;
+        $options['releaseCondition'] = '>=';
+        $options['snippets'] = Definition::getSnippetsNew($options);
 
         //
         // get the favorite lists so the entries can be favorited

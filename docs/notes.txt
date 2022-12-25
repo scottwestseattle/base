@@ -14,7 +14,9 @@ ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
 LIMIT 10
 
 ===== NEW DB Changes =====
-
+update `definitions` set user_id = 2 WHERE 1 AND type_flag = 1 AND user_id = 1 ORDER BY language_flag
+UPDATE `tags` set user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 3
+UPDATE entries SET user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 2 AND release_flag < 100
 
 ===== Done =====
 UPDATE `entries` SET language_flag = 1 WHERE 1 AND type_flag = 3

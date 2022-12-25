@@ -5,6 +5,13 @@
     $nextStart = (isset($options['start'])) ? $options['start'] + $count : 0;
     $order = (isset($options['order'])) ? $options['order'] : 'desc';
     $autofocus = (isset($options['autofocus']) && $options['autofocus']) ? 'autofocus' : '';
+
+    //
+    // snippets
+    //
+    $snippets = isset($options['snippets']) ? $options['snippets'] : [];
+    $hasSnippets = !empty($snippets) && count($snippets) > 0;
+    $countPublic = $countPrivate = 0;
 @endphp
 
 <!-------------------------------------------------------->
@@ -95,9 +102,9 @@
 <!--------------------------------------------------------------------------------------->
 <!-- SNIPPETS -->
 <!--------------------------------------------------------------------------------------->
-@if (isset($options['records']) && count($options['records']) > 0)
+@if ($hasSnippets)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
-        <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($options['records'])}})</span>
+        <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($snippets)}})</span>
         @component('components.icon-read', ['href' => "/snippets/read?count=$count&order=$order", 'float' => 'float-left'])@endcomponent
     </h3>
     <div style="clear:both;">
@@ -120,9 +127,7 @@
         <div class="text-center mt-3" style="">
         <div style="display: inline-block; width:100%">
             <table style="width:100%;">
-
-            @if (isset($options['records']))
-            @foreach($options['records'] as $record)
+            @foreach($snippets as $record)
             @php
                 $iconColor = 'default';
                 $linkColor = 'purple';
@@ -145,7 +150,20 @@
                         $linkColor = 'red';
                     }
                 }
+
+                $record->isPublic() ? $countPublic++ : $countPrivate++;
+
             @endphp
+
+            <tr style="" class=""><td colspan="2">
+            @if ($countPrivate > 0 && $countPublic === 1)
+                <!-- put in a separator -->
+                <div class="large-thin-text ml-2 mt-2 mb-2" style="height:15px;">@LANG('ui.Public')</div>
+            @else
+                <div style="height:10px;"></div>
+            @endif
+                </td></tr>
+
             <tr class="drop-box-ghost-small" style="vertical-align:middle;">
                 <td style="color:default; text-align:left; padding:5px 10px;">
                     <table>
@@ -155,6 +173,7 @@
                             @if ($showForm)
                                 <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title, 200)}}</a>
                                 <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />
+                                <div class="small-thin-text">{{$record->translation_en}}</div>
                                 @if (Str::startsWith($record->permalink, '-'))
                                     <div class="red">{{$record->permalink}}</div>
                                 @endif
@@ -202,10 +221,7 @@
                 </td>
             </tr>
 
-            <tr style="" class=""><td colspan="2"><div style="height:15px;">&nbsp;</div></td></tr>
-
             @endforeach
-            @endif
             </table>
             @if ($options['showAllButton'])
                 <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice/index?order={{$order}}&start={{$nextStart}}&count={{$count}}">@LANG('ui.Show More')</a></div>

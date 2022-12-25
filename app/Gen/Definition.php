@@ -542,6 +542,8 @@ class Definition extends Model
 		$orderBy = 'title';
 		$verbs = false;
 		$languageFlag = getLanguageId();
+		$releaseFlag = RELEASEFLAG_PUBLIC;
+		$releaseCondition = '>=';
 
 		switch($sort)
 		{
@@ -595,6 +597,7 @@ class Definition extends Model
 				$records = Definition::select()
 					->whereNull('deleted_at')
     			    ->where('type_flag', DEFTYPE_DICTIONARY)
+					->where('release_flag', $releaseCondition, $releaseFlag)
 					->where('language_flag', $languageFlag)
     			    ->where('pos_flag', DEFINITIONS_POS_VERB)
 					->where('rank', $rankCondition, $rankValue)
@@ -690,6 +693,10 @@ class Definition extends Model
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
 					->where('language_flag', $languageFlag)
+					->where(function ($query) use ($releaseCondition, $releaseFlag) {$query
+						->where('release_flag', $releaseCondition, $releaseFlag)
+						->orWhere('user_id', Auth::id())
+						;})
 					->orderByRaw($orderBy)
 					->limit($limit)
 					->get();
@@ -1050,7 +1057,7 @@ class Definition extends Model
 		return $record;
 	}
 
-	static public function getSnippets($parms = null)
+	static public function getSnippetsNew($parms = null)
 	{
 		$records = [];
 
@@ -1062,14 +1069,112 @@ class Definition extends Model
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
 		$order = isset($parms['order']) ? $parms['order'] : 'owner';
 		$orderBy = self::crackOrder($parms, 'desc');
-        //dump('orderBy: ' . $orderBy);
-        //dump($parms);
+		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
+		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '=';
+		$releaseFlag = isset($parms['releaseFlag']) ? $parms['releaseFlag'] : RELEASEFLAG_PUBLIC;
+		$releaseFlagCondition = isset($parms['releaseCondition']) ? $parms['releaseCondition'] : '>=';
+
+        // release_flag splits it by user's and public; TODO: add collation so it will sort right
+        $orderBy = 'definitions.release_flag, ' . $orderBy;
+
+        //dump('release_flag ' . $releaseFlagCondition . ' '. $releaseFlag . ' OR user_id ' . $userIdCondition . ' ' . $userId . ' ORDER BY ' . $orderBy);
+
+		try
+		{
+            $records = Definition::select('definitions.*')
+                ->leftJoin('definition_user', function($join) {
+                    $join->on('definition_user.definition_id', '=', 'definitions.id');
+                    $join->on('definition_user.user_id', 'definitions.user_id'); // works for users not logged in
+                })
+                ->where('type_flag', DEFTYPE_SNIPPET)
+                ->where('language_flag', $languageFlagCondition, $languageId)
+                ->where(function ($query) use ($releaseFlagCondition, $releaseFlag, $userId, $userIdCondition) {$query
+                	->orWhere('release_flag', $releaseFlagCondition, $releaseFlag)
+                	->orWhere('definitions.user_id', $userIdCondition, $userId)
+                	;})
+                ->orderByRaw($orderBy)
+                ->offset($start)
+                ->limit($limit)
+                ->get();
+		}
+		catch (\Exception $e)
+		{
+            $msg = $e->getMessage();
+			$msg = 'Error getting practice text';
+            logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
+		}
+
+        if (false)
+        {
+        // sort the records
+        $public = [];
+        $private = [];
+        $others = [];
+        if (isset($records))
+        {
+            $userId = Auth::id();
+            foreach ($records as $record)
+            {
+                if ($record->isPublic())
+                {
+                    $public[] = $record;
+                }
+                else if ($record->user_id === $userId)
+                {
+                    $private[] = $record;
+                }
+                else if (isAdmin()) // the rest are other users
+                {
+                    $others[] = $record;
+                }
+            }
+        }
+
+        $return['public']['records'] = $public;
+        $return['private']['records'] = $private;
+        $return['others']['records'] = $others;
+
+        $return['public']['count'] = count($return['public']['records']);
+        $return['private']['count'] = count($return['private']['records']);
+        $return['others']['count'] = count($return['others']['records']);
+        }
+
+        //dump('public: ' . $return['public']['count']);
+        //dump('private: ' . $return['private']['count']);
+        //dump('others: ' . $return['others']['count']);
+
+		return $records;
+    }
+
+	static public function getSnippets($parms = null)
+	{
+	    //dump('getSnippets ORIG');
+
+		$records = [];
+
+		$limit = isset($parms['count']) ? $parms['count'] : LIST_LIMIT_DEFAULT;
+		$start = isset($parms['start']) ? $parms['start'] : 0;
+		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
+		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
+		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
+		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
+		$order = isset($parms['order']) ? $parms['order'] : 'owner';
+		$orderBy = self::crackOrder($parms, 'desc');
+		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
+		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
+		$releaseFlag = isset($parms['releaseFlag']) ? $parms['releaseFlag'] : RELEASEFLAG_PUBLIC;
+		$releaseCondition = isset($parms['releaseCondition']) ? $parms['releaseCondition'] : '>=';
 
         if (isAdmin()) // show all records
         {
-    		$userId = 0;
-	    	$userIdCondition = '>=';
+    		//$userId = 0;
+	    	//$userIdCondition = '>=';
         }
+
+        //dump($releaseFlag);
+        //dump($releaseCondition);
+        //dump($userId);
+        //dump($userIdCondition);
 
 		try
 		{
@@ -1084,7 +1189,12 @@ class Definition extends Model
                 $records = Definition::select()
                     ->where('type_flag', DEFTYPE_SNIPPET)
                     ->where('language_flag', $languageFlagCondition, $languageId)
-    				->where('definitions.user_id', $userIdCondition, $userId)
+					->where('release_flag', $releaseCondition, $releaseFlag)
+					->where('user_id', $userIdCondition, $userId)
+					//->where(function ($query) use ($releaseCondition, $releaseFlag) {$query
+					//	->where('release_flag', $releaseCondition, $releaseFlag)
+					//	->orWhere('user_id', Auth::id())
+					//	;})
                     ->orderByRaw($orderBy)
                     ->offset($start)
                     ->limit($limit)

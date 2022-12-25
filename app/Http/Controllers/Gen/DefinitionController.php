@@ -694,6 +694,9 @@ class DefinitionController extends Controller
 
             $msg = null;
 
+            //
+            // check it if exists already
+            //
             $exists = false;
             $link = null;
             $record = Definition::getSnippet($snippet); // check snippets
@@ -706,7 +709,7 @@ class DefinitionController extends Controller
                 $link = '/definitions/view/' . $record->permalink;
             }
 
-            if (!$exists)
+            if (!$exists) // already exists, so don't create it again
             {
                 $record = Definition::get($snippet);      // check dictionary
                 if (isset($record))
@@ -718,18 +721,21 @@ class DefinitionController extends Controller
                 }
             }
 
+            //
+            // create it for the user as private
+            //
+
             if (!$exists)
             {
                 $record = new Definition();
-                $record->title 			= 'snippet-' . timestamp();
+
+                $record->title          = Str::limit($snippet, 500);
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
                 $record->pos_flag 		= DEFINITIONS_POS_SNIPPET;
-                $record->release_flag   = RELEASEFLAG_PUBLIC;
-                $record->title	    = Str::limit($snippet, 500);
+                $record->release_flag   = isAdmin() ? RELEASEFLAG_PUBLIC : RELEASEFLAG_PRIVATE;
                 $record->visitor_id     = getVisitorInfo()['hash'];
 
-                // make the permalink from the example text since the title says 'snippet-'
                 $text = getWords($record->title, DEF_PERMALINK_WORDS); // only use the first X words
                 $record->permalink		= createPermalink($text);
             }
@@ -857,18 +863,6 @@ class DefinitionController extends Controller
         $order = isset($parms['order']) ? alpha(strtolower($parms['order'])) : null;
         $orderBy = Definition::crackOrder($parms, null);
 
-        // default is user's snippets
-        if (Auth::check())
-        {
-            $options['userId'] = Auth::id();
-            $options['userIdCondition'] = '=';
-        }
-        else
-        {
-            $options['userId'] = 0;
-            $options['userIdCondition'] = '>=';
-        }
-
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
 
@@ -878,6 +872,14 @@ class DefinitionController extends Controller
         $options['languageFlagCondition']   = $languageFlagCondition;
         $options['orderBy']                 = $orderBy;
         $options['order']                    = $order;
+
+        // get USER'S and PUBLIC snippets
+        $options['userId'] = Auth::check() ? Auth::id() : 0;
+        $options['userIdCondition'] = '=';
+        $options['releaseFlag'] = RELEASEFLAG_PUBLIC;
+        $options['releaseCondition'] = '>=';
+        $options['snippets'] = Definition::getSnippetsNew($options);
+
         //
         // get the snippets for the appropriate langauge
         //
