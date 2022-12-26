@@ -50,10 +50,10 @@ class DefinitionController extends Controller
 
             // snippets
             'snippets', 'indexSnippets', 'filterSnippets',
-            'createSnippet', 'readSnippets', 'readSnippetsLatest', 'viewSnippet',
+            'readSnippets', 'readSnippetsLatest', 'viewSnippet',
 
             // let these through to be caught below
-			'editSnippet', 'updateSnippet',
+			'createSnippet', 'editSnippet', 'updateSnippet',
 
             // copied
 			'find', 'search', 'listTag',
@@ -81,6 +81,7 @@ class DefinitionController extends Controller
 			'add',
 			'create',
 			'createQuick',
+			'createSnippet',
 			'favoritesReview',
             'convertTextToFavorites',
 		]);

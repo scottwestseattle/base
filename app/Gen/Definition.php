@@ -1104,45 +1104,6 @@ class Definition extends Model
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
 		}
 
-        if (false)
-        {
-        // sort the records
-        $public = [];
-        $private = [];
-        $others = [];
-        if (isset($records))
-        {
-            $userId = Auth::id();
-            foreach ($records as $record)
-            {
-                if ($record->isPublic())
-                {
-                    $public[] = $record;
-                }
-                else if ($record->user_id === $userId)
-                {
-                    $private[] = $record;
-                }
-                else if (isAdmin()) // the rest are other users
-                {
-                    $others[] = $record;
-                }
-            }
-        }
-
-        $return['public']['records'] = $public;
-        $return['private']['records'] = $private;
-        $return['others']['records'] = $others;
-
-        $return['public']['count'] = count($return['public']['records']);
-        $return['private']['count'] = count($return['private']['records']);
-        $return['others']['count'] = count($return['others']['records']);
-        }
-
-        //dump('public: ' . $return['public']['count']);
-        //dump('private: ' . $return['private']['count']);
-        //dump('others: ' . $return['others']['count']);
-
 		return $records;
     }
 

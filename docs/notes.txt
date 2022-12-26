@@ -1,5 +1,3 @@
-
-
 SELECT def.*, stats.qna_attempts, stats.viewed_at FROM `tags`
 JOIN definition_tag as dt on dt.tag_id = tags.id
 JOIN definitions as def on def.id = dt.definition_id
@@ -14,11 +12,12 @@ ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
 LIMIT 10
 
 ===== NEW DB Changes =====
-update `definitions` set user_id = 2 WHERE 1 AND type_flag = 1 AND user_id = 1 ORDER BY language_flag
-UPDATE `tags` set user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 3
-UPDATE entries SET user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 2 AND release_flag < 100
+UPDATE `definitions` SET release_flag = 10 WHERE 1 and user_id = 2 and release_flag = 0
 
 ===== Done =====
+update `definitions` set user_id = 2, release_flag = 10 WHERE 1 AND type_flag = 1 AND user_id = 1
+UPDATE `tags` set user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 3
+UPDATE entries SET user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 2 AND release_flag < 100
 UPDATE `entries` SET language_flag = 1 WHERE 1 AND type_flag = 3
 UPDATE `tags` SET language_flag = 1 WHERE 1 AND type_flag = 2
 ALTER TABLE `tags` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'see \'LANGUAGE_*\' for values ' AFTER `type_flag`;

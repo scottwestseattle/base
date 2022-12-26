@@ -2,7 +2,8 @@
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
     $count = (isset($options['count']) && $options['count'] > 0) ? $options['count'] : LIST_LIMIT_DEFAULT;
-    $nextStart = (isset($options['start'])) ? $options['start'] + $count : 0;
+    $countNext = (isset($options['countNext']) && $options['countNext'] > 0) ? $options['countNext'] : $count;
+    $startNext = (isset($options['start'])) ? $options['start'] + $count : 0;
     $order = (isset($options['order'])) ? $options['order'] : 'desc';
     $autofocus = (isset($options['autofocus']) && $options['autofocus']) ? 'autofocus' : '';
 
@@ -158,7 +159,7 @@
             <tr style="" class=""><td colspan="2">
             @if ($countPrivate > 0 && $countPublic === 1)
                 <!-- put in a separator -->
-                <div class="large-thin-text ml-2 mt-2 mb-2" style="height:15px;">@LANG('ui.Public')</div>
+                <div class="large-thin-text ml-2 mt-2 mb-3 float-left" style="height:15px;">@LANG('ui.Public')</div>
             @else
                 <div style="height:10px;"></div>
             @endif
@@ -224,7 +225,7 @@
             @endforeach
             </table>
             @if ($options['showAllButton'])
-                <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/practice/index?order={{$order}}&start={{$nextStart}}&count={{$count}}">@LANG('ui.Show More')</a></div>
+                <div class="my-3"><a class="btn btn-sm btn-success" role="button" href="/practice/index?order={{$order}}&start={{$startNext}}&count={{$countNext}}">@LANG('ui.Show More')</a></div>
             @endif
         </div>
     </div>
