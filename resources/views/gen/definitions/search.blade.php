@@ -14,6 +14,7 @@
 			<a class="ml-2" href="/dictionary/search/9">{{trans_choice('proj.Verb', 2)}}</a>
 			<a class="ml-2" href="/dictionary/search/15">{{__('proj.Verbs (Ranked)')}}</a>
 			<a class="ml-2" href="/dictionary/search/3">{{__('proj.Newest')}}</a>
+			<a class="ml-2" href="/dictionary/search/31">{{__('proj.Oldest')}}</a>
 			<a class="ml-2" href="/dictionary/search/4">{{__('proj.Recent')}}</a>
 			<a class="ml-2" href="/dictionary/search/10">{{__('proj.All')}}</a>
 			@if (isAdmin())

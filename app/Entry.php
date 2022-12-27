@@ -528,7 +528,7 @@ class Entry extends Model
 	static public function getRecentList($parms)
 	{
 	    $start = isset($parms['start']) ? intval($parms['start']) : 0;
-	    $limit = isset($parms['limit']) ? intval($parms['limit']) : LIST_LIMIT_DEFAULT;
+	    $limit = isset($parms['limit']) ? intval($parms['limit']) : DEFAULT_LIST_LIMIT;
 
 		$type = intval($parms['type']);
 		$languageFlag = $parms['id'];

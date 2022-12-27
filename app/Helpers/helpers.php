@@ -4,6 +4,13 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use App\User;
 
+if (!function_exists('getUserId')) {
+    function getUserId()
+    {
+        return (Auth::check() ? Auth::id() : 0);
+    }
+}
+
 if (!function_exists('obj_count')) {
     function obj_count($obj)
     {
@@ -1096,7 +1103,7 @@ if (!function_exists('crackParms')) {
         $parms = null;
 
         // these are always set
-        $parms['count'] = (isset($request['count'])) ? $request['count'] : (isset($defaults['count']) ? $defaults['count'] : LIST_LIMIT_DEFAULT);
+        $parms['count'] = (isset($request['count'])) ? $request['count'] : (isset($defaults['count']) ? $defaults['count'] : DEFAULT_LIST_LIMIT);
         $parms['start'] = (isset($request['start'])) ? $request['start'] : 0;
 
         // these are set ONLY if in the $request OR in the $defaults

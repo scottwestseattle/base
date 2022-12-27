@@ -24,7 +24,7 @@
         <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">
             <div class="glyphCustom-md glyphicon glyphicon-sort"></div>
         </a>
-        <ul class="small-thin-text dropdown-menu dropdown-menu-right" style="z-index:10000; background-color:white;">
+        <ul class="small-thin-text dropdown-menu dropdown-menu-right" style="z-index:{{DEFAULT_BIG_NUMBER}}; background-color:white;">
             <li><a class="dropdown-item {{c($order, 'desc')}}" href="{{$link}}?count={{$count}}&order=desc">Newest</a></li>
             <li><a class="dropdown-item {{c($order, 'asc')}}" href="{{$link}}?count={{$count}}&order=asc">Oldest</a></li>
             <li><a class="dropdown-item {{c($order, 'attempts')}}" href="{{$link}}?count={{$count}}&order=attempts">Attempts - Most</a></li>

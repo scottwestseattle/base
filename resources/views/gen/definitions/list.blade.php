@@ -2,7 +2,7 @@
     $name = isset($name) ? $name : (isset($tag) ? $tag->name : 'name not set');
     $tagId = isset($tag) ? $tag->id : 0;
     $parms['tagId'] = $tagId;
-    $count = isset($parms['count']) ? $parms['count'] : LIST_LIMIT_DEFAULT;
+    $count = isset($parms['count']) ? $parms['count'] : DEFAULT_LIST_LIMIT;
     $start = isset($parms['start']) ? $parms['start'] : 0;
     $order = isset($parms['order']) ? $parms['order'] : null;
     $nextStart = $start + $count;
@@ -26,7 +26,7 @@
         <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=flashcards&count=20&order={{$order}}">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=reader&order={{$order}}&count=10000">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=reader&order={{$order}}&count={{DEFAULT_BIG_NUMBER}}">
             @LANG('proj.Reader')<span class="ml-1 glyphicon glyphicon-volume-up"></span>
         </a>
     @else
@@ -97,38 +97,7 @@
                     </div>
                 @endif
 
-                @php
-                $score = empty($record->qna_score) ? 0 : $record->qna_score;
-                $attempts = empty($record->qna_attempts) ? 0 : $record->qna_attempts;
-                $views = empty($record->views) ? 0 : $record->views;
-                $reads = empty($record->reads) ? 0 : $record->reads;
-
-                $created_at = 'Created: ' . App\DateTimeEx::getShortDate($record->created_at);
-                $qna_at = empty($record->qna_at) ? '' : 'Quiz: ' . App\DateTimeEx::getShortDate($record->qna_at);
-                $viewed_at = empty($record->viewed_at) ? '' : 'Viewed: ' . App\DateTimeEx::getShortDate($record->viewed_at);
-                $read_at = empty($record->read_at) ? '' : 'Read: ' . App\DateTimeEx::getShortDate($record->read_at);
-                $class = 'ml-0 badge-dark badge-green badge-small';
-                @endphp
-                @if (true)
-                    <div class="small-thin-text steelblue" style="">
-                        @component('components.badge', ['class' => $class, 'text' => 'Quiz: ' . $attempts])@endcomponent
-                        @component('components.badge', ['class' => $class, 'text' => 'Score: ' . round($score * 100.0, 1) . '%'])@endcomponent
-                        @component('components.badge', ['class' => $class, 'text' => 'Views: ' . $views])@endcomponent
-                        @component('components.badge', ['class' => $class, 'text' => 'Reads: ' . $reads])@endcomponent
-                    </div>
-                    <div class="small-thin-text steelblue" style="">
-                        @component('components.badge', ['class' => $class, 'text' => $created_at])@endcomponent
-                        @component('components.badge', ['class' => $class, 'text' => $qna_at])@endcomponent
-                        @component('components.badge', ['class' => $class, 'text' => $viewed_at])@endcomponent
-                        @component('components.badge', ['class' => $class, 'text' => $read_at])@endcomponent
-                    </div>
-                @elseif ($attempts > 0)
-                    <div class="small-thin-text" style="">Flashcard Views: {{$attempts}}, Last: {{$qna_at}}</div>
-                @else
-                    <div class="small-thin-text" style="">Views: {{$views}}, {{(($views > 0) ? 'Last: ' . $record->viewed_at . '' : 'Created: ' . $record->created_at)}}</div>
-                @endif
-
-
+                @component('gen.definitions.component-stat-badges', ['record' => $record])@endcomponent
 
                 @if (isAdmin())
                     <div class="small-thin-text" style="">{{$record->updated_at}}</div>

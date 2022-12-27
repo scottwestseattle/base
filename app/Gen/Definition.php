@@ -553,6 +553,9 @@ class Definition extends Model
 			case DEFINITIONS_SEARCH_NEWEST:
 				$orderBy = 'id desc';
 				break;
+			case DEFINITIONS_SEARCH_OLDEST:
+				$orderBy = 'id';
+				break;
 			case DEFINITIONS_SEARCH_RECENT:
 				$orderBy = 'updated_at desc';
 				break;
@@ -1061,7 +1064,7 @@ class Definition extends Model
 	{
 		$records = [];
 
-		$limit = isset($parms['count']) ? $parms['count'] : LIST_LIMIT_DEFAULT;
+		$limit = isset($parms['count']) ? $parms['count'] : DEFAULT_LIST_LIMIT;
 		$start = isset($parms['start']) ? $parms['start'] : 0;
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
@@ -1069,7 +1072,7 @@ class Definition extends Model
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
 		$order = isset($parms['order']) ? $parms['order'] : 'owner';
 		$orderBy = self::crackOrder($parms, 'desc');
-		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
+		$userId = isset($parms['userId']) ? $parms['userId'] : getUserId();
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '=';
 		$releaseFlag = isset($parms['releaseFlag']) ? $parms['releaseFlag'] : RELEASEFLAG_PUBLIC;
 		$releaseFlagCondition = isset($parms['releaseCondition']) ? $parms['releaseCondition'] : '>=';
@@ -1113,7 +1116,7 @@ class Definition extends Model
 
 		$records = [];
 
-		$limit = isset($parms['count']) ? $parms['count'] : LIST_LIMIT_DEFAULT;
+		$limit = isset($parms['count']) ? $parms['count'] : DEFAULT_LIST_LIMIT;
 		$start = isset($parms['start']) ? $parms['start'] : 0;
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';

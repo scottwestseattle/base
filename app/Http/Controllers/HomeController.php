@@ -110,7 +110,8 @@ class HomeController extends Controller
         //
         $options = array_merge($options, [
             'count' => $snippetsLimit,
-            'countNext' => LIST_LIMIT_DEFAULT,
+            'countNext' => DEFAULT_LIST_LIMIT,
+            'countRead' => DEFAULT_BIG_NUMBER, // read all
             'languageId' => $siteLanguage,
             'languageFlagCondition' => $languageFlagCondition,
         ]);

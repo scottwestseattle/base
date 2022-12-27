@@ -1,8 +1,9 @@
 @php
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
-    $count = (isset($options['count']) && $options['count'] > 0) ? $options['count'] : LIST_LIMIT_DEFAULT;
+    $count = (isset($options['count']) && $options['count'] > 0) ? $options['count'] : DEFAULT_LIST_LIMIT;
     $countNext = (isset($options['countNext']) && $options['countNext'] > 0) ? $options['countNext'] : $count;
+    $countRead = (isset($options['countRead']) && $options['countRead'] > 0) ? $options['countRead'] : DEFAULT_LIST_LIMIT;
     $startNext = (isset($options['start'])) ? $options['start'] + $count : 0;
     $order = (isset($options['order'])) ? $options['order'] : 'desc';
     $autofocus = (isset($options['autofocus']) && $options['autofocus']) ? 'autofocus' : '';
@@ -106,7 +107,7 @@
 @if ($hasSnippets)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($snippets)}})</span>
-        @component('components.icon-read', ['href' => "/snippets/read?count=$count&order=$order", 'float' => 'float-left'])@endcomponent
+        @component('components.icon-read', ['href' => "/snippets/read?count=$countRead&order=$order", 'float' => 'float-left'])@endcomponent
     </h3>
     <div style="clear:both;">
         <div class="medium-text" style="margin-bottom:3px;">
@@ -129,99 +130,100 @@
         <div style="display: inline-block; width:100%">
             <table style="width:100%;">
             @foreach($snippets as $record)
-            @php
-                $iconColor = 'default';
-                $linkColor = 'purple';
-                $isOwner = false;
-                $owner = trans_choice('ui.Visitor', 1);
-                if (isset($record->user_id) && intval($record->user_id) > 0)
-                {
-                    $member =  __('ui.Member') . ': ' . $record->user_id;
-
-                    if (App\User::isOwner($record->user_id))
+                @php
+                    $iconColor = 'default';
+                    $linkColor = 'purple';
+                    $isOwner = false;
+                    $owner = trans_choice('ui.Visitor', 1);
+                    if (isset($record->user_id) && intval($record->user_id) > 0)
                     {
-                        $owner = isAdmin() ? __('ui.Admin') : $member;
-                        $isOwner = true;
-                        $linkColor = 'red';
+                        $member =  __('ui.Member') . ': ' . $record->user_id;
+
+                        if (App\User::isOwner($record->user_id))
+                        {
+                            $owner = isAdmin() ? __('ui.Admin') : $member;
+                            $isOwner = true;
+                            $linkColor = 'red';
+                        }
+                        else
+                        {
+                            $owner = $member;
+                            $iconColor = 'red';
+                            $linkColor = 'red';
+                        }
                     }
-                    else
-                    {
-                        $owner = $member;
-                        $iconColor = 'red';
-                        $linkColor = 'red';
-                    }
-                }
 
-                $record->isPublic() ? $countPublic++ : $countPrivate++;
+                    $record->isPublic() ? $countPublic++ : $countPrivate++;
+                @endphp
 
-            @endphp
+                <tr style="" class=""><td colspan="2">
+                @if ($countPrivate > 0 && $countPublic === 1)
+                    <!-- put in a separator -->
+                    <div class="large-thin-text ml-2 mt-2 mb-3 float-left" style="height:15px;">@LANG('ui.Public')</div>
+                @else
+                    <div style="height:10px;"></div>
+                @endif
+                    </td></tr>
 
-            <tr style="" class=""><td colspan="2">
-            @if ($countPrivate > 0 && $countPublic === 1)
-                <!-- put in a separator -->
-                <div class="large-thin-text ml-2 mt-2 mb-3 float-left" style="height:15px;">@LANG('ui.Public')</div>
-            @else
-                <div style="height:10px;"></div>
-            @endif
-                </td></tr>
-
-            <tr class="drop-box-ghost-small" style="vertical-align:middle;">
-                <td style="color:default; text-align:left; padding:5px 10px;">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
-                            @if ($showForm)
-                                <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title, 200)}}</a>
-                                <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />
-                                <div class="small-thin-text">{{$record->translation_en}}</div>
-                                @if (Str::startsWith($record->permalink, '-'))
-                                    <div class="red">{{$record->permalink}}</div>
+                <tr class="drop-box-ghost-small" style="vertical-align:middle;">
+                    <td style="color:default; text-align:left; padding:5px 10px;">
+                        <table>
+                        <tbody>
+                            <tr>
+                                <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
+                                @if ($showForm)
+                                    <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title, 200)}}</a>
+                                    <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />
+                                    <div class="small-thin-text">{{$record->translation_en}}</div>
+                                    @if (Str::startsWith($record->permalink, '-'))
+                                        <div class="red">{{$record->permalink}}</div>
+                                    @endif
+                                @else
+                                    <div class="">{{Str::limit($record->title, 200)}}@if (false) ({{$record->id}})@endif</div>
                                 @endif
-                            @else
-                                <div class="">{{Str::limit($record->title, 200)}}@if (false) ({{$record->id}})@endif</div>
-                            @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:.8em; font-weight:100;">
-                                <div class="float-left mr-3">
-                                    <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
-                                </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:.8em; font-weight:100;">
+                                    <div class="float-left mr-3">
+                                        <img width="25" src="/img/flags/{{getSpeechLanguageShort($record->language_flag)}}.png" />
+                                    </div>
 
-                                @if (!isset($record->translation_en))
-                                    @if (isAdmin() || $isOwner)
-                                        <div class="float-left mr-3 pb-1">
-                                            <a href="/definitions/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
-                                        </div>
-                                    @endif
-                                @endif
-
-                                <div style="float:left;">
-                                    @if (isAdmin() || $isOwner)
-                                        <div style="margin-right:5px; float:left;"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
-                                        <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash" style="color:{{$iconColor}}"></span></a></div>
-                                        <div class="float-left">
-                                            @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
-                                        </div>
+                                    @if (!isset($record->translation_en))
+                                        @if (isAdmin() || $isOwner)
+                                            <div class="float-left mr-3 pb-1">
+                                                <a href="/definitions/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
+                                            </div>
+                                        @endif
                                     @endif
 
-                                    @if (isAdmin())
-                                        <div class="small-thin-text float-left ml-2">({{$owner}})</div>
-                                    @endif
+                                    <div style="float:left;">
+                                        @if (isAdmin() || $isOwner)
+                                            <div style="margin-right:5px; float:left;"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
+                                            <div style="margin-right:0px; float:left;"><a href='/definitions/delete/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-trash" style="color:{{$iconColor}}"></span></a></div>
+                                            <div class="float-left">
+                                                @component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
+                                            </div>
+                                        @endif
 
-                                    @if (Auth::check())
-                                        <span class="ml-2 small-thin-text">{{trans_choice('ui.View', 2)}}: {{$record->view_count}}</span>
-                                    @endif
+                                        @if (isAdmin())
+                                            <div class="small-thin-text float-left ml-2">({{$owner}})</div>
+                                        @endif
 
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </td>
-            </tr>
+                                        @if (Auth::check())
+                                            <span class="ml-2 small-thin-text">{{trans_choice('ui.View', 2)}}: {{$record->view_count}}</span>
+                                        @endif
 
+                                    </div>
+
+                                    @component('gen.definitions.component-stat-badges', ['record' => $record])@endcomponent
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </td>
+                </tr>
             @endforeach
             </table>
             @if ($options['showAllButton'])

@@ -884,7 +884,7 @@ class DefinitionController extends Controller
         //
         // get the snippets for the appropriate langauge
         //
-        $snippets = Definition::getSnippets($options);
+        $snippets = Definition::getSnippetsNew($options);
 
         // the records
         $options['records'] = $snippets;
@@ -983,7 +983,7 @@ class DefinitionController extends Controller
 			if (isset($search) && strlen($search) > 0)
 				$records = Definition::searchPartial($search);
 			else
-				$records = Definition::getIndex($sort, LIST_LIMIT_DEFAULT);
+				$records = Definition::getIndex($sort, DEFAULT_LIST_LIMIT);
 		}
 		catch (\Exception $e)
 		{
@@ -1644,7 +1644,7 @@ class DefinitionController extends Controller
         $title = $parms['title'];
         $return = $parms['return'];
         $count = $parms['count'];
-        $records = Definition::getSnippets($parms);
+        $records = Definition::getSnippetsNew($parms);
 
         if (count($records) > 0)
         {
@@ -1660,20 +1660,10 @@ class DefinitionController extends Controller
         $ids = [];
         foreach($records as $record)
         {
-            if (false) // old way which split each snippet into sentences
-            {
-                // these don't match yet because some snippets have more than one sentence
-                $text = array_merge($text, Spanish::getSentences($record->title));
-                $trx = (strlen($record->translation_en) > 0) ? $record->translation_en : '(none)';
-                $translations = array_merge($translations, Spanish::getSentences($trx));
-            }
-            else
-            {
-                // new way: treat each snippet separately no matter what it contains (done to keep stats and translations in sync)
-                $text[] = $record->title;
-                $translations[] = $record->translation_en;
-        		$ids[] = $record->id;
-            }
+            // new way: treat each snippet separately no matter what it contains (done to keep stats and translations in sync)
+            $text[] = $record->title;
+            $translations[] = $record->translation_en;
+            $ids[] = $record->id;
         }
         $lines = ['text' => $text, 'translations' => $translations, 'ids' => $ids];
 

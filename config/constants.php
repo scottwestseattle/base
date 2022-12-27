@@ -3,7 +3,8 @@
 //
 // Generic Gloval Values
 //
-define('LIST_LIMIT_DEFAULT', 50);
+define('DEFAULT_LIST_LIMIT', 50);
+define('DEFAULT_BIG_NUMBER', 99999);
 define('RETURN_CODE_ERROR', -1);
 define('RETURN_CODE_SUCCESS', 1);
 define('USER_ID_NOTSET', 0);
@@ -88,6 +89,7 @@ define('DEFINITIONS_SEARCH_NOTSET',                 0);
 define('DEFINITIONS_SEARCH_ALPHA',                  1);
 define('DEFINITIONS_SEARCH_REVERSE',                2);
 define('DEFINITIONS_SEARCH_NEWEST',                 3);
+define('DEFINITIONS_SEARCH_OLDEST',                 31);
 define('DEFINITIONS_SEARCH_RECENT',                 4);
 define('DEFINITIONS_SEARCH_MISSING_TRANSLATION',    5);
 define('DEFINITIONS_SEARCH_MISSING_DEFINITION',     6);

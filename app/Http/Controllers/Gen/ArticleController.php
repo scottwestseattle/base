@@ -66,7 +66,7 @@ class ArticleController extends Controller
 
         $start = isset($request['start']) ? intval($request['start']) : 0;
 
-        $limit = isset($request['count']) ? intval($request['count']) : LIST_LIMIT_DEFAULT;
+        $limit = isset($request['count']) ? intval($request['count']) : DEFAULT_LIST_LIMIT;
         $limit = intval($limit) < 0 ? PHP_INT_MAX : intval($limit);
 
 		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
