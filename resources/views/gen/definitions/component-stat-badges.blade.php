@@ -9,14 +9,21 @@
     $viewed_at = empty($record->viewed_at) ? '' : 'Viewed: ' . App\DateTimeEx::getShortDate($record->viewed_at);
     $read_at = empty($record->read_at) ? '' : 'Read: ' . App\DateTimeEx::getShortDate($record->read_at);
     $class = 'ml-0 badge-dark badge-green badge-small';
+    $hideZeros = isset($hideZeros) ? $hideZeros : false;
+
+    // show or hide zeros
+    $attempts = ($hideZeros && $attempts === 0) ? '' : 'Quiz: ' . $attempts;
+    $score =    ($hideZeros && $score === 0)    ? '' : 'Score: ' . round($score * 100.0, 1) . '%';
+    $views =    ($hideZeros && $views === 0)    ? '' : 'Views: ' . $views;
+    $reads =    ($hideZeros && $reads === 0)    ? '' : 'Reads: ' . $reads;
 @endphp
 
 <div style="clear:both;" class="mt-2">
     <div class="small-thin-text steelblue">
-        @component('components.badge', ['class' => $class, 'text' => 'Quiz: ' . $attempts])@endcomponent
-        @component('components.badge', ['class' => $class, 'text' => 'Score: ' . round($score * 100.0, 1) . '%'])@endcomponent
-        @component('components.badge', ['class' => $class, 'text' => 'Views: ' . $views])@endcomponent
-        @component('components.badge', ['class' => $class, 'text' => 'Reads: ' . $reads])@endcomponent
+        @component('components.badge', ['class' => $class, 'text' => $attempts])@endcomponent
+        @component('components.badge', ['class' => $class, 'text' => $score])@endcomponent
+        @component('components.badge', ['class' => $class, 'text' => $views])@endcomponent
+        @component('components.badge', ['class' => $class, 'text' => $reads])@endcomponent
     </div>
     <div class="small-thin-text steelblue" style="">
         @component('components.badge', ['class' => $class, 'text' => $created_at])@endcomponent

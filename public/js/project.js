@@ -1510,14 +1510,13 @@ function showSearchResult(str, searchType, inputId, outputId)
             // search text in return string looks like: "tener":
             if (this.responseText.search(wordInput) === -1)
             {
-                console.log('input NOT found in output: ' + wordInput);
+                //console.log('input NOT found in output SO NOT SHOWN: ' + wordInput);
             }
             else
             {
-                console.log('input found in output: ' + wordInput);
+                //console.log('input found in output, SHOW IT: ' + wordInput);
                 document.getElementById(outputId).innerHTML=this.responseText;
             }
-
 
             //console.log(this.responseText);
             // document.getElementById(outputId).style.border="0px solid #A5ACB2";
@@ -1527,6 +1526,6 @@ function showSearchResult(str, searchType, inputId, outputId)
     var url = "/search-ajax/" + str + "/" + searchType;
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
-    console.log("sent url: " + url + ", searchArticles: " + searchType);
+    //console.log("sent url: " + url + ", searchArticles: " + searchType);
 }
 

@@ -325,6 +325,11 @@ class Definition extends Model
 	//
 	//////////////////////////////////////////////////////////////////////
 
+	public function isVerb()
+	{
+		return ($this->pos_flag == DEFINITIONS_POS_VERB);
+    }
+
 	static public function getByType($type, $value, $column = 'id')
 	{
 		$record = null;
@@ -1084,15 +1089,21 @@ class Definition extends Model
 
 		try
 		{
-            $records = Definition::select('definitions.*')
+            $records = Definition::select(
+                    'definitions.*',
+                    'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at'
+                )
                 ->leftJoin('definition_user', function($join) {
                     $join->on('definition_user.definition_id', '=', 'definitions.id');
                     $join->on('definition_user.user_id', 'definitions.user_id'); // works for users not logged in
                 })
-                ->where('type_flag', DEFTYPE_SNIPPET)
-                ->where('language_flag', $languageFlagCondition, $languageId)
+                ->leftJoin('stats', function($join) use($userId) {
+                    $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', $userId);
+                })
+                ->where('definitions.type_flag', DEFTYPE_SNIPPET)
+                ->where('definitions.language_flag', $languageFlagCondition, $languageId)
                 ->where(function ($query) use ($releaseFlagCondition, $releaseFlag, $userId, $userIdCondition) {$query
-                	->orWhere('release_flag', $releaseFlagCondition, $releaseFlag)
+                	->orWhere('definitions.release_flag', $releaseFlagCondition, $releaseFlag)
                 	->orWhere('definitions.user_id', $userIdCondition, $userId)
                 	;})
                 ->orderByRaw($orderBy)
@@ -1291,9 +1302,11 @@ class Definition extends Model
         }
         else
         {
-            $records = Tag::select('tags.user_id as user_Id', 'tags.id as tag_id', 'tags.name as tag_name',
+            $records = Tag::select(
+                'tags.user_id as user_Id', 'tags.id as tag_id', 'tags.name as tag_name',
                 'definitions.id as id', 'definitions.*',
-                'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at')
+                'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at'
+                )
                 ->join('definition_tag', function($join) {
                     $join->on('definition_tag.tag_id', 'tags.id');
                 })
@@ -1301,7 +1314,7 @@ class Definition extends Model
                     $join->on('definitions.id', 'definition_tag.definition_id');
                 })
                 ->leftJoin('stats', function($join) {
-                    $join->on('stats.definition_id', 'definitions.id');
+                    $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', Auth::id());
                 })
                 ->where('tags.user_id', Auth::id())
                 ->where('tags.type_flag', TAG_TYPE_DEF_FAVORITE)

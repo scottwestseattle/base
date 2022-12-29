@@ -87,4 +87,34 @@
 		@component('layouts.footer')@endcomponent
 
     </body>
+
+    <script>
+    $('body').click(function (event) {
+        if($(event.target).closest('#menu-item-search').length || $(event.target).is('#menu-item-search'))
+        {
+            //console.log('ON THE SEARCH MENU ITEM');
+        }
+        else
+        {
+            // if outside of the Search icon AND outside of the Search popup box
+            if(!$(event.target).closest('#popup-search').length && !$(event.target).is('#popup-search'))
+            {
+                //console.log('Not on Search Icon AND Not in Search popup box');
+
+                if ($('#popup-search').is(':visible'))
+                {
+                    //console.log('popup-search IS VISIBLE so close it');
+
+                    // hide the Search popup box
+                    $("#popup-search").hide();
+                }
+            }
+            else
+            {
+                //console.log('body click IN SEARCH BOX');
+            }
+        }
+    });
+    </script>
+
 </html>

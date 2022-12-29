@@ -36,10 +36,11 @@
             'prompt_div' => true,
             'select_class' => 'form-control form-control-sm',
             'selected_option' => $record->pos_flag,
-            'onchange' => '$("#pos_flag").val() == ' . DEFINITIONS_POS_SNIPPET . ' ? $("#dictionary_fields").hide() : $("#dictionary_fields").show();',
+            'onchange' => 'onChangePos();',
         ])@endcomponent
     </div>
 
+    @if (false)
     <div class="form-group">
         <label for="" class="control-label mb-0">{{trans_choice('ui.Category', 2)}} (@LANG('ui.optional')):</lable><br/>
         <div class="mt-1">
@@ -54,6 +55,7 @@
             <div class="float-left mr-3"><input type="checkbox" name="cat9" id="cat9" class="mr-1" /><label>Article</label></div>
         </div>
     </div>
+    @endif
 
     <div class="form-group">
         <label for="notes" class="control-label">{{trans_choice('ui.Note', 2)}} (@LANG('ui.optional')):</label>
@@ -87,7 +89,7 @@
             <textarea rows="3" name="examples" id="examples" class="form-control" autocomplete="off" onfocus="setFocus($(this), '#accent-chars')">{{$record->examples}}</textarea>
         </div>
 
-        <div class="form-group">
+        <div id="div_conjugations" class="form-group {{$record->isVerb() ? '' : 'hidden'}}">
             <label for="conjugations" class="control-label mr-3">{{trans_choice('proj.Conjugation', 2)}}:</label>
             <a onclick="event.preventDefault(); conjugationsGen('#title', '#conjugations');" href="" tabindex="-1" class="ml-2"><span id="button-increment-line" class="glyphicon glyphicon-plus-sign" ></span></a>
             <a onclick="event.preventDefault(); $('#conjugations').val(''); $('#conjugations').focus();" href="" tabindex="-1" class="ml-2"><span id="button-clear" class="glyphicon glyphicon-remove" ></span></a>
@@ -124,3 +126,10 @@
 
 @endsection
 
+<script>
+    function onChangePos()
+    {
+        $("#pos_flag").val() == {{DEFINITIONS_POS_SNIPPET}} ? $("#dictionary_fields").hide() : $("#dictionary_fields").show();
+        $("#pos_flag").val() == {{DEFINITIONS_POS_VERB}} ? $("#div_conjugations").show() : $("#div_conjugations").hide();
+    }
+</script>

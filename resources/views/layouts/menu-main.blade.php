@@ -34,7 +34,7 @@
 		</a>
 @endauth
 
-		<a class="navbar-item" href="/search" onclick="event.preventDefault(); $('#popup-search').toggle(); $('#popup-search-text').focus();">
+		<a id="menu-item-search" class="navbar-item" href="" onclick="event.preventDefault(); $('#popup-search').toggle(); $('#popup-search-text').focus();">
 			<div>
 				<svg class="" width="20" height="20" fill="currentColor" >
 					<use xlink:href="/img/bootstrap-icons.svg#search" />
@@ -72,6 +72,7 @@
             {{ csrf_field() }}
         </form>
 	</div>
+
 <!--------------------------------------------------------------------------------------->
 <!-- End of Search form -->
 <!--------------------------------------------------------------------------------------->

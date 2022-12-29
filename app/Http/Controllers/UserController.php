@@ -52,8 +52,8 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-		$user->name = trim($request->name);
-		$user->email = trim($request->email);
+		$user->name = alphanum($request->name);
+		$user->email = alphanum($request->email);
 		$user->email_verification_token = uniqueToken();
 
 		if (User::isAdmin())

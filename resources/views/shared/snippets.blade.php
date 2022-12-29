@@ -67,7 +67,7 @@
                 name="textEdit"
                 class="form-control textarea-control textEdit"
                 placeholder="{{__('proj.Enter text to read')}}"
-                rows="7"
+                rows="4"
                 style="font-size:18px;"
             >{{isset($options['snippet']) ? $options['snippet']->title : ''}}</textarea>
             </div>
@@ -216,8 +216,9 @@
 
                                     </div>
 
-                                    @component('gen.definitions.component-stat-badges', ['record' => $record])@endcomponent
-
+                                    @if (Auth::check())
+                                        @component('gen.definitions.component-stat-badges', ['record' => $record, 'hideZeros' => true])@endcomponent
+                                    @endif
                                 </td>
                             </tr>
                         </tbody>
