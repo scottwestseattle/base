@@ -65,7 +65,7 @@ define('WORDTYPE_SNIPPET',              5);
 define('WORDTYPE_USERLIST_LIMIT',       20);
 
 //
-// defintion types
+// definition types
 //
 define('DEFTYPE_NOTSET',        0);
 define('DEFTYPE_SNIPPET',       1);

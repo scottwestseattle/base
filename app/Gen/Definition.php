@@ -35,6 +35,19 @@ class Definition extends Model
 {
 	use SoftDeletes;
 
+	const _typeFlags = [
+        DEFTYPE_NOTSET      => 'Not Set',
+        DEFTYPE_SNIPPET     => 'Snippet',
+        DEFTYPE_DICTIONARY  => 'Definition',
+        DEFTYPE_USER        => 'User',
+        DEFTYPE_OTHER       => 'Other',
+	];
+
+    public function getTypeFlagName()
+    {
+        return self::_typeFlags[$this->type_flag];
+    }
+
     static private $_pos = [
         DEFINITIONS_POS_NOTSET      => 'base.not set',
         DEFINITIONS_POS_ADJECTIVE   => 'proj.adjective',
@@ -50,25 +63,9 @@ class Definition extends Model
         DEFINITIONS_POS_OTHER       => 'base.other',
     ];
 
-    static private $_posLight = [
-        DEFINITIONS_POS_NOTSET      => 'base.not set',
-        DEFINITIONS_POS_ADJECTIVE   => 'proj.adjective/adverb',
-        DEFINITIONS_POS_NOUN        => 'proj.noun',
-        DEFINITIONS_POS_PREPOSITION => 'proj.preposition',
-        DEFINITIONS_POS_PRONOUN     => 'proj.pronoun',
-        DEFINITIONS_POS_VERB        => 'proj.verb',
-        DEFINITIONS_POS_PHRASE      => 'proj.phrase',
-        DEFINITIONS_POS_SNIPPET     => 'proj.snippet',
-    ];
-
     static public function getPosOptions()
     {
         return self::$_pos;
-    }
-
-    static public function getPosLightOptions()
-    {
-        return self::$_posLight;
     }
 
     public function getPos()
@@ -292,6 +289,15 @@ class Definition extends Model
 	//
 	//////////////////////////////////////////////////////////////////////
 
+    static private $_releaseStatus = [
+        RELEASEFLAG_NOTSET      => 'base.not set',
+        RELEASEFLAG_PRIVATE     => 'ui.Private',
+        RELEASEFLAG_APPROVED    => 'ui.Approved',
+        RELEASEFLAG_PAID        => 'ui.Paid',
+        RELEASEFLAG_MEMBER      => 'ui.Member',
+        RELEASEFLAG_PUBLIC      => 'ui.Public',
+    ];
+
     public function isFinished()
     {
 		return ($this->wip_flag >= getConstant('wip_flag.finished'));
@@ -305,6 +311,11 @@ class Definition extends Model
     public function getStatus()
     {
 		return ($this->release_flag);
+    }
+
+    public function getReleaseStatusName()
+    {
+		return (self::$_releaseStatus[$this->release_flag]);
     }
 
     public function toggleWip()
@@ -421,7 +432,7 @@ class Definition extends Model
 		return $rc > 0;
 	}
 
-	static public function getNewest($limit)
+	static public function getNewest($limit, $random = false)
 	{
 		$records = self::getIndex(DEFINITIONS_SEARCH_NEWEST, $limit);
         $count = count($records);
@@ -429,12 +440,19 @@ class Definition extends Model
 
         if ($count > 0)
         {
-            // get random indexes
-            $random = self::getRandomIndexes($limit, $count);
+            if ($random)
+            {
+                // get random indexes
+                $random = self::getRandomIndexes($limit, $count);
 
-            // copy words using random indexes
-            foreach($random as $a)
-                $recs[] = $records[$a];
+                // copy words using random indexes
+                foreach($random as $a)
+                    $recs[] = $records[$a];
+            }
+            else
+            {
+                $recs = $records;
+            }
         }
 
         return $recs;
@@ -1022,12 +1040,15 @@ class Definition extends Model
 
 		$record->title 			= isset($parms['title']) ? $parms['title'] : null; // let it throw if not set
 		$record->user_id 		= Auth::id();
-		$record->language_flag 	= LANGUAGE_ES;
+		$record->language_flag 	= isset($parms['language_flag']) ? $parms['language_flag'] : getLanguageId();
 		$record->translation_en	= isset($parms['translation_en']) ? $parms['translation_en'] : null;
 		$record->permalink		= createPermalink($record->title);
 		$record->wip_flag		= WIP_DEFAULT;
 		$record->pos_flag   	= isset($parms['pos_flag']) ? $parms['pos_flag'] : DEFINITIONS_POS_SNIPPET;
 		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+        $record->release_flag   = RELEASEFLAG_PRIVATE;
+
+        //dd($record);
 
 		try
 		{
@@ -1075,7 +1096,7 @@ class Definition extends Model
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
-		$order = isset($parms['order']) ? $parms['order'] : 'owner';
+		$order = isset($parms['order']) ? alphanum($parms['order']) : 'owner';
 		$orderBy = self::crackOrder($parms, 'desc');
 		$userId = isset($parms['userId']) ? $parms['userId'] : getUserId();
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '=';
@@ -1083,7 +1104,15 @@ class Definition extends Model
 		$releaseFlagCondition = isset($parms['releaseCondition']) ? $parms['releaseCondition'] : '>=';
 
         // release_flag splits it by user's and public; TODO: add collation so it will sort right
+
         $orderBy = 'definitions.release_flag, ' . $orderBy;
+
+        if ($order === 'public')
+        {
+            // only show public
+            $userId = -1;
+            $userIdCondition = '=';
+        }
 
         //dump('release_flag ' . $releaseFlagCondition . ' '. $releaseFlag . ' OR user_id ' . $userIdCondition . ' ' . $userId . ' ORDER BY ' . $orderBy);
 
@@ -1221,6 +1250,9 @@ class Definition extends Model
         $orderBy = 'id';
         switch($order)
         {
+            case 'reads-asc':
+                $orderBy = 'stats.reads, stats.read_at, id';
+                break;
             case 'asc':
                 $orderBy = 'id';
                 break;
@@ -1256,6 +1288,9 @@ class Definition extends Model
                 break;
             case 'reads-asc':
                 $orderBy = 'stats.reads, stats.read_at, id';
+                break;
+            case 'public':
+                $orderBy = 'id DESC';
                 break;
             default:
                 break;

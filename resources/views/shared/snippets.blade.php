@@ -113,7 +113,8 @@
         <div class="medium-text" style="margin-bottom:3px;">
             <span class="mb-3"     style="vertical-align:bottom;"><a href="/snippets/review/flashcards">@LANG('proj.Flashcards')</a></span>
             <span class="ml-2" style="vertical-align:bottom;"><a href="/snippets/review/flashcards/20">@LANG('proj.Flashcards') (20)</a></span>
-            <a class="ml-2 btn btn-success btn-xs" onclick="$('#filter-menu').toggle()" type="button">Filter</a>
+            <a class="ml-2 btn btn-success btn-xs" onclick="$('#filter-menu').toggle()" type="button">@LANG('ui.Sort')</a>
+            <a id="publicButton" class="ml-2 btn btn-primary btn-xs" type="button" href="/practice/index?order=public&count={{$count}}">@LANG('ui.Public')</a>
             <div id="filter-menu" class="hidden mt-2">
                 <span class=""     style="vertical-align:bottom;"><a href="/practice/index?order=asc&count=50">@LANG('ui.Oldest')</a></span>
                 <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=desc&count=50">@LANG('ui.Newest')</a></span>
@@ -207,10 +208,10 @@
                                         @endif
 
                                         @if (isAdmin())
-                                            <div class="small-thin-text float-left ml-2">({{$owner}})</div>
+                                            <div class="small-thin-text float-left ml-2">({{$owner}}) <a type="button" class="btn btn-primary btn-xs" href="/definitions/publish/{{$record->id}}">{{__($record->getReleaseStatusName())}}</a></div>
                                         @endif
 
-                                        @if (Auth::check())
+                                        @if (false && Auth::check())
                                             <span class="ml-2 small-thin-text">{{trans_choice('ui.View', 2)}}: {{$record->view_count}}</span>
                                         @endif
 

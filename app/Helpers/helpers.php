@@ -1103,34 +1103,39 @@ if (!function_exists('crackParms')) {
         $parms = null;
 
         // these are always set
-        $parms['count'] = (isset($request['count'])) ? $request['count'] : (isset($defaults['count']) ? $defaults['count'] : DEFAULT_LIST_LIMIT);
-        $parms['start'] = (isset($request['start'])) ? $request['start'] : 0;
+        $parms['count'] = (isset($request['count'])) ? alphanum($request['count']) : (isset($defaults['count']) ? $defaults['count'] : DEFAULT_LIST_LIMIT);
+        $parms['start'] = (isset($request['start'])) ? alphanum($request['start']) : 0;
 
         // these are set ONLY if in the $request OR in the $defaults
         if (isset($request['order']))
-            $parms['order'] = $request['order'];
+            $parms['order'] = alphanum($request['order']);
         else if (isset($defaults['order']))
             $parms['order'] = $defaults['order'];
 
         if (isset($request['action']))
-            $parms['action'] = $request['action'];
+            $parms['action'] = alphanum($request['action']);
         else if (isset($defaults['action']))
             $parms['action'] = $defaults['action'];
 
         if (isset($request['tag']))
-            $parms['tag'] = $request['tag'];
+            $parms['tag'] = alphanum($request['tag']);
         else if (isset($defaults['tag']))
             $parms['tag'] = $defaults['tag'];
 
         if (isset($request['title']))
-            $parms['title'] = $request['title'];
+            $parms['title'] = alphanum($request['title']);
         else if (isset($defaults['title']))
             $parms['title'] = $defaults['title'];
 
         if (isset($request['return']))
-            $parms['return'] = $request['return'];
+            $parms['return'] = alphanum($request['return']);
         else if (isset($defaults['return']))
             $parms['return'] = $defaults['return'];
+
+        if (isset($request['orderBy']))
+            $parms['orderBy'] = alphanum($request['orderBy']);
+        else if (isset($defaults['orderBy']))
+            $parms['orderBy'] = $defaults['orderBy'];
 
         return $parms;
     }

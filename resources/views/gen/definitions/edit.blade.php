@@ -31,7 +31,7 @@
     <div class="form-group">
         @component('components.control-dropdown-menu', [
             'prompt' => __('proj.Part of Speech') . ':',
-            'options' => App\Gen\Definition::getPosLightOptions(),
+            'options' => App\Gen\Definition::getPosOptions(),
             'field_name' => 'pos_flag',
             'prompt_div' => true,
             'select_class' => 'form-control form-control-sm',
@@ -103,22 +103,29 @@
         </div>
 
         <div class="form-group">
-            <label for="language_flag" class="control-label">{{trans_choice('ui.Language', 1)}}:</label>
-            @component('components.control-dropdown-language', [
-                'options' => getLanguageOptions(),
-                'selected_option' => isset($record->language_flag) ? $record->language_flag : -1,
-                'field_name' => 'language_flag',
-                'select_class' => 'form-control',
-            ])@endcomponent
-        </div>
-
-        <div class="form-group">
             <div class="submit-button">
                 <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
             </div>
         </div>
 
     </div><!-- dictionary_fields -->
+
+    @if (isAdmin())
+    <div class="form-group">
+        <label for="user_id" class="control-label">@LANG('proj.User ID'):</label>
+        <input type="number" min="0" name="user_id" id="user_id" class="form-control" value="{{$record->user_id}}" />
+    </div>
+    @endif
+
+    <div class="form-group">
+        <label for="language_flag" class="control-label">{{trans_choice('ui.Language', 1)}}:</label>
+        @component('components.control-dropdown-language', [
+            'options' => getLanguageOptions(),
+            'selected_option' => isset($record->language_flag) ? $record->language_flag : -1,
+            'field_name' => 'language_flag',
+            'select_class' => 'form-control',
+        ])@endcomponent
+    </div>
 
     {{ csrf_field() }}
 

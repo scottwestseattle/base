@@ -35,6 +35,8 @@
 			<button type="submit" class="btn btn-primary">@LANG('ui.Convert')</button>
 		</div>
 
+        <input type="hidden" id="language_flag" value="{{$record->language_flag}}" />
+
 	{{ csrf_field() }}
 	</form>
 </div>

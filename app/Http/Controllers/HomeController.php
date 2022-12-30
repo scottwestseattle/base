@@ -116,7 +116,6 @@ class HomeController extends Controller
             'languageFlagCondition' => $languageFlagCondition,
         ]);
 
-        // get USER'S and PUBLIC snippets
         $options['userId'] = Auth::check() ? Auth::id() : 0;
         $options['userIdCondition'] = '=';
         $options['releaseFlag'] = RELEASEFLAG_PUBLIC;

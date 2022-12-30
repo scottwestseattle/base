@@ -103,12 +103,18 @@ class DefinitionController extends Controller
     public function index(Request $request)
     {
 		$records = [];
+		$parms = crackParms($request, ['orderBy' => 'definitions.id desc']);
+        //dump($parms);
 
 		try
 		{
 			$records = Definition::select()
-				//->where('type_flag', DEFTYPE_DICTIONARY)
-				->orderByRaw('type_flag, created_at desc')
+                ->leftJoin('users', function($join) {
+                    $join->on('users.id', 'definitions.user_id');
+                })
+				->where('definitions.language_flag', getLanguageId())
+				->orderByRaw($parms['orderBy'])
+				->limit($parms['count'])
 				->get();
 		}
 		catch (\Exception $e)
@@ -152,7 +158,6 @@ class DefinitionController extends Controller
 		$record = new Definition();
 
 		$record->user_id 		= Auth::id();
-		$record->language_flag 	= LANGUAGE_ES;
 		$record->title 			= $title;
 		$record->forms 			= Spanish::formatForms($request->forms);
 		$record->definition		= $request->definition;
@@ -162,8 +167,10 @@ class DefinitionController extends Controller
 		$record->wip_flag		= WIP_DEFAULT;
 		$record->rank   		= $request->rank;
 
+		$record->language_flag  = getLanguageId();
 		$record->pos_flag   	= isset($request->pos_flag) ? $request->pos_flag : DEFINITIONS_POS_SNIPPET;
 		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+		$record->release_flag  = isAdmin() ? RELEASEFLAG_PUBLIC : RELEASEFLAG_PRIVATE;
 
 		try
 		{
@@ -197,7 +204,7 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect('/definitions/view/' . $record->permalink);
+		return redirect('/dictionary');
     }
 
     public function createQuick(Request $request, $title = null)
@@ -426,6 +433,10 @@ class DefinitionController extends Controller
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 		$record->notes = copyDirty($record->notes, $request->notes, $isDirty, $changes);
 		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
+		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
+
+		if (isAdmin()) // only admin can change user_id
+		    $record->user_id = copyDirty($record->user_id, intval($request->user_id), $isDirty, $changes);
 
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);
@@ -734,7 +745,7 @@ class DefinitionController extends Controller
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
                 $record->pos_flag 		= DEFINITIONS_POS_SNIPPET;
-                $record->release_flag   = isAdmin() ? RELEASEFLAG_PUBLIC : RELEASEFLAG_PRIVATE;
+                $record->release_flag   = isAdmin() ? RELEASEFLAG_PRIVATE : RELEASEFLAG_PRIVATE;
                 $record->visitor_id     = getVisitorInfo()['hash'];
 
                 $text = getWords($record->title, DEF_PERMALINK_WORDS); // only use the first X words
@@ -1524,7 +1535,7 @@ class DefinitionController extends Controller
     public function reviewNewest(Request $request, $reviewType = null, $count = 20)
     {
         $reviewType = alpha($reviewType);
-        $records = Definition::getNewest(intval($count));
+        $records = Definition::getNewest(intval($count), /* $random = */ true);
         $title = 'Newest Words';
 
 		return ($reviewType == 'reader')
@@ -2060,7 +2071,11 @@ class DefinitionController extends Controller
                 // add the snippets to the favorites list
                 foreach($records as $r)
                 {
-                    $definition = Definition::addDefinition(['title' => $r['q'], 'translation_en' => $r['a']]);
+                    $definition = Definition::addDefinition([
+                        'title' => $r['q'],
+                        'translation_en' => $r['a'],
+                        'language_flag' => $request->language_flag,
+                        ]);
                     if (!empty($definition))
                     {
                         $definition->addTag($tag->id);

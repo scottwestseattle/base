@@ -6,7 +6,7 @@
 @section('menu-submenu')@component('translations.menu-submenu', ['record' => $filename]) @endcomponent @endsection
 @section('content')
 
-<h1>@LANG('ui.Translations')</h1>
+<h1>{{trans_choice('ui.Translation', 2)}}</h1>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 	<li class="nav-item" role="presentation">
@@ -24,7 +24,7 @@
 	<div class="tab-pane fade show active" id="english" role="tabpanel" aria-labelledby="english-tab">
 		<div class="table-responsive w100">
 		<table>
-			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
+			<tr><th></th><th>@LANG('ui.Key')</th><th>{{trans_choice('ui.Translation', 1)}}</th></tr>
 			@foreach($recs as $key => $value)
 			<tr>
 				<td>{{$loop->iteration}}.&nbsp;</td>
@@ -35,11 +35,11 @@
 		</table>
 		</div>
 	</div>
-	
+
 	<div class="tab-pane fade" id="spanish" role="tabpanel" aria-labelledby="spanish-tab">
 		<div class="table-responsive w100">
 		<table>
-			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
+			<tr><th></th><th>@LANG('ui.Key')</th><th>{{trans_choice('ui.Translation', 1)}}</th></tr>
 			@foreach($recs as $key => $value)
 			<tr>
 				<td>{{$loop->iteration}}.&nbsp;</td>
@@ -50,11 +50,11 @@
 		</table>
 		</div>
 	</div>
-	
+
 	<div class="tab-pane fade" id="chinese" role="tabpanel" aria-labelledby="chinese-tab">
 		<div class="table-responsive w100">
 		<table>
-			<tr><th></th><th>@LANG('ui.Key')</th><th>@LANG('ui.Translation')</th></tr>
+			<tr><th></th><th>@LANG('ui.Key')</th><th>{{trans_choice('ui.Translation', 1)}}</th></tr>
 			@foreach($recs as $key => $value)
 			<tr>
 				<td>{{$loop->iteration}}.&nbsp;</td>
@@ -65,6 +65,6 @@
 		</table>
 		</div>
 	</div>
-</div>	
+</div>
 
 @endsection
