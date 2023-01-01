@@ -1,11 +1,11 @@
 @php
 $size = isset($size) ? $size : 16;
-$isGlyph = isset($glyphicon);
+$isSvg = isset($svg);
 $linkText = isset($linkText) ? $linkText : null;
 @endphp
 <div class="dropdown {{isset($margin) ? $margin : ''}}" >
 	<a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="" tablindex="-1">
-	    @if ($isGlyph)
+	    @if ($isSvg)
             <svg class="mt-1 text-primary" width="{{$size}}" height="{{$size}}" >
                 <use xlink:href="/img/bootstrap-icons.svg#trash" />
             </svg>
