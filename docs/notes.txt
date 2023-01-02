@@ -12,7 +12,7 @@ ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
 LIMIT 10
 
 ===== NEW DB Changes =====
-
+ALTER TABLE `courses` ADD `language_flag` TINYINT NOT NULL COMMENT 'values in: LANGUAGE_*' AFTER `wip_flag`;
 
 ===== Done =====
 UPDATE `definitions` SET release_flag = 10 WHERE 1 and user_id = 2 and release_flag = 0

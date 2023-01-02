@@ -3,7 +3,7 @@
 @section('menu-submenu')@component('gen.courses.menu-submenu', ['prefix' => 'courses'])@endcomponent @endsection
 @section('content')
 
-<h1>{{trans_choice('proj.Course', 2)}} ({{count($public)}})</h1>
+<h1>{{trans_choice('proj.Course', 2)}}<span class="title-count">({{count($public)}})</span></h1>
 
 <div class="row row-course">
     @foreach($public as $record)

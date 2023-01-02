@@ -120,9 +120,9 @@ class Course extends Model
 		$siteIdCondition = '=';
 
 		$showAll = (array_search('all', $parms) !== false);
-		if ($showAll || User::isSuperAdmin())
+		if ($showAll || User::isAdmin())
 		{
-			// super admins can see all sites
+			// admins can see all sites
 			$siteId = 0;
 			$siteIdCondition = '>=';
 		}
@@ -164,7 +164,7 @@ class Course extends Model
 			else
 			{
 				$records = Course::select()
-					->where('site_id', $siteIdCondition, $siteId)
+					//->where('site_id', $siteIdCondition, $siteId)
 					->where('wip_flag', '!=', WIP_INACTIVE)
 					->orderBy('type_flag')
 					->orderBy('site_id')
@@ -215,6 +215,9 @@ class Course extends Model
                     ->get();
 			}
 		}
+
+        //dump($parms);
+        //dump($records);
 
 		return $records;
 	}

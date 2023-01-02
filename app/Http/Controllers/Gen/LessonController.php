@@ -1149,8 +1149,8 @@ class LessonController extends Controller
 
 		// format Fancy Bullets, type 1: "FB1"
 		//$v = preg_replace('/FB1([ ]*)/', '<div style="font-size:12px;" class="fb glyphicon glyphicon-arrow-right mr-2 ml-4 mb-1"></div>', $v); //
-		$v = preg_replace('/FB1([ ]*)/', '<div style="font-size:18px;" class="middle mr-2 ml-0 mb-1">→</div>', $v); //
-		$v = preg_replace('/FB2([ ]*)/', '<div style="font-size:12px;" class="middle mr-2 ml-0 mb-1 glyphicon glyphicon-triangle-right green"></div>', $v); //
+		$v = preg_replace('/FB1([ ]*)/', '<div style="font-size:18px;" class="middle mr-1 ml-2 mb-1">→</div>', $v); //
+		$v = preg_replace('/FB2([ ]*)/', '<div style="font-size:12px;" class="middle mr-1 ml-2 mb-1 glyphicon glyphicon-triangle-right green"></div>', $v); //
 
 		return $v;
 	}
