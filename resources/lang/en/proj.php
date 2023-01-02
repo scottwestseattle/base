@@ -185,4 +185,5 @@ return [
 'Seconds to pause between lines' => 'Seconds to pause between lines',
 'Convert to Favorites' => 'Convert to Favorites',
 'Go To Entry' => 'Go To Entry',
+'Convert Text to Favorites' => 'Convert Text to Favorites',
 ];

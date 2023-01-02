@@ -86,6 +86,12 @@
                 ])@endcomponent
             @endif
 
+            <div class="form-group">
+                <label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
+                <input type="text" name="options" class="form-control" />
+                <p class='medium-thin-text'>Options: read-random;read-reverse;</p>
+            </div>
+
 			<div style="margin:20px 0;">
 				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>
 			</div>

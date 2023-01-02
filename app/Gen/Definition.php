@@ -242,6 +242,8 @@ class Definition extends Model
             logExceptionEx(__CLASS__, __FUNCTION__, $msg . ', ' . $e->getMessage());
 		}
 
+        //dump($records);
+
 		return $records;
     }
 

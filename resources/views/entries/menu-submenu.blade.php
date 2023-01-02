@@ -22,7 +22,7 @@
     			@component('components.icon-link', ['href' => '/entries/publish/' . $record->id, 'svg' => 'lightning'])@endcomponent
 			</li>
 			<li class="nav-item">
-    			@component('components.icon-link', ['href' => '/entries/confirmdelete/' . $record->id, 'svg' => 'trash'])@endcomponent
+    			@component('components.icon-link', ['href' => '/entries/confirmdelete/' . $record->id, 'svg' => 'trash-fill'])@endcomponent
 			</li>
 		@else
 			<li class="nav-item">

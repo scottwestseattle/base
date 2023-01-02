@@ -185,4 +185,5 @@ return [
 'Seconds to pause between lines' => '行与行之间停顿的秒数',
 'Convert to Favorites' => '转换到收藏夹',
 'Go To Entry' => '转到问题',
+'Convert Text to Favorites' => '转换文本到收藏夹',
 ];

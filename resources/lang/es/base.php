@@ -144,7 +144,7 @@ return [
 'not set' => 'no establecido',
 'Record not found' => 'Registro no encontrado',
 'New record has been added' => 'Se ha agregado un nuevo registro',
-'Add List' => 'Agregar Lista',
+'Add List' => 'Agregar lista de favoritos',
 'Edit Site' => 'Editar sitio',
 'Translation file has been updated' => 'Se actualizó la traducción',
 'View Tag' => 'Visualizar etiqueta',

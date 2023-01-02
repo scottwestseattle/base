@@ -218,6 +218,7 @@ class ArticleController extends Controller
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
+		$options            = $request->options;
    		$urlChanged = false;
 
         if (isAdmin())
@@ -235,6 +236,7 @@ class ArticleController extends Controller
             $source_credit = alphanumHarsh($source_credit);
     		$record->release_flag = RELEASEFLAG_PRIVATE;
     		$source_link = cleanUrl($source_link, $urlChanged);
+            $options = alphanumHarsh($options);
         }
 
 		$record->title 				= trimNull($title);
@@ -243,6 +245,7 @@ class ArticleController extends Controller
 		$record->source				= trimNull($source);
 		$record->source_credit		= trimNull($source_credit);
 		$record->source_link		= trimNull($source_link);
+		$record->options    		= trimNull($options);
 		$record->user_id 			= Auth::id();
 
 		$filter = DateTimeEx::getDateFilter($request);
@@ -323,6 +326,7 @@ class ArticleController extends Controller
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
 		$display_date       = $request->source_link;
+		$options            = $request->options;
 
         // brute force cleaning: remove any blank lines with spaces because they throw off the quizes and line based operations
         $description        = str_replace("\r\n \r\n", "\r\n\r\n", $description);
@@ -349,6 +353,7 @@ class ArticleController extends Controller
             $source = alphanumHarsh($source);
             $source_credit = alphanumHarsh($source_credit);
     		$source_link = cleanUrl($source_link, $urlChanged);
+            $options = alphanumHarsh($options);
         }
 
 		$record->title 				    = trimNull($title);
@@ -361,6 +366,7 @@ class ArticleController extends Controller
 		$record->language_flag		    = isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			    = ENTRY_TYPE_ARTICLE;
 		$record->permalink              = createPermalink($record->title, $record->created_at);
+		$record->options                = trimNull($options);
 
 		try
 		{
@@ -510,6 +516,9 @@ class ArticleController extends Controller
         $options['randomOrder'] = $random;
         $options['count'] = $count;
         $options['return'] = PREFIX;
+
+        $options['readRandom'] = $entry->readRandom();
+        $options['readReverse'] = $entry->readReverse();
 
         return $this->reader($entry, $options);
     }

@@ -134,7 +134,7 @@ return [
 'Author' => 'Author',
 'Language' => 'Language|Languages',
 'Text' => 'Text',
-'Option' => 'Option',
+'Option' => 'Option|Options',
 'Development' => 'Development',
 'Not Set' => 'Not Set',
 'Not Found' => 'Not Found',
@@ -179,4 +179,9 @@ return [
 'Note' => 'Note|Notes',
 'Show More' => 'Show More',
 'Match' => 'Match|Matches',
+'Convert' => 'Convert',
+'Favorites List Name' => 'Favorites List Name',
+'Close' => 'Close',
+'Definition' => 'Definition|Definitions',
+'Setting' => 'Setting|Settings',
 ];

@@ -1,5 +1,6 @@
 @php
 	$lists = isset($lists) ? $lists : [];
+	$listCount = count($lists);
 	$tagCount = isset($record->tags) ? count($record->tags) : 0;
 	$tagFromId = 0;
 	if ($tagCount > 0)
@@ -20,9 +21,6 @@
 @endphp
 
 <div class="middle ml-2">
-
-@if (count($lists) > 1)
-
     <div class="dropdown" >
         <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">
             <div class="glyphCustom-md glyphicon glyphicon-{{$heart}}"></div>
@@ -36,15 +34,7 @@
                     <li><a class="dropdown-item" href="/definitions/set-favorite-list/{{$record->id}}/{{$tagFromId}}/{{$list->id}}">{{$list->name}}</a></li>
                 @endif
             @endforeach
+            <li class="mt-1" style="{{$listCount > 0 ? 'border-top: 1px solid LightGray' : ''}}"><a class="dropdown-item" href="/tags/add-user-favorite-list">@LANG('ui.Add New List')</a></li>
         </ul>
     </div>
-
-@else
-
-    <a href='' onclick="heartDefinition(event, {{$record->id}}, '#{{$status}}')">
-        <span id="{{$heartId}}" class="glyphCustom-md glyphicon glyphicon-{{$heart}}"></span>
-    </a>
-
-@endif
-
 </div>

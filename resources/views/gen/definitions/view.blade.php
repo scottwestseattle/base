@@ -34,23 +34,7 @@
 
     <table><tr>
         @if (Auth::check())
-        <td class="icon">
-	    	@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
-        </td>
-        <td class="icon">
-            <div class="ml-3">
-                @if (isAdmin() || App\User::isOwner($record->user_id))
-                    <a href="/definitions/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
-                @endif
-            </div>
-        </td>
-        <td class="icon">
-            <div class="ml-3">
-                @if (isAdmin() || App\User::isOwner($record->user_id))
-                    <a href="/definitions/confirmdelete/{{$record->id}}">@component('components.icon-delete')@endcomponent</a>
-                @endif
-            </div>
-        </td>
+            <td class="icon">@component($prefix . '.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent</td>
         @endif
     </tr></table>
 
@@ -69,7 +53,7 @@
                 <div class="small-thin-text">{{__(strtolower($record->getPos()))}}</div>
 			</div>
 
-			@if (App\User::isSuperAdmin())
+			@if (App\User::isAdmin())
 				@if (isset($canConjugate) && $canConjugate)
 					<div class="small-thin-text mt-2"><a href="/{{PREFIX . '/conjugationsgen/' . $record->id}}/">generate conjugations</a>
 				@endif

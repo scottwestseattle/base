@@ -132,6 +132,33 @@ class Entry extends Model
 		return (isset($record->description_translation) && strlen($record->description_translation) > 0);
     }
 
+
+    public function readRandom()
+    {
+        return $this->hasOption('read-random');
+    }
+
+    public function readReverse()
+    {
+        return $this->hasOption('read-reverse');
+    }
+
+    public function hasOption($key)
+    {
+        $rc = false;
+
+        if (isset($this->options) && strlen($this->options) > 0)
+        {
+            $options = $this->options;
+            if (stristr($options, $key) != NULL)
+            {
+                $rc = true;
+            }
+        }
+
+        return $rc;
+    }
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Release status

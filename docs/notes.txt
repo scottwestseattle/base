@@ -1,17 +1,5 @@
-SELECT def.*, stats.qna_attempts, stats.viewed_at FROM `tags`
-JOIN definition_tag as dt on dt.tag_id = tags.id
-JOIN definitions as def on def.id = dt.definition_id
-LEFT JOIN stats on stats.definition_id = def.id
-WHERE 1
-AND tags.user_id = 1
-AND tags.type_flag = 3
-AND tags.deleted_at IS NULL
-AND def.deleted_at IS NULL
-AND def.language_flag = 1
-ORDER by stats.qna_attempts DESC, stats.viewed_at, def.id
-LIMIT 10
-
 ===== NEW DB Changes =====
+ALTER TABLE `entries` ADD `options` VARCHAR(255) NULL AFTER `display_order`;
 ALTER TABLE `courses` ADD `language_flag` TINYINT NOT NULL COMMENT 'values in: LANGUAGE_*' AFTER `wip_flag`;
 
 ===== Done =====

@@ -179,4 +179,9 @@ return [
 'Note' => '注意事项|注意事项',
 'Show More' => '显示更多',
 'Match' => '巧合|巧合',
+'Convert' => '转换',
+'Favorites List Name' => '收藏列表名称',
+'Close' => '关闭',
+'Definition' => '定义|定义',
+'Setting' => '设置',
 ];

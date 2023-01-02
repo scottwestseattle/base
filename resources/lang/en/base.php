@@ -144,7 +144,7 @@ return [
 'not set' => 'not set',
 'Record not found' => 'Record not found',
 'New record has been added' => 'New record has been added',
-'Add List' => 'Add List',
+'Add List' => 'Add Favorites List',
 'Edit Site' => 'Edit Site',
 'Translation file has been updated' => 'Translation has been updated',
 'View Tag' => 'View Tag',

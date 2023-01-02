@@ -56,7 +56,7 @@
                             <a id="nav-link-tab3" class="nav-link" href="#" onclick="setTab(event, 3); ajaxexec('/articles/flashcards/view/{{$record->id}}', 'tab-tab3')"><span class="nav-link-tab">{{trans_choice('ui.Show All', 1)}}</span></a>
                         </li>
                         <li class="nav-item">
-                            <a id="nav-link-tab4" class="nav-link" href="#" onclick="setTab(event, 4);"><span class="nav-link-tab">{{'ui.Settings'}}</span></a>
+                            <a id="nav-link-tab4" class="nav-link" href="#" onclick="setTab(event, 4);"><span class="nav-link-tab">{{trans_choice('ui.Setting', 2)}}</span></a>
                         </li>
                     </ul>
 
@@ -115,6 +115,12 @@
                         'select_class' => 'mt-1 mb-3',
                     ])@endcomponent
                 @endif
+
+                <div class="form-group">
+                    <label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
+                    <input type="text" name="options" class="form-control" value="{{$record->options}}" />
+                    <p class='medium-thin-text'>Options: read-random;read-reverse;</p>
+                </div>
 
 			</div>
 

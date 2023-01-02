@@ -5,11 +5,16 @@
     $recordId = isset($recordId) ? $recordId : -1;
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = isset($options['count']) ? $options['count'] : count($lines['text']);
-    $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
 	$hasTranslation = isset($lines['translation']);// && count($lines['text']) == count($lines['translation']); // translation matches text
 	$showTranslationControls = isset($lines['translation']); // show the translation in case it needs work
 	$mobileOnly = false && isMobile() ? '' : 'hidden'; // off for now
 	$isDefinition = ($contentType !== 'Entry');
+
+    // read options
+    $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
+    $readRandom = isset($options['readRandom']) ? $options['readRandom'] : false;
+    $randomOrder = $randomOrder || $readRandom;
+    $readReverse = isset($options['readReverse']) ? $options['readReverse'] : false;
 @endphp
 
 <!-------------------------------------------------------->
@@ -221,7 +226,7 @@
                 @if ($showTranslationControls)
                 <div>
                     <div class="mt-1 ml-1">
-                        <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" />
+                        <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" {{$readReverse ? 'checked' : ''}} />
                         <label for="checkbox-flip" class="checkbox-sm steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
                     </div>
                 </div>

@@ -179,4 +179,9 @@ return [
 'Note' => 'Nota|Notas',
 'Show More' => 'Mostrar más',
 'Match' => 'Coincidencia|Coincidencias',
+'Convert' => 'Convertir',
+'Favorites List Name' => 'Nombre de la lista de favoritas',
+'Close' => 'Cerrar',
+'Definition' => 'Definición|Definiciones',
+'Setting' => 'Configuración',
 ];

@@ -144,7 +144,7 @@ return [
 'not set' => '没有设置',
 'Record not found' => '记录不存在',
 'New record has been added' => '新记录已添加',
-'Add List' => '新增清单',
+'Add List' => '添加收藏夹列表',
 'Edit Site' => '编辑网站',
 'Translation file has been updated' => '翻译已更新',
 'View Tag' => '查看标签',
