@@ -21,7 +21,7 @@
                 <td><a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title, 30)}} ({{$record->id}})</a></td>
             @else
                 <td class="icon"><a href='/definitions/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
-                <td><a href="/definitions/{{ blank($record->permalink) ? 'view/' . $record->id : $record->permalink }}">{{$record->title}} ({{$record->id}})</a></td>
+                <td><a href="/definitions/{{ blank($record->permalink) ? 'show/' . $record->id : 'view/' . $record->permalink }}">{{$record->title}} ({{$record->id}})</a></td>
             @endif
             <td class="small-thin-text">{{__($record->getReleaseStatusName())}}</td>
             <td class="small-thin-text">{{$record->getTypeFlagName()}}</td>

@@ -424,7 +424,7 @@
 <!--------------------------------------------------------------------------------------->
 
 @if (isset($newestWords))
-<h3>{{__('proj.Newest Words')}} ({{count($newestWords)}})</h3>
+<h3>{{__('proj.Newest Words')}}<span class="title-count">({{count($newestWords)}})</span></h3>
 <div class="text-center mt-2" style="">
     <div style="display: inline-block; width:100%">
         <table style="width:100%;">

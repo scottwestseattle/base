@@ -112,7 +112,7 @@
 
     @if (isAdmin())
     <div class="form-group">
-        <label for="user_id" class="control-label">@LANG('proj.User ID'):</label>
+        <label for="user_id" class="control-label">@LANG('ui.User ID'):</label>
         <input type="number" min="0" name="user_id" id="user_id" class="form-control" value="{{$record->user_id}}" />
     </div>
     @endif

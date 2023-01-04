@@ -99,6 +99,7 @@ class DefinitionController extends Controller
 
     //
     // NOT THE MAIN INDEX PAGE - See search() function
+    // This is the Admin Index Page
     //
     public function index(Request $request)
     {
@@ -108,7 +109,7 @@ class DefinitionController extends Controller
 
 		try
 		{
-			$records = Definition::select()
+			$records = Definition::select('definitions.*', 'users.name')
                 ->leftJoin('users', function($join) {
                     $join->on('users.id', 'definitions.user_id');
                 })
@@ -2047,15 +2048,13 @@ class DefinitionController extends Controller
         {
             // do the conversion
             $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
-           	return redirect('/definitions/list-tag/' . $parms['tagId']);
+           	return redirect('/definitions/list-tag/' . $parms['tagId'] . '?order=desc');
         }
 
 		return view(VIEWS . '.convert-text-to-favorites', [
 			'record' => $record,
 			'parms' => $parms,
 		]);
-
-        return redirect('favorites');
     }
 
     private function doConvertTextToFavorites($request, $title, $records)
