@@ -48,27 +48,6 @@
         @component('shared.history', ['history' => $history])@endcomponent
         <hr />
 
-        @if (false)
-        <div>
-            <table class="">
-            @php
-                $colors = App\DateTimeEx::getDayColors();
-            @endphp
-            @foreach ($colors as $color)
-                <tr class="mb-3" style="border: 1px white solid; background-color:{{$color}}; color:white;">
-                    <td class="p-3">
-                        <div class="text-center">
-                            <div>One line of text</div>
-                            <div>Second line of text</div>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-            </table>
-        </div>
-        <hr />
-        @endif
-
         @php
             $emergency = intval($events['emergency']);
             $errors = intval($events['errors']);

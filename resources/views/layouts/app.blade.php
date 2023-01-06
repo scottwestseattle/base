@@ -89,7 +89,10 @@
     </body>
 
     <script>
-    $('body').click(function (event) {
+    $('body').click(function(event) {
+        //
+        // close the search box when there is a click outside of the box
+        //
         if($(event.target).closest('#menu-item-search').length || $(event.target).is('#menu-item-search'))
         {
             //console.log('ON THE SEARCH MENU ITEM');

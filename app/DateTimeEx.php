@@ -10,8 +10,6 @@ use DateTimeZone;
 //
 class DateTimeEx
 {
-    static private $_sTimezone = 'GMT'; // 'America/Chicago'
-
     static private $colors = [
         '#4682b4', // 'SteelBlue',
         '#008b8b', // 'DarkCyan',
@@ -157,11 +155,13 @@ class DateTimeEx
 		{
 			if ($today)
 			{
-				$month = intval(date("m"));
-				$year = intval(date("Y"));
+				$now = self::getLocalDateTime();
+
+				$month = intval($now->format('m'));
+				$year = intval($now->format('Y'));
 
 				// if we're showing the full month, then unset the 'day'
-				$day = $showFullMonth ? false : intval(date("d"));
+				$day = $showFullMonth ? false : intval($now->format('d'));
 
 				// if nothing is set use current month
 				$dates['selected_day'] = $day;
@@ -275,9 +275,7 @@ class DateTimeEx
 
 	static public function getDayColor($sDate)
 	{
-        $sTimeZone = 'America/Chicago';
-
-		$day = self::getDaysSinceZero($sDate, $sTimeZone);
+		$day = self::getDaysSinceZero($sDate);
 		$colorCnt = count(self::$colors);
 
 		// put day in our range of color codes
@@ -309,9 +307,8 @@ class DateTimeEx
         return $rc;
     }
 
-    static public function getDaysSinceZero($sDate, $sTimeZone)
+    static public function getDaysSinceZero($sDate)
     {
-        $tz = new DateTimeZone($sTimeZone);
         $dt = null;
         $rc = 0;
 
@@ -320,7 +317,7 @@ class DateTimeEx
             try
             {
                 // get the specified date
-                $dt = new DateTime($sDate);
+                $dt = self::getLocalDateTime($sDate);
             }
             catch (\Exception $e)
             {
@@ -328,11 +325,10 @@ class DateTimeEx
             }
 
             // set the timezone
-            $dt->setTimezone($tz);
             $today = $dt->format('Y-m-d H:i:s (e)');
 
             // get date zero
-            $zero = new DateTime('0000-00-00', $tz);
+            $zero = new DateTime('0000-00-00');
 
             // get the difference
             $diff = $dt->diff($zero);
@@ -352,7 +348,8 @@ class DateTimeEx
     static public function getShortDateTime($sDate, $format = null)
     {
         $format = isset($format) ? $format : 'M-d H:i';
-        $rc = self::convertTimezone($sDate, self::$_sTimezone);
+
+        $rc = self::getLocalDateTime($sDate);
 
         //todo: this is how dates should be localized... but it has to be installed.
         // use IntlDateFormatter;
@@ -382,15 +379,6 @@ class DateTimeEx
         return $rc;
     }
 
-    static public function convertTimezone($sDate, $sTimeZone)
-    {
-        $tz = new DateTimeZone($sTimeZone);
-        $rc = new DateTime($sDate);
-        $rc->setTimezone($tz);
-
-        return $rc;
-    }
-
 	static public function isExpired($sDate)
 	{
 		$rc = false;
@@ -415,13 +403,8 @@ class DateTimeEx
 
 	static public function isToday($sDate)
 	{
-        $tz = new DateTimeZone(self::$_sTimezone);
-
-        $date = new DateTime($sDate);
-        $date->setTimezone($tz);
-
-		$now = new DateTime('NOW');
-        $now->setTimezone($tz);
+        $date = self::getLocalDateTime($sDate);
+		$now = self::getLocalDateTime();
 
 	    return ($date->format('Y-m-d') === $now->format('Y-m-d'));
 	}
@@ -432,5 +415,41 @@ class DateTimeEx
         $now = $now->format('Y-m-d H:i:s');
 
 	    return $now;
+	}
+
+	static public function getLocalDateTime($sDate = null)
+	{
+        // client timezone is put into a cookie by javascript after first page load
+        $timezone = isset($_COOKIE['timezoneClient']) ? intval($_COOKIE['timezoneClient']) : 0;
+
+        if (isset($sDate))
+        {
+            // get the provided date string from the db
+            $date = new DateTime($sDate);
+        }
+        else
+        {
+            // get server time which is GMT
+            $date = new DateTime();
+        }
+
+        // make time change parameter for DateInterval
+        $change = 'PT' . abs($timezone) . 'H';
+        if ($timezone > 0)
+        {
+            // ahead of GMT so add hours
+            $date->add(new \DateInterval($change));
+        }
+        else if ($timezone < 0)
+        {
+            // behind GMT so subtract hours
+            $date->sub(new \DateInterval($change));
+        }
+        else
+        {
+            // GMT, no adjustment needed
+        }
+
+        return $date;
 	}
 }

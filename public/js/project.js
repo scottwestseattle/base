@@ -1,7 +1,34 @@
 
 $(document).ready(function() {
-    console.log('project.js ready');
+    console.log('project.js ready.');
+
+    //
+    // set timezone
+    //
+    var cookieName = 'timezoneClient';
+    if (!document.cookie.includes(cookieName))
+    {
+        var clientTimezone = -new Date().getTimezoneOffset() / 60;
+        createCookie(cookieName, clientTimezone, '1');
+        //location.reload();
+    }
 });
+
+function createCookie(name, value, days)
+{
+    var expires = "";
+
+    if (days)
+    {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+
+    var cookie = name + "=" + value + expires + "; path=/; domain=" + window.location.hostname;
+    document.cookie = cookie;
+    console.log("Set timezone cookie: " + cookie);
+}
 
 let charSubs = {
         65:'á',

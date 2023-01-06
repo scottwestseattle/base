@@ -9,9 +9,10 @@ define('RETURN_CODE_ERROR', -1);
 define('RETURN_CODE_SUCCESS', 1);
 define('USER_ID_NOTSET', 0);
 define('MAX_DB_TEXT_COLUMN_LENGTH', 65535 - 2); // 2 bytes for db overhead
-define('COOKIE_HOUR', 60);     // Minutes per hour: 60
-define('COOKIE_DAY',  1440);   // Minutes per day:  60 * 24
-define('COOKIE_YEAR', 525600); // Minutes per year: 60 * 24 * 365
+define('COOKIE_HOUR', 60);          // Minutes per hour: 60
+define('COOKIE_DAY',  1440);        // Minutes per day:  60 * 24
+define('COOKIE_WEEK', 1440*7);      // Minutes per week: 60 * 24 * 7
+define('COOKIE_YEAR', 1440*365);    // Minutes per year: 60 * 24 * 365
 define('CASE_INSENSITIVE', 'COLLATE UTF8MB4_GENERAL_CI');   // MYSQL case insensitive
 define('COLLATE_ACCENTS', 'COLLATE utf8mb4_unicode_ci');    // MYSQL ignore accent chars
 define('DESCRIPTION_LIMIT_LENGTH', 30);

@@ -17,11 +17,9 @@
     @endif
 
     @if (isAdmin() || App\User::isOwner($record->user_id))
-		<div class="middle ml-2">
-			<a href='' onclick="toggleWip(event, {{$record->id}}, '#{{$status}}');">
-				<span id="{{$wipId}}" class="glyphCustom-md glyphicon glyphicon-{{$finished}}"></span>
-			</a>
-		</div>
+        @if (isAdmin())
+    		<div class="middle ml-2"><a href='' onclick="toggleWip(event, {{$record->id}}, '#{{$status}}');"><span id="{{$wipId}}" class="glyphCustom-md glyphicon glyphicon-{{$finished}}"></span></a></div>
+		@endif
 		<div class="middle ml-2"><a href="/definitions/edit/{{$record->id}}"><span class="glyphCustom-md glyphicon glyphicon-edit"></span></a></div>
 		<div class="middle ml-2">@component('components.control-delete-glyph', ['svg' => 'trash-fill', 'href' => "/definitions/delete/$record->id", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
 

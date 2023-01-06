@@ -10,7 +10,8 @@
     <table class="table table-striped">
     @foreach ($records as $record)
         @php
-            $bg = App\DateTimeEx::getDayColor($record->created_at);
+            $localDateTime = App\DateTimeEx::getLocalDateTime($record->created_at);
+            $bg = App\DateTimeEx::getDayColor($localDateTime);
             $info = $record->getInfo();
         @endphp
         <tr class="mb-3" style="">
