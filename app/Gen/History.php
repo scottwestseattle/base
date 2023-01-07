@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
+use App\DateTimeEx;
 use App\Status;
 
 class History extends Model
@@ -30,6 +31,29 @@ class History extends Model
     static public function getAdmin()
     {
         return self::get(PHP_INT_MAX, isAdmin());
+    }
+
+    static public function getToday()
+    {
+        $records = null;
+
+		try
+		{
+            // get today's datetime ranges adjusted for the local timezone
+		    $dt = DateTimeEx::getLocalDateTimeToday();
+		    $today = '(created_at >= STR_TO_DATE("' . $dt['start'] . '", "%Y-%m-%d %H:%i:%s") AND created_at <= STR_TO_DATE("' . $dt['end'] . '", "%Y-%m-%d %H:%i:%s"))';
+
+			$records = History::select()
+				->where('user_id', Auth::id())
+				->whereRaw($today)
+				->get();
+		}
+		catch (\Exception $e)
+		{
+			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
+		}
+
+		return $records;
     }
 
     static public function get($limit = PHP_INT_MAX, $isAdmin = false)

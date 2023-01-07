@@ -30,7 +30,7 @@
             @endphp
             <tr><td><span class="large-thin-text" style="line-height:50px;">{{$dayShow}} ({{$count}})</span></td></tr>
         @endif
-        <tr class="mb-3" style="border: 0px white solid; xbackground-color:{{$bg}}; color:white; background: linear-gradient(180deg, {{$bgLight}}, {{$bg}});">
+        <tr class="mb-3" style="border: 0px white solid; color:white; background: linear-gradient(180deg, {{$bgLight}}, {{$bg}});">
             <td class="p-3">
                 <div class="text-center">
                     <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at, 'M d, Y')}}</div>

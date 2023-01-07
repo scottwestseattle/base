@@ -10,18 +10,20 @@
     <table class="table table-striped">
     @foreach ($records as $record)
         @php
-            $localDateTime = App\DateTimeEx::getLocalDateTime($record->created_at);
-            $bg = App\DateTimeEx::getDayColor($localDateTime);
+            $bg = App\DateTimeEx::getDayColor($record->created_at);
             $info = $record->getInfo();
         @endphp
         <tr class="mb-3" style="">
-            <td><div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at, 'M d, Y')}}</div></td>
             <td>
                 @if ($info['hasUrl'])
                     <div><a class="" href="{{$info['url']}}">{{$info['subTypeName']}}: {{$info['programName']}}</a> ({{$info['stats']}})</div>
                 @else
                     <div>{{$info['subTypeName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
                 @endif
+
+                <div class="small-thin-text">Actual: {{$record->created_at}}</div>
+                <div class="small-thin-text">Local: {{App\DateTimeEx::getLocalDateTimeString($record->created_at)}}</div>
+
             </td>
             <td class="small-thin-text" style="">
                 Program Id: {{$record->program_id}},

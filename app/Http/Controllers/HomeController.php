@@ -161,10 +161,12 @@ class HomeController extends Controller
 	static public function getOptions($options, $languageFlag)
 	{
         $options['showWidgets'] = true;
+        $options['todo'] = null;
+
         $showTopBoxes = false;
 
         // show aotd, wotd, potd if they haven't been shown recently
-        if (false && (!Auth::check() || null === Cookie::get('showTopBoxes'))) // TURNED OFF
+        if (\App\Site::hasOption('fpShowOtd') && (!Auth::check() || null === Cookie::get('showTopBoxes'))) // TURNED OFF
         {
             $showTopBoxes = true;
             Cookie::queue('showTopBoxes', 1, COOKIE_HOUR * 6); // only show every six hours
@@ -236,7 +238,7 @@ class HomeController extends Controller
         }
 
 		//
-		// get articles and aotd
+		// get articles, aotd, and todo
 		//
 		try
 		{
@@ -262,6 +264,73 @@ class HomeController extends Controller
                 $parms['orderBy'] = Auth::check() ? 'id DESC' : 'id ASC';
                 $options['aotd'] = Article::getFirst($parms);
             }
+
+            // get the todo list
+            if (!isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
+            {
+                //
+                // figure out the daily to do stuff that hasn't been done yet
+                //
+
+                // count of daily activities
+                $todo = null;
+                $readArticles = 0;
+                $flashcardsLatestPracticeText = 0;
+                $flashcardsLatestDefinitions = 0;
+
+                // get history so we can see what has been done today
+                $history = History::getToday();
+                //dump($history);
+
+                if (isset($history))
+                {
+                    foreach($history as $record)
+                    {
+                        if ($record->type_flag == HISTORY_TYPE_ARTICLE && $record->subtype_flag == LESSON_TYPE_READER)
+                        {
+                            // an Article has already been read today
+                            $readArticles++;
+                        }
+                        elseif ($record->type_flag == HISTORY_TYPE_SNIPPETS && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
+                        {
+                            // Latest Practice Text
+                            if ($record->program_name == 'proj.20 Latest Practice Text')
+                                $flashcardsLatestPracticeText++;
+                        }
+                        elseif ($record->type_flag == HISTORY_TYPE_DICTIONARY && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
+                        {
+                            // Latest Dictionary Words
+                            if ($record->program_name == '20 Newest Words')
+                                $flashcardsLatestDefinitions++;
+                        }
+                    }
+
+                }
+
+                if ($readArticles === 0)
+                {
+                    //todo: get LEAST READ article for the user
+                    $parms['orderBy'] = Auth::check() ? 'id DESC' : 'id ASC';
+                    $article = Article::getFirst($parms);
+                    if (isset($article))
+                        $todo[] = ['action' => 'Read Article', 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
+                }
+
+                if ($flashcardsLatestPracticeText === 0)
+                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/snippets/review/flashcards/20"];
+
+                if ($flashcardsLatestDefinitions === 0)
+                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/definitions/review-newest/flashcards"];
+
+                if (false)
+                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Least Viewed Practice Text', 'linkUrl' => "/snippets/review/flashcards/20"];
+
+                if (false)
+                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Least Viewed Dictionary Words', 'linkUrl' => "/definitions/review-newest/flashcards"];
+
+                $options['todo'] = $todo;
+            }
+
 		}
 		catch (\Exception $e)
 		{

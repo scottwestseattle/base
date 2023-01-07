@@ -30,11 +30,6 @@ class DateTimeEx
         '#db7093' => '#ef84a7', // 'PaleVioletRed',
     ];
 
-	static public function getDayColorLight($key)
-	{
-	    return self::$colorsFull[$key];
-    }
-
     static public function adjustBrightness($hex, $steps)
     {
         // Steps should be between -255 and 255. Negative = darker, positive = lighter
@@ -273,7 +268,12 @@ class DateTimeEx
 	    return self::$colors[$index];
 	}
 
-	static public function getDayColor($sDate)
+	static public function getDayColorLight($key)
+	{
+	    return self::$colorsFull[$key];
+    }
+
+	static public function getDayColor($sDate = null)
 	{
 		$day = self::getDaysSinceZero($sDate);
 		$colorCnt = count(self::$colors);
@@ -312,30 +312,27 @@ class DateTimeEx
         $dt = null;
         $rc = 0;
 
-        if (isset($sDate) && strlen($sDate) > 0)
+        try
         {
-            try
-            {
-                // get the specified date
-                $dt = self::getLocalDateTime($sDate);
-            }
-            catch (\Exception $e)
-            {
-                dump('bad date/time');
-            }
-
-            // set the timezone
-            $today = $dt->format('Y-m-d H:i:s (e)');
-
-            // get date zero
-            $zero = new DateTime('0000-00-00');
-
-            // get the difference
-            $diff = $dt->diff($zero);
-            $days = $diff->format('%a');
-
-            $rc = intval($days);
+            // get the specified date
+            $dt = self::getLocalDateTime($sDate);
         }
+        catch (\Exception $e)
+        {
+            dump('bad date/time');
+        }
+
+        // set the timezone
+        $today = $dt->format('Y-m-d H:i:s (e)');
+
+        // get date zero
+        $zero = new DateTime('0000-00-00');
+
+        // get the difference
+        $diff = $dt->diff($zero);
+        $days = $diff->format('%a');
+
+        $rc = intval($days);
 
         return $rc;
     }
@@ -403,25 +400,51 @@ class DateTimeEx
 
 	static public function isToday($sDate)
 	{
+	    // date to check
         $date = self::getLocalDateTime($sDate);
+
+        // today
 		$now = self::getLocalDateTime();
 
+        // does the day match today
 	    return ($date->format('Y-m-d') === $now->format('Y-m-d'));
 	}
 
-	static public function getTimestamp()
+	static public function getTimestamp($dateTime = null)
 	{
-        $now = new DateTime();
+        $now = isset($dateTime) ? $dateTime : new DateTime();
+
         $now = $now->format('Y-m-d H:i:s');
 
 	    return $now;
 	}
 
-	static public function getLocalDateTime($sDate = null)
+    static public function getLocalDateTimeToday()
+    {
+        //
+        // get the day range adjusted for the local timezone
+        //
+        $today = self::getLocalDateTime();
+        $start = self::getLocalDateTimeString($today->format('Y-m-d 00:00:00'), /* reverse = */ true);
+        $end = self::getLocalDateTimeString($today->format('Y-m-d 23:59:59'), /* reverse = */ true);
+
+        return [
+            'start' => $start,
+            'end' => $end,
+        ];
+    }
+
+	static public function getLocalDateTimeString($sDate = null, $reverse = false)
+	{
+        $now = self::getLocalDateTime($sDate, $reverse);
+
+	    return self::getTimestamp($now);
+	}
+
+	static public function getLocalDateTime($sDate = null, $reverse = false)
 	{
         // client timezone is put into a cookie by javascript after first page load
         $timezone = isset($_COOKIE['timezoneClient']) ? intval($_COOKIE['timezoneClient']) : 0;
-
         if (isset($sDate))
         {
             // get the provided date string from the db
@@ -435,15 +458,20 @@ class DateTimeEx
 
         // make time change parameter for DateInterval
         $change = 'PT' . abs($timezone) . 'H';
+
         if ($timezone > 0)
         {
-            // ahead of GMT so add hours
-            $date->add(new \DateInterval($change));
+            if ($reverse)
+                $date->sub(new \DateInterval($change)); // we're getting a query range to match local time so reverse it
+            else
+                $date->add(new \DateInterval($change)); // ahead of GMT so add hours
         }
         else if ($timezone < 0)
         {
-            // behind GMT so subtract hours
-            $date->sub(new \DateInterval($change));
+            if ($reverse)
+                $date->add(new \DateInterval($change)); // // we're getting a query range to match local time so it has to be reversed
+            else
+                $date->sub(new \DateInterval($change)); // behind GMT so subtract hours
         }
         else
         {

@@ -255,7 +255,7 @@
 <!--------------------------------------------------------------------------------------->
 <!-- ARTICLE OF THE DAY -->
 <!--------------------------------------------------------------------------------------->
-@if (isset($aotd))
+@if (\App\Site::hasOption('fpShowOtd') && isset($aotd) && !Auth::check())
 	<div class="row row-course">
 		<div class="col-12 pb-2 px-3">
             <div class="card card-aotd truncate mt-1" style="">
@@ -349,6 +349,49 @@
 
 	</div>
 
+@endif
+
+<!--------------------------------------------------------------------------------------->
+<!-- LIST OF THINGS TO DO DAILY -->
+<!--------------------------------------------------------------------------------------->
+@component('shared.todo', ['options' => $options])@endcomponent
+
+@if (false && isset($options['todo']))
+    @php
+    @endphp
+
+    <div class="card mt-1 mb-3" style="">
+        <div class="card-header">
+            <div class="medium-thin-text">@LANG('proj.Daily Practice'): {{App\DateTimeEx::getShortDateTime(null, 'M d')}}</div>
+        </div>
+        <div class="card-body">
+
+            <div style="display: inline-block; width:100%">
+                <table style="width:100%;">
+                @foreach($options['todo'] as $record)
+                    <tr class="" style="vertical-align:middle;">
+                        <td style="color:default; text-align:left; padding:5px 10px;">
+                            <table>
+                            <tbody>
+                                <tr>
+                                    <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
+                                        <div class="medium-thin-text">{{$record['action']}}</div>
+                                        <div class=""><a href="{{$record['linkUrl']}}">{{$record['linkTitle']}}</a></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:.8em; font-weight:100;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                @endforeach
+                </table>
+            </div>
+        </div>
+    </div>
 @endif
 
 <!--------------------------------------------------------------------------------------->
