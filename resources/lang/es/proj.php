@@ -187,5 +187,8 @@ return [
 'Go To Entry' => 'Ir a la entrada',
 'Convert Text to Favorites' => 'Convertir texto a favoritos',
 'Verbs (Ranked)' => 'Verbos (Clasificados)',
-'Daily Practice' => 'Ejercicios prácticos diarios',
+'Daily Practice' => 'Ejercicios diarios',
+'Ranked' => 'Clasificados',
+'Oldest' => 'Más antiguo',
+'Finished Daily Practice - Show' => 'Práctica diaria finalizada - Mostrar',
 ];

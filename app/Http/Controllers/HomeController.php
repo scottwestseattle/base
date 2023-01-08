@@ -332,7 +332,7 @@ class HomeController extends Controller
                 //
                 // Articles
                 //
-                $icon = ($readArticles > 0) ? $iconDone : $iconFlashcards;
+                $icon = ($readArticles > 0) ? $iconDone : $iconText;
                 $done = ($readArticles > 0);
                 //todo: plug in stats and get LEAST READ article for the user
                 $article = Article::getRandom();

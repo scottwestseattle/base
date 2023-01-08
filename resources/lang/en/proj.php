@@ -188,4 +188,7 @@ return [
 'Convert Text to Favorites' => 'Convert Text to Favorites',
 'Verbs (Ranked)' => 'Verbs (Ranked)',
 'Daily Practice' => 'Daily Practice Exercises',
+'Ranked' => 'Ranked',
+'Oldest' => 'Oldest',
+'Finished Daily Practice - Show' => 'Finished Daily Practice - Show',
 ];

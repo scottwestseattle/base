@@ -448,8 +448,6 @@ class DateTimeEx
 
 	static public function getLocalDateTime($sDate = null, $reverse = false)
 	{
-        // client timezone is put into a cookie by javascript after first page load
-        $timezone = isset($_COOKIE['timezoneClient']) ? intval($_COOKIE['timezoneClient']) : 0;
         if (isset($sDate))
         {
             // get the provided date string from the db
@@ -460,6 +458,9 @@ class DateTimeEx
             // get server time which is GMT
             $date = new DateTime();
         }
+
+        // client timezone is put into a cookie by javascript after first page load
+        $timezone = intval(self::getTimezoneOffset());
 
         // make time change parameter for DateInterval
         $change = 'PT' . abs($timezone) . 'H';

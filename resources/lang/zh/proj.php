@@ -188,4 +188,7 @@ return [
 'Convert Text to Favorites' => '转换文本到收藏夹',
 'Verbs (Ranked)' => '动词（排名）',
 'Daily Practice' => '日常练习',
+'Ranked' => '排名',
+'Oldest' => '最古老的',
+'Finished Daily Practice - Show' => '完成的每日练习 - 显示',
 ];

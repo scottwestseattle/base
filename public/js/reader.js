@@ -154,7 +154,7 @@ function deck() {
 
     this.showParameters = function()
     {
-        if (true)
+        if (false)
         {
             console.log("historyPath: " + this.historyPath);
             console.log("programName: " + this.programName);

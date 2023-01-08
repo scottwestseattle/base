@@ -238,6 +238,7 @@ function visualize(stream) {
 
   draw()
 
+  // draw the feedback line show during voice recording
   function draw() {
     const WIDTH = canvas.width
     const HEIGHT = canvas.height;
@@ -247,12 +248,10 @@ function visualize(stream) {
     analyser.getByteTimeDomainData(dataArray);
 
     canvasCtx.fillStyle = 'rgb(255, 255, 255)'; // white
-    //canvasCtx.fillStyle = 'rgb(200, 200, 200)'; // orig gray
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     canvasCtx.lineWidth = 2;
     canvasCtx.strokeStyle = 'red';
-    //canvasCtx.strokeStyle = 'rgb(0, 0, 0)'; // orig black
 
     canvasCtx.beginPath();
 
@@ -276,14 +275,14 @@ function visualize(stream) {
 
     canvasCtx.lineTo(canvas.width, canvas.height/2);
     canvasCtx.stroke();
-
   }
 }
 
 window.onresize = function() {
 
     mainSection = (mainSection === null) ? document.querySelector('.main-controls') : mainSection;
-    canvas.width = mainSection.offsetWidth;
+    if (canvas != null && typeof canvas !== 'undefined')
+        canvas.width = mainSection;
 }
 
 function loadRecorder()

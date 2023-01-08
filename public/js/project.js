@@ -3,31 +3,51 @@ $(document).ready(function() {
     console.log('project.js ready.');
 
     //
-    // set timezone
+    // set local timezone
+    //
+    // NOTE: the local timezone will be out of sync:
+    // 1. on the FIRST page load after this cookie expires
+    // 2. on the FIRST page load after the TZ really changes
     //
     var cookieName = 'timezoneClient';
-    if (!document.cookie.includes(cookieName))
+    var tz = getCookie(cookieName);
+    var clientTimezone = -(new Date().getTimezoneOffset() / 60);
+
+    // if client timezone cookie not set OR really not set OR doesn't match current client timezone
+    if (!document.cookie.includes(cookieName) || typeof tz === 'undefined' || parseInt(tz, 10) != clientTimezone)
     {
-        var clientTimezone = -new Date().getTimezoneOffset() / 60;
-        createCookie(cookieName, clientTimezone, '1');
-        //location.reload();
+        // make cookie 30 days; since it's always checked anyway after the first page load
+        createCookie(cookieName, clientTimezone, 30);
+    }
+    else
+    {
+        //console.log('Correct client timezone already set: ' + tz)
     }
 });
 
 function createCookie(name, value, days)
 {
-    var expires = "";
-
-    if (days)
-    {
-        var date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        expires = "; expires=" + date.toGMTString();
-    }
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    var expires = "; expires=" + date.toGMTString();
 
     var cookie = name + "=" + value + expires + "; path=/; domain=" + window.location.hostname;
     document.cookie = cookie;
-    console.log("Set timezone cookie: " + cookie);
+    //console.log("Set timezone cookie: " + cookie);
+}
+
+function getCookie(cookieName)
+{
+    let cookie = {};
+
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+        //console.log("COOKIE: " + key.trim() + "=" + value);
+    })
+
+    // return 'undefined' value is okay
+    return cookie[cookieName];
 }
 
 let charSubs = {
