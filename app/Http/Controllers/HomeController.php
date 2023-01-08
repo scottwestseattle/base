@@ -275,6 +275,7 @@ class HomeController extends Controller
                 // count of daily activities
                 $todo = null;
                 $readArticles = 0;
+                $coursesTaken = 0;
                 $flashcardsPracticeTextNewest = 0;
                 $flashcardsPracticeTextAttempts = 0;
 
@@ -284,7 +285,6 @@ class HomeController extends Controller
 
                 // get history so we can see what has been done today
                 $history = History::getToday();
-                //dump($history);
 
                 if (isset($history))
                 {
@@ -313,42 +313,70 @@ class HomeController extends Controller
                             if ($record->route == 'dictionary-attempts')
                                 $flashcardsDictionaryAttempts++;
                         }
+                        elseif ($record->type_flag == HISTORY_TYPE_LESSON && $record->subtype_flag == LESSON_TYPE_QUIZ_MC)
+                        {
+                            $coursesTaken++;
+                        }
                     }
 
                 }
 
                 $iconText = 'file-text';
                 $iconFlashcards = 'lightning';
+                $iconCourses = 'book';
+                $count = 20;
+                $iconDone = 'check-circle';
+                $icon = '';
+                $done = false;
+
                 //
                 // Articles
                 //
-                if ($readArticles === 0)
-                {
-                    //todo: get LEAST READ article for the user
-                    $article = Article::getRandom();
-                    if (isset($article))
-                        $todo[] = ['action' => 'Read Article', 'icon' => $iconText, 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
-                }
-
-                $count = 20;
+                $icon = ($readArticles > 0) ? $iconDone : $iconFlashcards;
+                $done = ($readArticles > 0);
+                //todo: plug in stats and get LEAST READ article for the user
+                $article = Article::getRandom();
+                if (isset($article))
+                    $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
 
                 //
                 // Practice Text
                 //
-                if ($flashcardsPracticeTextNewest === 0)
-                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc"];
-                if ($flashcardsPracticeTextAttempts === 0)
-                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Least Used Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
+                $icon = ($flashcardsPracticeTextNewest > 0) ? $iconDone : $iconFlashcards;
+                $done = ($flashcardsPracticeTextNewest > 0);
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc"];
+
+                $icon = ($flashcardsPracticeTextAttempts > 0) ? $iconDone : $iconFlashcards;
+                $done = ($flashcardsPracticeTextAttempts > 0);
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
 
                 //
                 // Dictionary
                 //
-                if ($flashcardsDictionaryNewest === 0)
-                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest/flashcards/$count"];
-                if ($flashcardsDictionaryRandom === 0)
-                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words/flashcards"];
+                $icon = ($flashcardsDictionaryNewest > 0) ? $iconDone : $iconFlashcards;
+                $done = ($flashcardsDictionaryNewest > 0);
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest/flashcards/$count"];
+
+                $icon = ($flashcardsDictionaryRandom > 0) ? $iconDone : $iconFlashcards;
+                $done = ($flashcardsDictionaryRandom > 0);
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words/flashcards"];
+
+                //todo: plug in
+                $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
+                $done = ($flashcardsDictionaryAttempts > 0);
                 if (false && $flashcardsDictionaryAttempts === 0)
-                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts/flashcards/$count"];
+                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts/flashcards/$count"];
+
+                //
+                // Courses
+                //
+                $courseIds = [1329, 1303, 1330, 1340, 1273];
+                $courseIx = rand(0, count($courseIds) - 1);
+                $courseId = $courseIds[$courseIx];
+                $courseUrl = "/lessons/review/$courseId/2/20";
+                $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
+                $done = ($coursesTaken > 0);
+                $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => 'Random Lesson Exercise', 'linkUrl' => $courseUrl];
 
                 $options['todo'] = $todo;
             }
