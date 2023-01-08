@@ -35,15 +35,62 @@ class Article extends Model
 		return ($this->release_flag);
     }
 
+    static public function getRandom()
+    {
+        $record = null;
+		$count = self::getCount();
+		if ($count > 1)
+		{
+			$rnd = rand(1, $count); // using the 1-based index
+
+            $parms['orderBy'] = 'id';
+            $parms['start'] = $rnd;
+
+            $record = self::getRecord($parms);
+		}
+
+        return $record;
+    }
+
+    static public function getCount($parms = null)
+    {
+		$count = Entry::select()
+				//->where('site_id', Site::getId())
+				->where('type_flag', ENTRY_TYPE_ARTICLE)
+				->where('language_flag', getLanguageId())
+				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+				->count();
+				//->toSql();
+
+        return $count;
+    }
+
+    static public function getRecord($parms = null)
+    {
+        $parms = crackParms($parms);
+
+		$record = Entry::select()
+				//->where('site_id', Site::getId())
+				->where('type_flag', ENTRY_TYPE_ARTICLE)
+				->where('language_flag', getLanguageId())
+				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+				->orderByRaw($parms['orderBy'])
+				->offset($parms['start'])
+				->limit(1)
+				->get();
+
+		if (isset($record) && count($record) > 0)
+		    $record = $record->first();
+
+        return $record;
+    }
+
     static public function getFirst($parms)
     {
-		$languageFlag = $parms['id'];
-		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
-
 		$record = Entry::select()
 				->where('site_id', Site::getId())
 				->where('type_flag', ENTRY_TYPE_ARTICLE)
-				->where('language_flag', $languageCondition, $languageFlag)
+				->where('language_flag', getLanguageId())
 				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
 				->orderByRaw($parms['orderBy'])
 				->first();

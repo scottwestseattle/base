@@ -494,10 +494,19 @@ Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 
 	// flashcards / quiz have two routes
-	Route::get('/review/{reviewType?}/{count?}', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/review', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/flashcards/{count?}', [DefinitionController::class, 'snippetsFlashcards']);
 	Route::get('/quiz/{count?}', [DefinitionController::class, 'snippetsQuiz']);
 });
+
+// Daily exercise links - made unique for history uniqueness
+Route::group(['prefix' => 'daily'], function () {
+	Route::get('/flashcards-newest', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/flashcards-attempts', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/dictionary-newest/{reviewType}/{count}', [DefinitionController::class, 'reviewNewest']);
+	Route::get('/dictionary-attempts', [DefinitionController::class, 'reviewDictionary']);
+});
+
 
 // Verbs
 Route::get('/verbs/conjugation/{verb}', [DefinitionController::class, 'verbs']);

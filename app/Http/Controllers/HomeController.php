@@ -275,8 +275,12 @@ class HomeController extends Controller
                 // count of daily activities
                 $todo = null;
                 $readArticles = 0;
-                $flashcardsLatestPracticeText = 0;
-                $flashcardsLatestDefinitions = 0;
+                $flashcardsPracticeTextNewest = 0;
+                $flashcardsPracticeTextAttempts = 0;
+
+                $flashcardsDictionaryNewest = 0;
+                $flashcardsDictionaryRandom = 0;
+                $flashcardsDictionaryAttempts = 0;
 
                 // get history so we can see what has been done today
                 $history = History::getToday();
@@ -294,39 +298,57 @@ class HomeController extends Controller
                         elseif ($record->type_flag == HISTORY_TYPE_SNIPPETS && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
                         {
                             // Latest Practice Text
-                            if ($record->program_name == 'proj.20 Latest Practice Text')
-                                $flashcardsLatestPracticeText++;
+                            if ($record->route == 'flashcards-newest')
+                                $flashcardsPracticeTextNewest++;
+                            else if ($record->route == 'flashcards-attempts')
+                                $flashcardsPracticeTextAttempts++;
                         }
                         elseif ($record->type_flag == HISTORY_TYPE_DICTIONARY && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
                         {
                             // Latest Dictionary Words
-                            if ($record->program_name == '20 Newest Words')
-                                $flashcardsLatestDefinitions++;
+                            if ($record->route == 'dictionary-newest')
+                                $flashcardsDictionaryNewest++;
+                            if ($record->route == 'review-random-words')
+                                $flashcardsDictionaryRandom++;
+                            if ($record->route == 'dictionary-attempts')
+                                $flashcardsDictionaryAttempts++;
                         }
                     }
 
                 }
 
+                $iconText = 'file-text';
+                $iconFlashcards = 'lightning';
+                //
+                // Articles
+                //
                 if ($readArticles === 0)
                 {
                     //todo: get LEAST READ article for the user
-                    $parms['orderBy'] = Auth::check() ? 'id DESC' : 'id ASC';
-                    $article = Article::getFirst($parms);
+                    $article = Article::getRandom();
                     if (isset($article))
-                        $todo[] = ['action' => 'Read Article', 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
+                        $todo[] = ['action' => 'Read Article', 'icon' => $iconText, 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
                 }
 
-                if ($flashcardsLatestPracticeText === 0)
-                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/snippets/review/flashcards/20"];
+                $count = 20;
 
-                if ($flashcardsLatestDefinitions === 0)
-                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/definitions/review-newest/flashcards"];
+                //
+                // Practice Text
+                //
+                if ($flashcardsPracticeTextNewest === 0)
+                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc"];
+                if ($flashcardsPracticeTextAttempts === 0)
+                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Least Used Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
 
-                if (false)
-                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Least Viewed Practice Text', 'linkUrl' => "/snippets/review/flashcards/20"];
-
-                if (false)
-                    $todo[] = ['action' => 'Do Flashcards', 'linkTitle' => 'Least Viewed Dictionary Words', 'linkUrl' => "/definitions/review-newest/flashcards"];
+                //
+                // Dictionary
+                //
+                if ($flashcardsDictionaryNewest === 0)
+                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest/flashcards/$count"];
+                if ($flashcardsDictionaryRandom === 0)
+                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words/flashcards"];
+                if (false && $flashcardsDictionaryAttempts === 0)
+                    $todo[] = ['action' => 'Flashcards', 'icon' => $iconFlashcards, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts/flashcards/$count"];
 
                 $options['todo'] = $todo;
             }

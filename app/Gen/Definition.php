@@ -1397,34 +1397,35 @@ class Definition extends Model
 		}
     }
 
-	static public function getSnippetsReview($options = null)
+	static public function getSnippetsReview($parms = null)
 	{
 		$records = [];
 
-		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
-		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
-        $limit = isset($options['limit']) ? $options['limit'] : PHP_INT_MAX;
+		$languageId = isset($parms['languageId']) ? $parms['languageId'] : getLanguageId();
+		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '=';
+        $count = isset($parms['count']) ? $parms['count'] : DEFAULT_FLASHCARDS_LIMIT;
+        $orderBy = self::crackOrder($parms, 'id DESC');
+        $getCountOnly = (isset($parms['getCount']) && $parms['getCount']);
+        $count = $getCountOnly ? PHP_MAX_INT : $count;
 
 		try
 		{
-		    if (isset($options['count']))
-		    {
-                $records = Definition::select()
-                    ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where('language_flag', $languageFlagCondition, $languageId)
-                    ->whereNotNull('translation_en')
-                    ->count();
-		    }
-		    else
-		    {
-                $records = Definition::select()
-                    ->where('type_flag', DEFTYPE_SNIPPET)
-                    ->where('language_flag', $languageFlagCondition, $languageId)
-                    ->whereNotNull('translation_en')
-                    ->orderBy('id', 'desc')
-                    ->limit($limit)
-                    ->get();
-		    }
+            $userId = Auth::check() ? Auth::id() : 0;
+            $records = Definition::select('definitions.*', 'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at')
+                ->leftJoin('stats', function($join) use($userId) {
+                    $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', $userId);
+                })
+                ->where('definitions.type_flag', DEFTYPE_SNIPPET)
+                ->where('definitions.language_flag', $languageFlagCondition, $languageId)
+                ->whereNotNull('translation_en')
+                ->where(function ($query) use ($userId) {$query
+                    ->orWhere('definitions.release_flag', '>=', RELEASEFLAG_PUBLIC)
+                    ->orWhere('definitions.user_id', $userId)
+                    ;})
+                ->orderByRaw($orderBy)
+                ->limit($count)
+                ->get();
+                //->toSql();dd($records);
 		}
 		catch (\Exception $e)
 		{
@@ -1432,12 +1433,12 @@ class Definition extends Model
             logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), $msg);
 		}
 
-		return $records;
+		return $getCountOnly ? count($records) : $records;
 	}
 
 	static public function getSnippetsReviewCount()
 	{
-        $rc = self::getSnippetsReview(['count' => true]);
+        $rc = self::getSnippetsReview(['getCount' => true]);
 
 		return $rc;
 	}

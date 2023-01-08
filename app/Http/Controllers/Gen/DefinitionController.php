@@ -873,7 +873,7 @@ class DefinitionController extends Controller
         $showForm = isset($parms['showForm']) ? $parms['showForm'] : false;
         $id = isset($parms['id']) ? $parms['id'] : null;
 
-        $order = isset($parms['order']) ? alpha(strtolower($parms['order'])) : null;
+        $order = isset($parms['order']) ? alphanum(strtolower($parms['order'])) : null;
         $orderBy = Definition::crackOrder($parms, null);
 
         $siteLanguage = Site::getLanguage()['id'];
@@ -1598,17 +1598,15 @@ class DefinitionController extends Controller
         return $this->reviewSnippets($request, 'quiz', $count);
     }
 
-	public function reviewSnippets(Request $request, $reviewType = null, $count = PHP_INT_MAX)
+	public function reviewSnippets(Request $request)
     {
-        $reviewType = alpha($reviewType);
-        $siteLanguage = Site::getLanguage()['id'];
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
+        $parms = crackParms($request);
 
-        $records = Definition::getSnippetsReview(['limit' => intval($count), 'languageId' => $siteLanguage, 'languageFlagCondition' => $languageFlagCondition]);
+        $records = Definition::getSnippetsReview($parms);
 
         $title = __('proj.Latest Practice Text');
 
-		return $this->doList($title, $reviewType, $records, HISTORY_TYPE_SNIPPETS);
+		return $this->doList($title, $parms['action'], $records, HISTORY_TYPE_SNIPPETS);
     }
 
     public function getRandomWordAjax(Request $request)

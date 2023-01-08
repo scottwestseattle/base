@@ -184,4 +184,6 @@ return [
 'Close' => '关闭',
 'Definition' => '定义|定义',
 'Setting' => '设置',
+'User ID' => '用户ID',
+'Sort' => '要分类',
 ];

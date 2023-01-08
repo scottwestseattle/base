@@ -186,4 +186,6 @@ return [
 'Convert to Favorites' => 'Convertir en favoritos',
 'Go To Entry' => 'Ir a la entrada',
 'Convert Text to Favorites' => 'Convertir texto a favoritos',
+'Verbs (Ranked)' => 'Verbos (Clasificados)',
+'Daily Practice' => 'Ejercicios prácticos diarios',
 ];

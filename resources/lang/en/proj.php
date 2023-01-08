@@ -186,4 +186,6 @@ return [
 'Convert to Favorites' => 'Convert to Favorites',
 'Go To Entry' => 'Go To Entry',
 'Convert Text to Favorites' => 'Convert Text to Favorites',
+'Verbs (Ranked)' => 'Verbs (Ranked)',
+'Daily Practice' => 'Daily Practice Exercises',
 ];

@@ -184,4 +184,6 @@ return [
 'Close' => 'Close',
 'Definition' => 'Definition|Definitions',
 'Setting' => 'Setting|Settings',
+'User ID' => 'User ID',
+'Sort' => 'Sort',
 ];

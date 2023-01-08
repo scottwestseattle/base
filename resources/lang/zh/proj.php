@@ -186,4 +186,6 @@ return [
 'Convert to Favorites' => '转换到收藏夹',
 'Go To Entry' => '转到问题',
 'Convert Text to Favorites' => '转换文本到收藏夹',
+'Verbs (Ranked)' => '动词（排名）',
+'Daily Practice' => '日常练习',
 ];

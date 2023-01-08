@@ -46,8 +46,7 @@
                 @endif
             </td>
             <td style="width:10px;"><a class="medium-thin-text" href="/history/edit/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
-            <td style="width:10px;"><a class="medium-thin-text ml-3" href="/history/confirmdelete/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-trash"></span></a>
-            </td>
+            <td style="width:10px;" class="steel-blue">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/history/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</td>
         </tr>
     @endforeach
     </table>

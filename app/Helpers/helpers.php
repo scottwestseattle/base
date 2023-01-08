@@ -1103,8 +1103,8 @@ if (!function_exists('crackParms')) {
         $parms = null;
 
         // these are always set
-        $parms['count'] = (isset($request['count'])) ? alphanum($request['count']) : (isset($defaults['count']) ? $defaults['count'] : DEFAULT_LIST_LIMIT);
-        $parms['start'] = (isset($request['start'])) ? alphanum($request['start']) : 0;
+        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (isset($defaults['count']) ? $defaults['count'] : DEFAULT_LIST_LIMIT);
+        $parms['start'] = (isset($request['start'])) ? intval($request['start']) : 0;
 
         // these are set ONLY if in the $request OR in the $defaults
         if (isset($request['order']))

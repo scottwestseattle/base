@@ -171,6 +171,15 @@
 					<div class="middle ml-1">{{trans_choice('ui.Event', 2)}}</div>
 				</a>
 
+				<a class="dropdown-item" href="{{lurl('history')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#clock-history" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('ui.History', 2)}}</div>
+				</a>
+
 				<a class="dropdown-item" href="{{lurl('lessons')}}">
 					<div class="middle">
 						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >

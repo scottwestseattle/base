@@ -441,6 +441,11 @@ class DateTimeEx
 	    return self::getTimestamp($now);
 	}
 
+	static public function getTimezoneOffset()
+	{
+        return isset($_COOKIE['timezoneClient']) ? intval($_COOKIE['timezoneClient']) : 'not set';
+    }
+
 	static public function getLocalDateTime($sDate = null, $reverse = false)
 	{
         // client timezone is put into a cookie by javascript after first page load
