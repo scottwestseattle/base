@@ -313,7 +313,8 @@ class HomeController extends Controller
                             if ($record->route == 'dictionary-attempts')
                                 $flashcardsDictionaryAttempts++;
                         }
-                        elseif ($record->type_flag == HISTORY_TYPE_LESSON && $record->subtype_flag == LESSON_TYPE_QUIZ_MC)
+                        elseif ($record->type_flag == HISTORY_TYPE_LESSON &&
+                               ($record->subtype_flag == LESSON_TYPE_QUIZ_MC || $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS))
                         {
                             $coursesTaken++;
                         }

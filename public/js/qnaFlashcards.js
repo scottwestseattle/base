@@ -63,9 +63,9 @@ function updateScoreCount(correct)
 
     quiz.setCorrect(correct);
 
-	console.log('right: ' + right);
-	console.log('wrong: ' + wrong);
-	console.log('total: ' + (right + wrong));
+	//console.log('right: ' + right);
+	//console.log('wrong: ' + wrong);
+	//console.log('total: ' + (right + wrong));
 }
 
 function flipCard(e, correct = true)
