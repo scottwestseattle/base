@@ -2,62 +2,7 @@
 
 
 ===== Done =====
-ALTER TABLE `entries` ADD `options` VARCHAR(255) NULL AFTER `display_order`;
-ALTER TABLE `courses` ADD `language_flag` TINYINT NOT NULL COMMENT 'values in: LANGUAGE_*' AFTER `wip_flag`;
-UPDATE `definitions` SET release_flag = 10 WHERE 1 and user_id = 2 and release_flag = 0
-update `definitions` set user_id = 2, release_flag = 10 WHERE 1 AND type_flag = 1 AND user_id = 1
-UPDATE `tags` set user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 3
-UPDATE entries SET user_id = 2 WHERE 1 AND user_id = 1 AND type_flag = 2 AND release_flag < 100
-UPDATE `entries` SET language_flag = 1 WHERE 1 AND type_flag = 3
-UPDATE `tags` SET language_flag = 1 WHERE 1 AND type_flag = 2
-ALTER TABLE `tags` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'see \'LANGUAGE_*\' for values ' AFTER `type_flag`;
-ALTER TABLE `users` ADD `language_flag` TINYINT NOT NULL DEFAULT '0' COMMENT 'values = LANGUAGE_*' AFTER `view_id`;
-ALTER TABLE `users` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-ALTER TABLE `stats` ADD `read_at` TIMESTAMP NULL AFTER `viewed_at`;
-ALTER TABLE `stats` ADD `qna_at` TIMESTAMP NULL AFTER `qna_score`;
-ALTER TABLE `stats` ADD `qna_score` FLOAT NULL AFTER `qna_correct`;
-update `definitions` set release_flag = 100 WHERE 1 and release_flag < 100 and type_flag = 1
-ALTER TABLE `codespace_learn`.`definition_user` DROP INDEX `definition_user_definition_id_user_id_unique`, ADD UNIQUE `definition_user_definition_id_user_id_unique` (`definition_id`, `user_id`) USING BTREE;
-ALTER TABLE `definition_user` ADD `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;
-update definitions set title_long = null WHERE 1 AND title_long IS NOT NULL
-ALTER TABLE `definitions` CHANGE `title_long` `notes` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '';
-ALTER TABLE `histories` ADD `type_flag` TINYINT NOT NULL AFTER `ip_address`;
-ALTER TABLE `histories` ADD `count` INT NULL DEFAULT '0' AFTER `seconds`, ADD `score` INT NULL DEFAULT '0' AFTER `count`, ADD `extra` INT NULL DEFAULT '0' AFTER `score`;
-ALTER TABLE `histories` ADD `subtype_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
-ALTER TABLE `histories` ADD `route` VARCHAR(50) NULL AFTER `session_id`;
-ALTER TABLE `tags` ADD `use_count` MEDIUMINT NOT NULL DEFAULT '0' AFTER `type_flag`;
-ALTER TABLE `entries` ADD `description_translation` TEXT NULL AFTER `description`
-ALTER TABLE `lessons` ADD `text_translation` TEXT NULL AFTER `text`;
-ALTER TABLE `sites` CHANGE `options` `options` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'key1;key2;';
-ALTER TABLE `definitions` ADD `title_snippets` VARCHAR(240) NULL AFTER `title_long`;
-DELETE FROM `definitions` WHERE 1 AND deleted_at IS NOT NULL ;
-update `definitions` set title_snippets = title, pos_flag = 51 WHERE 1 and type_flag = 1;
-update `definitions` set title = title_long WHERE 1 and type_flag = 1 and deleted_at IS NULL;
-update `definitions` set title_long = title_snippets WHERE 1 and type_flag = 1;
-drop title_snippets
-ALTER TABLE `tags` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `type_flag`;
-ALTER TABLE `tags` ADD `wip_flag` TINYINT NOT NULL DEFAULT '0' AFTER `release_flag`;
-UPDATE `definitions` SET examples = NULL WHERE 1 AND TYPE_FLAG = 1
-UPDATE `definitions` SET title_long = examples WHERE 1 AND TYPE_FLAG = 1 AND examples is NOT NULL
-ALTER TABLE `definitions` ADD `title_long` VARCHAR(512) NULL COMMENT 'for snippets' AFTER `title`;
-ALTER TABLE `histories` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
-ALTER TABLE `sites` ADD `options` VARCHAR(255) NOT NULL COMMENT 'key=value;' AFTER `frontpage`;
-update `definitions` set `rank` = 0 where 1 and `definitions`.`rank` is null
-ALTER TABLE `lessons` ADD `release_flag` TINYINT NULL AFTER `break_seconds`, ADD `wip_flag` TINYINT NULL AFTER `release_flag`;
-ALTER TABLE `entries` ADD `options` VARCHAR(500) NULL AFTER `wip_flag`;
-ALTER TABLE `entries` CHANGE `display_order` `display_order` FLOAT(7,2) NULL DEFAULT NULL;
-ALTER TABLE `lessons` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
-ALTER TABLE `courses` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
-ALTER TABLE `definitions` ADD `release_flag` TINYINT NOT NULL DEFAULT '0' AFTER `wip_flag`;
-ALTER TABLE `definitions` ADD `language_flag` TINYINT NULL AFTER `release_flag`;
-ALTER TABLE `definitions` ADD `type_flag` TINYINT NULL COMMENT 'See DEFTYPE_* for values' AFTER `release_flag`;
-ALTER TABLE `definitions` DROP `language_id`;
-ALTER TABLE `definitions` DROP `translation_es`;
-ALTER TABLE `definitions` DROP `translation_ru`;
 
-update `definitions` set release_flag = 100 WHERE 1;
-UPDATE `definitions` set language_flag = 1 WHERE 1;
-UPDATE `definitions` set type_flag = 10 WHERE 1;
 
 =====================================================================
 == Switching lochost projects on MacBook

@@ -265,8 +265,10 @@ class HomeController extends Controller
                 $options['aotd'] = Article::getFirst($parms);
             }
 
-            // get the todo list
-            if (!isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
+            //
+            // get the todo list of daily exercises
+            //
+            if ($languageFlag == LANGUAGE_ES && !isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
             {
                 //
                 // figure out the daily to do stuff that hasn't been done yet
@@ -275,6 +277,8 @@ class HomeController extends Controller
                 // count of daily activities
                 $todo = null;
                 $readArticles = 0;
+                $articleId = null;
+                $articleTitle = null;
                 $coursesTaken = 0;
                 $flashcardsPracticeTextNewest = 0;
                 $flashcardsPracticeTextAttempts = 0;
@@ -294,6 +298,13 @@ class HomeController extends Controller
                         {
                             // an Article has already been read today
                             $readArticles++;
+
+                            // get the info for the first article
+                            if ($readArticles === 1)
+                            {
+                                $articleId = $record->program_id;
+                                $articleTitle = $record->program_name;
+                            }
                         }
                         elseif ($record->type_flag == HISTORY_TYPE_SNIPPETS && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
                         {
@@ -335,10 +346,21 @@ class HomeController extends Controller
                 //
                 $icon = ($readArticles > 0) ? $iconDone : $iconText;
                 $done = ($readArticles > 0);
-                //todo: plug in stats and get LEAST READ article for the user
-                $article = Article::getRandom();
-                if (isset($article))
-                    $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
+                if ($readArticles > 0)
+                {
+                    // article has already been read, use it's info
+                    $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $articleTitle, 'linkUrl' => "/articles/read/$articleId"];
+                }
+                else
+                {
+                    // no article read, grab one
+                    //todo: plug in stats and get LEAST READ article for the user
+                    $article = Article::getRandom();
+                    if (isset($article))
+                    {
+                        $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
+                    }
+                }
 
                 //
                 // Practice Text
@@ -374,7 +396,8 @@ class HomeController extends Controller
                 $courseIds = [1329, 1303, 1330, 1340, 1273];
                 $courseIx = rand(0, count($courseIds) - 1);
                 $courseId = $courseIds[$courseIx];
-                $courseUrl = "/lessons/review/$courseId/2/20";
+                $action = ($courseId == 1330) ? 1 : 2;
+                $courseUrl = "/lessons/review/$courseId/$action/20";
                 $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
                 $done = ($coursesTaken > 0);
                 $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => 'Random Lesson Exercise', 'linkUrl' => $courseUrl];
