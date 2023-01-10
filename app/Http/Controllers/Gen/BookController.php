@@ -126,10 +126,10 @@ class BookController extends Controller
     {
 		$record = new Entry();
 
-		$record->site_id             = Site::getId();
-		$record->user_id             = Auth::id();
+		$record->site_id            = Site::getId();
+		$record->user_id            = Auth::id();
 		$record->title 				= trimNull($request->title);
-		$record->display_order 		= intval($request->display_order);
+		$record->display_order      = intval($request->display_order);
 		if (!isset($record->title))
 		{
 		    // if title not set, set it as "Chapter X"
@@ -148,7 +148,7 @@ class BookController extends Controller
 		$record->display_date 		= timestamp();
 		$record->release_flag 		= RELEASEFLAG_PRIVATE;
 		$record->wip_flag 			= WIP_FINISHED;
-		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
+		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : getLanguageId();
 		$record->type_flag 			= ENTRY_TYPE_BOOK;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
 
@@ -181,7 +181,6 @@ class BookController extends Controller
 		}
 
 		return redirect($record->getRedirect()['view']);
-		return redirect($this->redirectTo . '/view/' . $record->id);
     }
 
     public function permalink(Request $request, $permalink)

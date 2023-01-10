@@ -168,6 +168,7 @@ class EntryController extends Controller
 
 		return view(PREFIX . '.edit', [
 			'record' => $record,
+			'languageOptions' => getLanguageOptions(),
 			]);
     }
 

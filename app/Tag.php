@@ -182,9 +182,11 @@ class Tag extends Model
 		else
 		{
 			$record = new Tag();
+
+			$record->name = $name;
 			$record->user_id 	= intOrNull($userId);
 			$record->type_flag 	= $type;
-			$record->name 	 	= $name;
+			$record->language_flag = getLanguageId();
 
 			try
 			{

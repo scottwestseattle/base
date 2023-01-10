@@ -24,6 +24,17 @@
                 <label for="user_id" class="control-label">{{trans_choice('ui.User', 1)}}:</label>
                 <input type="text" name="user_id" class="form-control" value="{{$record->user_id}}"></input>
             </div>
+
+            @if (isset($languageOptions))
+                <div><labe>{{trans_choice('ui.Language', 1)}}:</label></div>
+                @component('components.control-dropdown-language', [
+                    'options' => $languageOptions,
+                    'selected_option' => $record->language_flag,
+                    'field_name' => 'language_flag',
+                    'select_class' => 'mt-1 mb-3',
+                ])@endcomponent
+            @endif
+
 		@endif
 
 		<div class="submit-button">

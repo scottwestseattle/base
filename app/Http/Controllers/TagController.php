@@ -85,6 +85,7 @@ class TagController extends Controller
 		$record->user_id 		= Auth::id();
 		$record->name 			= trimNull($request->title);
 		$record->type_flag 		= $request->type_flag;
+  		$record->language_flag  = getLanguageId();
 
 		try
 		{
@@ -146,6 +147,7 @@ class TagController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
+			'languageOptions' => getLanguageOptions(),
 			]);
     }
 
@@ -160,8 +162,9 @@ class TagController extends Controller
 
         if (isAdmin())
         {
-    		$record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
-    		$record->user_id   = copyDirty($record->user_id, $request->user_id, $isDirty, $changes);
+    		$record->type_flag      = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
+    		$record->user_id        = copyDirty($record->user_id, $request->user_id, $isDirty, $changes);
+    		$record->language_flag  = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
         }
 
 		if ($isDirty)

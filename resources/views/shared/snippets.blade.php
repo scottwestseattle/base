@@ -74,8 +74,9 @@
         </div>
 
         <span class='mini-menu'>
-            <a href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
-            <a href="" onclick="copySnippet(event)" class="ml-1">@LANG('ui.Copy')<a/>
+            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
+            <a type="button" class="btn btn-success btn-xs" href="" onclick="copySnippet(event);" class="ml-1">@LANG('ui.Copy')<a/>
+            <a type="button" class="btn btn-success btn-xs" href="" onclick="pasteSnippet(event);" class="ml-1">@LANG('ui.Paste')<a/>
         </span>
 
         @if (!isMobile())
@@ -275,7 +276,36 @@ function pasteSnippet(event)
     event.preventDefault();
 
     $('#textEdit').focus();
-    document.execCommand("paste");
+    $('#textEdit').val('');
+
+    // paste the selection: try the old way first...
+    var succeed;
+    try {
+        succeed = document.execCommand("paste");
+        console.log('execCommand: text pasted = ' + succeed);
+    } catch(e) {
+        succeed = false;
+		console.log('execCommond: error copying text');
+	}
+
+	if (!succeed)
+	{
+        if (typeof navigator.clipboard.readText === "function")
+        {
+            navigator.clipboard
+                .readText()
+                .then(cliptext =>
+                    $('#textEdit').val(cliptext),
+                    err => console.log(err)
+                );
+
+    		console.log('navigator.clipboard.readText: pasted');
+        }
+        else
+        {
+    		console.log('navigator.clipboard.readText: not found');
+        }
+	}
 }
 
 function toggleTextView()

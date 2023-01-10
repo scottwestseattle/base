@@ -51,7 +51,7 @@
 		@else
 
 			<h3 class="mt-3">{{__('proj.Most Common Words')}} (200)</h3>
-			<?php $i = 0; $max = 200; //PHP_INT_MAX; ?>
+			<?php $i = 0; $max = 2000; //PHP_INT_MAX; ?>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
 				<?php if ($i++ > $max) break; ?>
@@ -64,11 +64,7 @@
 
             @foreach($stats['sortCount'] as $key => $value)
                 @if (Str::endsWith($key, ['ar', 'er', 'ir']))
-    @if (false)
-                <div><a href="/definitions/find/{{$key}}">{{$key}}</a></div>
-    @else
-                <span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>&nbsp;<span class="" style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
-    @endif
+                    <span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>&nbsp;<span class="" style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
                 @endif
             @endforeach
         </div>

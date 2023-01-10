@@ -247,7 +247,7 @@ class DefinitionController extends Controller
 		$record->title 			= $title;
 		$record->permalink		= createPermalink($title);
 		$record->wip_flag		= WIP_DEFAULT;
-
+		$record->release_flag   = RELEASEFLAG_PRIVATE;
 		$record->pos_flag   	= DEFINITIONS_POS_SNIPPET;
 		$record->type_flag      = DEFTYPE_SNIPPET;
 
