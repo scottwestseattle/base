@@ -4,7 +4,7 @@
 // Generic Gloval Values
 //
 define('DEFAULT_LIST_LIMIT', 50);
-define('DEFAULT_FLASHCARDS_LIMIT', 20);
+define('DEFAULT_REVIEW_LIMIT', 20);
 define('DEFAULT_BIG_NUMBER', 99999);
 define('RETURN_CODE_ERROR', -1);
 define('RETURN_CODE_SUCCESS', 1);

@@ -65,9 +65,9 @@
     <div><a target="_blank" href="/snippets/review/flashcards/20">Latest Practice Text - Flashcards (20)</a></div>
     <hr/>
     <div><a target="_blank" href="/definitions/read-examples?count=20">Dictionary Examples - List (20)</a></div>
-    <div><a target="_blank" href="/definitions/read-examples?a=read&count=20">Dictionary Examples - Read (20)</a></div>
-    <div><a target="_blank" href="/definitions/read-examples?a=read&count=100">Dictionary Examples - Read (100)</a></div>
-    <div><a target="_blank" href="/definitions/read-examples?a=read&count=37656">Dictionary Examples - Read (All)</a></div>
+    <div><a target="_blank" href="/definitions/read-examples?action=read&count=20">Dictionary Examples - Read (20)</a></div>
+    <div><a target="_blank" href="/definitions/read-examples?action=read&count=100">Dictionary Examples - Read (100)</a></div>
+    <div><a target="_blank" href="/definitions/read-examples?action=read&count=37656">Dictionary Examples - Read (All)</a></div>
     <hr/>
     <div><a target="_blank" href="/definitions/review-top-20-verbs">Top 20 Verbs - List</a></div>
     <div><a target="_blank" href="/definitions/review-top-20-verbs/quiz">Top 20 Verbs - Quiz</a></div>

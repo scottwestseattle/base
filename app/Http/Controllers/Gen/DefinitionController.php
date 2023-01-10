@@ -1452,55 +1452,50 @@ class DefinitionController extends Controller
         // language parms
         $siteLanguage = Site::getLanguage()['id'];
         $parms['languageId'] = $siteLanguage;
-		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
-        $parms['languageFlagCondition'] = $languageFlagCondition;
+        $parms['languageFlagCondition'] = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
+        $parms['records'] = Definition::getUserFavorites($parms);
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
-        $reviewType = (isset($parms['action'])) ? $parms['action'] : null;
+        $record= $parms['records'][0];
+        $parms['title'] = (empty($parms['tag']) || empty($record->tag_name)) ? 'Review All' : $record->tag_name;
 
-        $records = Definition::getUserFavorites($parms);
-
-        $title = (empty($parms['tag']) || empty($records[0]->tag_name)) ? 'Review All' : $records[0]->tag_name;
-
-		if ($reviewType == 'flashcards')
-		    return $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
-		else if ($reviewType == 'reader')
-            return $this->readWords($title, $records);
-        else
-            return $this->list($title, $records, $parms);
+        $action = $parms['action'];
+		if ($action == 'flashcards')
+		    return $this->doList($parms);
+		else if ($action == 'reader')
+            return $this->readWords($parms);
+        else // show the list
+            return $this->list($parms);
     }
 
-    public function doList($name, $reviewType, $records, $historyType)
+    public function doList($parms)
     {
-        $reviewType = alphanum($reviewType);
-
-        if (Quiz::isQuiz($reviewType))
+        if (Quiz::isQuiz($parms['action']))
         {
             // flashcards or multiple choice
-            return $this->doReview($records, $reviewType, $name, $historyType);
+            return $this->doReview($parms);
         }
         else
         {
             // show the list
-            return $this->list($name, $records);
+            return $this->list($parms);
         }
     }
 
-    public function doReview($records, $reviewType, $title, $historyType)
+    public function doReview($parms)
     {
-		$qna = Definition::makeQna($records); // splits text into questions and answers
-		$settings = Quiz::getSettings($reviewType);
-		$sessionName = $title;
-		$title = trans('proj.:count ' . $title, ['count' => count($records)]);
-
+		$qna = Definition::makeQna($parms['records']); // splits text into questions and answers
+		$settings = Quiz::getSettings($parms['action']);
+		$title = trans('proj.:count ' . $parms['title'], ['count' => count($parms['records'])]);
         $count = count($qna);
-        $history = History::getArray($title, 0, $historyType, History::getReviewType($reviewType), $count, ['route' => crackUri(2)]);
+        $history = History::getArray($title, 0, $parms['historyType'], History::getReviewType($parms['action']), $count, ['route' => crackUri(2)]);
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/favorites',
+			'returnPath' => $parms['return'],
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
 			'history' => $history,
@@ -1509,11 +1504,11 @@ class DefinitionController extends Controller
 			]);
     }
 
-    private function list($name, $records, $parms = null)
+    private function list($parms)
     {
 		return view(VIEWS . '.list', [
-		    'name' => $name,
-			'records' => $records,
+		    'name' => $parms['title'], // todo: get from parms in the view
+			'records' => $parms['records'], // todo: get from parms in the view
 			'parms' => $parms,
 			'lists' => Definition::getUserFavoriteLists(),
 		]);
@@ -1521,92 +1516,93 @@ class DefinitionController extends Controller
 
     public function readExamples(Request $request)
     {
-        $count = isset($request['count']) ? intval($request['count']) : null;
-        $action = isset($request['a']) ? intval($request['a']) : 'list';
+   		$parms = crackParms($request, ['action' => 'list']);
+   		$parms['records'] = Definition::getIndex(DEFINITIONS_SEARCH_EXAMPLES, $parms['count']);
+        $parms['title'] = __('proj.Dictionary Examples');
+        $parms['examplesOnly'] = true;
 
-   		$records = Definition::getIndex(DEFINITIONS_SEARCH_EXAMPLES, $count);
-
-        $title = __('proj.Dictionary Examples');
-
-		return ($action == 'read')
-		    ? $this->readWords($title, $records, /* $examplesOnly = */ true)
-		    : $this->list($title, $records);
+		return ($parms['action'] == 'read')
+		    ? $this->readWords($parms)
+		    : $this->list($parms);
     }
 
-    public function reviewNewest(Request $request, $reviewType = null, $count = 20)
+    public function reviewNewest(Request $request)
     {
-        $reviewType = alpha($reviewType);
-        $records = Definition::getNewest(intval($count), /* $random = */ true);
-        $title = 'Newest Words';
+   		$parms = crackParms($request, ['action' => 'list']);
+        $parms['records'] = Definition::getNewest($parms['count'], /* $random = */ true);
+        $parms['title'] = 'Newest Words';
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
-		return ($reviewType == 'reader')
-		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+		return ($parms['action'] == 'read')
+		    ? $this->readWords($parms)
+		    : $this->doList($parms);
     }
 
-    public function reviewRankedVerbs(Request $request, $reviewType = null, $count = 20)
+    public function reviewRankedVerbs(Request $request)
     {
-        $reviewType = alpha($reviewType);
-        $records = Definition::getRankedVerbs(intval($count));
-        $title = 'Most Common Verbs';
+   		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
+        $parms['records'] = Definition::getRankedVerbs($parms['count']);
+        $parms['title'] = 'Most Common Verbs';
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
-		return ($reviewType == 'reader')
-		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+		return ($parms['action'] == 'read')
+		    ? $this->readWords($parms)
+		    : $this->doList($parms);
     }
 
-    public function reviewNewestVerbs(Request $request, $reviewType = null, $count = 20)
+    public function reviewNewestVerbs(Request $request)
     {
-        $reviewType = alpha($reviewType);
-		$records = Definition::getNewestVerbs(intval($count));
-        $title = 'Newest Verbs';
+   		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
+		$parms['records'] = Definition::getNewestVerbs($parms['count']);
+        $parms['title'] = 'Newest Verbs';
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
-		return ($reviewType == 'reader')
-		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+		return ($parms['action'] == 'read')
+		    ? $this->readWords($parms)
+		    : $this->doList($parms);
     }
 
-    public function reviewRandomWords(Request $request, $reviewType = null, $count = 20)
+    public function reviewRandomWords(Request $request)
     {
-        $reviewType = alpha($reviewType);
-		$records = Definition::getRandomWords(intval($count));
-        $title = 'Random Words';
+   		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
+		$parms['records'] = Definition::getRandomWords($parms['count']);
+        $parms['title'] = 'Random Words';
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
-		return ($reviewType == 'reader')
-		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+		return ($parms['action'] == 'read')
+		    ? $this->readWords($parms)
+		    : $this->doList($parms);
     }
 
-	public function reviewRandomVerbs(Request $request, $reviewType = null, $count = 20)
+	public function reviewRandomVerbs(Request $request)
     {
-        $reviewType = alpha($reviewType);
-		$records = Definition::getRandomVerbs(intval($count));
-        $title = 'Random Verbs';
+   		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
+		$parms['records'] = Definition::getRandomVerbs($parms['count']);
+        $parms['title'] = 'Random Verbs';
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
-		return ($reviewType == 'reader')
-		    ? $this->readWords($title, $records)
-		    : $this->doList($title, $reviewType, $records, HISTORY_TYPE_DICTIONARY);
+		return ($parms['action'] == 'read')
+		    ? $this->readWords($parms)
+		    : $this->doList($parms);    }
+
+	public function snippetsFlashcards(Request $request)
+    {
+        return $this->reviewSnippets($request);
     }
 
-	public function snippetsFlashcards(Request $request, $count = PHP_INT_MAX)
+	public function snippetsQuiz(Request $request)
     {
-        return $this->reviewSnippets($request, 'flashcards', $count);
-    }
-
-	public function snippetsQuiz(Request $request, $count = PHP_INT_MAX)
-    {
-        return $this->reviewSnippets($request, 'quiz', $count);
+        return $this->reviewSnippets($request);
     }
 
 	public function reviewSnippets(Request $request)
     {
         $parms = crackParms($request);
+        $parms['records'] = Definition::getSnippetsReview($parms);
+        $parms['title'] = __('proj.Latest Practice Text');
+        $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
 
-        $records = Definition::getSnippetsReview($parms);
-
-        $title = __('proj.Latest Practice Text');
-
-		return $this->doList($title, $parms['action'], $records, HISTORY_TYPE_SNIPPETS);
+		return $this->doList($parms);
     }
 
     public function getRandomWordAjax(Request $request)
@@ -1620,8 +1616,7 @@ class DefinitionController extends Controller
 
     public function listTag(Request $request, Tag $tag)
     {
-        $parms = crackParms($request);
-        $parms['tag'] = $tag->id;
+        $parms = crackParms($request, ['tag' => $tag->id]);
 
 		$records = []; // make this countable so view will always work
 		try
@@ -1637,7 +1632,7 @@ class DefinitionController extends Controller
 		}
 
 		return view(VIEWS . '.list', [
-			'records' => $records,
+			'records' => $records, //todo: move to $parms in the view
 			'parms' => $parms,
 			'tag' => $tag,
 			'lists' => Definition::getUserFavoriteLists(),
@@ -1788,8 +1783,10 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function readWords($title, $records, $examplesOnly = false)
+    public function readWords($parms)
     {
+        $examplesOnly = isset($parms['examplesOnly']) ? $parms['examplesOnly'] : false;
+        $records = $parms['records'];
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
@@ -1812,11 +1809,11 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
-        $history = History::getArray($title, 0, HISTORY_TYPE_DICTIONARY, LESSON_TYPE_READER, count($lines['text']), ['route' => crackUri(2)]);
+        $history = History::getArray($parms['title'], 0, HISTORY_TYPE_DICTIONARY, LESSON_TYPE_READER, count($lines['text']), ['route' => crackUri(2)]);
 
     	return view('shared.reader', [
     	    'lines' => $lines,
-    	    'title' => $title,
+    	    'title' => $parms['title'],
     	    'options' => $options,
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),

@@ -243,7 +243,7 @@ class History extends Model
             {
                 // From the "Dictionary" section of "Favorites"
                 if ($this->route == 'read-examples') //todo: fix hardecoded route
-                    $action = $this->route . '?count=' . $this->count . '&a=' . $action;
+                    $action = $this->route . '?count=' . $this->count . '&action=' . $action;
                 else
                     $action = $this->route . '/' . $action;
             }

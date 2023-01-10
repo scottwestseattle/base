@@ -1403,7 +1403,7 @@ class Definition extends Model
 
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : getLanguageId();
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '=';
-        $count = isset($parms['count']) ? $parms['count'] : DEFAULT_FLASHCARDS_LIMIT;
+        $count = isset($parms['count']) ? $parms['count'] : DEFAULT_REVIEW_LIMIT;
         $orderBy = self::crackOrder($parms, 'id DESC');
         $getCountOnly = (isset($parms['getCount']) && $parms['getCount']);
         $count = $getCountOnly ? PHP_MAX_INT : $count;

@@ -268,6 +268,7 @@ class HomeController extends Controller
             //
             // get the todo list of daily exercises
             //
+            // TODO: FIX because it's all hardcoded
             if ($languageFlag == LANGUAGE_ES && !isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
             {
                 //
@@ -378,17 +379,17 @@ class HomeController extends Controller
                 //
                 $icon = ($flashcardsDictionaryNewest > 0) ? $iconDone : $iconFlashcards;
                 $done = ($flashcardsDictionaryNewest > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest/flashcards/$count"];
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest?action=flashcards&count=$count"];
 
                 $icon = ($flashcardsDictionaryRandom > 0) ? $iconDone : $iconFlashcards;
                 $done = ($flashcardsDictionaryRandom > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words/flashcards"];
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words?action=flashcards&count=$count"];
 
                 //todo: plug in
                 $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
                 $done = ($flashcardsDictionaryAttempts > 0);
                 if (false && $flashcardsDictionaryAttempts === 0)
-                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts/flashcards/$count"];
+                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts/?action=flashcards&count=$count"];
 
                 //
                 // Courses

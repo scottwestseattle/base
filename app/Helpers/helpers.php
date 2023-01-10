@@ -105,13 +105,15 @@ if (!function_exists('flash')) {
 if (!function_exists('referrer')) {
     function referrer()
     {
-        $rc['input'] = '';
         $rc['url'] = '';
+        $rc['input'] = '';
+        $rc['path'] = '';
 
         if (isset($_SERVER["HTTP_REFERER"]))
         {
             $rc['url'] = $_SERVER["HTTP_REFERER"];
             $rc['input'] = new HtmlString("<input name='referrer' type='hidden' value='" . $rc['url'] . "' />");
+            $rc['path'] = parse_url($rc['url'])['path'];
         }
 
         return $rc;
@@ -1100,22 +1102,49 @@ if (!function_exists('countLetters')) {
 if (!function_exists('crackParms')) {
     function crackParms($request, $defaults = null)
     {
+        // Standardized Parms:
+        // action: flashcards, list, quiz, read
+        // count << always set
+        // order: atoz, ztoa, desc, asc, attempts, attempts-asc, reads, reads-asc, views, views-asc
+        // orderBy
+        // recordCount
+        // record
+        // records
+        // return: return path << always set
+        // start << always set
+        // tag
+        // title
+
         $parms = null;
 
+        //
+        // we need action first to set count default better
+        //
+        $action = null;
+        if (isset($request['action']))
+        {
+            $parms['action'] = alphanum($request['action']);
+            $action = $parms['action'];
+        }
+        else if (isset($defaults['action']))
+        {
+            $parms['action'] = $defaults['action'];
+            $action = $parms['action'];
+        }
+
+        $defaultListLimit = (isset($action) && $action != 'list') ? DEFAULT_REVIEW_LIMIT : DEFAULT_LIST_LIMIT;
+
         // these are always set
-        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (isset($defaults['count']) ? $defaults['count'] : DEFAULT_LIST_LIMIT);
+        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (isset($defaults['count']) ? $defaults['count'] : $defaultListLimit);
         $parms['start'] = (isset($request['start'])) ? intval($request['start']) : 0;
+        $parms['return'] = (isset($request['return'])) ? alphanum($request['return']) : (isset($defaults['return']) ? $defaults['return'] : referrer()['path']);
 
         // these are set ONLY if in the $request OR in the $defaults
+
         if (isset($request['order']))
             $parms['order'] = alphanum($request['order']);
         else if (isset($defaults['order']))
             $parms['order'] = $defaults['order'];
-
-        if (isset($request['action']))
-            $parms['action'] = alphanum($request['action']);
-        else if (isset($defaults['action']))
-            $parms['action'] = $defaults['action'];
 
         if (isset($request['tag']))
             $parms['tag'] = alphanum($request['tag']);

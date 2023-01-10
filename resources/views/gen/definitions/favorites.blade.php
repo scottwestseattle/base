@@ -36,7 +36,7 @@
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&order={{$order}}">
                     @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count={{$favoritesCnt}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=read&count={{$favoritesCnt}}&order={{$order}}">
                     @LANG('proj.Reader') ({{$favoritesCnt}})<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
             </p>
@@ -61,7 +61,7 @@
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tag={{$record->id}}&order={{$order}}">
                     @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=reader&count={{DEFAULT_BIG_NUMBER}}&tag={{$record->id}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=read&count={{DEFAULT_BIG_NUMBER}}&tag={{$record->id}}&order={{$order}}">
                     @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
                 <a href='/tags/edit/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
@@ -141,13 +141,13 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/read-examples?count=20">@LANG('proj.Dictionary Examples')</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?count=20&a=read">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?action=read">
                         @LANG('proj.Reader') (20)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?count=100&a=read">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?action=read&count=100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?a=read">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/read-examples?action=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
@@ -160,16 +160,16 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/review-top-20-verbs">@LANG('proj.:count Most Common Verbs', ['count' => 20])</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/quiz">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs?action=quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/flashcards">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs?action=flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/reader">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs?action=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs/reader/100">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-top-20-verbs?action=read&count=100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
@@ -182,16 +182,16 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/review-newest">@LANG('proj.:count Newest Words', ['count' => 20])</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/quiz">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest?action=quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/flashcards">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest?action=flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/reader">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest?action=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest/reader/100">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest?action=read&count=100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
@@ -204,16 +204,16 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/review-newest-verbs">@LANG('proj.:count Newest Verbs', ['count' => 20])</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/quiz">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs?action=quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/flashcards">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs?action=flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/reader">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs?action=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs/reader/100">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-newest-verbs?action=read&count=100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
@@ -226,16 +226,16 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/review-random-words">@LANG('proj.:count Random Words', ['count' => 20])</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/quiz">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words?action=quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/flashcards">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words?action=flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/reader">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words?action=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words/reader/100">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-words?action=read&count=100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>
@@ -248,16 +248,16 @@
             <div class="card-body drop-box-ghost">
                 <h5 class="card-title"><a href="/definitions/review-random-verbs">@LANG('proj.:count Random Verbs', ['count' => 20])</a></h5>
                 <p class="card-text">
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/quiz">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs?action=quiz">
                         @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/flashcards">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs?action=flashcards">
                         @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/reader">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs?action=read">
                         @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
-                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs/reader/100">
+                    <a class="btn btn-primary btn-xs" role="button" href="/definitions/review-random-verbs?action=read&count=100">
                         @LANG('proj.Reader') (100)<span class="glyphicon glyphicon-volume-up ml-1"></span>
                     </a>
                 </p>

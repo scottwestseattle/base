@@ -495,15 +495,15 @@ Route::group(['prefix' => 'snippets'], function () {
 
 	// flashcards / quiz have two routes
 	Route::get('/review', [DefinitionController::class, 'reviewSnippets']);
-	Route::get('/flashcards/{count?}', [DefinitionController::class, 'snippetsFlashcards']);
-	Route::get('/quiz/{count?}', [DefinitionController::class, 'snippetsQuiz']);
+	Route::get('/flashcards', [DefinitionController::class, 'snippetsFlashcards']);
+	Route::get('/quiz', [DefinitionController::class, 'snippetsQuiz']);
 });
 
 // Daily exercise links - made unique for history uniqueness
 Route::group(['prefix' => 'daily'], function () {
 	Route::get('/flashcards-newest', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/flashcards-attempts', [DefinitionController::class, 'reviewSnippets']);
-	Route::get('/dictionary-newest/{reviewType}/{count}', [DefinitionController::class, 'reviewNewest']);
+	Route::get('/dictionary-newest', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/dictionary-attempts', [DefinitionController::class, 'reviewDictionary']);
 });
 
