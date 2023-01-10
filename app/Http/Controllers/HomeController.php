@@ -403,6 +403,17 @@ class HomeController extends Controller
                 $done = ($coursesTaken > 0);
                 $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => 'Random Lesson Exercise', 'linkUrl' => $courseUrl];
 
+                // flag if all are DONE or not
+                $done = true;
+                foreach($todo as $item)
+                {
+                    if (!$item['done'])
+                    {
+                        $done = false;
+                        break;
+                    }
+                }
+                $options['todoDone'] = $done;
                 $options['todo'] = $todo;
             }
 

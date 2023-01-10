@@ -4,18 +4,11 @@
     $bgActiveLight = App\DateTimeEx::getDayColorLight($bgActive);
     $bgDone = '#bfbfbf';
     $bgDoneLight = $bgDone;
-    $done = true;
-    foreach($options['todo'] as $record)
-    {
-        if (!$record['done'])
-        {
-            $done = false;
-            break;
-        }
-    }
+    $done = $options['todoDone'];
 @endphp
     @if ($done)
-        <div class="mb-1 small-thin-text"><a href="" onclick="event.preventDefault(); $('#showPracticeList').toggle();">@LANG('proj.Finished Daily Practice - Show')</a></div>
+        <div class="mb-1 small-thin-text"><a type="button" class="btn btn-success btn-xs" style="border-radius: 10px; padding: 5px 8px;"
+ href="" onclick="event.preventDefault(); $('#showPracticeList').toggle();">@LANG('proj.Finished Daily Practice - Show')</a></div>
     @endif
     <div id="showPracticeList" class="mb-3 {{$done ? 'hidden' : ''}}">
         <h3 class="mb-0">@LANG('proj.Daily Practice')</h3>
