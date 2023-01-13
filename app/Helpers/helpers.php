@@ -1135,7 +1135,7 @@ if (!function_exists('crackParms')) {
         $defaultListLimit = (isset($action) && $action != 'list') ? DEFAULT_REVIEW_LIMIT : DEFAULT_LIST_LIMIT;
 
         // these are always set
-        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (isset($defaults['count']) ? $defaults['count'] : $defaultListLimit);
+        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (array_key_exists('count', $defaults) ? $defaults['count'] : $defaultListLimit);
         $parms['start'] = (isset($request['start'])) ? intval($request['start']) : 0;
         $parms['return'] = (isset($request['return'])) ? alphanum($request['return']) : (isset($defaults['return']) ? $defaults['return'] : referrer()['path']);
 

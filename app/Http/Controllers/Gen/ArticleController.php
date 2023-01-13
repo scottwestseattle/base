@@ -510,17 +510,15 @@ class ArticleController extends Controller
 
     public function read(Request $request, Entry $entry)
     {
-        $count = isset($request['count']) ? intval($request['count']) : null;
+        $parms = crackParms($request, ['count' => null]);
+        //dump($parms);
+
         $random = isset($request['random']) ? boolval($request['random']) : false;
+        $parms['randomOrder'] = $random;
+        $parms['readRandom'] = $entry->readRandom();
+        $parms['readReverse'] = $entry->readReverse();
 
-        $options['randomOrder'] = $random;
-        $options['count'] = $count;
-        $options['return'] = PREFIX;
-
-        $options['readRandom'] = $entry->readRandom();
-        $options['readReverse'] = $entry->readReverse();
-
-        return $this->reader($entry, $options);
+        return $this->reader($entry, $parms);
     }
 
 	public function flashcards(Request $request, Entry $entry)

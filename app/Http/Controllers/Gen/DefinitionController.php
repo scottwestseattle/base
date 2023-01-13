@@ -1459,7 +1459,8 @@ class DefinitionController extends Controller
         $record= $parms['records'][0];
         $parms['title'] = (empty($parms['tag']) || empty($record->tag_name)) ? 'Review All' : $record->tag_name;
 
-        $action = $parms['action'];
+        $action = isset($parms['action']) ? alpha($parms['action']) : ''; // default to blank
+
 		if ($action == 'flashcards')
 		    return $this->doList($parms);
 		else if ($action == 'reader')

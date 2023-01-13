@@ -359,7 +359,7 @@ class HomeController extends Controller
                     $article = Article::getRandom();
                     if (isset($article))
                     {
-                        $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/view/' . $article->permalink];
+                        $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/read/' . $article->id];
                     }
                 }
 
@@ -395,7 +395,8 @@ class HomeController extends Controller
                 // Courses
                 //
                 $courseIds = [1329, 1303, 1330, 1340, 1273];
-                $courseIx = rand(0, count($courseIds) - 1);
+//                $courseIx = rand(0, count($courseIds) - 1);
+                $courseIx = DateTimeEx::getIndexByDay($courseIds);
                 $courseId = $courseIds[$courseIx];
                 $action = ($courseId == 1330) ? 1 : 2;
                 $courseUrl = "/lessons/review/$courseId/$action/20";

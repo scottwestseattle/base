@@ -791,6 +791,8 @@ class LessonController extends Controller
 
         $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $lesson->type_flag, $count, ['sessionName' => $lesson->title, 'sessionId' => $lesson->course->id]);
 
+        $returnPath = referrer()['path'];
+
 		return view($settings['view'], [
 			'prev' => $prev,
 			'next' => $next,
@@ -799,7 +801,7 @@ class LessonController extends Controller
 			'records' => $quiz,
 			'canEdit' => true,
 			'isMc' => true, //$lesson->isMcOld($reviewType),
-            'returnPath' => '/' . PREFIX . '/view/' . $lesson->id,
+            'returnPath' => $returnPath,
 			'parentTitle' => $lesson->title,
 			'settings' => $settings,
 			'random' => $lesson->isTranslation() ? 0 : 1,

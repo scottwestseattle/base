@@ -273,6 +273,26 @@ class DateTimeEx
 	    return self::$colorsFull[$key];
     }
 
+	static public function getIndexByDay($array, $sDate = null)
+	{
+        $day = DateTimeEx::getDaysSinceZero($sDate);
+        $count = count($array);
+
+        // put day in our range of choices
+        $index = $day % $count;
+        if ($index >= 0 && $index < $count)
+        {
+            // expected range
+        }
+        else
+        {
+            // unexpected, set to 0
+            $index = 0;
+        }
+
+        return $index;
+    }
+
 	static public function getDayColor($sDate = null)
 	{
 		$day = self::getDaysSinceZero($sDate);
@@ -307,7 +327,7 @@ class DateTimeEx
         return $rc;
     }
 
-    static public function getDaysSinceZero($sDate)
+    static public function getDaysSinceZero($sDate = null)
     {
         $dt = null;
         $rc = 0;
