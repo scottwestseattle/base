@@ -1114,6 +1114,7 @@ if (!function_exists('crackParms')) {
         // start << always set
         // tag
         // title
+        // dump: dump parms
 
         $parms = null;
 
@@ -1135,7 +1136,7 @@ if (!function_exists('crackParms')) {
         $defaultListLimit = (isset($action) && $action != 'list') ? DEFAULT_REVIEW_LIMIT : DEFAULT_LIST_LIMIT;
 
         // these are always set
-        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (array_key_exists('count', $defaults) ? $defaults['count'] : $defaultListLimit);
+        $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (isset($defaults) && array_key_exists('count', $defaults) ? $defaults['count'] : $defaultListLimit);
         $parms['start'] = (isset($request['start'])) ? intval($request['start']) : 0;
         $parms['return'] = (isset($request['return'])) ? alphanum($request['return']) : (isset($defaults['return']) ? $defaults['return'] : referrer()['path']);
 
@@ -1165,6 +1166,9 @@ if (!function_exists('crackParms')) {
             $parms['orderBy'] = alphanum($request['orderBy']);
         else if (isset($defaults['orderBy']))
             $parms['orderBy'] = $defaults['orderBy'];
+
+        if (isset($request['dump']))
+            $parms['dump'] = alphanum($request['dump']);
 
         return $parms;
     }

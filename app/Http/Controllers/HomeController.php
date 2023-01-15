@@ -120,7 +120,8 @@ class HomeController extends Controller
         $options['userIdCondition'] = '=';
         $options['releaseFlag'] = RELEASEFLAG_PUBLIC;
         $options['releaseCondition'] = '>=';
-        $options['snippets'] = Definition::getSnippetsNew($options);
+        $options['type'] = DEFTYPE_SNIPPET;
+        $options['snippets'] = Definition::getWithStats($options);
 
         //
         // get the favorite lists so the entries can be favorited
@@ -364,6 +365,19 @@ class HomeController extends Controller
                 }
 
                 //
+                // Courses
+                //
+                $courseIds = [1329, 1303, 1330, 1340, 1273];
+                $courseIx = DateTimeEx::getIndexByDay($courseIds);
+                $courseId = $courseIds[$courseIx];
+                $action = ($courseId == 1330) ? 1 : 2;
+                $courseUrl = "/lessons/review/$courseId/$action/20";
+                $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
+                $done = ($coursesTaken > 0);
+                $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => 'Random Lesson Exercise', 'linkUrl' => $courseUrl];
+
+
+                //
                 // Practice Text
                 //
                 $icon = ($flashcardsPracticeTextNewest > 0) ? $iconDone : $iconFlashcards;
@@ -372,7 +386,7 @@ class HomeController extends Controller
 
                 $icon = ($flashcardsPracticeTextAttempts > 0) ? $iconDone : $iconFlashcards;
                 $done = ($flashcardsPracticeTextAttempts > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
 
                 //
                 // Dictionary
@@ -388,21 +402,8 @@ class HomeController extends Controller
                 //todo: plug in
                 $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
                 $done = ($flashcardsDictionaryAttempts > 0);
-                if (false && $flashcardsDictionaryAttempts === 0)
-                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts/?action=flashcards&count=$count"];
-
-                //
-                // Courses
-                //
-                $courseIds = [1329, 1303, 1330, 1340, 1273];
-//                $courseIx = rand(0, count($courseIds) - 1);
-                $courseIx = DateTimeEx::getIndexByDay($courseIds);
-                $courseId = $courseIds[$courseIx];
-                $action = ($courseId == 1330) ? 1 : 2;
-                $courseUrl = "/lessons/review/$courseId/$action/20";
-                $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
-                $done = ($coursesTaken > 0);
-                $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => 'Random Lesson Exercise', 'linkUrl' => $courseUrl];
+                if ($flashcardsDictionaryAttempts === 0)
+                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
 
                 // flag if all are DONE or not
                 $done = true;

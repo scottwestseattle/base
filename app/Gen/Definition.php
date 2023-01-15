@@ -1088,7 +1088,7 @@ class Definition extends Model
 		return $record;
 	}
 
-	static public function getSnippetsNew($parms = null)
+	static public function getWithStats($parms = null)
 	{
 		$records = [];
 
@@ -1104,6 +1104,7 @@ class Definition extends Model
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '=';
 		$releaseFlag = isset($parms['releaseFlag']) ? $parms['releaseFlag'] : RELEASEFLAG_PUBLIC;
 		$releaseFlagCondition = isset($parms['releaseCondition']) ? $parms['releaseCondition'] : '>=';
+        $typeFlag = isset($parms['type']) ? $parms['type'] : DEFTYPE_SNIPPET;
 
         // release_flag splits it by user's and public; TODO: add collation so it will sort right
 
@@ -1131,7 +1132,7 @@ class Definition extends Model
                 ->leftJoin('stats', function($join) use($userId) {
                     $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', $userId);
                 })
-                ->where('definitions.type_flag', DEFTYPE_SNIPPET)
+                ->where('definitions.type_flag', $typeFlag)
                 ->where('definitions.language_flag', $languageFlagCondition, $languageId)
                 ->where(function ($query) use ($releaseFlagCondition, $releaseFlag, $userId, $userIdCondition) {$query
                 	->orWhere('definitions.release_flag', $releaseFlagCondition, $releaseFlag)
@@ -1397,7 +1398,7 @@ class Definition extends Model
 		}
     }
 
-	static public function getSnippetsReview($parms = null)
+	static public function getReview($parms = null)
 	{
 		$records = [];
 
@@ -1405,8 +1406,9 @@ class Definition extends Model
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '=';
         $count = isset($parms['count']) ? $parms['count'] : DEFAULT_REVIEW_LIMIT;
         $orderBy = self::crackOrder($parms, 'id DESC');
-        $getCountOnly = (isset($parms['getCount']) && $parms['getCount']);
+        $getCountOnly = (isset($parms['getCount']) && $parms['getCount']); // get the record count from the db instead of the records
         $count = $getCountOnly ? PHP_MAX_INT : $count;
+        $typeFlag = isset($parms['type']) ? $parms['type'] : DEFTYPE_SNIPPET;
 
 		try
 		{
@@ -1415,7 +1417,7 @@ class Definition extends Model
                 ->leftJoin('stats', function($join) use($userId) {
                     $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', $userId);
                 })
-                ->where('definitions.type_flag', DEFTYPE_SNIPPET)
+                ->where('definitions.type_flag', $typeFlag)
                 ->where('definitions.language_flag', $languageFlagCondition, $languageId)
                 ->whereNotNull('translation_en')
                 ->where(function ($query) use ($userId) {$query
@@ -1436,9 +1438,10 @@ class Definition extends Model
 		return $getCountOnly ? count($records) : $records;
 	}
 
-	static public function getSnippetsReviewCount()
+	static public function getReviewCount($parms = null)
 	{
-        $rc = self::getSnippetsReview(['getCount' => true]);
+	    $parms['getCount'] = true;
+        $rc = self::getReview($parms);
 
 		return $rc;
 	}

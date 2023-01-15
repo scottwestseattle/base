@@ -68,6 +68,7 @@ class DefinitionController extends Controller
 			'reviewRandomWords', 'reviewRandomVerbs',
 			'reviewRankedVerbs',
 			'reviewSnippets', 'snippetsFlashcards', 'snippetsQuiz',
+			'reviewDictionary',
 			'readExamples',
 			'favoritesFlashcards', 'favoritesQuiz',
 			'favoritesReview',
@@ -891,15 +892,15 @@ class DefinitionController extends Controller
         $options['userIdCondition'] = '=';
         $options['releaseFlag'] = RELEASEFLAG_PUBLIC;
         $options['releaseCondition'] = '>=';
-        $options['snippets'] = Definition::getSnippetsNew($options);
+        $options['type'] = DEFTYPE_SNIPPET;
 
         //
         // get the snippets for the appropriate langauge
         //
-        $snippets = Definition::getSnippetsNew($options);
+        $snippets = Definition::getWithStats($options);
 
         // the records
-        $options['records'] = $snippets;
+        $options['snippets'] = $snippets;
 
         // get all the stuff for the speak and record module
         $options['showForm'] = $showForm;
@@ -1471,7 +1472,12 @@ class DefinitionController extends Controller
 
     public function doList($parms)
     {
-        if (Quiz::isQuiz($parms['action']))
+        if (isset($parms['dump']))
+        {
+            dump($parms);
+        }
+
+        if (isset($parms['action']) && Quiz::isQuiz($parms['action']))
         {
             // flashcards or multiple choice
             return $this->doReview($parms);
@@ -1596,10 +1602,22 @@ class DefinitionController extends Controller
         return $this->reviewSnippets($request);
     }
 
+	public function reviewDictionary(Request $request)
+    {
+        $parms = crackParms($request, ['count' => 20, 'order' => 'attempts-asc', 'action' => 'flashcards']);
+        $parms['type'] = DEFTYPE_DICTIONARY;
+        $parms['records'] = Definition::getReview($parms);
+        $parms['title'] = __('proj.Least Viewed Dictionary Definitions');
+        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+
+		return $this->doList($parms);
+    }
+
 	public function reviewSnippets(Request $request)
     {
         $parms = crackParms($request);
-        $parms['records'] = Definition::getSnippetsReview($parms);
+        $parms['type'] = DEFTYPE_SNIPPET;
+        $parms['records'] = Definition::getReview($parms);
         $parms['title'] = __('proj.Latest Practice Text');
         $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
 
@@ -1650,7 +1668,9 @@ class DefinitionController extends Controller
         $title = $parms['title'];
         $return = $parms['return'];
         $count = $parms['count'];
-        $records = Definition::getSnippetsNew($parms);
+        $parms['type'] = DEFTYPE_SNIPPET;
+
+        $records = Definition::getWithStats($parms);
 
         if (count($records) > 0)
         {
@@ -1958,7 +1978,7 @@ class DefinitionController extends Controller
             $index = 0;
             if (count($record->definitions) == 0) // this is the flag to get all snippets with a translation
             {
-                $favorites = Definition::getSnippetsReview();
+                $favorites = Definition::getReview();
                 foreach($favorites as $definition)
                 {
                     if (isset($definition->translation_en))
