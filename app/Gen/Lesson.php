@@ -56,6 +56,53 @@ class Lesson extends Model
 		return Status::isPublic($this->release_flag);
     }
 
+    static public function getById($id)
+    {
+        return self::getRecord(null, $id);
+    }
+
+    static public function getRecord($permalink, $id = 0)
+    {
+        $record = null;
+        $permalinkCondition = '=';
+        $idCondition = '=';
+        $id = intval($id);
+
+        if (isset($permalink))
+        {
+            $permalink = alphanum($permalink);
+
+            // using permalink so make sure id matches
+            $id = 0;
+            $idCondition = '>=';
+        }
+        else if ($id > 0)
+        {
+            // using id so make sure permalink always true
+            $permalink = 'do not match';
+            $permalinkCondition = '<>';
+        }
+
+		try
+		{
+			$record = Lesson::select()
+				//->where('site_id', SITE_ID)
+				->where('deleted_flag', 0)
+				->where('published_flag', 1)
+				->where('approved_flag', 1)
+				->where('permalink', $permalinkCondition, $permalink)
+				->where('id', $idCondition, $id)
+				->first();
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Lesson Not Found';
+			logInfo(__FUNCTION__, $msg, ['permalink' => $permalink]);
+		}
+
+		return $record;
+	}
+
     static public function getName($lesson)
     {
 		$rc = $lesson->lesson_number . '.' . $lesson->section_number . ' ' . $lesson->lesson_title;

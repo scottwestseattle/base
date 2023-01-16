@@ -193,27 +193,9 @@ class LessonController extends Controller
 
     public function permalink(Request $request, $permalink)
     {
-		$permalink = trim($permalink);
-
-		$record = null;
-
-		try
-		{
-			$record = Lesson::select()
-				->where('site_id', SITE_ID)
-				->where('deleted_flag', 0)
-				->where('published_flag', 1)
-				->where('approved_flag', 1)
-				->where('permalink', $permalink)
-				->first();
-		}
-		catch (\Exception $e)
-		{
-			$msg = 'Lesson Not Found';
-			logInfo(__FUNCTION__, $msg, ['permalink' => $permalink]);
-
-			return back();
-		}
+		$record = Lesson::getRecord($permalink);
+        if (!isset($record))
+            back();
 
 		return view(VIEWS . '.view', [
 			'record' => $record,

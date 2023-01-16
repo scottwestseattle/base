@@ -365,16 +365,18 @@ class HomeController extends Controller
                 }
 
                 //
-                // Courses
+                // Lessons
                 //
-                $courseIds = [1329, 1303, 1330, 1340, 1273];
-                $courseIx = DateTimeEx::getIndexByDay($courseIds);
-                $courseId = $courseIds[$courseIx];
-                $action = ($courseId == 1330) ? 1 : 2;
-                $courseUrl = "/lessons/review/$courseId/$action/20";
+                $ids = [1329, 1303, 1330, 1340, 1273];
+                $ix = DateTimeEx::getIndexByDay($ids);
+                $id = $ids[$ix];
+                $record = Lesson::getById($id);
+                $title = isset($record) ? $record->title : 'Article Not Set';
+                $action = ($id == 1330) ? 1 : 2;
+                $url = "/lessons/review/$id/$action/20";
                 $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
                 $done = ($coursesTaken > 0);
-                $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => 'Random Lesson Exercise', 'linkUrl' => $courseUrl];
+                $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
 
 
                 //
@@ -402,8 +404,7 @@ class HomeController extends Controller
                 //todo: plug in
                 $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
                 $done = ($flashcardsDictionaryAttempts > 0);
-                if ($flashcardsDictionaryAttempts === 0)
-                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
+                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
 
                 // flag if all are DONE or not
                 $done = true;
