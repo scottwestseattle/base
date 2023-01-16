@@ -58,10 +58,10 @@
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">
                     @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tag={{$record->id}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tagId={{$record->id}}&order={{$order}}">
                     @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=read&count={{DEFAULT_BIG_NUMBER}}&tag={{$record->id}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=read&count={{DEFAULT_BIG_NUMBER}}&tagId={{$record->id}}&order={{$order}}">
                     @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
                 <a href='/tags/edit/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>

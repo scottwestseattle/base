@@ -1394,7 +1394,7 @@ class DefinitionController extends Controller
     {
 		$reviewType = intval($reviewType);
 		$record = $tag;
-		$qna = Definition::makeQna(Definition::getUserFavorites(['tag' => $tag->id])); // splits text into questions and answers
+		$qna = Definition::makeQna(Definition::getUserFavorites(['tagId' => $tag->id])); // splits text into questions and answers
 		$settings = Quiz::getSettings($reviewType);
 
 		try
@@ -1458,13 +1458,13 @@ class DefinitionController extends Controller
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
         $record= $parms['records'][0];
-        $parms['title'] = (empty($parms['tag']) || empty($record->tag_name)) ? 'Review All' : $record->tag_name;
+        $parms['title'] = (empty($parms['tagId']) || empty($record->tag_name)) ? 'Review All' : $record->tag_name;
 
         $action = isset($parms['action']) ? alpha($parms['action']) : ''; // default to blank
 
 		if ($action == 'flashcards')
 		    return $this->doList($parms);
-		else if ($action == 'reader')
+		else if ($action == 'read')
             return $this->readWords($parms);
         else // show the list
             return $this->list($parms);
@@ -1635,7 +1635,7 @@ class DefinitionController extends Controller
 
     public function listTag(Request $request, Tag $tag)
     {
-        $parms = crackParms($request, ['tag' => $tag->id]);
+        $parms = crackParms($request, ['tagId' => $tag->id]);
 
 		$records = []; // make this countable so view will always work
 		try

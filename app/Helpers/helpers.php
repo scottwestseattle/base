@@ -1147,10 +1147,10 @@ if (!function_exists('crackParms')) {
         else if (isset($defaults['order']))
             $parms['order'] = $defaults['order'];
 
-        if (isset($request['tag']))
-            $parms['tag'] = alphanum($request['tag']);
-        else if (isset($defaults['tag']))
-            $parms['tag'] = $defaults['tag'];
+        if (isset($request['tagId']))
+            $parms['tagId'] = intval($request['tagId']);
+        else if (isset($defaults['tagId']))
+            $parms['tagId'] = $defaults['tagId'];
 
         if (isset($request['title']))
             $parms['title'] = alphanum($request['title']);

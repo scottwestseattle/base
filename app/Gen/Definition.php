@@ -1314,7 +1314,7 @@ class Definition extends Model
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
         $orderBy = self::crackOrder($parms, 'stats.qna_at, stats.viewed_at, definitions.id');
-		$tagId = isset($parms['tag']) ? $parms['tag'] : 0;
+		$tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
 		$tagIdCondition = $tagId > 0 ? '=' : '>=';
 
         if (false)

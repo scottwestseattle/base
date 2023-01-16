@@ -23,10 +23,10 @@
         <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/review/{{$tag->id}}">
             @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=flashcards&count=20&order={{$order}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tagId={{$tag->id}}&action=flashcards&count=20&order={{$order}}">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tag={{$tag->id}}&action=read&order={{$order}}&count={{DEFAULT_BIG_NUMBER}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?tagId={{$tag->id}}&action=read&order={{$order}}&count={{DEFAULT_BIG_NUMBER}}">
             @LANG('proj.Reader')<span class="ml-1 glyphicon glyphicon-volume-up"></span>
         </a>
     @else
