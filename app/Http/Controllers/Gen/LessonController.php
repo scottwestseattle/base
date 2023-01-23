@@ -720,7 +720,10 @@ class LessonController extends Controller
         $count = count($quiz);
 
         //todo: not used and not tested
-        $history = History::getArray($lesson->title, $lesson->id, HISTORY_TYPE_LESSON, LESSON_TYPE_QUIZ_MC, $count, ['sessionName' => $lesson->title, 'sessionId' => $lesson->course->id]);
+        $parms = crackParms();
+        $parms['sessionName'] = $lesson->title;
+        $parms['sessionId'] = $lesson->course->id;
+        $history = History::getArray($lesson->title, $lesson->id, HISTORY_TYPE_LESSON, $parms['order'], LESSON_TYPE_QUIZ_MC, $count, $parms);
 
 		return view(VIEWS . '.reviewmc', [
 			'record' => $lesson,
@@ -740,7 +743,7 @@ class LessonController extends Controller
 	//
 	// this is the version updated to work with review.js
 	//
-	public function review(Lesson $lesson, $reviewType = null, $count = 0)
+	public function review(Request $request, Lesson $lesson, $reviewType = null, $count = 0)
     {
         $record = $lesson;
 		$reviewType = intval($reviewType);
@@ -749,10 +752,10 @@ class LessonController extends Controller
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
 
-       if ($lesson->isMcOld())
-       {
+        if ($lesson->isMcOld())
+        {
             return $this->reviewmc($lesson, $reviewType);
-       }
+        }
 
 		try
 		{
@@ -771,7 +774,10 @@ class LessonController extends Controller
 		$settings = Quiz::getSettings($reviewType);
         $title = (isset($lesson->course->title) ? $lesson->course->title . ' - ' : '') . $lesson->title;
 
-        $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $lesson->type_flag, $count, ['sessionName' => $lesson->title, 'sessionId' => $lesson->course->id]);
+        $parms = crackParms($request);
+        $parms['sessionName'] = $lesson->title;
+        $parms['sessionId'] = $lesson->course->id;
+        $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $parms['order'], $lesson->type_flag, $count, $parms);
 
         $returnPath = referrer()['path'];
 
@@ -904,9 +910,11 @@ class LessonController extends Controller
         }
         //dd($bgs);
 
-        $history = History::getArray($lesson->title, $lesson->id, HISTORY_TYPE_EXERCISE, LESSON_TYPE_TIMED_SLIDES, count($records), [
-            'sessionName' => $lesson->title, 'sessionId' => $lesson->course->id, 'seconds' => $times['seconds']
-            ]);
+        $parms = crackParms();
+        $parms['sessionName'] = $lesson->title;
+        $parms['sessionId'] = $lesson->course->id;
+        $parms['seconds'] = $times['seconds'];
+        $history = History::getArray($lesson->title, $lesson->id, HISTORY_TYPE_EXERCISE, $parms['order'], LESSON_TYPE_TIMED_SLIDES, count($records), $parms);
 
 		return view(VIEWS . '.runtimed', [
 			'record' => $lesson,

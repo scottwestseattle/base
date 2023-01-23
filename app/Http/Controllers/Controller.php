@@ -134,7 +134,7 @@ class Controller extends BaseController
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
-        $history = History::getArray($record->title, $record->id, $record->getHistoryType(), LESSON_TYPE_READER, count($lines));
+        $history = History::getArray($record->title, $record->id, $record->getHistoryType(), $options['order'], LESSON_TYPE_READER, count($lines), $options);
 
     	return view('shared.reader', [
     	    'lines' => $lines,

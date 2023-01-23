@@ -112,6 +112,7 @@ class History extends Model
         $programId = isset($request['programId']) ? intval($request['programId']) : 0;
         $programType = isset($request['programType']) ? intval($request['programType']) : 0;
         $programSubType = isset($request['programSubType']) ? intval($request['programSubType']) : 0;
+        $programAction = isset($request['programAction']) ? intval($request['programAction']) : 0;
         $sessionName = isset($request['sessionName']) ? alphanum($request['sessionName']) : null;
         $sessionId = isset($request['sessionId']) ? intval($request['sessionId']) : 0;
         $route = isset($request['route']) ? cleanUrl($request['route'], $notUsed) : null;
@@ -129,6 +130,7 @@ class History extends Model
 		$record->program_id = intval($programId);
         $record->type_flag = intval($programType);
         $record->subtype_flag = intval($programSubType);
+        $record->action_flag = intval($programAction);
 		$record->session_name = trimNull($sessionName, true);;
 		$record->session_id = intval($sessionId);
 		$record->route = trimNull($route);
@@ -349,19 +351,25 @@ class History extends Model
         return $rc;
     }
 
-    static function getArrayShort($programType, $programSubType, $count)
+    static function getSubType($parms = null)
     {
-        return self::getArray(null, 0, $programType, $programSubType, $count);
+        return isset($parms['source']) ? $parms['source'] : HISTORY_SUBTYPE_SPECIFIC;
     }
 
-    static function getArray($programName, $programId, $programType, $programSubType, $count, $options = null)
+    static function getArrayShort($programType, $programSubType, $programAction, $count)
+    {
+        return self::getArray(null, 0, $programType, $programSubType, $programAction, $count);
+    }
+
+    static function getArray($programName, $programId, $programType, $programSubType, $programAction, $count, $options = null)
     {
         $rc =  [
             'historyPath' => HISTORY_URL,
 			'programName' => $programName,
 			'programId' => $programId,
 			'programType' => $programType,
-			'programSubType' => $programSubType,
+			'programSubType' => intval($programSubType),
+			'programAction' => $programAction,
 			'sessionName' => null,
 			'sessionId' => 0,
 			'count' => $count,

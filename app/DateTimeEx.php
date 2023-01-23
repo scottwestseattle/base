@@ -430,6 +430,11 @@ class DateTimeEx
 	    return ($date->format('Y-m-d') === $now->format('Y-m-d'));
 	}
 
+    static public function now()
+    {
+        return self::getTimestamp();
+    }
+
 	static public function getTimestamp($dateTime = null)
 	{
         $now = isset($dateTime) ? $dateTime : new DateTime();

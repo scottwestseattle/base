@@ -1,5 +1,8 @@
 ===== NEW DB Changes =====
+ALTER TABLE exercises ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 
+ALTER TABLE `histories` ADD `action_flag` TINYINT NOT NULL DEFAULT '0' AFTER `subtype_flag`;
+ALTER TABLE `histories` CHANGE `subtype_flag` `subtype_flag` SMALLINT(6) NOT NULL DEFAULT '0';
 
 ===== Done =====
 

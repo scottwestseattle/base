@@ -542,8 +542,7 @@ class ArticleController extends Controller
 		}
 
 		$settings = Quiz::getSettings($reviewType);
-
-        $history = History::getArray($record->title, $record->id, HISTORY_TYPE_ARTICLE, LESSON_TYPE_QUIZ_FLASHCARDS, $count);
+        $history = History::getArray($record->title, $record->id, HISTORY_TYPE_ARTICLE, History::getSubType($request), LESSON_TYPE_QUIZ_FLASHCARDS, $count);
 
 		return view($settings['view'], [
 			'sentenceCount' => count($quiz),

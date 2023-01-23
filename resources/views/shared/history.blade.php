@@ -41,8 +41,10 @@
                     @endif
                     @if (true)
                     <div class="small-thin-text">
-                        <div>Id: {{$record->program_id}}, Count: {{$record->count}}, Type: {{$record->type_flag}}, Sub: {{$record->subtype_flag}}</div>
-                        <div>Route: {{$record->route}}</div>
+                        <div>Id: {{$record->program_id}}, Count: {{$record->count}}, Flags: {{$record->type_flag}}/{{$record->subtype_flag}}/{{$record->action_flag}} </div>
+                        @if (isset($record->route) && !empty($record->route))
+                            <div>Route: {{$record->route}}</div>
+                        @endif
                         @if (isset($record->session_name))
                             <div>{{$record->session_name}} ({{$record->session_id}})</div>
                         @endif

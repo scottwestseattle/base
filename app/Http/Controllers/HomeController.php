@@ -16,6 +16,7 @@ use App\Event;
 use App\Home;
 use App\Gen\Article;
 use App\Gen\Definition;
+use App\Gen\Exercise;
 use App\Gen\History;
 use App\Gen\Lesson;
 use App\Site;
@@ -95,6 +96,11 @@ class HomeController extends Controller
         }
 
         //
+        // get daily exercises
+        //
+        $options = array_merge($options, self::getDailyExercisesNEW());
+
+        //
         // get the snippets for the appropriate langauge
         //
     	$languageFlagCondition = '=';
@@ -148,7 +154,7 @@ class HomeController extends Controller
         }
 
         // not used but needed for reader
-        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
+        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, HISTORY_SUBTYPE_SPECIFIC, LESSON_TYPE_READER, 1);
 
         $options['languageDetails'] = Site::getLanguage();
         $options['autofocus'] = false;
@@ -265,161 +271,6 @@ class HomeController extends Controller
                 $parms['orderBy'] = Auth::check() ? 'id DESC' : 'id ASC';
                 $options['aotd'] = Article::getFirst($parms);
             }
-
-            //
-            // get the todo list of daily exercises
-            //
-            // TODO: FIX because it's all hardcoded
-            if ($languageFlag == LANGUAGE_ES && !isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
-            {
-                //
-                // figure out the daily to do stuff that hasn't been done yet
-                //
-
-                // count of daily activities
-                $todo = null;
-                $readArticles = 0;
-                $articleId = null;
-                $articleTitle = null;
-                $coursesTaken = 0;
-                $flashcardsPracticeTextNewest = 0;
-                $flashcardsPracticeTextAttempts = 0;
-
-                $flashcardsDictionaryNewest = 0;
-                $flashcardsDictionaryRandom = 0;
-                $flashcardsDictionaryAttempts = 0;
-
-                // get history so we can see what has been done today
-                $history = History::getToday();
-
-                if (isset($history))
-                {
-                    foreach($history as $record)
-                    {
-                        if ($record->type_flag == HISTORY_TYPE_ARTICLE && $record->subtype_flag == LESSON_TYPE_READER)
-                        {
-                            // an Article has already been read today
-                            $readArticles++;
-
-                            // get the info for the first article
-                            if ($readArticles === 1)
-                            {
-                                $articleId = $record->program_id;
-                                $articleTitle = $record->program_name;
-                            }
-                        }
-                        elseif ($record->type_flag == HISTORY_TYPE_SNIPPETS && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
-                        {
-                            // Latest Practice Text
-                            if ($record->route == 'flashcards-newest')
-                                $flashcardsPracticeTextNewest++;
-                            else if ($record->route == 'flashcards-attempts')
-                                $flashcardsPracticeTextAttempts++;
-                        }
-                        elseif ($record->type_flag == HISTORY_TYPE_DICTIONARY && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
-                        {
-                            // Latest Dictionary Words
-                            if ($record->route == 'dictionary-newest')
-                                $flashcardsDictionaryNewest++;
-                            if ($record->route == 'review-random-words')
-                                $flashcardsDictionaryRandom++;
-                            if ($record->route == 'dictionary-attempts')
-                                $flashcardsDictionaryAttempts++;
-                        }
-                        elseif ($record->type_flag == HISTORY_TYPE_LESSON &&
-                               ($record->subtype_flag == LESSON_TYPE_QUIZ_MC || $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS))
-                        {
-                            $coursesTaken++;
-                        }
-                    }
-
-                }
-
-                $iconText = 'file-text';
-                $iconFlashcards = 'lightning';
-                $iconCourses = 'book';
-                $count = 20;
-                $iconDone = 'check-circle';
-                $icon = '';
-                $done = false;
-
-                //
-                // Articles
-                //
-                $icon = ($readArticles > 0) ? $iconDone : $iconText;
-                $done = ($readArticles > 0);
-                if ($readArticles > 0)
-                {
-                    // article has already been read, use it's info
-                    $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $articleTitle, 'linkUrl' => "/articles/read/$articleId"];
-                }
-                else
-                {
-                    // no article read, grab one
-                    //todo: plug in stats and get LEAST READ article for the user
-                    $article = Article::getRandom();
-                    if (isset($article))
-                    {
-                        $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/read/' . $article->id];
-                    }
-                }
-
-                //
-                // Lessons
-                //
-                $ids = [1329, 1303, 1330, 1340, 1273];
-                $ix = DateTimeEx::getIndexByDay($ids);
-                $id = $ids[$ix];
-                $record = Lesson::getById($id);
-                $title = isset($record) ? $record->title : 'Article Not Set';
-                $action = ($id == 1330) ? 1 : 2;
-                $url = "/lessons/review/$id/$action/20";
-                $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
-                $done = ($coursesTaken > 0);
-                $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
-
-
-                //
-                // Practice Text
-                //
-                $icon = ($flashcardsPracticeTextNewest > 0) ? $iconDone : $iconFlashcards;
-                $done = ($flashcardsPracticeTextNewest > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc"];
-
-                $icon = ($flashcardsPracticeTextAttempts > 0) ? $iconDone : $iconFlashcards;
-                $done = ($flashcardsPracticeTextAttempts > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
-
-                //
-                // Dictionary
-                //
-                $icon = ($flashcardsDictionaryNewest > 0) ? $iconDone : $iconFlashcards;
-                $done = ($flashcardsDictionaryNewest > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest?action=flashcards&count=$count"];
-
-                $icon = ($flashcardsDictionaryRandom > 0) ? $iconDone : $iconFlashcards;
-                $done = ($flashcardsDictionaryRandom > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words?action=flashcards&count=$count"];
-
-                //todo: plug in
-                $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
-                $done = ($flashcardsDictionaryAttempts > 0);
-                $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
-
-                // flag if all are DONE or not
-                $done = true;
-                foreach($todo as $item)
-                {
-                    if (!$item['done'])
-                    {
-                        $done = false;
-                        break;
-                    }
-                }
-                $options['todoDone'] = $done;
-                $options['todo'] = $todo;
-            }
-
 		}
 		catch (\Exception $e)
 		{
@@ -438,6 +289,213 @@ class HomeController extends Controller
 
         return $options;
 	}
+
+    static public function getDailyExercisesNEW()
+    {
+        $parms = Exercise::getDailyExercises();
+
+        return $parms;
+    }
+
+    static public function getDailyExercises()
+    {
+        $parms = [];
+
+        //
+        // get the todo list of daily exercises
+        //
+        // TODO: FIX because it's all hardcoded
+        $languageFlag = getLanguageId();
+
+        if ($languageFlag == LANGUAGE_ES && !isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
+        {
+            //
+            // figure out the daily to do stuff that hasn't been done yet
+            //
+            $exercises = Exercise::getUserList();
+
+            // count of daily activities
+            $todo = null;
+            $readArticles = 0;
+            $articleId = null;
+            $articleTitle = null;
+            $coursesTaken = 0;
+
+            // practice text
+            $flashcardsPracticeTextNewest = 0;
+            $flashcardsPracticeTextAttempts = 0;
+
+            // specific favorites lists
+            $flashcardsFavoritesListId1 = 69;
+            $flashcardsFavoritesList1 = 0;
+            $flashcardsFavoritesListId2 = 68;
+            $flashcardsFavoritesList2 = 0;
+            $flashcardsFavoritesListId3 = 62;
+            $flashcardsFavoritesList3 = 0;
+
+            $flashcardsDictionaryNewest = 0;
+            $flashcardsDictionaryRandom = 0;
+            $flashcardsDictionaryAttempts = 0;
+
+            // get history so we can see what has been done today
+            $histories = History::getToday();
+
+            if (isset($histories))
+            {
+                foreach($histories as $record)
+                {
+                    if ($record->type_flag == HISTORY_TYPE_ARTICLE && $record->subtype_flag == LESSON_TYPE_READER)
+                    {
+                        // an Article has already been read today
+                        $readArticles++;
+
+                        // get the info for the first article
+                        if ($readArticles === 1)
+                        {
+                            $articleId = $record->program_id;
+                            $articleTitle = $record->program_name;
+                        }
+                    }
+                    elseif ($record->type_flag == HISTORY_TYPE_SNIPPETS && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
+                    {
+                        // Latest Practice Text
+                        if ($record->route == 'flashcards-newest')
+                            $flashcardsPracticeTextNewest++;
+                        else if ($record->route == 'flashcards-attempts')
+                            $flashcardsPracticeTextAttempts++;
+                    }
+                    elseif ($record->type_flag == HISTORY_TYPE_DICTIONARY && $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS)
+                    {
+                        if ($record->route == 'dictionary-newest')  // Latest Dictionary Words
+                            $flashcardsDictionaryNewest++;
+                        else if ($record->route == 'review-random-words')
+                            $flashcardsDictionaryRandom++;
+                        else if ($record->route == 'dictionary-attempts')
+                            $flashcardsDictionaryAttempts++;
+                        else if ($record->route == 'favorites-review')
+                        {
+                            $id = intval($record->program_id);
+
+                            if ($id === $flashcardsFavoritesListId1)
+                                $flashcardsFavoritesList1++;
+                            else if ($id === $flashcardsFavoritesListId2)
+                                $flashcardsFavoritesList2++;
+                            else if ($id === $flashcardsFavoritesListId3)
+                                $flashcardsFavoritesList3++;
+                        }
+                    }
+                    elseif ($record->type_flag == HISTORY_TYPE_LESSON &&
+                           ($record->subtype_flag == LESSON_TYPE_QUIZ_MC || $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS))
+                    {
+                        $coursesTaken++;
+                    }
+                }
+
+            }
+
+            $iconText = 'file-text';
+            $iconFlashcards = 'lightning';
+            $iconCourses = 'book';
+            $count = 20;
+            $iconDone = 'check-circle';
+            $icon = '';
+            $done = false;
+
+            //
+            // Articles
+            //
+            $icon = ($readArticles > 0) ? $iconDone : $iconText;
+            $done = ($readArticles > 0);
+            if ($readArticles > 0)
+            {
+                // article has already been read, use it's info
+                $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $articleTitle, 'linkUrl' => "/articles/read/$articleId"];
+            }
+            else
+            {
+                // no article read, grab one
+                //todo: plug in stats and get LEAST READ article for the user
+                $article = Article::getRandom();
+                if (isset($article))
+                {
+                    $todo[] = ['done' => $done, 'action' => 'Read Article', 'icon' => $icon, 'linkTitle' => $article->title, 'linkUrl' => '/articles/read/' . $article->id];
+                }
+            }
+
+            //
+            // Lessons
+            //
+            $ids = [1329, 1303, 1330, 1340, 1273];
+            $ix = DateTimeEx::getIndexByDay($ids);
+            $id = $ids[$ix];
+            $record = Lesson::getById($id);
+            $title = isset($record) ? $record->title : 'Article Not Set';
+            $action = ($id == 1330) ? 1 : 2;
+            $url = "/lessons/review/$id/$action/20";
+            $icon = ($coursesTaken > 0) ? $iconDone : $iconCourses;
+            $done = ($coursesTaken > 0);
+            $todo[] = ['done' => $done, 'action' => 'Lesson Exercise', 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
+
+            //
+            // Practice Text
+            //
+            $icon = ($flashcardsPracticeTextNewest > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsPracticeTextNewest > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Practice Text', 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc"];
+
+            $icon = ($flashcardsPracticeTextAttempts > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsPracticeTextAttempts > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
+
+            //
+            // Favorites Lists
+            //
+            $icon = ($flashcardsFavoritesList1 > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsFavoritesList1 > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon,
+                'linkTitle' => 'Favorites List - Practice Daily', 'linkUrl' => "/definitions/favorites-review?tagId=$flashcardsFavoritesListId1&action=flashcards&count=20&order=desc"];
+
+            $icon = ($flashcardsFavoritesList2 > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsFavoritesList2 > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon,
+                'linkTitle' => 'Favorites List - LE LO', 'linkUrl' => "/definitions/favorites-review?tagId=$flashcardsFavoritesListId2&action=flashcards&count=20&order=desc"];
+
+            $icon = ($flashcardsFavoritesList3 > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsFavoritesList3 > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon,
+                'linkTitle' => 'Favorites List - MEMORIZAR', 'linkUrl' => "/definitions/favorites-review?tagId=$flashcardsFavoritesListId3&action=flashcards&count=20&order=desc"];
+
+            //
+            // Dictionary
+            //
+            $icon = ($flashcardsDictionaryNewest > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsDictionaryNewest > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Newest Dictionary Words', 'linkUrl' => "/daily/dictionary-newest?action=flashcards&count=$count"];
+
+            $icon = ($flashcardsDictionaryRandom > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsDictionaryRandom > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Random Dictionary Words', 'linkUrl' => "/definitions/review-random-words?action=flashcards&count=$count"];
+
+            $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
+            $done = ($flashcardsDictionaryAttempts > 0);
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
+
+            // flag if all are DONE or not
+            $done = true;
+            foreach($todo as $item)
+            {
+                if (!$item['done'])
+                {
+                    $done = false;
+                    break;
+                }
+            }
+            $parms['todoDone'] = $done;
+            $parms['todo'] = $todo;
+        }
+
+        return $parms;
+    }
 
 	public function about(Request $request)
 	{

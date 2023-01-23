@@ -1447,13 +1447,14 @@ function makeParm(key, value, first = false)
     return rc;
 }
 
-function addHistoryRecord(historyPath, programName, programId, programType, programSubType, sessionName, sessionId, count, route, score = 0, seconds = 0, extra = 0)
+function addHistoryRecord(historyPath, programName, programId, programType, programSubType, programAction, sessionName, sessionId, count, route, score = 0, seconds = 0, extra = 0)
 {
     var parms =
           makeParm('programName', programName, /* first = */ true)
         + makeParm('programId', programId)
         + makeParm('programType', programType)
         + makeParm('programSubType', programSubType)
+        + makeParm('programAction', programAction)
         + makeParm('sessionName', sessionName)
         + makeParm('sessionId', sessionId)
         + makeParm('route', route)
@@ -1464,7 +1465,7 @@ function addHistoryRecord(historyPath, programName, programId, programType, prog
 
     // encodeURI(url.replace(/[\W_]+/g, "-"));
 
-    // path looks like: https://domain.com?type=1&programName=Course Name&programId=1&programType=10&programSubType=30&sessionName=Fun Lesson&sessionId=1&count=15
+    // path looks like: https://domain.com?type=1&programName=Course Name&programId=1&programType=10&programSubType=30&programAction=60&sessionName=Fun Lesson&sessionId=1&count=15
     var path = historyPath + parms;
 
     console.log('addHistoryRecord: ' + path);

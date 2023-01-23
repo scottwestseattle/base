@@ -122,8 +122,8 @@
         @if (isAdmin() || \App\Site::site()->hasOption('dictionary'))
 	    	<li class="nav-item"><a class="nav-link" href="{{lurl('dictionary')}}">{{__('proj.Dictionary')}}</a></li>
 		@endif
-        @if (isAdmin() || \App\Site::site()->hasOption('lists'))
-		    <li class="nav-item"><a class="nav-link" href="{{lurl('favorites')}}">{{trans_choice('ui.List', 2)}}</a></li>
+        @if (isAdmin() || \App\Site::site()->hasOption('exercises'))
+		    <li class="nav-item"><a class="nav-link" href="{{lurl('exercises/choose')}}">{{trans_choice('proj.Exercise', 2)}}</a></li>
         @endif
         @if (isAdmin() || \App\Site::site()->hasOption('courses'))
     		<li class="nav-item"><a class="nav-link" href="{{lurl('courses')}}">{{trans_choice('proj.Course', 2)}}</a></li>
@@ -169,6 +169,15 @@
 						</svg>
 					</div>
 					<div class="middle ml-1">{{trans_choice('ui.Event', 2)}}</div>
+				</a>
+
+				<a class="dropdown-item" href="{{lurl('exercises')}}">
+					<div class="middle">
+						<svg class="float-left bi mt-1" width="24" height="24" fill="currentColor" >
+							<use xlink:href="/img/bootstrap-icons.svg#calendar3" />
+						</svg>
+					</div>
+					<div class="middle ml-1">{{trans_choice('proj.Exercise', 2)}}</div>
 				</a>
 
 				<a class="dropdown-item" href="{{lurl('history')}}">

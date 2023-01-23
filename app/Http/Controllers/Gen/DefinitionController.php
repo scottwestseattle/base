@@ -922,7 +922,7 @@ class DefinitionController extends Controller
         $options['favoriteLists'] = Definition::getUserFavoriteLists();
 
         // not used but needed for reader
-        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, 1);
+        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, HISTORY_SUBTYPE_SPECIFIC, LESSON_TYPE_READER, 1);
 
         // set focus on search box
         $options['autofocus'] = true;
@@ -1409,9 +1409,9 @@ class DefinitionController extends Controller
 		}
 
         $count = count($qna);
-        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, History::getReviewTypeInt($reviewType), $count, ['route' => crackUri(2)]);
-
-        //dump($settings);
+        $parms = crackParms();
+        $parms['route'] = crackUri(2);
+        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, $parms['order'], History::getReviewTypeInt($reviewType), $count, $parms);
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,
@@ -1455,10 +1455,10 @@ class DefinitionController extends Controller
         $parms['languageId'] = $siteLanguage;
         $parms['languageFlagCondition'] = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
         $parms['records'] = Definition::getUserFavorites($parms);
-        $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['historyType'] = HISTORY_TYPE_FAVORITES;
 
-        $record= $parms['records'][0];
-        $parms['title'] = (empty($parms['tagId']) || empty($record->tag_name)) ? 'Review All' : $record->tag_name;
+        $record = isset($parms['records'][0]) ? $parms['records'][0] : null;
+        $parms['title'] = (empty($parms['tagId']) || !isset($record->tag_name)) ? 'Review All' : $record->tag_name;
 
         $action = isset($parms['action']) ? alpha($parms['action']) : ''; // default to blank
 
@@ -1495,7 +1495,11 @@ class DefinitionController extends Controller
 		$settings = Quiz::getSettings($parms['action']);
 		$title = trans('proj.:count ' . $parms['title'], ['count' => count($parms['records'])]);
         $count = count($qna);
-        $history = History::getArray($title, 0, $parms['historyType'], History::getReviewType($parms['action']), $count, ['route' => crackUri(2)]);
+        $tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
+        $parms['route'] = crackUri(2);
+        $history = History::getArray($title, $tagId, $parms['historyType'], $parms['source'], History::getReviewType($parms['action']), $count, $parms);
+
+        //dump($parms);
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,
@@ -1539,6 +1543,7 @@ class DefinitionController extends Controller
         $parms['records'] = Definition::getNewest($parms['count'], /* $random = */ true);
         $parms['title'] = 'Newest Words';
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['source'] = HISTORY_SUBTYPE_EXERCISE_NEWEST;
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1609,6 +1614,7 @@ class DefinitionController extends Controller
         $parms['records'] = Definition::getReview($parms);
         $parms['title'] = __('proj.Least Viewed Dictionary Definitions');
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['source'] = HISTORY_SUBTYPE_EXERCISE_LEAST_USED;
 
 		return $this->doList($parms);
     }
@@ -1710,7 +1716,7 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
-        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, LESSON_TYPE_READER, count($lines['text']));
+        $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, $parms['source'], LESSON_TYPE_READER, count($lines['text']));
 
     	return view('shared.reader', [
     	    'lines' => $lines,
@@ -1791,7 +1797,8 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
-        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, LESSON_TYPE_READER, count($lines['text']));
+        $parms = crackParms();
+        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, $parms['source'], LESSON_TYPE_READER, count($lines['text']), $parms);
 
     	return view('shared.reader', [
     	    'lines' => $lines,
@@ -1830,7 +1837,8 @@ class DefinitionController extends Controller
             'readingTime' => Lang::get('proj.Reading Time'),
         ];
 
-        $history = History::getArray($parms['title'], 0, HISTORY_TYPE_DICTIONARY, LESSON_TYPE_READER, count($lines['text']), ['route' => crackUri(2)]);
+        $parms['route'] = crackUri(2);
+        $history = History::getArray($parms['title'], 0, HISTORY_TYPE_DICTIONARY, LESSON_TYPE_READER, count($lines['text']), $parms);
 
     	return view('shared.reader', [
     	    'lines' => $lines,

@@ -29,6 +29,8 @@
                 Program Id: {{$record->program_id}},
                 Type: {{$record->type_flag}},
                 Sub: {{$record->subtype_flag}},
+                Action: {{$record->action_flag}},
+                Source: {{$record->source_flag}},
                 Route: {{$record->route}},
                 Session: {{$record->session_name}},
                 Session Id: ({{$record->session_id}})

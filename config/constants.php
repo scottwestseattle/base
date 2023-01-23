@@ -157,8 +157,52 @@ define('HISTORY_TYPE_BOOK',         30);
 define('HISTORY_TYPE_LESSON',       40);
 define('HISTORY_TYPE_EXERCISE',     50);
 define('HISTORY_TYPE_DICTIONARY',   60);
+define('HISTORY_TYPE_DICTIONARY_VERBS', 61);
 define('HISTORY_TYPE_SNIPPETS',     70);
 define('HISTORY_TYPE_OTHER',        100);
+
+//
+// Subtype is how exercises are grouped/ordered/accessed
+//
+// non-scheduled reads/quizes/flashcards of article/word/snippet/lesson exercise/fav lists
+define('HISTORY_SUBTYPE_NOTSET',          -1);
+define('HISTORY_SUBTYPE_NOTUSED',         0);
+define('HISTORY_SUBTYPE_OTD',             10); // article/lesson exercise/fav list of the day
+define('HISTORY_SUBTYPE_LEAST_USED',      20); // least practiced article/word/snippet/lesson exercise
+define('HISTORY_SUBTYPE_RANDOM',          30); // random article/words/snippets/lesson exercise/fav lists
+define('HISTORY_SUBTYPE_NEWEST',          40); // newest article/words/snippets/lesson exercise/fav lists
+define('HISTORY_SUBTYPE_MOST_COMMON',     50); // most common dictionary words such as "Top 20 Most Used Words"
+define('HISTORY_SUBTYPE_SPECIFIC',        60); // specific article, fav list, lesson exercise
+// scheduled exercises
+define('HISTORY_SUBTYPE_EXERCISE_OTD',          100); // scheduled exercise of the day
+define('HISTORY_SUBTYPE_EXERCISE_LEAST_USED',   110); // scheduled exercise: least practiced article/word/snippet/lesson exercise
+define('HISTORY_SUBTYPE_EXERCISE_RANDOM',       120); // scheduled exercise: random article/word/snippet/lesson exercise/fav lists
+define('HISTORY_SUBTYPE_EXERCISE_NEWEST',       130); // scheduled exercise: newest article/word/snippet/lesson exercise/fav lists
+define('HISTORY_SUBTYPE_EXERCISE_MOST_COMMON',  140); // scheduled exercise: most common dictionary words such as "Top 20 Most Used Words"
+define('HISTORY_SUBTYPE_EXERCISE_SPECIFIC',     150); // scheduled exercise: specific article, fav list, lesson exercise
+
+// NOT USED: remove
+define('HISTORY_SOURCE_NOTSET',          -1);
+define('HISTORY_SOURCE_NOTUSED',         0);
+define('HISTORY_SOURCE_SCHEDULED',      10);
+
+// Frequency
+define('FREQUENCY_NOTSET',      -1);
+define('FREQUENCY_NOTUSED',     0);
+define('FREQUENCY_DAILY',       10);
+define('FREQUENCY_WEEKLY',      20);
+define('FREQUENCY_BIWEEKLY',    30);
+define('FREQUENCY_MONTHLY',     40);
+
+// Content Level
+define('LEVEL_NOTSET',  -1);
+define('LEVEL_NOTUSED', 0);
+define('LEVEL_A1',      10);
+define('LEVEL_A2',      20);
+define('LEVEL_B1',      30);
+define('LEVEL_B2',      40);
+define('LEVEL_C1',      50);
+define('LEVEL_C2',      60);
 
 //
 // Lesson/Content Type also used for History subtype_flag

@@ -745,7 +745,6 @@ Route::group(['prefix' => 'history'], function () {
 
 	// add
 	Route::get('/add', [HistoryController::class, 'add']);
-	Route::get('/add-public0/{programName}/{programId}/{sessionName}/{sessionId}/{seconds}', [HistoryController::class, 'addPublic']);
 	Route::get('/add-public/', [HistoryController::class, 'addPublic']);
 
 	Route::post('/create', [HistoryController::class, 'create']);
@@ -799,4 +798,39 @@ Route::group(['prefix' => 'stats'], function () {
 	// undelete
 	Route::get('/deleted', [StatController::class, 'deleted']);
 	Route::get('/undelete/{id}', [StatController::class, 'undelete']);
+});
+
+// GENERATED for Exercise model
+use App\Http\Controllers\Gen\ExerciseController;
+
+// Exercises
+Route::group(['prefix' => 'exercises'], function () {
+	Route::get('/', [ExerciseController::class, 'index']);
+	Route::get('/admin', [ExerciseController::class, 'admin']);
+	Route::get('/index', [ExerciseController::class, 'index']);
+
+	// view
+	Route::get('/view/{permalink}', [ExerciseController::class, 'permalink']);
+	Route::get('/show/{exercise}', [ExerciseController::class, 'view']);
+
+	// add - for admin to add exercises to be chosen by users
+	Route::get('/add', [ExerciseController::class, 'add']);
+	Route::post('/create', [ExerciseController::class, 'create']);
+
+	// edit - for admin to update individual exercises
+	Route::get('/edit/{exercise}', [ExerciseController::class, 'edit']);
+	Route::post('/update/{exercise}', [ExerciseController::class, 'update']);
+
+	// for user's to choose, set, and adjust their list
+	Route::get('/choose', [ExerciseController::class, 'choose']);
+	Route::post('/set', [ExerciseController::class, 'set']);
+
+	// delete
+	Route::get('/confirmdelete/{exercise}', [ExerciseController::class, 'confirmDelete']);
+	Route::post('/delete/{exercise}', [ExerciseController::class, 'delete']);
+	Route::get('/delete/{exercise}', [ExerciseController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [ExerciseController::class, 'deleted']);
+	Route::get('/undelete/{id}', [ExerciseController::class, 'undelete']);
 });

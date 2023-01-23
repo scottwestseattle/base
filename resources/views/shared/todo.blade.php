@@ -1,4 +1,4 @@
-@if (isset($options['todo']))
+@if (isset($options['todo']) && count($options['todo']) > 0)
 @php
     $bgActive = App\DateTimeEx::getDayColor();
     $bgActiveLight = App\DateTimeEx::getDayColorLight($bgActive);

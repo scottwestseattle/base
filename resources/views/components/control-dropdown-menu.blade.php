@@ -18,9 +18,9 @@
 	@endif
 
 	@if (isset($onchange))
-		<select name="{{$field_name}}" id="{{$field_name}}" class="{{$select_class}}" onchange="{{$onchange}}">
+		<select name="{{$field_name}}" id="{{$field_name}}" class="form-control {{$select_class}}" onchange="{{$onchange}}">
 	@else
-		<select name="{{$field_name}}" id="{{$field_name}}" class="{{$select_class}}" >
+		<select name="{{$field_name}}" id="{{$field_name}}" class="form-control {{$select_class}}" >
 	@endif
 
 	@if (isset($empty))

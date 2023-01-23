@@ -104,10 +104,11 @@ function quiz() {
     this.programId = 0;
     this.programType = 0;
     this.programSubType = 0;
+    this.programAction = 0;
     this.sessionName = 'not set';
     this.sessionId = 0;
     this.historyPath = 'not set';
-    this.historyRoute = 'not uset';
+    this.historyRoute = 'not set';
     this.touchPath = 'not set';
 
     this.showParameters = function()
@@ -362,6 +363,7 @@ function loadData()
         // for History updates
 		quiz.programType = container.data('programtype');
 		quiz.programSubType = container.data('programsubtype');
+		quiz.programAction = container.data('programaction');
 		quiz.programName = container.data('programname');
 		quiz.programId = container.data('programid');
 		quiz.sessionName = container.data('sessionname');
@@ -971,7 +973,7 @@ function touch(q, correct = false)
 
 function addHistory()
 {
-    addHistoryRecord(quiz.historyPath, quiz.programName, quiz.programId, quiz.programType, quiz.programSubType, quiz.sessionName, quiz.sessionId, max, quiz.historyRoute);
+    addHistoryRecord(quiz.historyPath, quiz.programName, quiz.programId, quiz.programType, quiz.programSubType, quiz.programAction, quiz.sessionName, quiz.sessionId, max, quiz.historyRoute);
 }
 
 function flip()

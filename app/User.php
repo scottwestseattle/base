@@ -146,6 +146,11 @@ class User extends Authenticatable
 		return $v;
 	}
 
+	static public function isAdminOrOwner($user_id)
+	{
+		return (isAdmin() || (Auth::check() && Auth::id() == $user_id));
+	}
+
 	static public function isOwner($user_id)
 	{
 		return (Auth::check() && Auth::id() == $user_id);

@@ -1100,7 +1100,7 @@ if (!function_exists('countLetters')) {
 }
 
 if (!function_exists('crackParms')) {
-    function crackParms($request, $defaults = null)
+    function crackParms($request = [], $defaults = null)
     {
         // Standardized Parms:
         // action: flashcards, list, quiz, read
@@ -1139,14 +1139,11 @@ if (!function_exists('crackParms')) {
         $parms['count'] = (isset($request['count'])) ? intval($request['count']) : (isset($defaults) && array_key_exists('count', $defaults) ? $defaults['count'] : $defaultListLimit);
         $parms['start'] = (isset($request['start'])) ? intval($request['start']) : 0;
         $parms['return'] = (isset($request['return'])) ? alphanum($request['return']) : (isset($defaults['return']) ? $defaults['return'] : referrer()['path']);
+        $parms['source'] = (isset($request['source'])) ? intval($request['source']) : (isset($defaults['source']) ? $defaults['source'] : HISTORY_SUBTYPE_SPECIFIC);
 
+        //
         // these are set ONLY if in the $request OR in the $defaults
-
-        if (isset($request['order']))
-            $parms['order'] = alphanum($request['order']);
-        else if (isset($defaults['order']))
-            $parms['order'] = $defaults['order'];
-
+        //
         if (isset($request['tagId']))
             $parms['tagId'] = intval($request['tagId']);
         else if (isset($defaults['tagId']))
@@ -1161,6 +1158,11 @@ if (!function_exists('crackParms')) {
             $parms['return'] = alphanum($request['return']);
         else if (isset($defaults['return']))
             $parms['return'] = $defaults['return'];
+
+        if (isset($request['order']))
+            $parms['order'] = intval($request['order']);
+        else if (isset($defaults['order']))
+            $parms['order'] = $defaults['order'];
 
         if (isset($request['orderBy']))
             $parms['orderBy'] = alphanum($request['orderBy']);

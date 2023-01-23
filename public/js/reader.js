@@ -395,6 +395,7 @@ function loadData()
 		deck.programId = container.data('programid');
 		deck.programType = container.data('programtype');
 		deck.programSubType = container.data('programsubtype');
+		deck.programAction = container.data('programaction');
 		deck.sessionName = container.data('sessionname');
 		deck.sessionId = container.data('sessionid');
 		deck.historyPath = container.data('historypath');
@@ -1443,5 +1444,5 @@ function getTimeDisplay(seconds)
 
 function addHistory()
 {
-    addHistoryRecord(deck.historyPath, deck.programName, deck.programId, deck.programType, deck.programSubType, deck.sessionName, deck.sessionId, max, deck.historyRoute);
+    addHistoryRecord(deck.historyPath, deck.programName, deck.programId, deck.programType, deck.programSubType, deck.programAction, deck.sessionName, deck.sessionId, max, deck.historyRoute);
 }
