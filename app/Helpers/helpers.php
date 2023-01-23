@@ -1160,7 +1160,7 @@ if (!function_exists('crackParms')) {
             $parms['return'] = $defaults['return'];
 
         if (isset($request['order']))
-            $parms['order'] = intval($request['order']);
+            $parms['order'] = alphanum($request['order']);
         else if (isset($defaults['order']))
             $parms['order'] = $defaults['order'];
 

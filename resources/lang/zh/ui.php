@@ -186,4 +186,6 @@ return [
 'Setting' => '设置',
 'User ID' => '用户ID',
 'Sort' => '要分类',
+'Paste' => '粘贴',
+'General Settings' => '一般设置',
 ];

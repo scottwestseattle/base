@@ -186,4 +186,6 @@ return [
 'Setting' => 'Configuración',
 'User ID' => 'ID de usuario',
 'Sort' => 'Ordenar',
+'Paste' => 'Pegar',
+'General Settings' => 'Configuración general',
 ];

@@ -320,20 +320,19 @@ class Exercise extends Model
                     }
 
                     $todo[] = ['done' => $done, 'action' => $exercise->title, 'icon' => $icon, 'linkTitle' => $name,
-                        'linkUrl' => '/articles/read/' . $id . "?source=$exercise->subtype_flag&order=$exercise->subtype_flag" ];
+                        'linkUrl' => '/articles/read/' . $id . "?source=$exercise->subtype_flag" ];
                 }
                 else if ($exercise->type_flag == HISTORY_TYPE_LESSON) // lesson exercise
                 {
                     $icon = $done ? $iconDone : $iconCourses;
 
-                    //if ($record->subtype_flag == LESSON_TYPE_QUIZ_MC || $record->subtype_flag == LESSON_TYPE_QUIZ_FLASHCARDS))
                     if ($exercise->subtype_flag == HISTORY_SUBTYPE_EXERCISE_OTD)
                     {
                         $ids = [1329, 1303, 1330, 1340, 1273];
                         $ix = DateTimeEx::getIndexByDay($ids);
                         $id = $ids[$ix];
                         $record = Lesson::getById($id);
-                        $title = isset($record) ? $record->title : 'Article Not Set';
+                        $title = isset($record) ? $record->title : 'Lesson Exercise Not Set';
                     }
                     else if ($exercise->subtype_flag == HISTORY_SUBTYPE_EXERCISE_RANDOM)
                     {
@@ -344,7 +343,7 @@ class Exercise extends Model
                     {
                         $action = ($record->isFlashcards()) ? 1 : 2;
                         $title = isset($record) ? $record->title : 'Article Not Set';
-                        $url = "/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag&order=$exercise->subtype_flag";
+                        $url = "/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag";
                         $todo[] = ['done' => $done, 'action' => $exercise->title, 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
                     }
                 }

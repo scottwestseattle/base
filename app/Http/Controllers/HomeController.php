@@ -98,7 +98,7 @@ class HomeController extends Controller
         //
         // get daily exercises
         //
-        $options = array_merge($options, self::getDailyExercisesNEW());
+        $options = array_merge($options, Exercise::getDailyExercises());
 
         //
         // get the snippets for the appropriate langauge
@@ -289,13 +289,6 @@ class HomeController extends Controller
 
         return $options;
 	}
-
-    static public function getDailyExercisesNEW()
-    {
-        $parms = Exercise::getDailyExercises();
-
-        return $parms;
-    }
 
     static public function getDailyExercises()
     {

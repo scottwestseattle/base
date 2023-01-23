@@ -26,7 +26,7 @@
                 <option value="{{HISTORY_TYPE_DICTIONARY_VERBS}}">Dictionary Verbs</option>
                 <option value="{{HISTORY_TYPE_SNIPPETS}}">Practice Text</option>
                 <option value="{{HISTORY_TYPE_FAVORITES}}">Favorites List</option>
-                <option value="{{HISTORY_TYPE_EXERCISE}}">Lesson Exercise</option>
+                <option value="{{HISTORY_TYPE_LESSON}}">Lesson Exercise</option>
             </select>
         </div>
 

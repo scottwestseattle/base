@@ -1,6 +1,6 @@
 <?php
 return [
-'Question' => 'Quesiton|Questions',
+'Question' => 'Question|Questions',
 'of' => 'of',
 'Correct' => 'Correct',
 'Select the correct answer' => 'Select the correct answer',
