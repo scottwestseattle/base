@@ -175,13 +175,13 @@ class History extends Model
 	    return $rc;
 	}
 
-	static public function getSubTypeInfo($subType)
+	static public function getMoreInfo($actionType)
 	{
 	    $name = 'not set';
 	    $action = 'not set';
 	    $actionInt = 0;
 
-	    switch($subType)
+	    switch($actionType)
 	    {
             case LESSON_TYPE_QUIZ_MC:
 	            $name = __('proj.Quiz');
@@ -213,9 +213,13 @@ class History extends Model
 	    $rc = 'not set';
 
 	    if (strlen($this->program_name) > 0)
+	    {
 	        $rc = $this->program_name;
+	    }
 	    else
+        {
 	        $rc = self::getTypeInfo($this->type_flag)['name'];
+	    }
 
 	    return $rc;
     }
@@ -232,10 +236,10 @@ class History extends Model
 
         if ($this->subtype_flag > 0)
         {
-            $subTypeInfo = self::getSubTypeInfo($this->subtype_flag);
-            $action = $subTypeInfo['action'];
-            $actionInt = $subTypeInfo['actionInt'];
-            $subTypeName = $subTypeInfo['name'];
+            $moreInfo = self::getMoreInfo($this->action_flag);
+            $action = $moreInfo['action'];
+            $actionInt = $moreInfo['actionInt'];
+            $actionName = $moreInfo['name'];
             if ($this->isType(HISTORY_TYPE_FAVORITES))
             {
                 // Regular favorites lists created by users
@@ -270,7 +274,7 @@ class History extends Model
         $rc = self::getTypeInfo($this->type_flag, $action);
         $rc['stats'] = $this->getStats();
         $rc['programName'] = $this->getProgramName();
-        $rc['subTypeName'] = $subTypeName;
+        $rc['actionName'] = $actionName;
 
         return $rc;
     }

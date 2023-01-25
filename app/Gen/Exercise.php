@@ -25,8 +25,14 @@ class Exercise extends Model
         HISTORY_TYPE_LESSON             => 'Lesson Exercise',
 	];
 
-	const _subtypeFlags = [
-        HISTORY_SUBTYPE_EXERCISE_OTD            => 'OTD',
+	const _subTypeFlags = [
+        HISTORY_SUBTYPE_OTD            => 'Of The Day',
+        HISTORY_SUBTYPE_RANDOM         => 'Random',
+        HISTORY_SUBTYPE_NEWEST         => 'Newest',
+        HISTORY_SUBTYPE_LEAST_USED     => 'Least Used',
+        HISTORY_SUBTYPE_MOST_COMMON    => 'Most Common',
+        HISTORY_SUBTYPE_SPECIFIC       => 'Specific',
+        HISTORY_SUBTYPE_EXERCISE_OTD            => 'Of The Day',
         HISTORY_SUBTYPE_EXERCISE_RANDOM         => 'Random',
         HISTORY_SUBTYPE_EXERCISE_NEWEST         => 'Newest',
         HISTORY_SUBTYPE_EXERCISE_LEAST_USED     => 'Least Used',
@@ -40,6 +46,42 @@ class Exercise extends Model
         LESSON_TYPE_OTHER           => 'Inherit',
 	];
 
+    static public function makeTitle($parms)
+    {
+        $title = isset($parms['title']) ? $parms['title'] : null;
+
+        if (empty($title))
+        {
+            $typeFlag = isset($parms['historyType']) ? $parms['historyType'] : null;
+            $subTypeFlag = isset($parms['source']) ? $parms['source'] : null;
+
+            if (isset($typeFlag) && isset($subTypeFlag))
+            {
+                $title = self::_typeFlags[$typeFlag];
+                if ($subTypeFlag == HISTORY_SUBTYPE_SPECIFIC ||
+                    $subTypeFlag == HISTORY_SUBTYPE_EXERCISE_SPECIFIC)
+                {
+                    // don't show this because it was just a general query
+                }
+                else
+                {
+                    // show type of query suchs as 'Random', 'Newest', 'Least Used'
+                    $title .= ' - ' . self::_subTypeFlags[$subTypeFlag];
+                }
+            }
+            else
+            {
+                $title = 'Title - ';
+                if (empty($typeFlag))
+                    $title .= '(no type)';
+                if (empty($subTypeFlag))
+                    $title .= '(no subtype)';
+            }
+        }
+
+        return $title;
+    }
+
     static public function getTypes()
     {
         return self::_typeFlags;
@@ -47,7 +89,7 @@ class Exercise extends Model
 
     static public function getSubtypes()
     {
-        return self::_subtypeFlags;
+        return self::_subTypeFlags;
     }
 
     static public function getActions()
@@ -55,9 +97,14 @@ class Exercise extends Model
         return self::_actionFlags;
     }
 
-    static public function getTypeFlagName()
+    static public function getTypeFlagName($typeFlag)
     {
-        return self::_typeFlags[$this->type_flag];
+        return self::_typeFlags[$typeFlag];
+    }
+
+    static public function getSubTypeFlagName($subTypeFlag)
+    {
+        return self::_subTypeFlags[$subTypeFlag];
     }
 
     public function user()
@@ -226,6 +273,7 @@ class Exercise extends Model
             $icon = '';
             $doneCount = 0;
             $todo = [];
+            $title = 'Lesson Name Not Set';
 
             // get history so we can see what has been done today
             $histories = History::getToday();
@@ -233,6 +281,7 @@ class Exercise extends Model
             // get the list of daily exercises for the user
             $exercises = Exercise::getUserList();
 
+            $loops = 0;
             foreach($exercises as $exercise)
             {
                 $done = false;
@@ -240,6 +289,8 @@ class Exercise extends Model
                 $name = 'not set';
                 foreach($histories as $history)
                 {
+                    $loops++;
+
                     if ($history->type_flag == $exercise->type_flag
                         && $history->subtype_flag == $exercise->subtype_flag
                         && ($history->action_flag == $exercise->action_flag || $exercise->action_flag == LESSON_TYPE_OTHER)
@@ -287,9 +338,10 @@ class Exercise extends Model
                                 break;
                         }
 
-                        if ($done)
-                            break;
                     }
+
+                    if ($done)
+                        break;
                 }
 
                 if ($exercise->type_flag == HISTORY_TYPE_ARTICLE)
@@ -326,21 +378,11 @@ class Exercise extends Model
                 {
                     $icon = $done ? $iconDone : $iconCourses;
 
-                    if ($exercise->subtype_flag == HISTORY_SUBTYPE_EXERCISE_OTD)
-                    {
-                        $ids = [1329, 1303, 1330, 1340, 1273];
-                        $ix = DateTimeEx::getIndexByDay($ids);
-                        $id = $ids[$ix];
-                        $record = Lesson::getById($id);
-                        $title = isset($record) ? $record->title : 'Lesson Exercise Not Set';
-                    }
-                    else if ($exercise->subtype_flag == HISTORY_SUBTYPE_EXERCISE_RANDOM)
-                    {
-                        //$article = Article::getOtd();
-                    }
+                    $record = Lesson::getByHistorySubType($exercise->subtype_flag);
 
                     if (isset($record))
                     {
+                        $title = $record->title;
                         $action = ($record->isFlashcards()) ? 1 : 2;
                         $title = isset($record) ? $record->title : 'Article Not Set';
                         $url = "/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag";
@@ -416,12 +458,13 @@ class Exercise extends Model
                     $icon = $done ? $iconDone : $iconFlashcards;
 
                     $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title,
-                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=desc&source=$exercise->subtype_flag"];
+                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-asc&source=$exercise->subtype_flag"];
                 }
             }
 
             $parms['todoDone'] = ($doneCount == count($exercises));
             $parms['todo'] = $todo;
+            $parms['loops'] = $loops;
         }
 
         return $parms;

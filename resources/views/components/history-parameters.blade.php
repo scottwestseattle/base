@@ -12,7 +12,7 @@ $score = isset($history['score']) ? $history['score'] : 0;
 $seconds = isset($history['seconds']) ? $history['seconds'] : 0;
 $extra = isset($history['extra']) ? $history['extra'] : 0;
 $route = isset($history['route']) ? $history['route'] : null;
-$source = isset($history['source']) ? $history['source'] : HISTORY_SOURCE_NOTUSED;
+$source = isset($history['source']) ? $history['source'] : HISTORY_SUBTYPE_SPECIFIC;
 @endphp
 data-historypath="{{$historyPath}}"
 data-programname="{{$programName}}"

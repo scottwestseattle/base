@@ -438,7 +438,7 @@ class HomeController extends Controller
 
             $icon = ($flashcardsPracticeTextAttempts > 0) ? $iconDone : $iconFlashcards;
             $done = ($flashcardsPracticeTextAttempts > 0);
-            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Viewed Practice Text', 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc"];
 
             //
             // Favorites Lists
@@ -471,7 +471,7 @@ class HomeController extends Controller
 
             $icon = ($flashcardsDictionaryAttempts > 0) ? $iconDone : $iconFlashcards;
             $done = ($flashcardsDictionaryAttempts > 0);
-            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Your Least Viewed Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
+            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => 'Least Used Dictionary Words', 'linkUrl' => "/daily/dictionary-attempts"];
 
             // flag if all are DONE or not
             $done = true;

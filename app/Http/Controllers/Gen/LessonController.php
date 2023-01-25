@@ -777,7 +777,7 @@ class LessonController extends Controller
         $parms = crackParms($request);
         $parms['sessionName'] = $lesson->title;
         $parms['sessionId'] = $lesson->course->id;
-        $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $parms['order'], $lesson->type_flag, $count, $parms);
+        $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $parms['source'], $lesson->type_flag, $count, $parms);
 
         $returnPath = referrer()['path'];
 

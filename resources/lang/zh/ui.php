@@ -188,4 +188,6 @@ return [
 'Sort' => '要分类',
 'Paste' => '粘贴',
 'General Settings' => '一般设置',
+'Action' => '行动',
+'Select' => '选择',
 ];

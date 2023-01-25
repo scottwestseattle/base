@@ -16,6 +16,7 @@ use Log;
 
 use App\Entry;
 use App\Gen\Definition;
+use App\Gen\Exercise;
 use App\Gen\History;
 use App\Gen\Spanish;
 use App\Gen\Stat;
@@ -1411,7 +1412,7 @@ class DefinitionController extends Controller
         $count = count($qna);
         $parms = crackParms();
         $parms['route'] = crackUri(2);
-        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, $parms['order'], History::getReviewTypeInt($reviewType), $count, $parms);
+        $history = History::getArray($tag->name, $tag->id, HISTORY_TYPE_FAVORITES, $parms['source'], History::getReviewTypeInt($reviewType), $count, $parms);
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,
@@ -1456,7 +1457,6 @@ class DefinitionController extends Controller
         $parms['languageFlagCondition'] = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
         $parms['records'] = Definition::getUserFavorites($parms);
         $parms['historyType'] = HISTORY_TYPE_FAVORITES;
-
         $record = isset($parms['records'][0]) ? $parms['records'][0] : null;
         $parms['title'] = (empty($parms['tagId']) || !isset($record->tag_name)) ? 'Review All' : $record->tag_name;
 
@@ -1493,13 +1493,13 @@ class DefinitionController extends Controller
     {
 		$qna = Definition::makeQna($parms['records']); // splits text into questions and answers
 		$settings = Quiz::getSettings($parms['action']);
-		$title = trans('proj.:count ' . $parms['title'], ['count' => count($parms['records'])]);
+		$title = Exercise::makeTitle($parms);
         $count = count($qna);
         $tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
         $parms['route'] = crackUri(2);
         $history = History::getArray($title, $tagId, $parms['historyType'], $parms['source'], History::getReviewType($parms['action']), $count, $parms);
 
-        //dump($parms);
+        //dump($history);
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,
@@ -1517,8 +1517,10 @@ class DefinitionController extends Controller
 
     private function list($parms)
     {
+		$title = Exercise::makeTitle($parms);
+
 		return view(VIEWS . '.list', [
-		    'name' => $parms['title'], // todo: get from parms in the view
+		    'name' => $title, // todo: get from parms in the view
 			'records' => $parms['records'], // todo: get from parms in the view
 			'parms' => $parms,
 			'lists' => Definition::getUserFavoriteLists(),
@@ -1541,7 +1543,6 @@ class DefinitionController extends Controller
     {
    		$parms = crackParms($request, ['action' => 'list']);
         $parms['records'] = Definition::getNewest($parms['count'], /* $random = */ true);
-        $parms['title'] = 'Newest Words';
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
         $parms['source'] = HISTORY_SUBTYPE_EXERCISE_NEWEST;
 
@@ -1554,8 +1555,8 @@ class DefinitionController extends Controller
     {
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
         $parms['records'] = Definition::getRankedVerbs($parms['count']);
-        $parms['title'] = 'Most Common Verbs';
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['title'] = 'Most Common Verbs';
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1566,8 +1567,8 @@ class DefinitionController extends Controller
     {
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
 		$parms['records'] = Definition::getNewestVerbs($parms['count']);
-        $parms['title'] = 'Newest Verbs';
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['title'] = 'Newest Verbs';
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1578,7 +1579,6 @@ class DefinitionController extends Controller
     {
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
 		$parms['records'] = Definition::getRandomWords($parms['count']);
-        $parms['title'] = 'Random Words';
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
 
 		return ($parms['action'] == 'read')
@@ -1612,7 +1612,6 @@ class DefinitionController extends Controller
         $parms = crackParms($request, ['count' => 20, 'order' => 'attempts-asc', 'action' => 'flashcards']);
         $parms['type'] = DEFTYPE_DICTIONARY;
         $parms['records'] = Definition::getReview($parms);
-        $parms['title'] = __('proj.Least Viewed Dictionary Definitions');
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
         $parms['source'] = HISTORY_SUBTYPE_EXERCISE_LEAST_USED;
 
@@ -1624,7 +1623,6 @@ class DefinitionController extends Controller
         $parms = crackParms($request);
         $parms['type'] = DEFTYPE_SNIPPET;
         $parms['records'] = Definition::getReview($parms);
-        $parms['title'] = __('proj.Latest Practice Text');
         $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
 
 		return $this->doList($parms);
@@ -1838,7 +1836,7 @@ class DefinitionController extends Controller
         ];
 
         $parms['route'] = crackUri(2);
-        $history = History::getArray($parms['title'], 0, HISTORY_TYPE_DICTIONARY, LESSON_TYPE_READER, count($lines['text']), $parms);
+        $history = History::getArray($parms['title'], 0, HISTORY_TYPE_DICTIONARY, $parms['source'], LESSON_TYPE_READER, count($lines['text']), $parms);
 
     	return view('shared.reader', [
     	    'lines' => $lines,

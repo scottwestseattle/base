@@ -181,11 +181,6 @@ define('HISTORY_SUBTYPE_EXERCISE_NEWEST',       130); // scheduled exercise: new
 define('HISTORY_SUBTYPE_EXERCISE_MOST_COMMON',  140); // scheduled exercise: most common dictionary words such as "Top 20 Most Used Words"
 define('HISTORY_SUBTYPE_EXERCISE_SPECIFIC',     150); // scheduled exercise: specific article, fav list, lesson exercise
 
-// NOT USED: remove
-define('HISTORY_SOURCE_NOTSET',          -1);
-define('HISTORY_SOURCE_NOTUSED',         0);
-define('HISTORY_SOURCE_SCHEDULED',      10);
-
 // Frequency
 define('FREQUENCY_NOTSET',      -1);
 define('FREQUENCY_NOTUSED',     0);

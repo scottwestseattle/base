@@ -188,4 +188,6 @@ return [
 'Sort' => 'Sort',
 'Paste' => 'Paste',
 'General Settings' => 'General Settings',
+'Action' => 'Action',
+'Select' => 'Select',
 ];

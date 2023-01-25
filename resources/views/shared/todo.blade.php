@@ -11,7 +11,7 @@
  href="" onclick="event.preventDefault(); $('#showPracticeList').toggle();">@LANG('proj.Finished Daily Practice - Show')</a></div>
     @endif
     <div id="showPracticeList" class="mb-3 {{$done ? 'hidden' : ''}}">
-        <h3 class="mb-0">@LANG('proj.Daily Practice')</h3>
+        <h3 class="mb-0">@LANG('proj.Daily Practice')@if (false)<span class="title-count">({{$options['loops']}})</span>@endif</h3>
         <div class="mb-2 small-thin-text">{{App\DateTimeEx::getShortDateTime(null, 'M d, Y')}} (GMT {{App\DateTimeEx::getTimezoneOffset()}})</div>
         <table style="width:100%;">
             @foreach($options['todo'] as $record)

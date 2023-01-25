@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 
 use DB;
 use Auth;
+use App\DateTimeEx;
 use App\Gen\Course;
 use App\Quiz;
 use App\Status;
@@ -1210,4 +1211,35 @@ class Lesson extends Model
 
 		return $button;
 	}
+
+	static public function getByHistorySubType($subType)
+    {
+        $id = 0;
+        $ids = [18, 1272, 1273, 1323, 1324, 1329, 1303, 1330, 1333, 1339, 1340, 1342];
+
+        switch($subType)
+        {
+            case HISTORY_SUBTYPE_RANDOM:
+            case HISTORY_SUBTYPE_EXERCISE_RANDOM:
+                $count = count($ids) - 1;
+                if ($count >= 0)
+                {
+                    $ix = rand(0, $count);
+                    $id = $ids[$ix];
+                }
+                break;
+            case HISTORY_SUBTYPE_OTD:
+            case HISTORY_SUBTYPE_EXERCISE_OTD:
+                $ix = DateTimeEx::getIndexByDay($ids);
+                $id = $ids[$ix];
+                break;
+            default:
+                break;
+        }
+
+        $record = ($id > 0) ? $record = Lesson::getById($id) : null;
+
+        return $record;
+    }
+
 }
