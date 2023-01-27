@@ -14,6 +14,7 @@ use App\Gen\History;
 use App\Gen\Spanish;
 use App\Site;
 use Auth;
+use Config;
 use Cookie;
 use Lang;
 
@@ -31,6 +32,14 @@ class Controller extends BaseController
 			$locale = session('locale');
 			if (isset($locale))
 				App::setLocale($locale);
+
+    	$debug = session('debug');
+    	if (isset($debug))
+    	{
+            Config::set('app.debug', $debug);
+    	}
+        //$debug = Config::get('app.debug');
+	    //dump($debug);
 
 			return $next($request);
 		});	}

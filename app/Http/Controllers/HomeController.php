@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 use App;
 use Auth;
+use Config;
 use Cookie;
 use Log;
 
@@ -33,7 +34,7 @@ class HomeController extends Controller
 			'frontpage', 'about', 'contact',
 			'privacy', 'terms', 'sitemap',
 			'search', 'searchAjax',
-			'dashboard',
+			'dashboard', 'debug'
 	    ]);
 
         $this->middleware('auth')->only([
@@ -742,5 +743,15 @@ class HomeController extends Controller
     {
 		return view('home.test', [
 		]);
+	}
+
+    public function debug(Request $request)
+    {
+        // toggle debug
+    	$debug = session('debug');
+    	$debug = (isset($debug)) ? $debug : false;
+		session(['debug' => !$debug]);
+
+        return redirect('/');
 	}
 }

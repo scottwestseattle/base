@@ -16,9 +16,9 @@
         <tr class="mb-3" style="">
             <td>
                 @if ($info['hasUrl'])
-                    <div><a class="" href="{{$info['url']}}">{{$info['subTypeName']}}: {{$info['programName']}}</a> ({{$info['stats']}})</div>
+                    <div><a class="" href="{{$info['url']}}">{{$info['actionName']}}: {{$info['programName']}}</a> ({{$info['stats']}})</div>
                 @else
-                    <div>{{$info['subTypeName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
+                    <div>{{$info['actionName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
                 @endif
 
                 <div class="small-thin-text">Actual: {{$record->created_at}}</div>

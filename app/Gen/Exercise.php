@@ -462,8 +462,8 @@ class Exercise extends Model
                 }
             }
 
-            $parms['todoDone'] = ($doneCount == count($exercises));
-            $parms['todo'] = $todo;
+            $parms['doneCount'] = $doneCount;
+            $parms['records'] = $todo;
             $parms['loops'] = $loops;
         }
 

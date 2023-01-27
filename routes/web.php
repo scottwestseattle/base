@@ -73,6 +73,7 @@ Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
 Route::get('/set-session/', [Controller::class, 'setSession']);
 Route::get('/sitemap', [HomeController::class, 'sitemap']);
 Route::get('/test', [HomeController::class, 'test']);
+Route::get('/d-e-b-u-g', [HomeController::class, 'debug']);
 
 Route::get('/clear-cache', function() {
     Cache::flush();

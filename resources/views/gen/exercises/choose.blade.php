@@ -14,6 +14,7 @@
 			<button type="submit" name="update" class="mt-3 btn btn-primary">@LANG('ui.Save')</button>
 		</div>
 
+        @if (false)
         <h2 class="mt-3">@LANG('ui.General Settings')</h2>
 
         <div class="form-check">
@@ -36,6 +37,8 @@
         </div -->
 
         <hr/>
+        @endif
+
         <h2 class="mt-3">@LANG('proj.Select Exercises')</h2>
 
         @if (count($parms['templates']) > 0)

@@ -47,7 +47,7 @@
 		<div class="form-group">
 		@component('components.control-dropdown-menu', ['record' => $record, 'prefix' => 'Exercise',
 			'isAdmin' => isAdmin(),
-			'prompt' => __('proj.Action'),
+			'prompt' => __('ui.Action'),
 			'empty' => __('ui.Select Item'),
 			'options' => App\Gen\Exercise::getActions(),
 			'selected_option' => $record->action_flag,

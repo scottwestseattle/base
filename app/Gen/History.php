@@ -232,7 +232,7 @@ class History extends Model
 	public function getInfo()
 	{
         $action = '';
-        $subTypeName = '';
+        $actionName = '';
 
         if ($this->subtype_flag > 0)
         {

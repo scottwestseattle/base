@@ -4,6 +4,7 @@
     $counts = isset($history['counts']) ? $history['counts'] : [];
     $countDays = 0;
     $maxDays = isset($history['maxDays']) ? $history['maxDays'] : PHP_INT_MAX;
+    $debug = Config::get('app.debug');
 @endphp
 <div>
     <h1 class="mb-0">{{trans_choice('ui.History', 2)}}</h1>
@@ -39,7 +40,7 @@
                     @else
                         <div>{{$info['actionName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
                     @endif
-                    @if (true)
+                    @if ($debug)
                     <div class="small-thin-text">
                         <div>Id: {{$record->program_id}}, Count: {{$record->count}}, Flags: {{$record->type_flag}}/{{$record->subtype_flag}}/{{$record->action_flag}} </div>
                         @if (isset($record->route) && !empty($record->route))
