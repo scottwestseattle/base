@@ -53,7 +53,7 @@
         @endif
 
         @if ((isset($parms['favorites']) && count($parms['favorites']) > 0))
-        <h2 class="mt-3">@LANG('proj.Favorites Lists')</h2>
+        <h2 class="mt-3">{{trans_choice('proj.Favorites List', 2)}}</h2>
             @foreach($parms['favorites'] as $record)
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="favorites_{{$record->id}}" value="{{$record->id}}" {{isset($activeIds['favorite_' . $record->id]) ? 'checked' : ''}}>

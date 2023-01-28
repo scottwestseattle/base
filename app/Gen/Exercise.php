@@ -274,6 +274,10 @@ class Exercise extends Model
             $doneCount = 0;
             $todo = [];
             $title = 'Lesson Name Not Set';
+            $titleSnippets = __('proj.Practice Text');
+            $titleDictionary = __('proj.Dictionary');
+            $titleArticle = trans_choice('proj.Article', 1);
+            $titleFavorites = trans_choice('proj.Favorites List', 1);
 
             // get history so we can see what has been done today
             $histories = History::getToday();
@@ -371,7 +375,7 @@ class Exercise extends Model
                         }
                     }
 
-                    $todo[] = ['done' => $done, 'action' => $exercise->title, 'icon' => $icon, 'linkTitle' => $name,
+                    $todo[] = ['done' => $done, 'title' => $exercise->title, 'icon' => $icon, 'linkTitle' => $name,
                         'linkUrl' => '/articles/read/' . $id . "?source=$exercise->subtype_flag" ];
                 }
                 else if ($exercise->type_flag == HISTORY_TYPE_LESSON) // lesson exercise
@@ -380,13 +384,23 @@ class Exercise extends Model
 
                     $record = Lesson::getByHistorySubType($exercise->subtype_flag);
 
+                    $title = 'Lesson Title Not Set';
+                    $courseTitle = 'Course Title Not Set';
                     if (isset($record))
                     {
                         $title = $record->title;
                         $action = ($record->isFlashcards()) ? 1 : 2;
-                        $title = isset($record) ? $record->title : 'Article Not Set';
+
+                        if (isset($record))
+                        {
+                            if (isset($record->course))
+                                $courseTitle = $record->course->title;
+
+                            $title = $courseTitle . ': ' . $title;
+                        }
+
                         $url = "/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag";
-                        $todo[] = ['done' => $done, 'action' => $exercise->title, 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
+                        $todo[] = ['done' => $done, 'title' => $exercise->title, 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
                     }
                 }
                 elseif ($exercise->type_flag == HISTORY_TYPE_SNIPPETS)
@@ -400,10 +414,10 @@ class Exercise extends Model
                         case HISTORY_SUBTYPE_EXERCISE_RANDOM:
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_NEWEST:
-                            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc&source=$exercise->subtype_flag"];
+                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc&source=$exercise->subtype_flag"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_LEAST_USED:
-                            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc&source=$exercise->subtype_flag"];
+                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc&source=$exercise->subtype_flag"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_MOST_COMMON:
                             break;
@@ -419,13 +433,13 @@ class Exercise extends Model
                         case HISTORY_SUBTYPE_EXERCISE_OTD:
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_RANDOM:
-                            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/definitions/review-random-words?action=flashcards&count=$count"];
+                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/definitions/review-random-words?action=flashcards&count=$count"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_NEWEST:
-                            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/dictionary-newest?action=flashcards&count=$count"];
+                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/dictionary-newest?action=flashcards&count=$count"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_LEAST_USED:
-                            $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/dictionary-attempts"];
+                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/dictionary-attempts"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_MOST_COMMON:
                             break;
@@ -457,7 +471,7 @@ class Exercise extends Model
                 {
                     $icon = $done ? $iconDone : $iconFlashcards;
 
-                    $todo[] = ['done' => $done, 'action' => 'Flashcards', 'icon' => $icon, 'linkTitle' => $exercise->title,
+                    $todo[] = ['done' => $done, 'title' => $titleFavorites, 'icon' => $icon, 'linkTitle' => $exercise->title,
                         'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-asc&source=$exercise->subtype_flag"];
                 }
             }

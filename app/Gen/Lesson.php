@@ -1215,14 +1215,14 @@ class Lesson extends Model
 	static public function getByHistorySubType($subType)
     {
         $id = 0;
-        $ids = [18, 1272, 1273, 1323, 1324, 1329, 1303, 1330, 1333, 1339, 1340, 1342];
+        $ids = [18, 1272, 1273, 1323, 1324, 1329, 1303, 1330, 1333, 1340, 1342];
 
         switch($subType)
         {
             case HISTORY_SUBTYPE_RANDOM:
             case HISTORY_SUBTYPE_EXERCISE_RANDOM:
                 $count = count($ids) - 1;
-                if ($count >= 0)
+                if ($count > 0)
                 {
                     $ix = rand(0, $count);
                     $id = $ids[$ix];
