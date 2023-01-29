@@ -40,11 +40,23 @@
 
                 @endif
 
-                <div class="my-2" style="clear:both;">
-                    <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
+                <div style="clear:both;">
+                    <div class="my-2 float-left">
+                        <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
+                    </div>
+
+                    <div class="form-check m-2 pt-2 ml-3 float-left">
+                        <input class="form-check-input middle" type="checkbox" name="read_reverse" {{$record->hasOption(OPTION_READ_REVERSE) ? 'checked' : ''}}>
+                        <label class="form-check-label" for="read_reverse">Read Reverse</label>
+                    </div>
+
+                    <div class="form-check m-2 float-left pt-2">
+                        <input class="form-check-input" type="checkbox" name="read_random" {{$record->hasOption(OPTION_READ_RANDOM) ? 'checked' : ''}}>
+                        <label class="form-check-label" for="read_random"">Read Random</label>
+                    </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3" style="clear:both;">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a id="nav-link-tab1" class="nav-link active" href="#" onclick="setTab(event, 1);"><span class="nav-link-tab">@LANG('ui.Text')</span></a>
@@ -116,11 +128,14 @@
                     ])@endcomponent
                 @endif
 
+                @if (false)
+                <!-- moved to checkboxes -->
                 <div class="form-group">
                     <label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
                     <input type="text" name="options" class="form-control" value="{{$record->options}}" />
                     <p class='medium-thin-text'>Options: read-random;read-reverse;</p>
                 </div>
+                @endif
 
 			</div>
 

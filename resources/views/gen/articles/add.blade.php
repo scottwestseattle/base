@@ -64,11 +64,21 @@
                     <input type="text" id="source_link" name="source_link" placeholder="@LANG('proj.Source Link')" class="form-control" />
                 </div>
 
-			<div class="entry-description-div mb-3">
+			<div class="entry-description-div mb-2">
 				<textarea rows="3" id="description_short" name="description_short" class="form-control" placeholder="@LANG('ui.Summary')" onfocus="setFocus($(this), '#accent-chars')"></textarea>
 			</div>
 
-			<div class="mt-3 mb-3">
+            <div class="form-check">
+                <input class="form-check-input middle" type="checkbox" name="read_reverse" >
+                <label class="form-check-label" for="read_reverse">Read Reverse</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="read_random" >
+                <label class="form-check-label" for="read_random"">Read Random</label>
+            </div>
+
+			<div class="my-3">
 				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>
 			</div>
 
@@ -85,12 +95,6 @@
                     'select_class' => 'mt-1 mb-3',
                 ])@endcomponent
             @endif
-
-            <div class="form-group">
-                <label for="options" class="control-label">{{trans_choice('ui.Option', 2)}}:</label>
-                <input type="text" name="options" class="form-control" />
-                <p class='medium-thin-text'>Options: read-random;read-reverse;</p>
-            </div>
 
 			<div style="margin:20px 0;">
 				<button tabindex="-1" type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>

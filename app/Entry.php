@@ -12,6 +12,9 @@ use App\Status;
 use App\Tag;
 use DB;
 
+define('OPTION_READ_REVERSE', 'read-reverse');
+define('OPTION_READ_RANDOM', 'read-random');
+
 class Entry extends Model
 {
 	use SoftDeletes;

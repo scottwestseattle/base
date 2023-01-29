@@ -218,7 +218,12 @@ class ArticleController extends Controller
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
-		$options            = $request->options;
+
+        // get the options strings from the checkboxes
+        $options            = '';
+		$options            .= isset($request->read_reverse) ? OPTION_READ_REVERSE . ';' : '';
+		$options            .= isset($request->read_random) ? OPTION_READ_RANDOM . ';' : '';
+
    		$urlChanged = false;
 
         if (isAdmin())
@@ -315,6 +320,7 @@ class ArticleController extends Controller
     {
 		$record = $entry;
 		$prevTitle = $record->title;
+        $options = '';
 
 		$record->site_id 			= Site::getId();
 
@@ -326,7 +332,10 @@ class ArticleController extends Controller
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
 		$display_date       = $request->source_link;
-		$options            = $request->options;
+
+        // get the options strings from the checkboxes
+		$options            .= isset($request->read_reverse) ? OPTION_READ_REVERSE . ';' : '';
+		$options            .= isset($request->read_random) ? OPTION_READ_RANDOM . ';' : '';
 
         // brute force cleaning: remove any blank lines with spaces because they throw off the quizes and line based operations
         $description        = str_replace("\r\n \r\n", "\r\n\r\n", $description);
