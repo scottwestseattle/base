@@ -10,7 +10,7 @@
 @endphp
 @if ($allDone)
     <div class="mb-1 small-thin-text"><a type="button" class="btn btn-success btn-xs" style="border-radius: 10px; padding: 5px 8px;"
-        href="" onclick="event.preventDefault(); $('#showPracticeList').toggle();">@LANG('proj.Finished Daily Practice - Show')</a>
+        href="" onclick="event.preventDefault(); $('#showPracticeList').toggle();">@LANG('proj.Finished Daily Practice - Show') ({{$count}})</a>
     </div>
 @endif
 <div id="showPracticeList" class="mb-3 {{$allDone ? 'hidden' : ''}}">

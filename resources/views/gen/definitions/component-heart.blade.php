@@ -18,9 +18,10 @@
 
 	$id = isset($id) ? $id : 1;
     $status = isset($status) ? $status : ('status' . $id . '-' . $record->id . '');
+    $class = empty($class) ? 'ml-2' : $class;
 @endphp
 
-<div class="middle ml-2">
+<div class="middle {{$class}}">
     <div class="dropdown" >
         <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">
             <div class="glyphCustom-md glyphicon glyphicon-{{$heart}}"></div>

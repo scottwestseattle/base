@@ -16,19 +16,22 @@
     $score =    ($hideZeros && $score === 0)    ? '' : 'Score: ' . round($score * 100.0, 1) . '%';
     $views =    ($hideZeros && $views === 0)    ? '' : 'Views: ' . $views;
     $reads =    ($hideZeros && $reads === 0)    ? '' : 'Reads: ' . $reads;
+    $style = empty($style) ? 'clear:both;' : $style;
+    $div = true || isset($div) && $div;
 @endphp
 
-<div style="clear:both;" class="mt-2">
+@if ($div)
+<div style="{{$style}}" class="mt-2">
     <div class="small-thin-text steelblue">
+@endif
         @component('components.badge', ['class' => $class, 'text' => $attempts])@endcomponent
         @component('components.badge', ['class' => $class, 'text' => $score])@endcomponent
         @component('components.badge', ['class' => $class, 'text' => $views])@endcomponent
         @component('components.badge', ['class' => $class, 'text' => $reads])@endcomponent
-    </div>
-    <div class="small-thin-text steelblue" style="">
-        @component('components.badge', ['class' => $class, 'text' => $created_at])@endcomponent
         @component('components.badge', ['class' => $class, 'text' => $qna_at])@endcomponent
         @component('components.badge', ['class' => $class, 'text' => $viewed_at])@endcomponent
         @component('components.badge', ['class' => $class, 'text' => $read_at])@endcomponent
+@if ($div)
     </div>
 </div>
+@endif

@@ -60,22 +60,6 @@
         $isSnippet = App\Gen\Definition::isSnippetStatic($record);
         @endphp
         <tr id="row{{$record->id}}">
-            <td class="icon">
-                @component('gen.definitions.component-heart', [
-                    'record' => $record,
-                    'id' => $record->id,
-                    'lists' => $lists,
-                    'status' => 'status' . 2 . '-' . $record->id . '',
-                ])@endcomponent
-            </td>
-            <td class="icon">
-                <div class="ml-3">
-                    @if (isAdmin() || App\User::isOwner($record->user_id))
-                        <a href="/{{$isSnippet ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
-                    @endif
-                </div>
-            </td>
-
             <td style="width:100%;">
                 @if ($isSnippet)
                     <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title, $lengthLimit)}}</a>
@@ -97,7 +81,22 @@
                     </div>
                 @endif
 
-                @component('gen.definitions.component-stat-badges', ['record' => $record])@endcomponent
+                <div class="float-left">
+                @component('gen.definitions.component-heart', [
+                    'record' => $record,
+                    'id' => $record->id,
+                    'lists' => $lists,
+                    'status' => 'status' . 2 . '-' . $record->id . '',
+                    'class' => 'mt-1 mr-2',
+                ])@endcomponent
+                </div>
+                @if (isAdmin() || App\User::isOwner($record->user_id))
+                <div class="float-left mr-2 mt-1">
+                    <a href="/{{$isSnippet ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
+                </div>
+                @endif
+
+                @component('gen.definitions.component-stat-badges', ['record' => $record, 'div' => false, 'style' => 'float:left;'])@endcomponent
 
                 @if (isAdmin())
                     <div class="small-thin-text" style="">{{$record->updated_at}}</div>
