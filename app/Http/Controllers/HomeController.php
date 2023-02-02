@@ -298,10 +298,8 @@ class HomeController extends Controller
         //
         // get the todo list of daily exercises
         //
-        // TODO: FIX because it's all hardcoded
-        $languageFlag = getLanguageId();
 
-        if ($languageFlag == LANGUAGE_ES && !isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
+        if (Exercise::isEnabled())
         {
             //
             // figure out the daily to do stuff that hasn't been done yet

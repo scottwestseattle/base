@@ -491,7 +491,7 @@ class BookController extends Controller
         ];
         //dump($labels);
 
-        $history = History::getArray($title, $recordId, HISTORY_TYPE_BOOK, LESSON_TYPE_READER, count($lines));
+        $history = History::getArray($title, $recordId, HISTORY_TYPE_BOOK, HISTORY_SUBTYPE_SPECIFIC, LESSON_TYPE_READER, count($lines));
 
     	return view('shared.reader', [
     	    'lines' => $lines,

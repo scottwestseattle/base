@@ -1,4 +1,4 @@
-@if (isset($options['records']))
+@if (isset($options['records']) && count($options['records']) > 0)
 @php
     $bgActive = App\DateTimeEx::getDayColor();
     $bgActiveLight = App\DateTimeEx::getDayColorLight($bgActive);

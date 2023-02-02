@@ -2,10 +2,11 @@
 Newest practice text is OLD text
 
 ===== NEW DB Changes =====
-ALTER TABLE `histories` ADD `action_flag` TINYINT NOT NULL DEFAULT '0' AFTER `subtype_flag`;
-ALTER TABLE `histories` CHANGE `subtype_flag` `subtype_flag` SMALLINT(6) NOT NULL DEFAULT '0';
+update `tags` set language_flag = 1 where 1 and type_flag = 3 and language_flag = 0
 
 ===== Done =====
+ALTER TABLE `histories` ADD `action_flag` TINYINT NOT NULL DEFAULT '0' AFTER `subtype_flag`;
+ALTER TABLE `histories` CHANGE `subtype_flag` `subtype_flag` SMALLINT(6) NOT NULL DEFAULT '0';
 
 
 =====================================================================

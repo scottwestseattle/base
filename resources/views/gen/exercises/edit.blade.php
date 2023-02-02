@@ -57,6 +57,16 @@
 		])@endcomponent
 		</div>
 
+        @if (isset($languageOptions))
+            <div><labe>{{trans_choice('ui.Language', 1)}}:</label></div>
+            @component('components.control-dropdown-language', [
+                'options' => $languageOptions,
+                'selected_option' => $record->language_flag,
+                'field_name' => 'language_flag',
+                'select_class' => 'mt-1 mb-3',
+            ])@endcomponent
+        @endif
+
 		<div class="form-group">
 			<label for="url" class="control-label">@LANG('ui.URL'):</label>
 			<input type="text" name="url" value="{{$record->url}}" class="form-control" />

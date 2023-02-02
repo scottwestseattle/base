@@ -45,6 +45,7 @@ class ExerciseController extends Controller
 		try
 		{
 			$records = Exercise::select()
+			    ->where('language_flag', getLanguageId())
 				->orderBy('id', 'DESC')
 				->get();
 		}
@@ -65,6 +66,7 @@ class ExerciseController extends Controller
 		try
 		{
 			$records = Exercise::select()
+			    ->where('language_flag', getLanguageId())
 				->orderByRaw('user_id, type_flag, subtype_flag')
 				->get();
 		}
@@ -123,6 +125,7 @@ class ExerciseController extends Controller
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
+			'languageOptions' => getLanguageOptions(),
 			]);
     }
 
@@ -138,6 +141,7 @@ class ExerciseController extends Controller
         $record->type_flag = copyDirty($record->type_flag, $request->type_flag, $isDirty, $changes);
         $record->subtype_flag = copyDirty($record->subtype_flag, $request->subtype_flag, $isDirty, $changes);
         $record->action_flag = copyDirty($record->action_flag, $request->action_flag, $isDirty, $changes);
+        $record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
         //$record->template_flag = copyDirty($record->template_flag, isAdmin() ? 1 : 0, $isDirty, $changes);
 
 		if ($isDirty)
@@ -162,28 +166,37 @@ class ExerciseController extends Controller
 
     public function choose()
     {
-        $parms['templates'] = Exercise::getTemplateList();
-        $parms['favorites'] = Definition::getUserFavoriteLists();
-        $parms['lessons'] = null; //Lesson::getLessons($user->level());
-
-        // create a lookup table so we can check the current selected templates items
-        $ids = null;
-        $exercises = Exercise::getUserList();
-        foreach($exercises as $record)
+        $enabled = Exercise::isEnabled();
+        if ($enabled)
         {
-            if ($record->active_flag)
+            $parms['templates'] = Exercise::getTemplateList();
+            $parms['favorites'] = Definition::getUserFavoriteLists();
+            $parms['lessons'] = null; //Lesson::getLessons($user->level());
+            //dump($parms);
+
+            // create a lookup table so we can check the current selected templates items
+            $ids = null;
+            $exercises = Exercise::getUserList();
+            foreach($exercises as $record)
             {
-                if ($record->template_id > 0) // it's from a template
+                if ($record->active_flag)
                 {
-                    $ids['template_' . $record->template_id] = $record->template_id;
-                }
-                else // it's a specific exercise like a favorites list or a lesson exercise
-                {
-                    $ids['favorite_' . $record->program_id] = $record->program_id;
+                    if ($record->template_id > 0) // it's from a template
+                    {
+                        $ids['template_' . $record->template_id] = $record->template_id;
+                    }
+                    else // it's a specific exercise like a favorites list or a lesson exercise
+                    {
+                        $ids['favorite_' . $record->program_id] = $record->program_id;
+                    }
                 }
             }
+
+            $parms['activeIds'] = $ids;
+            //dump($parms);
         }
-        $parms['activeIds'] = $ids;
+
+        $parms['enabled'] = $enabled;
 
 		return view(VIEWS . '.choose', ['parms' => $parms]);
 	}
@@ -202,7 +215,9 @@ class ExerciseController extends Controller
         //
         $exercises = Exercise::getTemplateList();
 
+        //
         // loop through each possible exercise template and see if it has been checked
+        //
         foreach($exercises as $record)
         {
             $key = 'template_' . $record->id;

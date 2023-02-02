@@ -122,7 +122,7 @@
         @if (isAdmin() || \App\Site::site()->hasOption('dictionary'))
 	    	<li class="nav-item"><a class="nav-link" href="{{lurl('dictionary')}}">{{__('proj.Dictionary')}}</a></li>
 		@endif
-        @if (isAdmin() || \App\Site::site()->hasOption('exercises'))
+        @if (isAdmin() || \App\Gen\Exercise::isEnabled())
 		    <li class="nav-item"><a class="nav-link" href="{{lurl('exercises/choose')}}">{{trans_choice('proj.Exercise', 2)}}</a></li>
         @endif
         @if (isAdmin() || \App\Site::site()->hasOption('courses'))

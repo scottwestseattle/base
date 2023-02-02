@@ -1,12 +1,16 @@
 @extends('layouts.app')
 @section('title', __('proj.Choose Daily Practice Exercises'))
-@section('menu-submenu')@component('gen.exercises.menu-submenu', ['prefix' => 'exercises'])@endcomponent @endsection
 @section('content')
 @php
-    $userId = Auth::id();
-    $activeIds = $parms['activeIds'];
+    $enabled = $parms['enabled'];
+    if ($enabled)
+    {
+        $userId = Auth::id();
+        $activeIds = $parms['activeIds'];
+    }
 @endphp
 <div class="">
+@if ($enabled)
 	<h1 class="mb-1">@LANG('proj.Choose Daily Practice Exercises')</h1>
 	<form method="POST" action="/exercises/set">
 
@@ -82,5 +86,8 @@
 
 		{{ csrf_field() }}
 	</form>
+@else
+    <h1>@LANG('proj.No Exercises Available')</h1>
+@endif
 </div>
 @endsection

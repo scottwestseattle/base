@@ -82,6 +82,22 @@ class Exercise extends Model
         return $title;
     }
 
+    static public function isEnabled()
+    {
+        $option = null;
+        $languageFlag = getLanguageId();
+        switch($languageFlag)
+        {
+            case LANGUAGE_ES:
+                $option = 'exercises-es';
+                break;
+            default:
+                break;
+        }
+
+        return (!isAdmin() && Auth::check() && Site::hasOption($option));
+    }
+
     static public function getTypes()
     {
         return self::_typeFlags;
@@ -137,6 +153,7 @@ class Exercise extends Model
         {
             $records = Exercise::select()
    				->where('template_flag', true)
+   				->where('language_flag', getLanguageId())
    				->orderByRaw('type_flag, subtype_flag')
                 ->get();
 
@@ -144,7 +161,7 @@ class Exercise extends Model
         }
         catch (\Exception $e)
         {
-            dd($e);
+            //dd($e);
             logException(LOG_CLASS, $e->getMessage(), __('base.Error setting exercise'));
         }
 
@@ -158,6 +175,7 @@ class Exercise extends Model
             $records = Exercise::select()
    				->where('user_id', Auth::id())
    				->where('active_flag', true)
+   				->where('language_flag', getLanguageId())
    				->orderByRaw('type_flag, subtype_flag')
                 ->get();
 
@@ -165,7 +183,7 @@ class Exercise extends Model
         }
         catch (\Exception $e)
         {
-            dd($e);
+            //dd($e);
             logException(LOG_CLASS, $e->getMessage(), __('base.Error setting exercise'));
         }
 
@@ -226,6 +244,7 @@ class Exercise extends Model
                     $new->subtype_flag = HISTORY_SUBTYPE_EXERCISE_SPECIFIC;
                     $new->program_id = $id;
                     $new->template_flag = false;
+                    $new->language_flag = getLanguageId();
 
                     // all favorites lists are flashcards / lesson exercises actions are inherited
                     $new->action_flag = ($type_flag === HISTORY_TYPE_LESSON) ? LESSON_TYPE_OTHER : LESSON_TYPE_QUIZ_FLASHCARDS;
@@ -260,10 +279,7 @@ class Exercise extends Model
         //
         // get the todo list of daily exercises
         //
-        // TODO: FIX because it's all hardcoded
-        $languageFlag = getLanguageId();
-
-        if ($languageFlag == LANGUAGE_ES && !isAdmin() && Auth::check() && Site::hasOption('fpTodo'))
+        if (Exercise::isEnabled())
         {
             $iconText = 'file-text';
             $iconFlashcards = 'lightning';
