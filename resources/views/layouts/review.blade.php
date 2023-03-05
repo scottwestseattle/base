@@ -24,7 +24,7 @@ $iconFolder = App\Site::getIconFolder();
 
 	<!-- qnaBase.js is the base class with all the common logic -->
 	@if (isset($settings['loadJs']))
-		<script src="{{ asset('js/qnaBase.js') }}"></script>
+		<script src="{{ asset('js/qnaBase.js?' . getVersionJs()) }}"></script>
 		<!-- qna*.js is the custom class such as qnaFlashcards, qnaMultipleChoice, etc -->
 		<script src="{{ asset('js/' . $settings['loadJs'] . '?' . getVersionJs()) }}"></script>
 	@else

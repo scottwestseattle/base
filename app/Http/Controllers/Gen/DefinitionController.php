@@ -438,8 +438,11 @@ class DefinitionController extends Controller
 		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
 
-		if (isAdmin()) // only admin can change user_id
+		if (isAdmin()) // only admin can change user_id and release status
+		{
+    		$record->release_flag = copyDirty($record->release_flag, isset($request->public) ? RELEASEFLAG_PUBLIC : RELEASEFLAG_NOTSET, $isDirty, $changes);
 		    $record->user_id = copyDirty($record->user_id, intval($request->user_id), $isDirty, $changes);
+		}
 
 		$forms 	= Spanish::formatForms($request->forms);
 		$record->forms = copyDirty($record->forms, $forms, $isDirty, $changes);

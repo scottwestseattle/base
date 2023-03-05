@@ -98,6 +98,7 @@ function quiz() {
 	this.quizTextScoreChanged = 'not set';
 	//this.lessonId = 'not set';
 	this.random = true;
+	this.language = 'en'; // default to EN
 
     // for History
     this.programName = 'not set';
@@ -371,6 +372,7 @@ function loadData()
 		quiz.historyPath = container.data('historypath');
 		quiz.historyRoute = container.data('historyroute');
 		quiz.touchPath = container.data('touchpath');
+		quiz.language = container.data('language');
         quiz.showParameters();
 
 		// new settings
@@ -581,6 +583,7 @@ function loadQuestion()
 	updateScore();
 
 	quiz.setAlertPrompt(quiz.promptQuestion, COLOR_QUESTION_PROMPT);
+	$("#copyStatus").text(""); // have to clear copy status somewhere
 }
 
 function reloadQuestion()
@@ -1096,4 +1099,36 @@ function continueQuiz()
 		quiz.runState = RUNSTATE_ASKING;
 
 	quiz.showPanel();
+}
+
+function read(text)
+{
+	var utter = new SpeechSynthesisUtterance();
+	utter.volume = 1; // range is 0-1
+
+	//utter.rate = .75;  // range is 0-1, todo: make setable
+    // utter.rate = 1.0;
+
+	//if (deck.voice != null)
+	//{
+    //    //console.log('reading: ' + deck.voice.lang);
+	//	utter.voice = deck.voice;  // if voices for language were found, then use the one we saved on start-up
+	//	utter.lang = deck.voice.lang;
+	//}
+	//else
+	{
+		utter.lang = quiz.language; // if voice not found, try to the language from the web site
+	}
+
+	utter.text = text.toLowerCase();
+
+	utter.onend = function(event) {
+
+   	 //touchReads(); // have to touch it here before it changes ids below
+	}
+
+	utter.onboundary = function(event) {
+	}
+
+	window.speechSynthesis.speak(utter);
 }

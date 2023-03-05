@@ -599,8 +599,9 @@ if (!function_exists('getLanguageId')) {
 }
 
 if (!function_exists('getSpeechLanguageShort')) {
-	function getSpeechLanguageShort($id)
+	function getSpeechLanguageShort($id = null)
 	{
+	    $id = isset($id) ? $id : getLanguageId();
         return getSpeechLanguage($id)['code'];
     }
 }

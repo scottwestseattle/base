@@ -143,13 +143,12 @@ function d(msg)
 	console.log(msg);
 }
 
-function clipboardCopy(event, idFlash, id, stripFormat = true)
+function clipboardCopy(event, idFlash, id, stripFormat = true, useHtml = false)
 {
 	event.preventDefault();
 
     id = getId(id);
-//	var text = document.getElementById(id).innerHTML;
-	var text = $(id).val();
+	var text = useHtml ? $(id).html() : $(id).val();
 
 	// create an input field that can be selected
 	var target = document.createElement("textarea");
@@ -161,10 +160,14 @@ function clipboardCopy(event, idFlash, id, stripFormat = true)
     document.body.appendChild(target); // add it to the page
 
 	// do the flash affect (only included in full jquery / we are using jquery slim for the moment
-//	$("#" + idFlash + ' p').fadeTo('fast', 0.1).fadeTo('slow', 1.0);
-//	$("#" + idFlash).fadeTo('fast', 0.1).fadeTo('slow', 1.0);
-	$("#" + idFlash).css("color", "red");
-    $("#status").text("copied");
+	if (idFlash.length > 0)
+	{
+    //	$("#" + idFlash + ' p').fadeTo('fast', 0.1).fadeTo('slow', 1.0);
+    //	$("#" + idFlash).fadeTo('fast', 0.1).fadeTo('slow', 1.0);
+        $("#" + idFlash).css("color", "red");
+	}
+
+    $("#copyStatus").text("copied");
 
     if (stripFormat)
     {
@@ -183,6 +186,8 @@ function clipboardCopy(event, idFlash, id, stripFormat = true)
 	// put the stripped text into the hidden field and select it
     target.textContent = text;
 	target.select();
+
+	//console.log('text to copy: ' + text);
 
     // copy the selection
     var succeed;
@@ -1576,4 +1581,3 @@ function showSearchResult(str, searchType, inputId, outputId)
     xmlhttp.send();
     //console.log("sent url: " + url + ", searchArticles: " + searchType);
 }
-

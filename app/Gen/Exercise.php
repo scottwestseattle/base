@@ -91,6 +91,9 @@ class Exercise extends Model
             case LANGUAGE_ES:
                 $option = 'exercises-es';
                 break;
+            case LANGUAGE_IT:
+                $option = 'exercises-it';
+                break;
             default:
                 break;
         }

@@ -62,6 +62,15 @@
         <input type="text" name="notes" id="notes" class="form-control" autocomplete="off" value="{{$record->notes}}"/>
     </div>
 
+    @if (isAdmin())
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="public" {{$record->release_flag === RELEASEFLAG_PUBLIC ? 'CHECKED' : ''}}>
+        <label class="form-check-label" for="public">
+            @LANG('ui.Public')
+        </label>
+    </div>
+    @endif
+
     <div class="form-group">
         <div class="submit-button mt-2 mb-2"><button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button></div>
     </div>

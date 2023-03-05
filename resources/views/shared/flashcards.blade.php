@@ -6,6 +6,7 @@
     $article = isset($article) ? $article : false;
     $random = isset($random) && $random ? 1 : 0;
     $touchPath = isset($touchPath) ? $touchPath : null;
+    $language = getSpeechLanguageShort();
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -29,6 +30,7 @@
 	data-quiztext-score-changed="@LANG('quiz.Score Changed')"
 	data-random="{{$random}}"
 	data-touchpath="{{$touchPath}}"
+	data-language="{{$language}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
@@ -175,11 +177,16 @@
 				<input type="checkbox" name="checkbox-random" id="checkbox-random" onclick="updateRandom();" {{$random ? 'checked' : ''}} />
 				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
 			</div>
+
 			<div class="mt-1 ml-1 small-thin-text">
-                <a id="goToEntry" href="" target="_blank">{{__('proj.Go To Entry')}}</a>
+                <a type="button" class="btn btn-primary btn-sm" id="readEntry" href="" onclick="event.preventDefault(); read($('#flashcard-answer').html())">{{__('proj.Read Entry')}}</a>
+                <a type="button" class="btn btn-primary btn-sm" id="copyEntry" href="" onclick="clipboardCopy(event, '', 'flashcard-answer', false, true);">{{__('proj.Copy Entry')}}</a>
+                <span class="ml-2" id="copyStatus"></span>
 			</div>
+
 			<div class="mt-1 ml-1 small-thin-text">
-                <a id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
+                <a type="button" class="btn btn-primary btn-sm" id="goToEntry" href="" target="_blank">{{__('proj.Go To Entry')}}</a>
+                <a type="button" class="btn btn-primary btn-sm" id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
 			</div>
 		</div>
 
