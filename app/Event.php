@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-define('MAX_LOG_FILE_SIZE', 700000000);
+define('MAX_LOG_FILE_SIZE', 100000000);
 
 class Event extends Model
 {
@@ -49,7 +49,15 @@ class Event extends Model
 
         // sometimes it gets too big to read
         $logFileSize = filesize($path);
-        $file = ($logFileSize <= MAX_LOG_FILE_SIZE) ? file_get_contents($path) : false;
+
+        if ($logFileSize <= MAX_LOG_FILE_SIZE)
+        {
+            $file = file_get_contents($path);
+        }
+        else
+        {
+            $file = false;
+        }
 
 		if ($file !== false)
 		{

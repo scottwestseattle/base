@@ -56,20 +56,17 @@
 	<!-------------------------------------------------------->
 	<div style="margin-top: 5px;">
 
-		<!-------------------------------------------------------->
-		<!-- Top Return Button -->
-		<!-------------------------------------------------------->
-		<div style="float:left; margin: 0 5px 0 0;">
-	    	<span style="font-size:1.3em;" class=""><a class="" role="" href="{{$returnPath}}"><span class="glyphicon glyphicon-button-back-to"></span></a></span>
-		</div>
-
-		<!-------------------------------------------------------->
-		<!-- Run-time Stats -->
-		<!-------------------------------------------------------->
 		<div id="statsRuntime">
+            <!-------------------------------------------------------->
+            <!-- Top Return Button -->
+            <!-------------------------------------------------------->
 			<div class="middle mr-1 mb-1">
+                <a href="/"><span style="margin-right:3px;" class="glyphicon glyphicon-home"></span></a>
                 <a href="{{$returnPath}}"><button type="button" class="btn btn-xs btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</div>
+            <!-------------------------------------------------------->
+            <!-- Run-time Stats -->
+            <!-------------------------------------------------------->
 			<div class="middle mb-2">
 	    		<span id="statsCount" class="mr-2"></span>
     			<span id="statsScore" class=""></span>
@@ -166,8 +163,8 @@
                 </div>
             </div>
 			<div class="mt-1 ml-1">
-				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
-				<label for="checkbox-flip" class="checkbox-xs steelblue" onclick="reloadQuestion();">@LANG('quiz.Reverse question and answer')</label>
+				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion('checkbox-flip-flashcards');" />
+				<label for="checkbox-flip" class="checkbox-xs steelblue" onclick="reloadQuestion('checkbox-flip-flashcards');">@LANG('quiz.Reverse question and answer')</label>
 			</div>
 			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#panel-show').toggle();" />

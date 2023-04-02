@@ -586,13 +586,13 @@ function loadQuestion()
 	$("#copyStatus").text(""); // have to clear copy status somewhere
 }
 
-function reloadQuestion()
+function reloadQuestion(qnaType = 'checkbox-flip')
 {
 	showQuestion();
 
 	// one of these triggered this call so save the state
 	var checked = $('#checkbox-flip').prop('checked') ? 'true' : '';
-	localStorage.setItem('checkbox-flip', checked);
+	localStorage.setItem(qnaType, checked);
 
 	checked = $('#checkbox-use-definition').prop('checked') ? 'true' : '';
 	localStorage.setItem('checkbox-use-definition', checked);

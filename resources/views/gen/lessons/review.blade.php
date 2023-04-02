@@ -60,6 +60,7 @@
 		<!-- Run-time Stats -->
 		<!-------------------------------------------------------->
 		<div id="stats">
+            <a href="/"><span style="margin-right:3px;" class="glyphicon glyphicon-home"></span></a>
 			<div class="middle mt-1 mr-1"><a href="{{$returnPath}}"><span class="glyphicon glyphReaderReturn glyphicon-circle-arrow-up"></span></a></div>
 			<span id="statsCount" class="mr-2"></span>
 			<span id="statsScore"></span>
@@ -158,8 +159,8 @@
 				<label for="checkbox-hide-options" class="checkbox-xs" onclick="displayAnswerButtons()">@LANG('content.Hide choices before answering')</label>
 			</div>
 			<div class="mt-1 ml-1">
-				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion();" />
-				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion();">@LANG('content.Reverse question and answer')</label>
+				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion('checkbox-flip-review');" />
+				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion('checkbox-flip-review');">@LANG('content.Reverse question and answer')</label>
 			</div>
 		</div>
 

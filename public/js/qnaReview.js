@@ -10,7 +10,7 @@ $( document ).ready(function() {
 	var checked = (localStorage.getItem('checkbox-hide-options') == 'true');
 	$('#checkbox-hide-options').prop('checked', checked);
 
-	checked = (localStorage.getItem('checkbox-flip') == 'true');
+	checked = (localStorage.getItem('checkbox-flip-review') == 'true');
 	$('#checkbox-flip').prop('checked', checked);
 
 	checked = (localStorage.getItem('checkbox-use-definition') == 'true');
