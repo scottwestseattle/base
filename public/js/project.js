@@ -1478,34 +1478,45 @@ function addHistoryRecord(historyPath, programName, programId, programType, prog
     ajaxexec(path);
 }
 
-function getSentences(text)
+function fixCase(id)
 {
-    //var result = text.replace(/ [a-zA-Z][a-zA-Z]\./g);
+    id = getId(id);
+	var text = $(id).val();
+    var result = getSentencesArray(text);
     var rc = '';
 
-    // Step 1: Remove initials like T.S. Elliot and remove numbers like 1.1 2.2 so they won't be split on
-    var result = text.replace(/([a-zA-Z]\.[a-zA-Z])|([0-9]\.[0-9])/g, (match) => {
-        //console.log({match});
-        return match.replace(/\./g, '| ');
+    result.forEach(function (line) {
+        // create the new lines double-spaced
+        line = line.trim();
+
+        var cap = (startsWithUpperCase(line));
+
+        line = line.toLowerCase();
+
+        if (cap)
+            line = capFirstLetter(line);
+
+        if (line.length > 0) // skip blank lines
+            rc += line.replace(/\| /g, '.').trim() + '\r\n';
     });
 
-    // Step 2: Try to avoid splitting after Mr. Mrs. Sra. Sr. by looking 2 or 3 letter words starting with an uppercase letter
-    result = result.replace(/(^[A-Z][a-zA-Z]{1,2}\.)|( [A-Z][a-zA-Z]{1,2}\.)|( [A-Z]\.)/g, (match) => {
-        //console.log({match});
-        return match.replace(/\./g, '| ');
-    });
+	$(id).val(rc);
+}
 
-    // Step 3: Undo changes to roman numerals like "Siglo XXI." so they WILL be split on
-    result = result.replace(/( [IVXLCDM]+\| )/g, (match) => {
-        //console.log({match});
-        return match.replace(/\| /g, '. ');
-    });
+function startsWithUpperCase(string)
+{
+    return string.charAt(0) === string.charAt(0).toUpperCase()
+}
 
-    // do the general split:
-    // 1. [Match from one or more non-sentences terminating char TO one or more a sentence terminating char]
-    // 2. OR [match from one or more non terminaters to the end of the text]
-    result = result.match(/([^\.!\?\r\n]+[\.!\?\r\n]+)|([^\.!\?]+$)/g);
-    //console.log(result);
+function capFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getSentences(text)
+{
+    var rc = '';
+    var result = getSentencesArray(text);
 
     result.forEach(function (line) {
         // create the new lines double-spaced
@@ -1515,6 +1526,35 @@ function getSentences(text)
     });
 
     //console.log('getSentences: ' + Date.now());
+
+    return rc;
+}
+
+function getSentencesArray(text)
+{
+    // Step 1: Remove initials like T.S. Elliot and remove numbers like 1.1 2.2 so they won't be split on
+    var rc = text.replace(/([a-zA-Z]\.[a-zA-Z])|([0-9]\.[0-9])/g, (match) => {
+        //console.log({match});
+        return match.replace(/\./g, '| ');
+    });
+
+    // Step 2: Try to avoid splitting after Mr. Mrs. Sra. Sr. by looking 2 or 3 letter words starting with an uppercase letter
+    rc = rc.replace(/(^[A-Z][a-zA-Z]{1,2}\.)|( [A-Z][a-zA-Z]{1,2}\.)|( [A-Z]\.)/g, (match) => {
+        //console.log({match});
+        return match.replace(/\./g, '| ');
+    });
+
+    // Step 3: Undo changes to roman numerals like "Siglo XXI." so they WILL be split on
+    rc = rc.replace(/( [IVXLCDM]+\| )/g, (match) => {
+        //console.log({match});
+        return match.replace(/\| /g, '. ');
+    });
+
+    // do the general split:
+    // 1. [Match from one or more non-sentences terminating char TO one or more a sentence terminating char]
+    // 2. OR [match from one or more non terminaters to the end of the text]
+    rc = rc.match(/([^\.!\?\r\n]+[\.!\?\r\n]+)|([^\.!\?]+$)/g);
+    //console.log(result);
 
     return rc;
 }

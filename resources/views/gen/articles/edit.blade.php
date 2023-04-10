@@ -78,6 +78,7 @@
                             <li class="ml-2"><a id="flash1a" onclick="event.preventDefault(); $('#description').val(getSentences($('#description').val())); $('#flash1a').css('color', 'red');" href="" tabindex="-1" class="small-thin-text">@LANG('proj.Split Sentences')</a></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); $('#description').val(''); $('#description').focus();" class="small-thin-text ml-1">@LANG('ui.Clear')<a/></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); swap('description', 'description_translation');" class="small-thin-text ml-1">@LANG('ui.Swap')<a/></li>
+                            <li class="ml-2"><a href="" onclick="event.preventDefault(); fixCase('description');" class="small-thin-text ml-1">@LANG('proj.Fix Case')<a/></li>
                         </ul>
                         <textarea rows="20" name="description" id="description" class="form-control big-text">{{$record->description}}</textarea>
                         <textarea rows="20" name="sentences" id="sentences" class="form-control big-text hidden">{{$sentences}}</textarea>
@@ -88,6 +89,7 @@
                             <li class="ml-2"><a id="flash2a" onclick="event.preventDefault(); $('#description_translation').val($('#sentences_translation').val()); $('#flash2a').css('color', 'red');" href="" tabindex="-1" class="small-thin-text">@LANG('proj.Split Sentences')</a></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); $('#description_translation').val(''); $('#description_translation').focus();" class="small-thin-text ml-1">@LANG('ui.Clear')<a/></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); swap('description', 'description_translation');" class="small-thin-text ml-1">@LANG('ui.Swap')<a/></li>
+                            <li class="ml-2"><a href="" onclick="event.preventDefault(); fixCase('description_translation');" class="small-thin-text ml-1">@LANG('proj.Fix Case')<a/></li>
                         </ul>
                         <textarea rows="20" name="description_translation" id="description_translation" class="form-control big-text">{{$record->description_translation}}</textarea>
                         <textarea rows="20" name="sentences_translation" id="sentences_translation" class="form-control big-text hidden">{{$sentences_translation}}</textarea>
