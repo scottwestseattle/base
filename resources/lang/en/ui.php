@@ -190,4 +190,5 @@ return [
 'General Settings' => 'General Settings',
 'Action' => 'Action',
 'Select' => 'Select',
+'Show Translation' => 'Show Translation',
 ];

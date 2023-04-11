@@ -186,8 +186,10 @@
                 @if (false) // old way, not ajax
                 <a type="button" class="btn btn-primary btn-sm" id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
                 @endif
-        		<div class="middle ml-2">@component('components.control-delete-glyph', ['id' => 'deleteEntryIcon', 'svg' => 'trash-fill', 'href' => "", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
-                <span class="ml-2" id="deleteStatus"></span>
+                @if (Auth::check())
+            		<div class="middle ml-2">@component('components.control-delete-glyph', ['id' => 'deleteEntryIcon', 'svg' => 'trash-fill', 'href' => "", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
+                    <span class="ml-2" id="deleteStatus"></span>
+                @endif
 			</div>
 		</div>
 

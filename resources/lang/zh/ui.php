@@ -190,4 +190,5 @@ return [
 'General Settings' => '一般设置',
 'Action' => '行动',
 'Select' => '选择',
+'Show Translation' => '显示翻译',
 ];

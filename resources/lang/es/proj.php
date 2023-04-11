@@ -210,4 +210,7 @@ return [
 'Content Order' => 'Orden de contenido',
 'Edit Exercise' => 'Editar Ejercicio',
 ':count items finished - Show' => ':count ejercicios finalizados - Mostrar',
+'Copy Entry' => 'Copiar Entrada',
+'Read Entry' => 'Leer Entrada',
+'Fix Case' => 'Corregir Mayúsculas',
 ];

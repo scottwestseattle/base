@@ -210,4 +210,7 @@ return [
 'Content Order' => 'Content Order',
 'Edit Exercise' => 'Edit Exercise',
 ':count items finished - Show' => ':count exercises finished - Show',
+'Copy Entry' => 'Copy Entry',
+'Read Entry' => 'Read Entry',
+'Fix Case' => 'Fix Case',
 ];

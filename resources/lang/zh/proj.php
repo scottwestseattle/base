@@ -210,4 +210,7 @@ return [
 'Content Order' => '内容顺序',
 'Edit Exercise' => '编辑练习',
 ':count items finished - Show' => ':count 项目完成 - 显示',
+'Copy Entry' => '拷贝条目',
+'Read Entry' => '阅读条目',
+'Fix Case' => '修复字母大小写',
 ];
