@@ -111,9 +111,13 @@ function showQuestion()
 	$('#goToEntry').attr("href", href);
 
     var href = '/definitions/confirmdelete/' + id;
-	$('#deleteEntry').attr("href", href);
+    var hrefDelete = '/definitions/delete/' + id;
+    var onclick = 'event.preventDefault(); ajaxexec("' + hrefDelete + '"); $("#deleteStatus").text("deleted")';
 
-    //console.log('href: ' + $('#goToEntry').attr("href"));
+	$('#deleteEntry').attr("href", href);
+	$('#deleteEntryIcon').attr("onclick", onclick);
+
+    //console.log('onclick: ' + onclick);
 
 	// show question
 	$("#prompt").html(q);

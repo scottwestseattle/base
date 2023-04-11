@@ -74,18 +74,12 @@
 		<!-------------------------------------------------------->
 		<!-- Top Row Buttons -->
 		<!-------------------------------------------------------->
-		<div>
+		<div class="" style="row-height:50px; background-color:default;">
+			<span class="glyphReader" style="">
+		        <a href="/"><span style="margin-right:3px; font-size:.9em;" class="glyphicon glyphicon-home"></span></a>
+            </span>
 			<span class="glyphReader">
-            @if (false)
-			    <a href="{{$options['return']}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
-            @endif
-			</span>
-
-			<span class="glyphReader">
-            @if (false)
-			    <a href="{{$options['return']}}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
-            @endif
-                <a href="{{$options['return']}}"><button type="button" class="btn btn-sm btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
+                <a href="{{$options['return']}}"><button type="button" class="btn btn-sm btn-primary mb-2"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</span>
 			<span class="glyphReader"><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, -3);" href=""><span class="glyphicon glyphicon-zoom-out"></span></a></span>
@@ -94,7 +88,7 @@
 			@if (false && Auth::check())
 				<span class="glyphReader"><a onclick="toggleActiveTab(event, '#tab2', '#tab1', '.tab-body');" href=""><span class=""></span></a></span>
 			@endif
-			@if ($hasTranslation)
+			@if (false && $hasTranslation) // old way
 				<span class="glyphReader"><a onclick="event.preventDefault(); deck.showTranslation();" href=""><span class="glyphicon glyphicon-text-width"></span></a></span>
 			@endif
 
@@ -156,7 +150,10 @@
 					<div id="slideDescription" class="slideDescription" style="font-weight:300; font-size: 18px;" onmouseup="getSelectedText(1);" ondblclick="getSelectedText(2);" ontouchend="getSelectedText();"></div>
 					<div class="" style="color: green;" id="selected-word"></div>
 					<div class="" style="color: green;" id="selected-word-definition"></div>
-                    <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
+                    @if ($hasTranslation)
+    					<div style="font-size:.8em;"><a href="" onclick="event.preventDefault(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a></div>
+                        <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
+					@endif
 				</div><!-- panel-run -->
 			</div>
 		  </div>

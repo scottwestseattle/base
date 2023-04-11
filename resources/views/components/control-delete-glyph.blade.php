@@ -4,6 +4,7 @@ $isSvg = isset($svg);
 $linkText = isset($linkText) ? $linkText : null;
 $style = isset($style) ? $style : '';
 $margin = isset($margin) ? $margin : 'mb-1';
+$id = isset($id) ? $id : 'a0';
 @endphp
 <div class="dropdown {{$margin}}" >
 	<a data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="" tablindex="-1">
@@ -16,6 +17,6 @@ $margin = isset($margin) ? $margin : 'mb-1';
         @endif
 	</a>
 	<ul class="small-thin-text dropdown-menu dropdown-menu-right">
-		<li><a id="a0" class="dropdown-item" href="{{$href}}" onclick="{{isset($onclick) ? $onclick : ''}}">{{__($prompt)}}</a></li>
+		<li><a id="{{$id}}" class="dropdown-item" href="{{$href}}" onclick="{{isset($onclick) ? $onclick : ''}}">{{__($prompt)}}</a></li>
 	</ul>
 </div>

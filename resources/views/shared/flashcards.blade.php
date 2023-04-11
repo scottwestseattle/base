@@ -183,7 +183,11 @@
 
 			<div class="mt-1 ml-1 small-thin-text">
                 <a type="button" class="btn btn-primary btn-sm" id="goToEntry" href="" target="_blank">{{__('proj.Go To Entry')}}</a>
+                @if (false) // old way, not ajax
                 <a type="button" class="btn btn-primary btn-sm" id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
+                @endif
+        		<div class="middle ml-2">@component('components.control-delete-glyph', ['id' => 'deleteEntryIcon', 'svg' => 'trash-fill', 'href' => "", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
+                <span class="ml-2" id="deleteStatus"></span>
 			</div>
 		</div>
 
