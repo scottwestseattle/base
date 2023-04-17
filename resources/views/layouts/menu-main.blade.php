@@ -97,12 +97,12 @@
 		<!-- Language Selector Dropdown -->
 		<div class="mt-1 middle dropdown">
 			<a href="#" class="navbar-item" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-				<img width="25" src="/img/language-{{App::getLocale()}}.png" />
+				<img width="25" src="/img/flags/{{App::getLocale()}}.png" />
 			</a>
 			<ul style="float: left; background-color:transparent; border:0;"  class="dropdown-menu">
-				<li><a href="/language/en"><img src="/img/language-en.png" /></a></li>
-				<li><a href="/language/es"><img src="/img/language-es.png" /></a></li>
-				<li><a href="/language/zh"><img src="/img/language-zh.png" /></a></li>
+				<li><a href="/language/en"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
+				<li><a href="/language/es"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
+				<li><a href="/language/zh"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
 			</ul>
 		</div>
 	</div>

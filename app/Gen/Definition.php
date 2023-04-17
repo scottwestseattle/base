@@ -1248,7 +1248,7 @@ class Definition extends Model
 
         if ($order === 'help')
         {
-            dump("order: asc|desc|atoz|ztoa|incomplete|attempts|attempts-asc|score|views|views-asc|reads|reads-asc");
+            dump("order: asc|desc|atoz|ztoa|incomplete|attempts|attempts-asc|attempts-at|score|views|views-asc|reads|reads-asc|reads-at");
         }
 
         $orderBy = 'id';
@@ -1278,6 +1278,9 @@ class Definition extends Model
             case 'attempts-asc':
                 $orderBy = 'stats.qna_attempts, stats.qna_at, id';
                 break;
+            case 'attempts-at':
+                $orderBy = 'stats.qna_at, id';
+                break;
             case 'score':
                 $orderBy = 'stats.qna_score DESC, id DESC';
                 break;
@@ -1292,6 +1295,9 @@ class Definition extends Model
                 break;
             case 'reads-asc':
                 $orderBy = 'stats.reads, stats.read_at, id';
+                break;
+            case 'reads-at':
+                $orderBy = 'stats.read_at, id';
                 break;
             case 'public':
                 $orderBy = 'id DESC';

@@ -191,4 +191,5 @@ return [
 'Action' => 'Acción',
 'Select' => 'Seleccionar',
 'Show Translation' => 'Ver Traducción',
+'Italian' => 'Italiano',
 ];

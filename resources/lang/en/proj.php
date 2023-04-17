@@ -213,4 +213,10 @@ return [
 'Copy Entry' => 'Copy Entry',
 'Read Entry' => 'Read Entry',
 'Fix Case' => 'Fix Case',
+'I want to practice:' => 'I want to practice:',
+'Practice Language' => 'Practice Language',
+'Beginner' => 'Beginner',
+'Intermediate' => 'Intermediate',
+'Advanced' => 'Advanced',
+'My level is' => 'My level is',
 ];

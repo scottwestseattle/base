@@ -29,11 +29,13 @@
             <li><a class="dropdown-item {{c($order, 'asc')}}" href="{{$link}}?count={{$count}}&order=asc">Oldest</a></li>
             <li><a class="dropdown-item {{c($order, 'attempts')}}" href="{{$link}}?count={{$count}}&order=attempts">Attempts - Most</a></li>
             <li><a class="dropdown-item {{c($order, 'attempts-asc')}}" href="{{$link}}?count={{$count}}&order=attempts-asc">Attempts - Fewest</a></li>
+            <li><a class="dropdown-item {{c($order, 'attempts-asc')}}" href="{{$link}}?count={{$count}}&order=attempts-at">Attempts - Oldest</a></li>
             <li><a class="dropdown-item {{c($order, 'score')}}" href="{{$link}}?count={{$count}}&order=score">Score</a></li>
             <li><a class="dropdown-item {{c($order, 'views')}}" href="{{$link}}?count={{$count}}&order=views">Views - Most</a></li>
             <li><a class="dropdown-item {{c($order, 'views-asc')}}" href="{{$link}}?count={{$count}}&order=views-asc">Views - Fewest</a></li>
             <li><a class="dropdown-item {{c($order, 'reads')}}" href="{{$link}}?count={{$count}}&order=reads">Reads - Most</a></li>
             <li><a class="dropdown-item {{c($order, 'reads-asc')}}" href="{{$link}}?count={{$count}}&order=reads-asc">Reads - Fewest</a></li>
+            <li><a class="dropdown-item {{c($order, 'reads-at')}}" href="{{$link}}?count={{$count}}&order=reads-at">Reads - Oldest</a></li>
         </ul>
     </div>
 </div>

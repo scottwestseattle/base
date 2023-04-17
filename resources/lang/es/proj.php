@@ -213,4 +213,10 @@ return [
 'Copy Entry' => 'Copiar Entrada',
 'Read Entry' => 'Leer Entrada',
 'Fix Case' => 'Corregir Mayúsculas',
+'I want to practice:' => 'Quiero practicar:',
+'Practice Language' => 'Lengua de práctica',
+'Beginner' => 'Principiante',
+'Intermediate' => 'Intermedio',
+'Advanced' => 'Avanzado',
+'My level is' => 'Mi nivel es',
 ];

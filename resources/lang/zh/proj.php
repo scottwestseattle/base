@@ -213,4 +213,10 @@ return [
 'Copy Entry' => '拷贝条目',
 'Read Entry' => '阅读条目',
 'Fix Case' => '修复字母大小写',
+'I want to practice:' => '我想练习：',
+'Practice Language' => '练习语言',
+'Beginner' => '初学者',
+'Intermediate' => '中级',
+'Advanced' => '高级',
+'My level is' => '我的水平是',
 ];

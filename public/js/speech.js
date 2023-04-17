@@ -36,10 +36,10 @@ $(document).ready(function() {
     console.log('speech.js ready');
 });
 
-function getLanguageIndex()
+function getLanguageIndex(id)
 {
     var index = -1; // not set
-	var e = document.querySelector('#language_flag');
+	var e = document.querySelector(id);
 	if (e != undefined)
 	{
         index = e.options[e.selectedIndex].value;
@@ -48,19 +48,22 @@ function getLanguageIndex()
     return index;
 }
 
-function setLanguageGlobal()
+function setLanguageFromDropdown(id)
 {
-    var path = '/setlanguage/' + getLanguageIndex();
-    ajaxexecreload(path);
+    setLanguageGlobal(getLanguageIndex(id));
+}
 
-    //loadVoicesGlobal();
+function setLanguageGlobal(id)
+{
+    var path = '/setlanguage/' + id;
+    ajaxexecreload(path);
 }
 
 function loadVoicesGlobal()
 {
     //console.log('loadVoicesGlobal');
 
-    var index = getLanguageIndex();
+    var index = getLanguageIndex('#language_flag');
     //console.log('language index: ' + index);
     if (index < 0) // not set, don't load from global select
     {

@@ -92,7 +92,7 @@ class Controller extends BaseController
 
 	static function setLanguage($languageId)
 	{
-        Cookie::queue('languageId', intval($languageId), COOKIE_YEAR);
+        Cookie::queue('languageId', intval($languageId), COOKIE_WEEK);
     }
 
     static public function getLines(Entry $record)

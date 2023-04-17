@@ -191,4 +191,5 @@ return [
 'Action' => '行动',
 'Select' => '选择',
 'Show Translation' => '显示翻译',
+'Italian' => '意大利语',
 ];

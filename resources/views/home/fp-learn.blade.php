@@ -38,11 +38,34 @@
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
 @guest
-    @if (\App\Site::hasOption('fpheader'))
+    @if (\App\Site::hasOption('fpheader') && !isLanguageCookieSet())
         <!-- Header Photo -->
         <div class="fpbox-header text-center">
-            <h1 class="h1-fp pt-1">{{domainName()}}</h1>
-            <h2 class="h2-fp"><b>{{App\Site::getTitle()}}</h2>
+
+            <div class="">
+            @if (isLanguageCookieSet())
+                <h3>@LANG('proj.You are practicing '){{getLanguageName()}}</h3>
+            @else
+                <h3>@LANG('proj.I want to practice:')</h3>
+                <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"><img height="40" src="/img/flags/en.png" class="mr-3" /></td><td>@LANG('geo.English')</td></tr></table></a></div>
+                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"><img height="40" src="/img/flags/es.png" class="mr-3" /></td><td>@LANG('geo.Spanish')</td></tr></table></a></div>
+                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(3)"><table><tr><td style="width:30"><img height="40" src="/img/flags/it.png" class="mr-3" /></td><td>@LANG('geo.Italian')</td></tr></table></a></div>
+            @endif
+            </div>
+
+            @if (false)
+            <div class="">
+            @if (isLanguageCookieSet())
+                <h3>@LANG('proj.Your level is  '){{getLanguageName()}}</h3>
+            @else
+                <h3>@LANG('proj.My level is'):</h3>
+                <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"></td><td>@LANG('proj.Beginner')<div style="font-size:.7em;">(A1-A2)</div></td></tr></table></a></div>
+                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"></td><td>@LANG('proj.Intermediate')<div style="font-size:.7em;">(B1-B2)</div></td></tr></table></a></div>
+                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(3)"><table><tr><td style="width:30"></td><td>@LANG('proj.Advanced')<div style="font-size:.7em;">(C1-C2)</div></td></tr></table></a></div>
+            @endif
+            </div>
+            @endif
+
             @if (\App\Site::hasOption('fpsteps'))
             <button type="submit" class="btn btn-success" type="button">@LANG('ui.More Information')</button>
             @endif

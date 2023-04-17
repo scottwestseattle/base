@@ -800,13 +800,13 @@ class DefinitionController extends Controller
 	public function setSnippetCookieNEW(Request $request, Definition $definition)
     {
         //dump($definition->id);
-        Cookie::queue('snippetId', intval($definition->id), COOKIE_YEAR);
+        Cookie::queue('snippetId', intval($definition->id), COOKIE_WEEK);
     }
 
 	public function setSnippetCookie($id)
     {
         // set the cookie so it will be loaded in the big frontpage edit box
-        Cookie::queue('snippetId', intval($id), COOKIE_YEAR);
+        Cookie::queue('snippetId', intval($id), COOKIE_WEEK);
 
         // touch the record to move to top of list
         Definition::touchId($id);
@@ -1501,8 +1501,10 @@ class DefinitionController extends Controller
         $tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
         $parms['route'] = crackUri(2);
         $history = History::getArray($title, $tagId, $parms['historyType'], $parms['source'], History::getReviewType($parms['action']), $count, $parms);
-
         //dump($history);
+
+        //todo: finish plugging in lists
+        //todo: $lists = Definition::getUserFavoriteLists();
 
 		return view($settings['view'], [
 			'sentenceCount' => $count,
@@ -1515,6 +1517,7 @@ class DefinitionController extends Controller
 			'history' => $history,
 			'touchPath' => '/stats/update-stats',
 			'random' => false,
+			//todo: 'lists' => $lists,
 			]);
     }
 

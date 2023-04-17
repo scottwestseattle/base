@@ -1173,8 +1173,13 @@ Front Page Feature Boxes
   height: auto;
   margin: 0 auto;
   padding: 10px 10px 20px 10px;
-  color: white;
-  background: linear-gradient(180deg, #4993FD, #015AA4);
+  background: linear-gradient(180deg, #f6da8f, #f7c257);
+}
+
+.btn-language
+{
+    width:200px;
+    font-size:1.5em;
 }
 
 .fpbox-container

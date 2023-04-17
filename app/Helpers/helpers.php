@@ -598,6 +598,14 @@ if (!function_exists('getLanguageId')) {
     }
 }
 
+if (!function_exists('isLanguageCookieSet')) {
+	function isLanguageCookieSet()
+	{
+        $language = Cookie::get('languageId');
+        return isset($language);
+    }
+}
+
 if (!function_exists('getSpeechLanguageShort')) {
 	function getSpeechLanguageShort($id = null)
 	{
@@ -682,12 +690,14 @@ if (!function_exists('getLanguageOptions')) {
 }
 
 if (!function_exists('getLanguageName')) {
-	function getLanguageName($languageFlag)
+	function getLanguageName($id = null)
 	{
+	    $id = isset($id) ? $id : getLanguageId();
+
 	    $languageOptions = getLanguageOptions(isAdmin());
 
-	    return (isset($languageFlag) && $languageFlag >= 0 && $languageFlag < count($languageOptions))
-	        ? $languageOptions[$languageFlag]
+	    return (isset($id) && $id >= 0)
+	        ? $languageOptions[$id]
 	        : '';
 	}
 }

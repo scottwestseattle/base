@@ -187,6 +187,15 @@
                 <a type="button" class="btn btn-primary btn-sm" id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
                 @endif
                 @if (Auth::check())
+                    @if (false) // todo: doesn't work in js yet
+                    @component('gen.definitions.component-heart', [
+                        'record' => $record,
+                        //'id' => $id,
+                        'lists' => $lists,
+                        //'status' => $status,
+                    ])@endcomponent
+                    @endif
+
             		<div class="middle ml-2">@component('components.control-delete-glyph', ['id' => 'deleteEntryIcon', 'svg' => 'trash-fill', 'href' => "", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
                     <span class="ml-2" id="deleteStatus"></span>
                 @endif
