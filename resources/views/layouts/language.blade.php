@@ -11,7 +11,7 @@
                 'selected_option' => getLanguageId(),
                 'field_name' => 'language_flag',
                 'select_class' => 'mini-border mt-2 mr-2',
-                'label' => trans_choice('proj.Practice Language', 1) . ':',
+                'label' => __('proj.Practice') . ':',
                 'onchange' => 'setLanguageFromDropdown("#language_flag")',
             ])@endcomponent
             <select class="mini-border hidden" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>

@@ -1621,3 +1621,9 @@ function showSearchResult(str, searchType, inputId, outputId)
     xmlhttp.send();
     //console.log("sent url: " + url + ", searchArticles: " + searchType);
 }
+
+function setUserLevel(id)
+{
+    var path = '/setuserlevel/' + id;
+    ajaxexecreload(path);
+}

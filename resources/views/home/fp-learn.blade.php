@@ -38,34 +38,34 @@
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
 @guest
-    @if (\App\Site::hasOption('fpheader') && !isLanguageCookieSet())
+    @if (\App\Site::hasOption('fpheader') && (!isLanguageCookieSet() || !isUserLevelCookieSet()))
         <!-- Header Photo -->
-        <div class="fpbox-header text-center">
-
-            <div class="">
-            @if (isLanguageCookieSet())
-                <h3>@LANG('proj.You are practicing '){{getLanguageName()}}</h3>
-            @else
-                <h3>@LANG('proj.I want to practice:')</h3>
-                <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"><img height="40" src="/img/flags/en.png" class="mr-3" /></td><td>@LANG('geo.English')</td></tr></table></a></div>
-                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"><img height="40" src="/img/flags/es.png" class="mr-3" /></td><td>@LANG('geo.Spanish')</td></tr></table></a></div>
-                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(3)"><table><tr><td style="width:30"><img height="40" src="/img/flags/it.png" class="mr-3" /></td><td>@LANG('geo.Italian')</td></tr></table></a></div>
-            @endif
+        <div class="fpbox-header">
+            <div class="row row-course">
+                @if (!isLanguageCookieSet())
+                <div class="col-xs-12 col-md-6 fpSelectorRight mb-3">
+                    <!-- h3>@LANG('proj.You are practicing '){{getLanguageName()}}</h3 -->
+                    <h4>@LANG('proj.I want to practice:')</h4>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"><img height="40" src="/img/flags/en.png" class="mr-3" /></td><td>@LANG('geo.English')</td></tr></table></a></div>
+                    <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"><img height="40" src="/img/flags/es.png" class="mr-3" /></td><td>@LANG('geo.Spanish')</td></tr></table></a></div>
+                    <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(3)"><table><tr><td style="width:30"><img height="40" src="/img/flags/it.png" class="mr-3" /></td><td>@LANG('geo.Italian')</td></tr></table></a></div>
+                </div>
+                @endif
+                @if (!isUserLevelCookieSet())
+                <div class="col-sm-12 col-md-6 fpSelectorLeft">
+                    <!-- h3>@LANG('proj.Your level is  '){{getLanguageName()}}</h3 -->
+                    <div class="">
+                    <h4>@LANG('proj.My level is'):</h4>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setUserLevel({{LEVEL_A1}})"><table class="text-left" style="width:100%;"><tr><td class="level-number"><span class="fn">A1</span></td><td>@LANG('proj.Beginner')</td></tr></table></a></div>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setUserLevel({{LEVEL_A2}})"><table class="text-left" style="width:100%;"><tr><td class="level-number"><span class="fn">A2</span></td><td>@LANG('proj.Beginner')</td></tr></table></a></div>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setUserLevel({{LEVEL_B1}})"><table class="text-left" style="width:100%;"><tr><td class="level-number"><span class="fn">B1</span></td><td>@LANG('proj.Intermediate')</td></tr></table></a></div>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setUserLevel({{LEVEL_B2}})"><table class="text-left" style="width:100%;"><tr><td class="level-number"><span class="fn">B2</span></td><td>@LANG('proj.Intermediate')</td></tr></table></a></div>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setUserLevel({{LEVEL_C1}})"><table class="text-left" style="width:100%;"><tr><td class="level-number"><span class="fn">C1</span></td><td>@LANG('proj.Advanced')</td></tr></table></a></div>
+                    <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setUserLevel({{LEVEL_C2}})"><table class="text-left" style="width:100%;"><tr><td class="level-number"><span class="fn">C2</span></td><td>@LANG('proj.Advanced')</td></tr></table></a></div>
+                    </div>
+                </div>
+                @endif
             </div>
-
-            @if (false)
-            <div class="">
-            @if (isLanguageCookieSet())
-                <h3>@LANG('proj.Your level is  '){{getLanguageName()}}</h3>
-            @else
-                <h3>@LANG('proj.My level is'):</h3>
-                <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"></td><td>@LANG('proj.Beginner')<div style="font-size:.7em;">(A1-A2)</div></td></tr></table></a></div>
-                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"></td><td>@LANG('proj.Intermediate')<div style="font-size:.7em;">(B1-B2)</div></td></tr></table></a></div>
-                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(3)"><table><tr><td style="width:30"></td><td>@LANG('proj.Advanced')<div style="font-size:.7em;">(C1-C2)</div></td></tr></table></a></div>
-            @endif
-            </div>
-            @endif
-
             @if (\App\Site::hasOption('fpsteps'))
             <button type="submit" class="btn btn-success" type="button">@LANG('ui.More Information')</button>
             @endif

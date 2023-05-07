@@ -436,7 +436,7 @@ class Exercise extends Model
                             $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc&source=$exercise->subtype_flag"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_LEAST_USED:
-                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-asc&source=$exercise->subtype_flag"];
+                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-at&source=$exercise->subtype_flag"];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_MOST_COMMON:
                             break;
@@ -491,7 +491,7 @@ class Exercise extends Model
                     $icon = $done ? $iconDone : $iconFlashcards;
 
                     $todo[] = ['done' => $done, 'title' => $titleFavorites, 'icon' => $icon, 'linkTitle' => $exercise->title,
-                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-asc&source=$exercise->subtype_flag"];
+                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-at&source=$exercise->subtype_flag"];
                 }
             }
 

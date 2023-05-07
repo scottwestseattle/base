@@ -30,10 +30,26 @@ body {
 	.form-card-row {
 		margin-top:0;
 	}
+
+	.fpSelectorLeft {
+	    text-align:center;
+	}
+
+	.fpSelectorRight {
+	    text-align:center;
+	}
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
+
+	.fpSelectorLeft {
+	    text-align:center;
+	}
+
+	.fpSelectorRight {
+	    text-align:center;
+	}
 
 	h1 {
 		font-size: 28px;
@@ -55,6 +71,14 @@ body {
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+
+	.fpSelectorLeft {
+	    text-align:left;
+	}
+
+	.fpSelectorRight {
+	    text-align:right;
+	}
 
 	h1 {
 		font-size: 32px;
@@ -1179,7 +1203,13 @@ Front Page Feature Boxes
 .btn-language
 {
     width:200px;
-    font-size:1.5em;
+    font-size:1.3em;
+}
+
+.level-number
+{
+    width:30px;
+    margin-right:20px;
 }
 
 .fpbox-container

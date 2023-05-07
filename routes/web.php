@@ -70,6 +70,7 @@ Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchA
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
+Route::get('/setuserlevel/{userLevel}', [Controller::class, 'setUserLevel']);
 Route::get('/set-session/', [Controller::class, 'setSession']);
 Route::get('/sitemap', [HomeController::class, 'sitemap']);
 Route::get('/test', [HomeController::class, 'test']);
@@ -581,7 +582,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/translate/{text}/{entryId?}',[DefinitionController::class, 'translateAjax']);
 	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);
 	Route::get('/unheart/{definition}',[DefinitionController::class, 'unheartAjax']);
-	Route::get('/remove-favorites/{tag}',[DefinitionController::class, 'removeFavorites']);
+	Route::get('/move-favorites/{tag}/{tagToId?}',[DefinitionController::class, 'moveFavorites']);
 	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
 	Route::get('/get-random-word/',[DefinitionController::class, 'getRandomWordAjax']);
 	Route::get('/scrape-definition/{word}',[DefinitionController::class, 'scrapeDefinitionAjax']);

@@ -20,6 +20,14 @@ define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
 define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
 
+// user level
+define('LEVEL_A1', 1);
+define('LEVEL_A2', 2);
+define('LEVEL_B1', 3);
+define('LEVEL_B2', 4);
+define('LEVEL_C1', 5);
+define('LEVEL_C2', 6);
+
 // query sorting
 define('ORDERBY_APPROVED', 0);
 define('ORDERBY_TITLE', 1);

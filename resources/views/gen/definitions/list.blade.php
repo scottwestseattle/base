@@ -45,7 +45,23 @@
     </span>
     @if (isset($tag) && (isAdmin() || App\User::isOwner($tag->user_id)))
         <span class="small-thin-text pl-3 middle">
-           @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/remove-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
+
+            <div class="middle mr-3">
+                <div class="dropdown" >
+                    <a class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"	href="" onclick="">Move All To</a>
+
+                    <ul class="small-thin-text dropdown-menu dropdown-menu-right" style="z-index:{{DEFAULT_BIG_NUMBER}}; background-color:white;">
+                        @foreach($lists as $list)
+                            @if ($list->id != $tag->id)
+                                <li><a class="dropdown-item" href="/definitions/move-favorites/{{$tag->id}}/{{$list->id}}">{{$list->name}}</a></li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+
+           @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/move-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
+
         </span>
     @endif
 </h3>

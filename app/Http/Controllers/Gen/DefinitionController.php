@@ -61,7 +61,7 @@ class DefinitionController extends Controller
 			'conjugationsGen', 'conjugationsGenAjax', 'conjugationsComponentAjax', 'verbs',
 			'getAjax', 'translateAjax', 'wordExistsAjax', 'searchAjax', 'getRandomWordAjax',
 			'heartAjax', 'unheartAjax',
-			'setFavoriteList', 'removeFavorites',
+			'setFavoriteList', 'moveFavorites',
 
             // review
 			'review',
@@ -93,7 +93,7 @@ class DefinitionController extends Controller
 			'editSnippet', 'updateSnippet',
 			'review', 'readList',
 			'confirmDelete', 'delete',
-			'unheartAjax', 'removeFavorites', 'convertTextToFavorites',
+			'unheartAjax', 'moveFavorites', 'convertTextToFavorites',
 		]);
 
 		parent::__construct();
@@ -1286,7 +1286,8 @@ class DefinitionController extends Controller
   	public function setFavoriteList(Request $request, Definition $definition, $tagFromId, $tagToId)
     {
 		$record = $definition;
-        $rc = 'proj.Saved to favorite list';
+
+        $rc = ($tagToId > 0) ? 'proj.Saved to favorite list' : 'proj.Removed from favorite list';
 
         if (Auth::check())
         {
@@ -1298,7 +1299,8 @@ class DefinitionController extends Controller
 			$rc = 'proj.Favorite not saved - you must log in';
         }
 
-        logInfo('setFavoriteList', __($rc), ['title' => $record->title, 'id' => $record->id]);
+        logInfo('setFavoriteList', __($rc), ['title' => $record->title, 'id' => $record->id,
+            'tagFromId' => $tagFromId, 'tagToId' => $tagToId]);
 
 		return back();
     }
@@ -1359,7 +1361,7 @@ class DefinitionController extends Controller
 		return $rc;
     }
 
-	public function removeFavorites(Request $request, Tag $tag)
+	public function moveFavorites(Request $request, Tag $tag, $tagToId = null)
     {
         $rc = '';
 		$records = []; // make this countable so view will always work
@@ -1368,18 +1370,34 @@ class DefinitionController extends Controller
 			$records = $tag->definitionsUser()->get();
             foreach($records as $record)
             {
-            	$record->removeTag($tag->id);
+                if (empty($tagToId))
+                {
+                	$record->removeTag($tag->id);
+                }
+                else
+                {
+                	$record->removeTag($tag->id);
+        			$record->addTag($tagToId);
+                }
             }
 
             $rc .= '"' . $tag->name . '": ';
-           	$rc .= count($records) > 0 ? __('proj.All favorites removed') : __('proj.Nothing to remove');
+
+            if (empty($tagToId))
+            {
+               	$rc .= count($records) > 0 ? __('proj.All favorites removed') : __('proj.Nothing to remove');
+            }
+            else
+            {
+               	$rc .= count($records) > 0 ? __('proj.All favorites moved') : __('proj.Nothing to move');
+            }
 		}
 		catch (\Exception $e)
 		{
 			logExceptionEx(__CLASS__, __FUNCTION__, $e->getMessage(), __('base.Error getting list'));
 		}
 
-        logInfo('removeFavorites', $rc, null, ['tag' => $tag->name, 'id' => $tag->id]);
+        logInfo('moveFavorites', $rc, null, ['tag' => $tag->name, 'id' => $tag->id, 'tagToId' => $tagToId]);
 
 		return redirect('/' . PREFIX . '/list-tag/' . $tag->id);
     }

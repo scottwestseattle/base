@@ -202,7 +202,9 @@ class Definition extends Model
 		{
 			// 0 is okay so we can use the same flow for adding first tag
 			if ($tagId > 0)
+			{
 				$this->tags()->detach($tagId);
+			}
 		}
     }
 

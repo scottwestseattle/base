@@ -95,6 +95,11 @@ class Controller extends BaseController
         Cookie::queue('languageId', intval($languageId), COOKIE_WEEK);
     }
 
+	static function setUserLevel($userLevel)
+	{
+        Cookie::queue('userLevel', intval($userLevel), COOKIE_WEEK);
+    }
+
     static public function getLines(Entry $record)
     {
         $noTranslation = __('proj.(no translation)');

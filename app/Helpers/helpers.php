@@ -598,6 +598,14 @@ if (!function_exists('getLanguageId')) {
     }
 }
 
+if (!function_exists('isUserLevelCookieSet')) {
+	function isUserLevelCookieSet()
+	{
+        $rc = Cookie::get('userLevel');
+        return isset($rc);
+    }
+}
+
 if (!function_exists('isLanguageCookieSet')) {
 	function isLanguageCookieSet()
 	{
