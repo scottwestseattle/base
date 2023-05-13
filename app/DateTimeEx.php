@@ -273,10 +273,10 @@ class DateTimeEx
 	    return self::$colorsFull[$key];
     }
 
-	static public function getIndexByDay($array, $sDate = null)
+    // Using days since zero, not day of the year
+	static public function getIndexByDay($count, $sDate = null)
 	{
         $day = DateTimeEx::getDaysSinceZero($sDate);
-        $count = count($array);
 
         // put day in our range of choices
         $index = $day % $count;

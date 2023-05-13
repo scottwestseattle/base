@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
+use App\DateTimeEx;
 use App\Entry;
 use App\Gen\Spanish;
 use App\Site;
@@ -35,16 +36,27 @@ class Article extends Model
 		return ($this->release_flag);
     }
 
-    static public function getRandom()
+    static public function getExercise($subType)
     {
         $record = null;
 		$count = self::getCount();
 		if ($count > 1)
 		{
-			$rnd = rand(1, $count); // using the 1-based index
+		    $ix = 1;
+		    switch($subType)
+		    {
+		        case HISTORY_SUBTYPE_EXERCISE_RANDOM:
+        			$ix = rand(1, $count);                       // 1-based
+		            break;
+		        case HISTORY_SUBTYPE_EXERCISE_OTD:
+                    $ix = DateTimeEx::getIndexByDay($count) + 1; // 1-based
+		            break;
+		        default:
+		            break;
+		    }
 
             $parms['orderBy'] = 'id';
-            $parms['start'] = $rnd;
+            $parms['start'] = $ix;
 
             $record = self::getRecord($parms);
 		}

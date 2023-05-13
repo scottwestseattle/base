@@ -1230,7 +1230,7 @@ class Lesson extends Model
                 break;
             case HISTORY_SUBTYPE_OTD:
             case HISTORY_SUBTYPE_EXERCISE_OTD:
-                $ix = DateTimeEx::getIndexByDay($ids);
+                $ix = DateTimeEx::getIndexByDay(count($ids));
                 $id = $ids[$ix];
                 break;
             default:

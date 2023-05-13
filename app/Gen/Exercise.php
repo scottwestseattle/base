@@ -378,15 +378,7 @@ class Exercise extends Model
                     else
                     {
                         $icon = $iconText;
-                        if ($exercise->subtype_flag == HISTORY_SUBTYPE_EXERCISE_RANDOM)
-                        {
-                            $article = Article::getRandom();
-                        }
-                        else if ($exercise->subtype_flag == HISTORY_SUBTYPE_EXERCISE_OTD)
-                        {
-                            $article = Article::getRandom();
-                        }
-
+                        $article = Article::getExercise($exercise->subtype_flag);
                         if (isset($article))
                         {
                             $name = $article->title;
@@ -413,7 +405,14 @@ class Exercise extends Model
                         if (isset($record))
                         {
                             if (isset($record->course))
+                            {
                                 $courseTitle = $record->course->title;
+
+                                //todo: show chapter title here instead of just course and lesson titles
+                                //todo: no easy way to get chapter title
+                                //$lesson = $record->course->first(); // doesn't get the lesson with the chapter title
+                                //$courseTitle = $lesson->title_chapter;
+                            }
 
                             $title = $courseTitle . ': ' . $title;
                         }
