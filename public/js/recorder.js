@@ -311,14 +311,18 @@ function playRecording()
       })
 }
 
-function copyToReader(event, fromId, toId, scrollClass)
+function copyToReader(event, fromId, toId, toIdTranslation, scrollClass)
 {
-    var id = fromId;
-    fromId = '#' + fromId;
-
     event.preventDefault();
-    //console.log('from: ' + $(fromId).val());
+    var id = fromId;
+
+    // copy the title
+    fromId = '#' + fromId;
     $(toId).val($(fromId).val());
+
+    // copy the translation
+    fromId = fromId + '-translation';
+    $(toIdTranslation).val($(fromId).val());
 
 	var e = $(scrollClass).first();
 	var position = e.offset();

@@ -14,6 +14,17 @@
     $snippets = isset($options['snippets']) ? $options['snippets'] : [];
     $hasSnippets = !empty($snippets) && count($snippets) > 0;
     $countPublic = $countPrivate = 0;
+
+    //
+    // Active snippet
+    //
+    $snippetTitle = null;
+    $snippetTranslation = null;
+    if (isset($options['snippet']))
+    {
+        $snippetTitle = $options['snippet']->title;
+        $snippetTranslation = $options['snippet']->translation_en;
+    }
 @endphp
 
 <!-------------------------------------------------------->
@@ -67,16 +78,17 @@
                 name="textEdit"
                 class="form-control textarea-control textEdit"
                 placeholder="{{__('proj.Enter text to read')}}"
-                rows="4"
+                rows="2"
                 style="font-size:18px;"
-            >{{isset($options['snippet']) ? $options['snippet']->title : ''}}</textarea>
+            >{{$snippetTitle}}</textarea>
             </div>
         </div>
 
         <span class='mini-menu'>
-            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
+            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEditTranslation').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="copySnippet(event);" class="ml-1">@LANG('ui.Copy')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="pasteSnippet(event);" class="ml-1">@LANG('ui.Paste')<a/>
+            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#div-trans').toggle(); $('#translation').focus()" class="ml-1">{{trans_choice('ui.Translation', 1)}}<a/>
         </span>
 
         @if (!isMobile())
@@ -85,6 +97,12 @@
 
         <input type="hidden" name="returnUrl" value="{{$options['returnUrl']}}" />
 
+        <div id="div-trans" class="mt-1 hidden">
+            <textarea
+                id="textEditTranslation" name="textEditTranslation"
+                class="form-control textEdit" type="text" style="font-size:.8em;" placeholder="{{__('proj.Add Translation')}}" rows="2"
+            >{{$snippetTranslation}}</textarea>
+        </div>
 		{{csrf_field()}}
     </form>
 
@@ -174,8 +192,9 @@
                             <tr>
                                 <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
                                 @if ($showForm)
-                                    <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '.record-form');">{{Str::limit($record->title, 200)}}</a>
+                                    <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '#textEditTranslation', '.record-form');">{{Str::limit($record->title, 200)}}</a>
                                     <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />
+                                    <input id="{{$record->id}}-translation" type="hidden" value="{{$record->translation_en}}" />
                                     <div class="small-thin-text">{{$record->translation_en}}</div>
                                     @if (Str::startsWith($record->permalink, '-'))
                                         <div class="red">{{$record->permalink}}</div>
@@ -277,6 +296,7 @@ function pasteSnippet(event)
 
     $('#textEdit').focus();
     $('#textEdit').val('');
+    $('#textEditTranslation').val('');
 
     // paste the selection: try the old way first...
     var succeed;

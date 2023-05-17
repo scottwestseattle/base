@@ -680,6 +680,7 @@ class DefinitionController extends Controller
         $msg = null;
         $raw = trim($request->textEdit); // save the before version so we can tell if it gets changed
         $snippet = alphanumHarsh($raw);
+        $translation = alphanumHarsh(trim($request->textEditTranslation));
         $tag = "Text";
 
         try
@@ -711,6 +712,7 @@ class DefinitionController extends Controller
             }
 
             $msg = null;
+            $translation = Str::limit($translation, 500);
 
             //
             // check it if exists already
@@ -723,19 +725,16 @@ class DefinitionController extends Controller
                 // if it already exists let user or visitor update it
                 $exists = true;
                 $record->visitor_id = getVisitorInfo()['hash'];
-                $link = '/definitions/show/' . $record->id;
                 $link = '/definitions/view/' . $record->permalink;
             }
 
-            if (!$exists) // already exists, so don't create it again
+            if (!$exists) // not found in snippets, check dictionary
             {
-                $record = Definition::get($snippet);      // check dictionary
+                $record = Definition::get($snippet); // check dictionary
                 if (isset($record))
                 {
                     $exists = true;
                     $link = '/definitions/view/' . $record->permalink;
-                    //flash('danger', __('base.record already exists'));
-                    //return redirect('/' . PREFIX . '/view/' . $definition->permalink);
                 }
             }
 
@@ -743,11 +742,27 @@ class DefinitionController extends Controller
             // create it for the user as private
             //
 
-            if (!$exists)
+            if ($exists)
+            {
+                //
+                // check if only translation has been updated
+                //
+                if ($record->translation_en != $translation)
+                {
+                    $record->translation_en = $translation;
+        			$record->save();
+
+                    logInfo($f, __("proj.Translation has been updated"), ['title' => $record->title, 'id' => $record->id, 'translation' => $record->translation_en]);
+
+                    return redirect($request->returnUrl);
+                }
+            }
+            else
             {
                 $record = new Definition();
 
                 $record->title          = Str::limit($snippet, 500);
+                $record->translation_en = Str::limit($translation, 500);
                 $record->user_id        = Auth::check() ? Auth::id() : USER_ID_NOTSET;
                 $record->type_flag 		= DEFTYPE_SNIPPET;
                 $record->pos_flag 		= DEFINITIONS_POS_SNIPPET;
