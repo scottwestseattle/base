@@ -159,7 +159,7 @@ return [
 'Article of the Day' => '今天的文章',
 'Read All' => '阅读所有文本',
 'Quiz' => '测验',
-'Practice Language' => '我想实践',
+'Practice' => '我想实践',
 'Delete Article' => '删除文章',
 'Text already exists' => '词语或短语已经存在',
 'Dictionary Examples' => '词典实例',

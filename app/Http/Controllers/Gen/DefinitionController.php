@@ -1486,6 +1486,7 @@ class DefinitionController extends Controller
     {
         // set up the parms
         $parms = crackParms($request);
+        $parms = Definition::crackOrderNEW($parms, 'stats.qna_at, stats.viewed_at, definitions.id');
 
         // language parms
         $siteLanguage = Site::getLanguage()['id'];
@@ -1497,6 +1498,9 @@ class DefinitionController extends Controller
         $parms['title'] = (empty($parms['tagId']) || !isset($record->tag_name)) ? 'Review All' : $record->tag_name;
 
         $action = isset($parms['action']) ? alpha($parms['action']) : ''; // default to blank
+
+        //dump('favoritesReview');
+        //dump($parms);
 
 		if ($action == 'flashcards')
 		    return $this->doList($parms);
@@ -1540,6 +1544,7 @@ class DefinitionController extends Controller
         //todo: $lists = Definition::getUserFavoriteLists();
 
 		return view($settings['view'], [
+		    'parms' => $parms,
 			'sentenceCount' => $count,
 			'records' => $qna,
 			'canEdit' => true,

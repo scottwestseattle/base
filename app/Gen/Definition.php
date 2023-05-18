@@ -1246,6 +1246,17 @@ class Definition extends Model
 
 	static public function crackOrder($parms, $default)
     {
+        $crackOrder = self::crackOrderNEW($parms, $default);
+        $orderBy = isset($crackOrder['orderBy']) ? $crackOrder['orderBy'] : $default;
+        return $orderBy;
+    }
+
+    //
+    // TODO: need to finish implementing this everywhere that "crackOrder() is called"
+    // then replace crackOrder with crackOrderNEW
+    //
+	static public function crackOrderNEW($parms, $default)
+    {
         $order = isset($parms['order']) ? strtolower(alphanum($parms['order'], false, '-')) : $default;
 
         if ($order === 'help')
@@ -1254,6 +1265,7 @@ class Definition extends Model
         }
 
         $orderBy = 'id';
+        $showReload = false;
         switch($order)
         {
             case 'reads-asc':
@@ -1276,15 +1288,19 @@ class Definition extends Model
                 break;
             case 'attempts':
                 $orderBy = 'stats.qna_attempts DESC, id DESC';
-                break;
+                $showReload = true;
+               break;
             case 'attempts-asc':
                 $orderBy = 'stats.qna_attempts, stats.qna_at, id';
+                $showReload = true;
                 break;
             case 'attempts-at':
                 $orderBy = 'stats.qna_at, id';
+                $showReload = true;
                 break;
             case 'score':
                 $orderBy = 'stats.qna_score DESC, id DESC';
+                $showReload = true;
                 break;
             case 'views':
                 $orderBy = 'stats.views DESC, id DESC';
@@ -1308,10 +1324,13 @@ class Definition extends Model
                 break;
         }
 
-        return $orderBy;
+        $parms['orderBy']      = $orderBy;
+        $parms['showReload']   = $showReload;
+
+        return $parms;
     }
 
-	static public function getUserFavorites($parms = null)
+	static public function getUserFavorites($parms = [])
 	{
 	    //dump($parms);
 
@@ -1322,7 +1341,7 @@ class Definition extends Model
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
-        $orderBy = self::crackOrder($parms, 'stats.qna_at, stats.viewed_at, definitions.id');
+		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'stats.qna_at, stats.viewed_at, definitions.id';
 		$tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
 		$tagIdCondition = $tagId > 0 ? '=' : '>=';
 
@@ -1407,7 +1426,7 @@ class Definition extends Model
 		}
     }
 
-	static public function getReview($parms = null)
+	static public function getReview($parms = [])
 	{
 		$records = [];
 

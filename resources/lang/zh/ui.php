@@ -192,4 +192,6 @@ return [
 'Select' => '选择',
 'Show Translation' => '显示翻译',
 'Italian' => '意大利语',
+'Reload' => '重新加载',
+'Repeat' => '重复进行',
 ];

@@ -159,7 +159,7 @@ return [
 'Article of the Day' => 'Article of the Day',
 'Read All' => 'Read All',
 'Quiz' => 'Quiz',
-'Practice Language' => 'Practice',
+'Practice' => 'Practice',
 'Delete Article' => 'Delete Article',
 'Text already exists' => 'Word or Phrase already exists',
 'Dictionary Examples' => 'Dictionary Examples',

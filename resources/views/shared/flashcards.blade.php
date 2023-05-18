@@ -7,6 +7,10 @@
     $random = isset($random) && $random ? 1 : 0;
     $touchPath = isset($touchPath) ? $touchPath : null;
     $language = getSpeechLanguageShort();
+    $programName = isset($history['programName']) ? $history['programName'] : null;
+
+    // only need reload if not already showing entries OR sort type would change the entries
+    $showReload = isset($parms['showReload']) ? $parms['showReload'] : false;
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
@@ -54,33 +58,31 @@
 	<!-------------------------------------------------------->
 	<!-- Header -->
 	<!-------------------------------------------------------->
-	<div style="margin-top: 5px;">
-
+	<div style="margin-top: 5px; margin-bottom:0px;">
 		<div id="statsRuntime">
             <!-------------------------------------------------------->
             <!-- Top Return Button -->
             <!-------------------------------------------------------->
-			<div class="middle mr-1 mb-1">
+			<div class="middle mr-1 mb-0">
                 <a href="/"><span style="margin-right:3px;" class="glyphicon glyphicon-home"></span></a>
                 <a href="{{$returnPath}}"><button type="button" class="btn btn-xs btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</div>
+
             <!-------------------------------------------------------->
             <!-- Run-time Stats -->
             <!-------------------------------------------------------->
-			<div class="middle mb-2">
+			<div class="middle mb-0">
 	    		<span id="statsCount" class="mr-2"></span>
     			<span id="statsScore" class=""></span>
 		    	<span id="statsAlert"></span><!-- what is this? -->
 		    </div>
 		</div>
-
-
-	</div>
+    </div>
 
 	<!---------------------------------------------------------------------------------------------------------------->
 	<!-- Quiz Panel -->
 	<!---------------------------------------------------------------------------------------------------------------->
-	<div id="panel-quiz" style="" class="quiz-panel">
+	<div id="panel-quiz" class="quiz-panel">
 
 	@if (count($records) > 0)
 
@@ -89,12 +91,16 @@
 	<!-------------------------------------------------------->
 	<!-- Instructions -->
 	<!-------------------------------------------------------->
+	<div class="text-center steelblue" id="" style="font-size: .9em; margin-bottom:10px;">
+		<!-------------------------------------------------------->
+		<!-- Show the title -->
+		<!-------------------------------------------------------->
+        <div style="font-weight:500; font-size:1.1em;">{{$programName}}</div>
 
-	<div class="text-center" id="" style="font-size: 1em; margin-bottom:10px;">
 		<!-------------------------------------------------------->
-		<!-- SHOW Question prompt and results RIGHT/WRONG -->
+		<!-- Show Question prompt and results RIGHT/WRONG -->
 		<!-------------------------------------------------------->
-		<span id="alertPrompt" style=""></span>
+		<span id="alertPrompt"></span>
 	</div>
 
 	<!-------------------------------------------------------->
@@ -292,7 +298,10 @@
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Restart')</button>
+		    @if ($showReload)
+    			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); location.reload();" id="button-reload">@LANG('ui.Reload')</button>
+            @endif
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Repeat')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 

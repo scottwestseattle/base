@@ -192,4 +192,6 @@ return [
 'Select' => 'Seleccionar',
 'Show Translation' => 'Ver Traducción',
 'Italian' => 'Italiano',
+'Reload' => 'Recargar',
+'Repeat' => 'Repitir',
 ];
