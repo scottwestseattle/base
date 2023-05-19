@@ -1665,6 +1665,7 @@ class DefinitionController extends Controller
 	public function reviewSnippets(Request $request)
     {
         $parms = crackParms($request);
+        $parms = Definition::crackOrderNEW($parms, 'id DESC');
         $parms['type'] = DEFTYPE_SNIPPET;
         $parms['records'] = Definition::getReview($parms);
         $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
