@@ -173,27 +173,52 @@
 				<label for="checkbox-flip" class="checkbox-xs steelblue" onclick="reloadQuestion('checkbox-flip-flashcards');">@LANG('quiz.Reverse question and answer')</label>
 			</div>
 			<div class="mt-1 ml-1">
-				<input type="checkbox" name="checkbox-show" id="checkbox-show" onclick="$('#panel-show').toggle();" />
-				<label for="checkbox-show" class="checkbox-xs steelblue">@LANG('ui.Show All')</label>
-			</div>
-			<div class="mt-1 ml-1">
 				<input type="checkbox" name="checkbox-random" id="checkbox-random" onclick="updateRandom();" {{$random ? 'checked' : ''}} />
 				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
 			</div>
 
-			<div class="mt-1 ml-1 small-thin-text">
-                <a type="button" class="btn btn-primary btn-sm" id="readEntry" href="" onclick="event.preventDefault(); read($('#flashcard-answer').html())">{{__('proj.Read Entry')}}</a>
-                <a type="button" class="btn btn-primary btn-sm" id="copyEntry" href="" onclick="clipboardCopy(event, '', 'flashcard-answer', false, true);">{{__('proj.Copy Entry')}}</a>
-                <span class="ml-2" id="copyStatus"></span>
+            @php
+                $iconSize = 16;
+                $iconSizeBigger = $iconSize + 5;
+                $iconColor = 'steelblue';
+            @endphp
+			<div class="small-thin-text">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="goToEntry" href="" target="_blank">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#pencil-square" /></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="readEntry" href="" onclick="event.preventDefault(); read($('#flashcard-answer').html())">
+                            <svg class="" width="{{$iconSizeBigger}}" height="{{$iconSizeBigger}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#volume-up" /></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="copyEntry" href="" onclick="clipboardCopy(event, '', 'flashcard-answer', false, true);">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#clipboard" /></svg>
+                        </a>
+                        <span class="ml-2" id="copyStatus"></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="" href="" onclick="event.preventDefault(); $('#panel-show').toggle();">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#list-ol" /></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="dropdown" role="button" href="" onclick="" tablindex="-1">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
+                        </a>
+                        <ul class="small-thin-text dropdown-menu dropdown-menu-right">
+                            <li><a id="deleteEntryIcon" class="dropdown-item" href="" onclick="{{isset($onclick) ? $onclick : ''}}">@LANG('ui.Confirm Delete')</a></li>
+                        </ul>
+	                </li>
+                </ul>
 			</div>
 
+            @if (false) // todo: doesn't work in js yet
 			<div class="mt-1 ml-1 small-thin-text">
-                <a type="button" class="btn btn-primary btn-sm" id="goToEntry" href="" target="_blank">{{__('proj.Go To Entry')}}</a>
-                @if (false) // old way, not ajax
-                <a type="button" class="btn btn-primary btn-sm" id="deleteEntry" href="" target="_blank">{{__('base.Delete Entry')}}</a>
-                @endif
                 @if (Auth::check())
-                    @if (false) // todo: doesn't work in js yet
                     @component('gen.definitions.component-heart', [
                         'record' => $record,
                         //'id' => $id,
@@ -201,11 +226,8 @@
                         //'status' => $status,
                     ])@endcomponent
                     @endif
-
-            		<div class="middle ml-2">@component('components.control-delete-glyph', ['id' => 'deleteEntryIcon', 'svg' => 'trash-fill', 'href' => "", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
-                    <span class="ml-2" id="deleteStatus"></span>
-                @endif
 			</div>
+            @endif
 		</div>
 
 		<!-- BUTTONS ROW 2 -->
@@ -311,14 +333,9 @@
 	<!-- Show Flashcards Panel -->
 	<!---------------------------------------------------------------------------------------------------------------->
     <div id="panel-show" style="clear:both; display:none; min-height:500px; overflow-y:auto;">
-        <table><tbody>
-        @foreach($records as $card)
-        <tr class="mb-3">
-            <td class="pb-4 pr-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$card['q']}}</td>
-            <td class="pb-4" style="vertical-align:top;">{{$loop->index + 1}}) {{$card['a']}}</td>
-        </tr>
-        @endforeach
-        </tbody></table>
+        <span id="translation" name="translation" class="">
+            @component('shared.flashcards-view', ['records' => $records])@endcomponent
+        </span>
     </div>
 
 @endif
