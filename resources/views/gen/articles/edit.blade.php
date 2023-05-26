@@ -75,8 +75,10 @@
                     <div id="tab-tab1" style="clear:both; display:default;">
                         <ul class="nav">
                             <li class="ml-2"><a id="flash1" onclick="clipboardCopy(event, 'flash1', 'description', false)" href="" tabindex="-1" class="small-thin-text">@LANG('ui.Copy')</a></li>
+                            <li class="ml-2"><a onclick="event.preventDefault(); $('#description').val(''); pasteText('#description');" href="" tabindex="-1" class="small-thin-text">@LANG('ui.Paste')</a></li>
                             <li class="ml-2"><a id="flash1a" onclick="event.preventDefault(); $('#description').val(getSentences($('#description').val())); $('#flash1a').css('color', 'red');" href="" tabindex="-1" class="small-thin-text">@LANG('proj.Split Sentences')</a></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); $('#description').val(''); $('#description').focus();" class="small-thin-text ml-1">@LANG('ui.Clear')<a/></li>
+                            <li class="ml-2"><a href="" onclick="event.preventDefault(); $('#description').val(''); $('#description_translation').val(''); $('#description').focus();" class="small-thin-text ml-1">@LANG('ui.Clear All')<a/></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); swap('description', 'description_translation');" class="small-thin-text ml-1">@LANG('ui.Swap')<a/></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); fixCase('description');" class="small-thin-text ml-1">@LANG('proj.Fix Case')<a/></li>
                         </ul>
@@ -86,8 +88,10 @@
                     <div id="tab-tab2" style="clear:both; display:none;">
                         <ul class="nav">
                             <li class="ml-2"><a id="flash2" onclick="clipboardCopy(event, 'flash2', 'description_translation', false)" href="" tabindex="-1" class="small-thin-text">@LANG('ui.Copy')</a></li>
+                            <li class="ml-2"><a onclick="event.preventDefault(); $('#description_translation').val(''); pasteText('#description_translation');" href="" tabindex="-1" class="small-thin-text">@LANG('ui.Paste')</a></li>
                             <li class="ml-2"><a id="flash2a" onclick="event.preventDefault(); $('#description_translation').val($('#sentences_translation').val()); $('#flash2a').css('color', 'red');" href="" tabindex="-1" class="small-thin-text">@LANG('proj.Split Sentences')</a></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); $('#description_translation').val(''); $('#description_translation').focus();" class="small-thin-text ml-1">@LANG('ui.Clear')<a/></li>
+                            <li class="ml-2"><a href="" onclick="event.preventDefault(); $('#description').val(''); $('#description_translation').val(''); $('#description_translation').focus();" class="small-thin-text ml-1">@LANG('ui.Clear All')<a/></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); swap('description', 'description_translation');" class="small-thin-text ml-1">@LANG('ui.Swap')<a/></li>
                             <li class="ml-2"><a href="" onclick="event.preventDefault(); fixCase('description_translation');" class="small-thin-text ml-1">@LANG('proj.Fix Case')<a/></li>
                         </ul>

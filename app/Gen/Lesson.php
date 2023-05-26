@@ -1215,7 +1215,7 @@ class Lesson extends Model
 	static public function getByHistorySubType($subType)
     {
         $id = 0;
-        $ids = [18, 1272, 1273, 1323, 1324, 1329, 1303, 1330, 1333, 1340, 1342];
+        $ids = [1272, 1273, 1323, 1324, 1329, 1303, 1333, 1340, 1342];
 
         switch($subType)
         {

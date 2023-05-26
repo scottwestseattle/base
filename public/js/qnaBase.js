@@ -844,7 +844,7 @@ function updateScore()
 	var percent = total > 0 ? (right / total) * 100 : 0;
 	percent = percent.toFixed(2).replace(/\.?0*$/,'');
 
-	$("#statsCount").html("<span class='quizStats'>" + quiz.quizTextQuestion + " " + nbr + " " + quiz.quizTextOf + " " + statsMax + "</span>");
+	$("#statsCount").html("<span class='quizStats'>" + /*quiz.quizTextQuestion + " " + */ nbr + " " + quiz.quizTextOf + " " + statsMax + "</span>");
 	$("#statsScore").html("<span class='quizStats'>" + quiz.quizTextCorrect + ": " + right + "/" + total + " (" + percent + "%)</span>");
 	$("#statsDebug").html("<span class='quizStats'>"
 		+ "round=" + round

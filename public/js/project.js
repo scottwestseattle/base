@@ -1627,3 +1627,35 @@ function setUserLevel(id)
     var path = '/setuserlevel/' + id;
     ajaxexecreload(path);
 }
+
+function pasteText(id)
+{
+    // paste the selection: try the old way first...
+    var succeed;
+    try {
+        succeed = document.execCommand("paste");
+        console.log('execCommand: text pasted = ' + succeed);
+    } catch(e) {
+        succeed = false;
+		console.log('execCommond: error copying text');
+	}
+
+	if (!succeed)
+	{
+        if (typeof navigator.clipboard.readText === "function")
+        {
+            navigator.clipboard
+                .readText()
+                .then(cliptext =>
+                    $(id).val(cliptext),
+                    err => console.log(err)
+                );
+
+    		console.log('navigator.clipboard.readText: pasted');
+        }
+        else
+        {
+    		console.log('navigator.clipboard.readText: not found');
+        }
+	}
+}
