@@ -126,7 +126,7 @@ class Lesson extends Model
 		{
 			$search = '%' . $search . '%';
 
-			if (User::isSuperAdmin())
+			if (User::isAdmin() || Auth::check())
 			{
 				// where 'deleted_flag = 0' AND (title like %search% OR text like %search%)
 				$records = Lesson::select()
@@ -147,15 +147,6 @@ class Lesson extends Model
 					->orderBy('lessons.lesson_number')
 					->orderBy('lessons.section_number')
 					->get();
-			}
-			else if (isAdmin())
-			{
-			}
-			else if (Auth::check())
-			{
-			}
-			else
-			{
 			}
 		}
 		catch(\Exception $e)

@@ -2,12 +2,13 @@
     $definitions = isset($results['definitions']) ? $results['definitions'] : null;
     $snippets = isset($results['snippets']) ? $results['snippets'] : null;
     $entries = isset($results['entries']) ? $results['entries'] : null;
+    $lessons = isset($results['lessons']) ? $results['lessons'] : null;
     $count = isset($results['count']) ? $results['count'] : null;
     $search = isset($results['search']) ? $results['search'] : null;
     $matches = strtolower(trans_choice('ui.Match', ($count > 1 || $count == 0) ? 2 : 1));
 @endphp
 <div class="table" style="" id="searchDefinitionsResultsTable">
-    <table  class="table-responsive table-condensed medium-text" style="">
+    <table  class="table-responsive table-condensed medium-text">
         <thead>
             <tr>
                 <td style="xmin-width: 100px;">
@@ -18,41 +19,35 @@
     </table>
     <table class="table table-striped">
         <tbody>
-
         @if (isset($definitions))
             @foreach($definitions as $record)
                 <tr>
-                    <td style="width:150px;">@LANG('proj.Dictionary')</td>
-                    <td><a href="/definitions/view/{{$record->permalink}}" target="">{{$record->title}}</a></td>
+                    <td><a class="m-0" href="/definitions/view/{{$record->permalink}}" target="">{{$record->title}}</a><div class="small-thin-text">{{$record->translation_en}}</div></td>
                 </tr>
             @endforeach
         @endif
-
         @if (isset($snippets))
             @foreach($snippets as $record)
                 <tr>
-                    <td style="width:150px;">@LANG('proj.Practice Text')</td>
                     @php
                         $title = str_ireplace($search, highlightText($search), $record->title)
                     @endphp
-                    @if (isAdmin() || App\User::isOwner($record->user_id))
-                        <td><a href="/definitions/edit/{{$record->id}}" target="">{!! $title !!}</a></td>
-                    @else
-                        <td><a href="/definitions/view/{{$record->permalink}}" target="">{!! $title !!}</a></td>
-                    @endif
+                    <td>
+                        <a class="m-0" href="/definitions/edit-or-show/{{$record->id}}" target="">{!! $title !!}</a>
+                        <div class="small-thin-text">{{$record->translation_en}}</div>
+                    </td>
                 </tr>
             @endforeach
         @endif
-
         @if (isset($entries))
             @foreach($entries as $record)
                 <tr>
                     <td>{{trans_choice('proj.' . $record->getTypeFlagName($record->type_flag), 2)}}</td>
                     <td>
                     @if ($record->isBook())
-                        <div><a href="/books/show/{{$record->permalink}}">{{Str::startsWith($record->title, $record->source) ? '' : $record->source . ', '}}{{$record->title}}</a></div>
+                        <div><a class="m-0" href="/books/show/{{$record->permalink}}">{{Str::startsWith($record->title, $record->source) ? '' : $record->source . ', '}}{{$record->title}}</a></div>
                     @else
-                        <div><a href="/articles/view/{{$record->permalink}}">{{$record->title}}</a></div>
+                        <div><a class="m-0" href="/articles/view/{{$record->permalink}}">{{$record->title}}</a></div>
                     @endif
                         @if (isset($record->matches))
                             @foreach($record->matches as $match)
@@ -64,36 +59,15 @@
                 </tr>
             @endforeach
         @endif
-
         @if (isset($lessons))
             @foreach($lessons as $record)
                 <tr>
-                    <td>{{trans_choice('proj.Lesson', 2)}}</td>
-                    <td><a href="/lessons/view/{{$record->id}}" target="">{{$record->courseTitle}} - {{$record->lesson_number}}.{{$record->section_number}} {{$record->title}}</a></td>
+                    <!-- td>{{trans_choice('proj.Lesson', 2)}}</td -->
+                    <td><a class="m-0" href="/lessons/view/{{$record->id}}" target="">{{$record->courseTitle}} - {{$record->lesson_number}}.{{$record->section_number}} {{$record->title}}</a></td>
                 </tr>
             @endforeach
         @endif
-
-        @if (isset($words))
-            @foreach($words as $record)
-                <tr>
-                    @if ($record->isLessonWord())
-                        <td>@LANG('content.Lesson')</td>
-                        <td><a href="/lessons/view/{{$record->parent_id}}" target="">{{$record->courseTitle}} - {{$record->lesson_number}}.{{$record->section_number}} {{$record->lessonTitle}}</a></td>
-                    @elseif ($record->isVocabListWord())
-                        <td>@LANG('content.Vocabulary')</td>
-                        <td>
-                            <a href="/words/view/{{$record->id}}" target="_blank">{{$record->title}}</a>
-                            &nbsp;(<a href="/vocab-lists/view/{{$record->vocab_list_id}}" target="">@LANG('content.List')</a>)
-                        </td>
-                    @else
-                        <td>@LANG('content.Vocabulary')</td>
-                        <td><a href="/words/view/{{$record->id}}" target="">{{$record->title}}</a></td>
-                    @endif
-                </tr>
-            @endforeach
-        @endif
-
         </tbody>
     </table>
 </div>
+

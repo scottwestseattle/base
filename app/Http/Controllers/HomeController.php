@@ -446,6 +446,9 @@ class HomeController extends Controller
 		]);
 	}
 
+    //
+    // this handles the global search from the menu bar
+    //
     public function searchAjax(Request $request, $searchText, $searchType = SEARCHTYPE_DICTIONARY)
     {
         $searchType = intval($searchType);
@@ -456,7 +459,7 @@ class HomeController extends Controller
 		$options['snippets'] = ($searchType === SEARCHTYPE_SNIPPETS || $searchType === SEARCHTYPE_DICTIONARY);
 		$options['entries'] = ($searchType === SEARCHTYPE_ENTRIES);
 		$options['word'] = false;
-		$options['lessons'] = false;
+		$options['lessons'] = ($searchType === SEARCHTYPE_DICTIONARY);
 		$options['language'] = getLanguageId(); // not used but shows the current session language when it's dumped
 
 		$results = [];
@@ -464,10 +467,10 @@ class HomeController extends Controller
 		if ($isPost)
 		{
 			// do the search
-			$options['dictionary'] = isset($request->dictionary_flag) ? true : false;
-			$options['snippets'] = isset($request->snippets_flag) ? true : false;
-			$options['entries'] = isset($request->articles_flag) ? true : false;
-			$options['word'] = isset($request->word_flag) ? true : false;
+			$options['dictionary'] = isset($request->dictionary_flag);
+			$options['snippets'] = isset($request->snippets_flag);
+			$options['entries'] = isset($request->articles_flag);
+			$options['word'] = isset($request->word_flag);
 		}
 
         $searchText = alphanum($searchText);
@@ -487,6 +490,7 @@ class HomeController extends Controller
 		$results['definitions'] = null;
 		$results['snippets'] = null;
 		$results['entries'] = null;
+		$results['lessons'] = null;
 		$results['search'] = null;
 
         $search = alphanum($searchText);
@@ -517,6 +521,12 @@ class HomeController extends Controller
             {
                 $results['entries'] = Article::search($search, $options);
                 $count += (isset($results['entries']) ? count($results['entries']) : 0);
+            }
+
+            if ($options['lessons'])
+            {
+                $results['lessons'] = Lesson::search($search);
+                $count += (isset($results['lessons']) ? count($results['lessons']) : 0);
             }
 
             $results['search'] = $search;
