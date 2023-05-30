@@ -1493,6 +1493,7 @@ class DefinitionController extends Controller
         $parms['languageId'] = $siteLanguage;
         $parms['languageFlagCondition'] = ($siteLanguage == LANGUAGE_ALL) ? '<=' : '=';
         $parms['records'] = Definition::getUserFavorites($parms);
+        //todo: $parms['recordsTotal'] = Definition::getUserFavoriteCount($parms);
         $parms['historyType'] = HISTORY_TYPE_FAVORITES;
         $record = isset($parms['records'][0]) ? $parms['records'][0] : null;
         $parms['title'] = (empty($parms['tagId']) || !isset($record->tag_name)) ? 'Review All' : $record->tag_name;
@@ -1538,7 +1539,6 @@ class DefinitionController extends Controller
         $tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
         $parms['route'] = crackUri(2);
         $history = History::getArray($title, $tagId, $parms['historyType'], $parms['source'], History::getReviewType($parms['action']), $count, $parms);
-        //dump($history);
 
         //todo: finish plugging in lists
         //todo: $lists = Definition::getUserFavoriteLists();
@@ -1589,6 +1589,7 @@ class DefinitionController extends Controller
         $parms['records'] = Definition::getNewest($parms['count'], /* $random = */ true);
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
         $parms['source'] = HISTORY_SUBTYPE_EXERCISE_NEWEST;
+        $parms['title'] = __('proj.:count Newest Words', ['count' => $parms['count']]);
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1600,7 +1601,7 @@ class DefinitionController extends Controller
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
         $parms['records'] = Definition::getRankedVerbs($parms['count']);
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
-        $parms['title'] = 'Most Common Verbs';
+        $parms['title'] = __('proj.:count Most Common Verbs', ['count' => $parms['count']]);
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1612,7 +1613,7 @@ class DefinitionController extends Controller
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
 		$parms['records'] = Definition::getNewestVerbs($parms['count']);
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
-        $parms['title'] = 'Newest Verbs';
+        $parms['title'] = __('proj.:count Newest Verbs', ['count' => $parms['count']]);
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1624,6 +1625,7 @@ class DefinitionController extends Controller
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
 		$parms['records'] = Definition::getRandomWords($parms['count']);
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['title'] = __('proj.:count Random Words', ['count' => $parms['count']]);
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1634,8 +1636,8 @@ class DefinitionController extends Controller
     {
    		$parms = crackParms($request, ['action' => 'list', 'count' => DEFAULT_REVIEW_LIMIT]);
 		$parms['records'] = Definition::getRandomVerbs($parms['count']);
-        $parms['title'] = 'Random Verbs';
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
+        $parms['title'] = __('proj.:count Random Verbs', ['count' => $parms['count']]);
 
 		return ($parms['action'] == 'read')
 		    ? $this->readWords($parms)
@@ -1656,6 +1658,7 @@ class DefinitionController extends Controller
         $parms = crackParms($request, ['count' => 20, 'order' => 'attempts-asc', 'action' => 'flashcards']);
         $parms['type'] = DEFTYPE_DICTIONARY;
         $parms['records'] = Definition::getReview($parms);
+        //todo: $parms['recordsTotal'] = Definition::getReviewCount($parms);
         $parms['historyType'] = HISTORY_TYPE_DICTIONARY;
         $parms['source'] = HISTORY_SUBTYPE_EXERCISE_LEAST_USED;
 
@@ -1668,6 +1671,7 @@ class DefinitionController extends Controller
         $parms = Definition::crackOrderNEW($parms, 'id DESC');
         $parms['type'] = DEFTYPE_SNIPPET;
         $parms['records'] = Definition::getReview($parms);
+        //todo: $parms['recordsTotal'] = Definition::getReviewCount($parms);
         $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
 
 		return $this->doList($parms);
@@ -1881,11 +1885,15 @@ class DefinitionController extends Controller
         ];
 
         $parms['route'] = crackUri(2);
-        $history = History::getArray($parms['title'], 0, HISTORY_TYPE_DICTIONARY, $parms['source'], LESSON_TYPE_READER, count($lines['text']), $parms);
+
+        // make the title
+        $title = Exercise::makeTitle($parms);
+
+        $history = History::getArray($title, 0, HISTORY_TYPE_DICTIONARY, $parms['source'], LESSON_TYPE_READER, count($lines['text']), $parms);
 
     	return view('shared.reader', [
     	    'lines' => $lines,
-    	    'title' => $parms['title'],
+    	    'title' => $title,
     	    'options' => $options,
 			'contentType' => 'Snippet',
 			'languageCodes' => getSpeechLanguage($languageFlag),

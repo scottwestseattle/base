@@ -8,7 +8,20 @@
 	$hasTranslation = isset($lines['translation']);// && count($lines['text']) == count($lines['translation']); // translation matches text
 	$showTranslationControls = isset($lines['translation']); // show the translation in case it needs work
 	$mobileOnly = false && isMobile() ? '' : 'hidden'; // off for now
-	$isDefinition = ($contentType !== 'Entry');
+    $isDefinition = true;
+    $pauseSecondsId = "pause_seconds_definitions";
+    $pauseSecondsIdPound = '#' . $pauseSecondsId;
+	if ($contentType === 'Entry') // save 'pause seconds' separately for entries and definitions
+	{
+	    // articles or books
+	    $isDefinition = false;
+	    $pauseSecondsId = "pause_seconds_entry";
+        $pauseSecondsIdPound = '#' . $pauseSecondsId;
+	}
+	else
+	{
+	    // snippets or definitions: use default values set above
+	}
 
     // read options
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
@@ -29,6 +42,7 @@
 	data-language-long="{{$languageCodes['long']}}"
 	data-type="{{$contentType}}"
 	data-contenttype="{{$contentType}}"
+	data-pauseSecondsId="{{$pauseSecondsIdPound}}"
 	data-contentid="{{$recordId}}"
 	data-isadmin="{{isAdmin() ? 1 : 0}}"
 	data-userid="{{Auth::id()}}"
@@ -198,9 +212,9 @@
             <hr />
             <div class="m-0">
                 <div>@LANG('proj.Seconds to pause between lines'):</div>
-                <a onclick="inc(event, '#pause_seconds', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
-                <div class="middle mb-2" style="min-width:30px;"><span class="ml-2 mr-2" style="font-size:25px;" id="pause_seconds">0</span></div>
-                <a onclick="inc(event, '#pause_seconds', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
+                <a onclick="inc(event, '{{$pauseSecondsIdPound}}', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
+                <div class="middle mb-2" style="min-width:30px;"><span class="ml-2 mr-2" style="font-size:25px;" id="{{$pauseSecondsId}}">0</span></div>
+                <a onclick="inc(event, '{{$pauseSecondsIdPound}}', 1)" href=""><span class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
             </div>
             <hr />
             <div class="m-0">

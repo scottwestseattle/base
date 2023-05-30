@@ -71,10 +71,10 @@ $(document).ready(function() {
     //
     // get the last pause seconds setting and use it
     //
-    var pauseSeconds = localStorage['#pause_seconds'];
+    var pauseSeconds = localStorage[deck.pauseSecondsId];
 	pauseSeconds = (pauseSeconds) ? parseInt(pauseSeconds) : 0;
 	//console.log('pause seconds: ' + pauseSeconds);
-    $('#pause_seconds').html(pauseSeconds);
+    $(deck.pauseSecondsId).html(pauseSeconds);
 
     //
     // get the last random setting and use it
@@ -415,6 +415,9 @@ function loadData()
 		deck.contentType = container.data('contenttype');
 		deck.contentId = container.data('contentid');
 		deck.readLocationTag += deck.contentType + deck.contentId;
+
+        // to save and reload read 'pause seconds'
+		deck.pauseSecondsId = container.data('pausesecondsid');
 
 		// this is the read location from the db
 		deck.readLocationOtherDevice = parseInt(container.data('readlocation'), 10);
@@ -1026,7 +1029,7 @@ function readNext()
 
 function pauseReadNext()
 {
-    var pauseSeconds = parseInt($("#pause_seconds").text());
+    var pauseSeconds = parseInt($(deck.pauseSecondsId).text());
 
     if (_pauseTimerId)
         clearTimeout(_pauseTimerId);
@@ -1181,7 +1184,21 @@ function getSelectedText(clicks)
     } else if (document.selection && document.selection.type != "Control") {
         text = document.selection.createRange().text;
     }
+
+    // clean text
 	text = text.trim();
+
+    // clean double-quotes
+    text = text.replace(/"/g, '\\x22');
+    text = text.replace(/“/g, '\\x22');
+    text = text.replace(/”/g, '\\x22');
+    text = text.replace(/„/g, '\\x22');
+
+    // clean single-quotes
+    text = text.replace(/`/g, '\\x27');
+    text = text.replace(/'/g, '\\x27');
+    text = text.replace(/❛/g, '\\x27');
+
 	if (text.length > 0)
 	{
 		if (text == _selectedWordThrottle)

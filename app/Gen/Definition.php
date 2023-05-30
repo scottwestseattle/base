@@ -1435,7 +1435,7 @@ class Definition extends Model
         $count = isset($parms['count']) ? $parms['count'] : DEFAULT_REVIEW_LIMIT;
         $orderBy = self::crackOrder($parms, 'id DESC');
         $getCountOnly = (isset($parms['getCount']) && $parms['getCount']); // get the record count from the db instead of the records
-        $count = $getCountOnly ? PHP_MAX_INT : $count;
+        $count = $getCountOnly ? PHP_INT_MAX : $count;
         $typeFlag = isset($parms['type']) ? $parms['type'] : DEFTYPE_SNIPPET;
 
 		try
