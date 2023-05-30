@@ -253,6 +253,7 @@
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); location.reload();" id="button-continue2">@LANG('ui.Reload')</button>
 			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Restart')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
