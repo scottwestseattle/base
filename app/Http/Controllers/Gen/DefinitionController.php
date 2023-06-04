@@ -1540,8 +1540,8 @@ class DefinitionController extends Controller
         $parms['route'] = crackUri(2);
         $history = History::getArray($title, $tagId, $parms['historyType'], $parms['source'], History::getReviewType($parms['action']), $count, $parms);
 
-        //todo: finish plugging in lists
-        //todo: $lists = Definition::getUserFavoriteLists();
+        // get user's favorites lists
+        $parms['favoriteLists'] = Definition::getUserFavoriteLists();
 
 		return view($settings['view'], [
 		    'parms' => $parms,
@@ -1555,7 +1555,6 @@ class DefinitionController extends Controller
 			'history' => $history,
 			'touchPath' => '/stats/update-stats',
 			'random' => false,
-			//todo: 'lists' => $lists,
 			]);
     }
 

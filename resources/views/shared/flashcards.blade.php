@@ -9,6 +9,14 @@
     $language = getSpeechLanguageShort();
     $programName = isset($history['programName']) ? $history['programName'] : null;
 
+    // set up favorites lists
+    // PROBLEMS:
+    // todo: need to check for current favorite on each entry because some can be hearted and other's unhearted
+    // todo: need to take the unhearted or deleted items out of the rotation during a read or quiz
+
+    $favs = isset($parms['favoriteLists']) ? $parms['favoriteLists'] : null;
+    $tagId = isset($parms['tagId']) ? $parms['tagId'] : null;
+
     // only need reload if not already showing entries OR sort type would change the entries
     $showReload = isset($parms['showReload']) ? $parms['showReload'] : false;
 @endphp
@@ -210,24 +218,28 @@
                             <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
                         </a>
                         <ul class="small-thin-text dropdown-menu dropdown-menu-right">
-                            <li><a id="deleteEntryIcon" class="dropdown-item" href="" onclick="{{isset($onclick) ? $onclick : ''}}">@LANG('ui.Confirm Delete')</a></li>
+                            <li><a id="deleteEntryIcon" class="dropdown-item" href="" onclick="">@LANG('ui.Confirm Delete')</a></li>
                         </ul>
+                        <span class="ml-2" id="deleteStatus"></span>
 	                </li>
-                </ul>
-			</div>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="dropdown" role="button" href="" onclick="" tablindex="-1">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}" ><use xlink:href="/img/bootstrap-icons.svg#heart{{isset($tagId) ? '-fill' : ''}}" /></svg>
+                        </a>
+                        <ul id="favs" class="small-thin-text dropdown-menu dropdown-menu-right">
+                        @foreach($favs as $list)
+                            @if ($tagId == $list->id)
+                                <li><a id="unheartEntryIcon" class="dropdown-item steelblue" href="" onclick="">Remove from {{$list->name}}</a></li>
+                            @else
+                                <li data-tagid="{{$list->id}}" ><a id="heartEntryIcon{{$list->id}}" class="dropdown-item" href="" onclick="">{{$list->name}}</a></li>
+                            @endif
+                        @endforeach
 
-            @if (false) // todo: doesn't work in js yet
-			<div class="mt-1 ml-1 small-thin-text">
-                @if (Auth::check())
-                    @component('gen.definitions.component-heart', [
-                        'record' => $record,
-                        //'id' => $id,
-                        'lists' => $lists,
-                        //'status' => $status,
-                    ])@endcomponent
-                    @endif
+                        </ul>
+                        <span class="ml-2" id="heartStatus"></span>
+	                </li>
+	            </ul>
 			</div>
-            @endif
 		</div>
 
 		<!-- BUTTONS ROW 2 -->

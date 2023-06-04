@@ -2,13 +2,9 @@
 @section('title', __('proj.Edit Definition'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions', 'record' => $record])@endcomponent @endsection
 @section('content')
-
 @component('gen.definitions.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
-
 <h1>{{__('proj.Edit Definition')}}</h1>
-
 @component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent
-
 <form method="POST" id="form-edit" action="/definitions/update/{{$record->id}}">
 
     <div class="form-group">

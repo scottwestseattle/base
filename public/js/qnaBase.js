@@ -416,7 +416,12 @@ function loadOrder()
 	// now copy it to the real place
 	//
 	for (var i = 0; i < max; i++)
+	{
 		quiz.qna[i].order = order[i];
+
+		//todo: try to find out why first question is blank sometimes
+		console.log('todo order: ' + i + ' - ' + order[i]);
+	}
 
     if (false)
     {
@@ -572,6 +577,9 @@ function getQuestion(index = null)
 		rc = quiz.qna[index].q;
 	}
 
+	//todo: debug blank questions
+	console.log('todo getQuestion: ' + index + ' - ' + rc);
+
 	return rc;
 
 }
@@ -585,6 +593,7 @@ function loadQuestion()
 	quiz.setAlertPrompt(quiz.promptQuestion, COLOR_QUESTION_PROMPT);
 	$("#copyStatus").text("");      // clear status msg
 	$("#deleteStatus").text("");    // clear status msg
+	$("#heartStatus").text("");     // clear status msg
 }
 
 function reloadQuestion(qnaType = 'checkbox-flip')

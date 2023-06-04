@@ -104,22 +104,48 @@ function showQuestion()
 	var a = getAnswer();
 	var extra = getExtra();
 
+    //
     // set up 'Go To Entry' and 'Delete Entry' links
+    //
     var id = quiz.qna[quiz.qna[curr].order].id;
-
     var href = '/definitions/edit-or-show/' + id;
 	$('#goToEntry').attr("href", href);
 
-    var href = '/definitions/confirmdelete/' + id;
+    //
+    // set up Delete for current record
+    //
+//old??    var href = '/definitions/confirmdelete/' + id;
     var hrefDelete = '/definitions/delete/' + id;
     var onclick = 'event.preventDefault(); ajaxexec("' + hrefDelete + '"); $("#deleteStatus").text("deleted")';
-
-	$('#deleteEntry').attr("href", href);
+//old??	$('#deleteEntry').attr("href", href);
 	$('#deleteEntryIcon').attr("onclick", onclick);
 
-    //console.log('onclick: ' + onclick);
+    //
+    // set up Heart for current record
+    //
+    var hrefUnheart = '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/0';
+    var unheart = 'event.preventDefault(); ajaxexec("' + hrefUnheart + '"); $("#heartStatus").text("unhearted")';
+	$('#unheartEntryIcon').attr("onclick", unheart);
 
+    // set the heart li's; have to loop through each item, get the 'to id' from the 'data' and set the onclick url dynamically
+    var favs = $("#favs li");
+    favs.each(function(idx, li) {
+        var container = $(li);
+        var favId = container.data('tagid'); // the 'to id' is stored on the 'li' element
+        if (favId !== 'undefined') // skip the unheart which has no 'to id'
+        {
+            var hrefHeart = '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/' + favId;
+            var heart = 'event.preventDefault(); ajaxexec("' + hrefHeart + '"); $("#heartStatus").text("hearted")';
+            $('#heartEntryIcon' + favId).attr("onclick", heart);
+            //console.log('heart url: ' + heart);
+        }
+    });
+
+    //console.log('unheart: ' + unheart);
+
+    //
 	// show question
+	//
 	$("#prompt").html(q);
 	$("#flashcard-answer").html(a);
 	$("#flashcard-extra").html(extra);
