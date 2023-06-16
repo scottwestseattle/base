@@ -8,6 +8,9 @@
         $cntTranslations = count($options['sentences_translation']);
     }
 
+    // quizes
+    $qnaPorPara = isset($options['qnaPorPara']) ? $options['qnaPorPara']['count'] : 0;
+    $qnaEraFue = isset($options['qnaEraFue']) ? $options['qnaEraFue']['count'] : 0;
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
@@ -52,9 +55,9 @@
         <!-- Stats -->
         <div class="mb-2">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('ui.Read')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @if ($options['lineCount'] > 25)
-                    <a type="button" class="btn btn-primary mt-1" href="/articles/read/{{$record->id}}?count=20&random=1" ><span style="font-size:.9em;">{{__('proj.Start Reading')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                    <a type="button" class="btn btn-primary mt-1" href="/articles/read/{{$record->id}}?count=20&random=1" ><span style="font-size:.9em;">{{__('ui.Read')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @endif
                 @if ($record->hasTranslation())
 				    <a href="/articles/flashcards/{{$record->id}}"><button class="btn btn-success mt-1">@LANG('proj.Flashcards') <span class="title-count">({{$options['lineCount']}})</span></button></a>
@@ -62,6 +65,12 @@
                         <a type="button" class="btn btn-success mt-1" href="/articles/flashcards/{{$record->id}}?count=20&random=1" >{{__('proj.Flashcards')}}<span class="title-count">(20)</span></a>
                     @endif
 				@endif
+				@if ($qnaPorPara)
+				    <a href="/articles/quiz/{{$record->id}}/por"><button class="btn btn-success mt-1">@LANG('POR vs PARA') ({{$qnaPorPara}})</button></a>
+                @endif
+                @if ($qnaEraFue)
+				    <a href="/articles/quiz/{{$record->id}}/era"><button class="btn btn-success mt-1">@LANG('Pretérito vs Imperfecto') ({{$qnaEraFue}})</button></a>
+                @endif
             </div>
 
             <div class="small-text">

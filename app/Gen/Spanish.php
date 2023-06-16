@@ -62,6 +62,11 @@ class Spanish
 //		'Jorge', 'Jorge', 'Jorge', 'Jorge',
 		);
 
+    static public function on()
+    {
+		return(getLanguageId() === LANGUAGE_ES);
+	}
+
     static public function possibleVerb($word)
     {
 		$word = alpha($word);

@@ -38,7 +38,8 @@ class ArticleController extends Controller
             'add', 'create',
             'edit', 'update',
             'confirmDelete', 'delete',
-            'read', 'flashcards', 'flashcardsView'
+            'read', 'flashcards', 'flashcardsView',
+            'quiz'
         ]);
 
         $this->middleware('auth')->only([
@@ -158,8 +159,12 @@ class ArticleController extends Controller
 
 			// count the lines
 			$options['lineCount'] = count($record->getSentences());
-
 			$options['sentences'] = Spanish::getSentences($record->description);
+        	$options['qnaPorPara'] = Quiz::mineQna($options['sentences'], Quiz::getQnaParms('por'));
+        	$options['qnaEraFue'] = Quiz::mineQna($options['sentences'], Quiz::getQnaParms('era'));
+
+            //dd($options);
+
 			if (strlen($record->description_translation) > 0)
 			{
 	        	$options['sentences_translation'] = Spanish::getSentences($record->description_translation);
@@ -529,6 +534,65 @@ class ArticleController extends Controller
 
         return $this->reader($entry, $parms);
     }
+
+    //todo: make a quiz from an article: para/por, estaba/estuvo, ser/estar, etc.
+	public function quiz(Request $request, Entry $entry, $qnaType)
+    {
+        $record = $entry;
+		$reviewType = 2;
+		$count = 0;
+        $qnaType = alpha($qnaType);
+		try
+		{
+		    // take the article text and look for keywords to make into qna
+		    // ex: Estábamos preparados [por, para] ello. - para
+		    // ex: [Estábamos, Estuvimos] preparados para ella. - Estábamos
+		    if ($qnaType == 'por')
+		    {
+    		    $text = Quiz::mineQna($entry->description, Quiz::getQnaParms('por'))['text'];
+		    }
+		    else if ($qnaType == 'era')
+		    {
+    		    $text = Quiz::mineQna($entry->description, Quiz::getQnaParms('era'))['text'];
+		    }
+
+    		$quiz = Quiz::makeQna($text); // split text into questions and answers
+    		//dd($quiz);
+		}
+		catch (\Exception $e)
+		{
+			$msg = 'Error making article qna';
+   			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+			return back();
+		}
+
+		$settings = Quiz::getSettings($reviewType);
+        $title = $record->title;
+
+        $parms = crackParms($request);
+        $parms['sessionName'] = $record->title;
+        $parms['sessionId'] = $record->id;
+        $history = History::getArray($title, $record->id, HISTORY_TYPE_LESSON, $parms['source'], $reviewType, $count, $parms);
+
+        $returnPath = referrer()['path'];
+
+		return view($settings['view'], [
+			'prev' => null,
+			'next' => null,
+			'sentenceCount' => count($quiz),
+			'quizCount' => $count,
+			'records' => $quiz,
+			'canEdit' => true,
+			'isMc' => true, //$lesson->isMcOld($reviewType),
+            'returnPath' => $returnPath,
+			'parentTitle' => $title,
+			'settings' => $settings,
+			'random' => 0,
+			'history' => $history,
+			'touchPath' => null, //todo: need to implement stats
+			]);
+    }
+
 
 	public function flashcards(Request $request, Entry $entry)
     {

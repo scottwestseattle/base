@@ -102,7 +102,7 @@ class HomeController extends Controller
         $options = array_merge($options, Exercise::getDailyExercises());
 
         //
-        // get the snippets for the appropriate langauge
+        // get the latest snippets for the appropriate langauge
         //
     	$languageFlagCondition = '=';
         $snippetsLimit = 5;
@@ -112,9 +112,6 @@ class HomeController extends Controller
             $snippetsLimit = 10;
         }
 
-        //
-        // get the latest snippets
-        //
         $options = array_merge($options, [
             'count' => $snippetsLimit,
             'countNext' => DEFAULT_LIST_LIMIT,
@@ -154,7 +151,7 @@ class HomeController extends Controller
                 $options['snippet'] = $snippet;
         }
 
-        // not used but needed for reader
+        // not used but required by reader
         $history = History::getArrayShort(HISTORY_TYPE_SNIPPETS, HISTORY_SUBTYPE_SPECIFIC, LESSON_TYPE_READER, 1);
 
         $options['languageDetails'] = Site::getLanguage();
@@ -258,13 +255,13 @@ class HomeController extends Controller
             $parms['release'] = 'public';
     		$options['articlesPublic'] = Entry::getRecentList($parms)['records'];
 
-            // get private articles
+            // removed for speed: get private articles
             $parms['release'] = 'private';
-            $options['articlesPrivate'] = Entry::getRecentList($parms)['records'];
+            $options['articlesPrivate'] = null; //Entry::getRecentList($parms)['records'];
 
-            // get other peoples articles
+            // removed for speed: get other peoples articles
             $parms['release'] = 'other';
-            $options['articlesOther'] = isAdmin() ? Entry::getRecentList($parms)['records'] : null;
+            $options['articlesOther'] = null; //isAdmin() ? Entry::getRecentList($parms)['records'] : null;
 
             // show aotd if it hasn't been shown recently
             if ($showTopBoxes)

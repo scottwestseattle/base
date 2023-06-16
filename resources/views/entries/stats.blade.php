@@ -65,12 +65,12 @@
             @foreach($stats['sortCount'] as $key => $value)
                 @if (Str::endsWith($key, ['ar', 'er', 'ir']))
                     @php
-                        $value = trim($value.trim);
+                        $value = trim($value);
                     @endphp
-                    @if ()$value.length() > 0)
-                    <span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>&nbsp;<span class="" style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
+                    @if (!empty($value))
+                        <span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>&nbsp;<span class="" style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
                     @else
-                    <div>TRIMMED TO BLANK</div>
+                        <div>TRIMMED TO BLANK</div>
                     @endif
                 @endif
             @endforeach

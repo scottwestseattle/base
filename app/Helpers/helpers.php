@@ -1195,3 +1195,35 @@ if (!function_exists('crackParms')) {
     }
 }
 
+if (!function_exists('matchExact')) {
+    function matchExact($text, $key, $matchCase = false)
+    {
+        if (is_array($key))
+        {
+            foreach($key as $k)
+            {
+                if (matchExact($text, $k))
+                    return true;
+            }
+        }
+        else
+        {
+            if ($matchCase)
+            {
+                return($text === $key);
+            }
+            else
+            {
+                return(strtolower($text) === strtolower($key));
+            }
+        }
+    }
+}
+
+if (!function_exists('startsWithUpper')) {
+    function startsWithUpper($str)
+    {
+        $chr = mb_substr($str, 0, 1, "UTF-8");
+        return mb_strtolower($chr, "UTF-8") != $chr;
+    }
+}

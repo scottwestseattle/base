@@ -38,7 +38,7 @@
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
 @guest
-    @if (\App\Site::hasOption('fpheader') && (!isLanguageCookieSet() || !isUserLevelCookieSet()))
+    @if (\App\Site::hasOption('fpheader') && (!isLanguageCookieSet() /* || !isUserLevelCookieSet() */))
         <!-- Header Photo -->
         <div class="fpbox-header">
             <div class="row row-course">
@@ -51,7 +51,7 @@
                     <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(3)"><table><tr><td style="width:30"><img height="40" src="/img/flags/it.png" class="mr-3" /></td><td>@LANG('geo.Italian')</td></tr></table></a></div>
                 </div>
                 @endif
-                @if (!isUserLevelCookieSet())
+                @if (false && !isUserLevelCookieSet())
                 <div class="col-sm-12 col-md-6 fpSelectorLeft">
                     <!-- h3>@LANG('proj.Your level is  '){{getLanguageName()}}</h3 -->
                     <div class="">
@@ -464,7 +464,7 @@
 </ul>
 @else
 <h3 class="">
-    {{trans_choice('proj.Article', 2)}}&nbsp;<span style="font-size:.8em;">({{count($options['articlesPublic'])}})</span>
+    <a href="/articles">{{trans_choice('proj.Article', 2)}}<span class="title-count">({{count($options['articlesPublic'])}})</span></a>
 </h3>
 @endif
 

@@ -141,6 +141,7 @@ function quiz() {
 
 	this.showPanel = function(state = null) {
 
+        // hide all panels
 		$(".quiz-panel").hide();
 
 		if (state == null)
@@ -150,8 +151,8 @@ function quiz() {
 		{
 			case RUNSTATE_ENDOFQUIZ:
 				$("#panel-endofquiz").show();
+				console.log('showPanel: end of quiz');
 				break;
-
 			case RUNSTATE_ENDOFROUND:
 			{
 				$("#panel-endofround").show();
@@ -168,19 +169,21 @@ function quiz() {
 				// log the quiz round
 				//if (parseInt(round) == 1)
 				//	ajaxexec('/lessons/log-quiz/' + this.lessonId + '/' + fScore);
+				console.log('showPanel: end of round');
 
 				break;
 			}
 			case RUNSTATE_START:
 				$("#panel-start").show();
 				$("#panelStartCount").text(this.qna.length);
+				console.log('showPanel: start');
 				break;
 			default:
 				$("#panel-quiz").show();
 				this.setFocus();
+				console.log('showPanel: default');
 				break;
 		}
-
 	}
 
 	this.setFocus = function() {
@@ -760,13 +763,13 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 			// typing the answers so check the entry
 			cleanAnswer = cleanQna(jQuery('<span>').html(answer).text());
 			cleanAttempt = cleanQna(jQuery('<span>').html(attempt).text());
-			if (cleanAnswer != cleanAttempt)
+			if (cleanAnswer.toLowerCase() != cleanAttempt.toLowerCase())
 			{
 				cleanAnswer = accentFold(cleanAnswer);
 				cleanAttempt = accentFold(cleanAttempt);
 			}
 
-			correctAnswer = ((answer != null && attempt != null) && cleanAnswer == cleanAttempt);
+			correctAnswer = ((answer != null && attempt != null) && cleanAnswer.toLowerCase() == cleanAttempt.toLowerCase());
 		}
 
 		if (correctAnswer)

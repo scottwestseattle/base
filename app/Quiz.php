@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Auth;
 use App;
 use App\User;
+use App\Gen\Spanish;
 use DateTime;
 
 class Quiz
@@ -16,6 +17,62 @@ class Quiz
         'flashcards' => LESSON_TYPE_QUIZ_FLASHCARDS,
         'quiz' => LESSON_TYPE_QUIZ_MC,
     ];
+
+    static private $_qnaEraFue = [
+        ['key' => ['fui'],  'choices' => 'era, fui'],
+        ['key' => ['eras', 'fuiste'],  'choices' => 'eras, fuiste'],
+        ['key' => ['era', 'fue'],  'choices' => 'era, fue'],
+        ['key' => ['eran', 'fueron'],  'choices' => 'eran, fueron'],
+        ['key' => ['eramos', 'fuimos'],  'choices' => 'eramos, fuimos'],
+
+        ['key' => ['estuve'],  'choices' => 'estuve, estaba'],
+        ['key' => ['estuviste', 'estabas'],  'choices' => 'estuviste, estabas'],
+        ['key' => ['estuvo', 'estaba'],  'choices' => 'estuvo, estaba'],
+        ['key' => ['estuvieron', 'estaban'],  'choices' => 'estuvieron, estaban'],
+        ['key' => ['estuvimos', 'estabamos'],  'choices' => 'estuvimos, estabamos'],
+
+        ['key' => ['tuve'],  'choices' => 'tuve, tenía'],
+        ['key' => ['tuviste', 'tenías'],  'choices' => 'tuviste, tenías'],
+        ['key' => ['tuvo', 'tenía'],  'choices' => 'tuvo, tenía'],
+        ['key' => ['tuvieron', 'tenían'],  'choices' => 'tuvieron, tenían'],
+        ['key' => ['tuvimos', 'teníamos'],  'choices' => 'tuvimos, teníamos'],
+
+        ['key' => ['hice'],  'choices' => 'hice, hacía'],
+        ['key' => ['hiciste', 'hacías'],  'choices' => 'hiciste, hacías'],
+        ['key' => ['hizo', 'hacía'],  'choices' => 'hizo, hacía'],
+        ['key' => ['hicieron', 'hacían'],  'choices' => 'hicieron, hacían'],
+        ['key' => ['hicimos', 'hacíamos'],  'choices' => 'hicimos, hacíamos'],
+
+        ['key' => ['pude'],  'choices' => 'pude, podía'],
+        ['key' => ['pudiste', 'podías'],  'choices' => 'pudiste, podías'],
+        ['key' => ['pudo', 'podía'],  'choices' => 'pudo, podía'],
+        ['key' => ['pudieron', 'podían'],  'choices' => 'pudieron, podían'],
+        ['key' => ['pudimos', 'podíamos'],  'choices' => 'pudimos, podíamos'],
+
+    ];
+
+    static private $_qnaPorPara = [
+        ['key' => ['por', 'para'],  'choices' => 'por, para']
+    ];
+
+    static public function getQnaParms($qnaType)
+    {
+        $rc = null;
+
+        switch($qnaType)
+        {
+            case 'por':
+                $rc = self::$_qnaPorPara;
+                break;
+            case 'era':
+                $rc = self::$_qnaEraFue;
+                break;
+            default:
+                break;
+        }
+
+        return $rc;
+    }
 
 	// this version puts the answer options into a separate cell
 	static public function makeReviewQuiz($quiz)
@@ -137,6 +194,127 @@ class Quiz
 
 		return $qna;
 	}
+
+	//
+	// make qna from article text
+	// input: article text
+	// output: lines formatted for lesson mc quiz
+	static public function mineQna($text, $parms)
+    {
+        $records = [];
+
+        if (Spanish::on()) // qna mining only implemented in ES so far
+        {
+            // accepts either an array or text
+            $sentences = (is_array($text)) ? $text : Spanish::getSentences($text);
+            $text = '';
+
+            foreach($parms as $parm)
+            {
+                $key = $parm['key'];
+
+                //dump($sentences);
+                foreach($sentences as $record)
+                {
+                    $line = '';
+                    if (Str::contains(strtolower($record), $key))
+                    {
+                        $words = explode(' ', $record);
+                        $found = null;
+                        $line = '';
+                        foreach($words as $word)
+                        {
+                            if (empty($found) && matchExact($word, $key))
+                            {
+                                $line .= '[' . (startsWithUpper($word) ? ucwords($parm['choices']) : $parm['choices']) . ']';
+                                $line .= ' ';
+                                $found = $word;
+                            }
+                            else
+                            {
+                                $line .= $word . ' '; // save in case there is a match later
+                            }
+                        }
+
+                        if (isset($found))
+                        {
+                            $line .= '- ' . $found; // put in the right answer
+                            $records[] = $line;
+                            $text .= '<p>' . $line . "</p>\r\n";
+                        }
+                    }
+                }
+            }
+        }
+
+        //dump($records); // only used for debugging
+		return ['text' => $text, 'count' => count($records)];
+	}
+
+	//
+	// this is the new way to multiple choice qna, updated for review.js
+	//
+	static public function makeQna($text)
+    {
+		$records = [];
+		// chop it into lines by using the <p>'s
+	    $text = str_replace(['&ndash;', '&nbsp;'], ['-', ' '], $text);
+		preg_match_all('#<p>(.*?)</p>#is', $text, $records, PREG_SET_ORDER);
+
+		$qna = [];
+		$cnt = 0;
+		$delim = (strpos($text, ' | ') !== false) ? ' | ' : ' - ';
+
+		foreach($records as $record)
+		{
+			$line = $record[1];
+			$line = strip_tags($line);
+			$parts = explode($delim, $line); // split the line into q and a, looks like: "question text - correct answer text"
+
+			if (count($parts) > 1)
+			{
+				$q = trim($parts[0]);
+
+				// see if there are embedded answer choices such "El [es, está] alto."
+    			preg_match('#\[.*\]#is', $q, $choices);
+                if (count($choices) > 0)
+                {
+                    $choices = str_replace(', ', '|', trim($choices[0], '[]')); // leaves in a string separated by '|'
+                }
+                else
+                {
+                    $choices = null;
+                }
+
+                // now replace choices with a big blank
+                $q = self::blankChoices($q);
+
+				$qna[$cnt]['q'] = $q;
+				$qna[$cnt]['a'] = array_key_exists(1, $parts) ? trim($parts[1]) : null;
+				$qna[$cnt]['choices'] = $choices;
+				$qna[$cnt]['definition'] = 'false';
+				$qna[$cnt]['translation'] = '';
+				$qna[$cnt]['extra'] = '';
+				$qna[$cnt]['id'] = $cnt;
+				$qna[$cnt]['ix'] = $cnt; // this will be the button id, just needs to be unique
+				$qna[$cnt]['options'] = '';
+
+				if (!isset($qna[$cnt]['a']))
+					throw new \Exception('parse error: ' . $q);
+
+			    $cnt++;
+			}
+		}
+
+		//dd($qna);
+
+		return $qna;
+	}
+
+	static public function blankChoices($text)
+    {
+        return preg_replace('/\[.*\]/i', '__________', $text);
+    }
 
 	// creates buttons for each answer option
 	// and puts them into the question

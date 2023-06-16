@@ -543,11 +543,6 @@ class LessonController extends Controller
 		return $records;
 	}
 
-	static public function blankChoices($text)
-    {
-        return preg_replace('/\[.*\]/i', '__________', $text);
-    }
-
 	static public function formatChoices($text)
     {
         // first remove the answer
@@ -561,66 +556,6 @@ class LessonController extends Controller
 
         return $text;
     }
-
-	//
-	// this is the new way, updated for review.js
-	//
-	public function makeQna($text)
-    {
-		$records = [];
-		// chop it into lines by using the <p>'s
-	    $text = str_replace(['&ndash;', '&nbsp;'], ['-', ' '], $text);
-		preg_match_all('#<p>(.*?)</p>#is', $text, $records, PREG_SET_ORDER);
-
-		$qna = [];
-		$cnt = 0;
-		$delim = (strpos($text, ' | ') !== false) ? ' | ' : ' - ';
-
-		foreach($records as $record)
-		{
-			$line = $record[1];
-			$line = strip_tags($line);
-			$parts = explode($delim, $line); // split the line into q and a, looks like: "question text - correct answer text"
-
-			if (count($parts) > 1)
-			{
-				$q = trim($parts[0]);
-
-				// see if there are embedded answer choices such "El [es, está] alto."
-    			preg_match('#\[.*\]#is', $q, $choices);
-                if (count($choices) > 0)
-                {
-                    $choices = str_replace(', ', '|', trim($choices[0], '[]')); // leaves in a string separated by '|'
-                }
-                else
-                {
-                    $choices = null;
-                }
-
-                // now replace choices with a big blank
-                $q = self::blankChoices($q);
-
-				$qna[$cnt]['q'] = $q;
-				$qna[$cnt]['a'] = array_key_exists(1, $parts) ? trim($parts[1]) : null;
-				$qna[$cnt]['choices'] = $choices;
-				$qna[$cnt]['definition'] = 'false';
-				$qna[$cnt]['translation'] = '';
-				$qna[$cnt]['extra'] = '';
-				$qna[$cnt]['id'] = $cnt;
-				$qna[$cnt]['ix'] = $cnt; // this will be the button id, just needs to be unique
-				$qna[$cnt]['options'] = '';
-
-				if (!isset($qna[$cnt]['a']))
-					throw new \Exception('parse error: ' . $q);
-
-			    $cnt++;
-			}
-		}
-
-		//dd($qna);
-
-		return $qna;
-	}
 
 	//
 	// this is the new way, updated for review.js
@@ -762,7 +697,7 @@ class LessonController extends Controller
 		    if ($lesson->isTranslation())
     			$quiz = self::makeQnaTranslation($lesson->text, $lesson->text_translation);
     		else
-    			$quiz = self::makeQna($lesson->text); // split text into questions and answers
+    			$quiz = Quiz::makeQna($lesson->text); // split text into questions and answers
 		}
 		catch (\Exception $e)
 		{

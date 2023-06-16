@@ -31,7 +31,7 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
         <!-- Stats -->
         <div class="vertical-align">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/books/read/{{$record->id}}" >{{__('proj.Start Reading')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="/books/read/{{$record->id}}" >{{__('ui.Read')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
             </div>
             <div class="small-text">
                 <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
