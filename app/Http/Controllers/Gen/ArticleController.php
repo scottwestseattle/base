@@ -574,8 +574,6 @@ class ArticleController extends Controller
         $parms['sessionId'] = $record->id;
         $history = History::getArray($title, $record->id, HISTORY_TYPE_LESSON, $parms['source'], $reviewType, $count, $parms);
 
-        $returnPath = referrer()['path'];
-
 		return view($settings['view'], [
 			'prev' => null,
 			'next' => null,
@@ -584,7 +582,7 @@ class ArticleController extends Controller
 			'records' => $quiz,
 			'canEdit' => true,
 			'isMc' => true, //$lesson->isMcOld($reviewType),
-            'returnPath' => $returnPath,
+            'returnPath' => Site::getReturnPath(),
 			'parentTitle' => $title,
 			'settings' => $settings,
 			'random' => 0,
@@ -623,7 +621,7 @@ class ArticleController extends Controller
 			'records' => $quiz,
 			'canEdit' => true,
 			'isMc' => true, //$lesson->isMc($reviewType),
-            'returnPath' => '/articles/view/' . $entry->permalink,
+            'returnPath' => Site::getReturnPath(),
 			'parentTitle' => $record->title,
 			'settings' => $settings,
 			'article' => true,

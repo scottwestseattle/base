@@ -17,6 +17,7 @@ use App\Gen\Spanish;
 use App\Image;
 use App\Entry;
 use App\Quiz;
+use App\Site;
 use App\User;
 use App\VocabList;
 
@@ -670,7 +671,7 @@ class LessonController extends Controller
 			'canEdit' => true,
 			'quizText' => $quizText,
 			'isMc' => $lesson->isMcOld($reviewType),
-            'returnPath' => PREFIX . '/view',
+            'returnPath' => Site::getReturnPath(),
             'history' => $history,
 			]);
     }
@@ -714,8 +715,6 @@ class LessonController extends Controller
         $parms['sessionId'] = $lesson->course->id;
         $history = History::getArray($title, $lesson->id, HISTORY_TYPE_LESSON, $parms['source'], $lesson->type_flag, $count, $parms);
 
-        $returnPath = referrer()['path'];
-
 		return view($settings['view'], [
 			'prev' => $prev,
 			'next' => $next,
@@ -724,7 +723,7 @@ class LessonController extends Controller
 			'records' => $quiz,
 			'canEdit' => true,
 			'isMc' => true, //$lesson->isMcOld($reviewType),
-            'returnPath' => $returnPath,
+            'returnPath' => Site::getReturnPath(),
 			'parentTitle' => $lesson->title,
 			'settings' => $settings,
 			'random' => $lesson->isTranslation() ? 0 : 1,
@@ -854,7 +853,7 @@ class LessonController extends Controller
 		return view(VIEWS . '.runtimed', [
 			'record' => $lesson,
 			'records' => $records,
-			'returnPath' => 'courses/view',
+            'returnPath' => Site::getReturnPath(),
 			'displayTime' => $times['timeTotal'],
 			'totalSeconds' => $times['seconds'],
 			'bgs' => $bgs,

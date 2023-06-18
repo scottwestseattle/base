@@ -103,15 +103,15 @@ if (!function_exists('flash')) {
 }
 
 if (!function_exists('referrer')) {
-    function referrer()
+    function referrer($tag = 'HTTP_REFERER')
     {
         $rc['url'] = '';
         $rc['input'] = '';
         $rc['path'] = '';
 
-        if (isset($_SERVER["HTTP_REFERER"]))
+        if (isset($_SERVER[$tag]))
         {
-            $rc['url'] = $_SERVER["HTTP_REFERER"];
+            $rc['url'] = $_SERVER[$tag];
             $rc['input'] = new HtmlString("<input name='referrer' type='hidden' value='" . $rc['url'] . "' />");
             $rc['path'] = parse_url($rc['url'])['path'];
         }

@@ -405,6 +405,8 @@ class DefinitionController extends Controller
 			$forms = Spanish::getFormsPretty($record->forms);
 		}
 
+        Site::setReturnPathSession(); // save the return path for when update() is called
+
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			'formsPretty' => $forms,
@@ -421,7 +423,10 @@ class DefinitionController extends Controller
 		$parent = null;
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
-		$record->permalink = copyDirty($record->permalink, createPermalink($request->title), $isDirty, $changes);
+
+		if ($isDirty) // only update the premalink and token if text has changed
+    		$record->permalink = copyDirty($record->permalink, createPermalink($request->title), $isDirty, $changes);
+
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 
 		$record->pos_flag = copyDirty($record->pos_flag, intval($request->pos_flag), $isDirty, $changes);
@@ -435,7 +440,7 @@ class DefinitionController extends Controller
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 		$record->notes = copyDirty($record->notes, $request->notes, $isDirty, $changes);
-		$record->rank = copyDirty($record->rank, intval($request->rank), $isDirty, $changes);
+		$record->rank = copyDirty(intval($record->rank), intval($request->rank), $isDirty, $changes);
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
 
 		if (isAdmin()) // only admin can change user_id and release status
@@ -493,7 +498,7 @@ class DefinitionController extends Controller
 			logFlash('info', $f, __('base.No changes were made'));
 		}
 
-        $returnPath = '/definitions/view/' . $record->permalink;
+        $returnPath = Site::getReturnPathSession('/definitions/view/' . $record->permalink);
 
 		return redirect($returnPath);
 	}
@@ -502,6 +507,7 @@ class DefinitionController extends Controller
     {
 		$record = $definition;
 		$forms = null;
+        Site::setReturnPathSession(); // save the return path for when update() is called
 
 		return view(VIEWS . '.edit-snippets', [
 			'record' => $record,
@@ -1455,7 +1461,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => '/favorites',
+            'returnPath' => Site::getReturnPath(),
 			'parentTitle' => $tag->name,
 			'settings' => $settings,
 			// History
@@ -1549,7 +1555,7 @@ class DefinitionController extends Controller
 			'records' => $qna,
 			'canEdit' => true,
 			'isMc' => true,
-			'returnPath' => $parms['return'],
+            'returnPath' => Site::getReturnPath(),
 			'parentTitle' => 'Title Note Used',
 			'settings' => $settings,
 			'history' => $history,

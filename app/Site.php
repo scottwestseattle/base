@@ -171,4 +171,43 @@ class Site extends Model
 
 		return $rc;
 	}
+
+	static public function getReturnPath()
+	{
+        $refererPath = referrer('HTTP_REFERER')['path'];
+        $requestPath = referrer('REQUEST_URI')['path'];
+        //dump('request: ' . $requestPath);
+        //dump('referer: ' . $refererPath);
+
+        if (empty($refererPath) || $refererPath === $requestPath)
+        {
+            // use last saved return path from session
+    		$returnPath = self::getReturnPathSession();
+            //dump('return path (from session): ' . $returnPath);
+        }
+        else
+        {
+            // return path is referer path
+	    	self::setReturnPathSession($refererPath);
+            $returnPath = $refererPath;
+            //dump('return path (from referer): ' . $returnPath);
+        }
+
+		return $returnPath;
+	}
+
+    static public function setReturnPathSession($path = null)
+    {
+        $refererPath = isset($path) ? $path : referrer('HTTP_REFERER')['path'];
+        session(['returnPath' => $refererPath]);
+        //dump($refererPath);
+    }
+
+	static public function getReturnPathSession($default = '/')
+	{
+    	$rc = session('returnPath');
+    	$rc = isset($rc) ? $rc : $default;
+
+		return $rc;
+	}
 }
