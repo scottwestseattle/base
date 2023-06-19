@@ -174,23 +174,25 @@ class Site extends Model
 
 	static public function getReturnPath()
 	{
+	    $dump = false;
+
         $refererPath = referrer('HTTP_REFERER')['path'];
         $requestPath = referrer('REQUEST_URI')['path'];
-        //dump('request: ' . $requestPath);
-        //dump('referer: ' . $refererPath);
+        if ($dump) dump('request: ' . $requestPath);
+        if ($dump) dump('referer: ' . $refererPath);
 
         if (empty($refererPath) || $refererPath === $requestPath)
         {
             // use last saved return path from session
     		$returnPath = self::getReturnPathSession();
-            //dump('return path (from session): ' . $returnPath);
+            if ($dump) dump('return path (from session): ' . $returnPath);
         }
         else
         {
             // return path is referer path
 	    	self::setReturnPathSession($refererPath);
             $returnPath = $refererPath;
-            //dump('return path (from referer): ' . $returnPath);
+            if ($dump) dump('return path (from referer): ' . $returnPath);
         }
 
 		return $returnPath;

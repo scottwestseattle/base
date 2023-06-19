@@ -31,11 +31,17 @@
         @endphp
         <tr class="mb-3 {{($record['done'] && !$allDone) ? 'done hidden' : ''}}" style="border: 0px white solid; color:white; background: linear-gradient(180deg, {{$bgLight}}, {{$bg}});">
             <td class="px-2 py-2">
-                <a class="link-bold " style="color:white;" href="{{$record['linkUrl']}}">
-                    <svg class="float-left bi mt-1 mr-2" width="16" height="16" fill="currentColor" ><use xlink:href="/img/bootstrap-icons.svg#{{$record['icon']}}" /></svg>
-                    <b>{{$record['title']}}</b>
-                    <div class="medium-thin-text"><b>{{$record['linkTitle']}}</b></div>
-                </a>
+                <svg class="float-left bi mt-1 mr-2" width="16" height="16" fill="currentColor" ><use xlink:href="/img/bootstrap-icons.svg#{{$record['icon']}}" /></svg>
+                <b>{{$record['title']}}: </b>
+                <span class="medium-thin-text">
+                    @if (isset($record['linkUrl2']))
+                        <b>{{$record['linkTitle']}}</b>
+                        <a class="link-bold " style="color:white;" href="{{$record['linkUrl']}}"><b>(@LANG('proj.Least Used'))</b></a>
+                        <a class="link-bold " style="color:white;" href="{{$record['linkUrl2']}}"><b>(@LANG('ui.Newest'))</b></a>
+                    @else
+                        <a class="link-bold " style="color:white;" href="{{$record['linkUrl']}}"><b>{{$record['linkTitle']}}</b></a>
+                    @endif
+                </span>
             </td>
         </tr>
         @endforeach

@@ -489,8 +489,11 @@ class Exercise extends Model
                 {
                     $icon = $done ? $iconDone : $iconFlashcards;
 
-                    $todo[] = ['done' => $done, 'title' => $titleFavorites, 'icon' => $icon, 'linkTitle' => $exercise->title,
-                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-at&source=$exercise->subtype_flag"];
+                    $todo[] = [
+                        'done' => $done, 'title' => $titleFavorites, 'icon' => $icon, 'linkTitle' => $exercise->title,
+                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-at&source=$exercise->subtype_flag",
+                        'linkUrl2' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=desc&source=$exercise->subtype_flag"
+                        ];
                 }
             }
 

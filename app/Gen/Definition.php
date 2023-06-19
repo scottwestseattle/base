@@ -1102,7 +1102,7 @@ class Definition extends Model
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
 		$order = isset($parms['order']) ? alphanum($parms['order']) : 'owner';
-		$orderBy = self::crackOrder($parms, 'desc');
+		$orderBy = self::crackOrder($parms);
 		$userId = isset($parms['userId']) ? $parms['userId'] : getUserId();
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '=';
 		$releaseFlag = isset($parms['releaseFlag']) ? $parms['releaseFlag'] : RELEASEFLAG_PUBLIC;
@@ -1169,7 +1169,7 @@ class Definition extends Model
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
 		$order = isset($parms['order']) ? $parms['order'] : 'owner';
-		$orderBy = self::crackOrder($parms, 'desc');
+		$orderBy = self::crackOrder($parms);
 		$userId = isset($parms['userId']) ? $parms['userId'] : 0;
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
 		$releaseFlag = isset($parms['releaseFlag']) ? $parms['releaseFlag'] : RELEASEFLAG_PUBLIC;
@@ -1244,7 +1244,7 @@ class Definition extends Model
 		return $records;
 	}
 
-	static public function crackOrder($parms, $default)
+	static public function crackOrder($parms, $default = 'desc')
     {
         $crackOrder = self::crackOrderNEW($parms, $default);
         $orderBy = isset($crackOrder['orderBy']) ? $crackOrder['orderBy'] : $default;
@@ -1332,8 +1332,6 @@ class Definition extends Model
 
 	static public function getUserFavorites($parms = [])
 	{
-	    //dump($parms);
-
 		$records = [];
 
 		$count = isset($parms['count']) ? $parms['count'] : PHP_INT_MAX;
@@ -1341,9 +1339,10 @@ class Definition extends Model
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : 0;
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '>=';
 		$userIdCondition = isset($parms['userIdCondition']) ? $parms['userIdCondition'] : '>=';
-		$orderBy = isset($parms['orderBy']) ? $parms['orderBy'] : 'stats.qna_at, stats.viewed_at, definitions.id';
 		$tagId = isset($parms['tagId']) ? $parms['tagId'] : 0;
 		$tagIdCondition = $tagId > 0 ? '=' : '>=';
+        $orderBy = self::crackOrder($parms);
+	    //dump($parms);
 
         if (false)
         {
