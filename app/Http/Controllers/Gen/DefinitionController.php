@@ -1549,6 +1549,8 @@ class DefinitionController extends Controller
         // get user's favorites lists
         $parms['favoriteLists'] = Definition::getUserFavoriteLists();
 
+        //dump($parms);//
+
 		return view($settings['view'], [
 		    'parms' => $parms,
 			'sentenceCount' => $count,
@@ -1678,6 +1680,8 @@ class DefinitionController extends Controller
         $parms['records'] = Definition::getReview($parms);
         //todo: $parms['recordsTotal'] = Definition::getReviewCount($parms);
         $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
+
+        //dump($parms);//
 
 		return $this->doList($parms);
     }

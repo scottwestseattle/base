@@ -720,12 +720,14 @@ class Definition extends Model
 			}
 			else
 			{
+			    // DEFINITIONS_SEARCH_NEWEST
 				$records = Definition::select()
 					->whereNull('deleted_at')
         			->where('type_flag', DEFTYPE_DICTIONARY)
 					->where('language_flag', $languageFlag)
 					->where(function ($query) use ($releaseCondition, $releaseFlag) {$query
-						->where('release_flag', $releaseCondition, $releaseFlag)
+						//quick fix: ->where('release_flag', $releaseCondition, $releaseFlag)
+						->where('release_flag', '>=', 0) // quick fix to show all
 						->orWhere('user_id', Auth::id())
 						;})
 					->orderByRaw($orderBy)
