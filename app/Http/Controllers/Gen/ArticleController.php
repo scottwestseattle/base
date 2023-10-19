@@ -104,7 +104,7 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function permalink(Request $request, $permalink)
+    public function permalink(Request $request, $lang, $permalink)
     {
  		$record = null;
 		$permalink = alphanum($permalink);
@@ -522,7 +522,7 @@ class ArticleController extends Controller
 		return redirect($this->redirectTo . 'view/' . $record->permalink);
     }
 
-    public function read(Request $request, Entry $entry)
+    public function read(Request $request, $locale, Entry $entry)
     {
         $parms = crackParms($request, ['count' => null]);
         //dump($parms);

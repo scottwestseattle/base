@@ -1431,6 +1431,10 @@ class Definition extends Model
 	{
 		$records = [];
 
+		$untagged = isset($parms['untagged']) ? $parms['untagged'] : false;
+        $taggedCondition = $untagged ? '=' : '>';
+        //dump($taggedCondition);
+
 		$languageId = isset($parms['languageId']) ? $parms['languageId'] : getLanguageId();
 		$languageFlagCondition = isset($parms['languageFlagCondition']) ? $parms['languageFlagCondition'] : '=';
         $count = isset($parms['count']) ? $parms['count'] : DEFAULT_REVIEW_LIMIT;
@@ -1442,10 +1446,16 @@ class Definition extends Model
 		try
 		{
             $userId = Auth::check() ? Auth::id() : 0;
-            $records = Definition::select('definitions.*', 'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at')
+
+            $records = Definition::select('definition_tag.tag_id', 'definitions.*', 'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at')
                 ->leftJoin('stats', function($join) use($userId) {
                     $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', $userId);
                 })
+                // this only gets records which aren't tagged
+                ->leftJoin('definition_tag', function($join) use($userId) {
+                    $join->on('definition_tag.definition_id', 'definitions.id');
+                })
+                ->where(DB::raw('IFNULL(definition_tag.tag_id, 0)'), $taggedCondition, 0)
                 ->where('definitions.type_flag', $typeFlag)
                 ->where('definitions.language_flag', $languageFlagCondition, $languageId)
                 ->whereNotNull('translation_en')

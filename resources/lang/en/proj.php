@@ -218,4 +218,5 @@ return [
 'Intermediate' => 'Intermediate',
 'Advanced' => 'Advanced',
 'My level is' => 'My level is',
+'Least Used' => 'Least Used',
 ];

@@ -68,7 +68,7 @@ class DefinitionController extends Controller
 			'reviewNewest', 'reviewNewestVerbs',
 			'reviewRandomWords', 'reviewRandomVerbs',
 			'reviewRankedVerbs',
-			'reviewSnippets', 'snippetsFlashcards', 'snippetsQuiz',
+			'reviewSnippets', 'snippetsFlashcards', 'snippetsQuiz', 'flashcardsNewest',
 			'reviewDictionary',
 			'readExamples',
 			'favoritesFlashcards', 'favoritesQuiz',
@@ -1672,6 +1672,20 @@ class DefinitionController extends Controller
 		return $this->doList($parms);
     }
 
+	public function flashcardsNewest(Request $request)
+    {
+        $parms = crackParms($request);
+        $parms = Definition::crackOrderNEW($parms, 'id DESC');
+        $parms['type'] = DEFTYPE_SNIPPET;
+        $parms['untagged'] = true;
+        $parms['records'] = Definition::getReview($parms);
+        $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
+
+        //dump($parms);//
+
+		return $this->doList($parms);
+    }
+
 	public function reviewSnippets(Request $request)
     {
         $parms = crackParms($request);
@@ -1680,8 +1694,6 @@ class DefinitionController extends Controller
         $parms['records'] = Definition::getReview($parms);
         //todo: $parms['recordsTotal'] = Definition::getReviewCount($parms);
         $parms['historyType'] = HISTORY_TYPE_SNIPPETS;
-
-        //dump($parms);//
 
 		return $this->doList($parms);
     }
@@ -1821,6 +1833,7 @@ class DefinitionController extends Controller
                 {
                     // add the first definition
                     $lines = Spanish::getSentences($record->definition);
+                    dd($lines);
                     if (count($lines) > 0)
                     {
                         $text .= ': ' . trim(trim($lines[0], '1.'), '.');

@@ -27,22 +27,19 @@ class Controller extends BaseController
 	public function __construct ()
 	{
 		// session don't work in constructors (or in middleware), so this is the work arround:
-		$this->middleware(function ($request, $next){
-			// set locale according to selected language
-			$locale = session('locale');
-			if (isset($locale))
-				App::setLocale($locale);
-
-    	$debug = session('debug');
-    	if (isset($debug))
-    	{
-            Config::set('app.debug', $debug);
-    	}
-        //$debug = Config::get('app.debug');
-	    //dump($debug);
+		$this->middleware(function ($request, $next)
+		{
+            $debug = session('debug');
+            if (isset($debug))
+            {
+                Config::set('app.debug', $debug);
+            }
+            //$debug = Config::get('app.debug');
+            //dump($debug);
 
 			return $next($request);
-		});	}
+		});
+	}
 
     // this handles switching languages from dropdown
 	public function language($locale)

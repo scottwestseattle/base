@@ -194,4 +194,5 @@ return [
 'Italian' => 'Italian',
 'Reload' => 'Reload',
 'Repeat' => 'Repeat',
+'Clear All' => 'Clear All',
 ];

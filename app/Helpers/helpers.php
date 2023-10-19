@@ -526,7 +526,8 @@ if (!function_exists('lurl')) {
     // create localized url, such as: /es/about
     function lurl($route)
     {
-        return '/' . app()->getLocale() . '/' . $route;
+        $slash = Str::startsWith($route, '/') ? '' : '/';
+        return '/' . app()->getLocale() . $slash . $route;
     }
 }
 

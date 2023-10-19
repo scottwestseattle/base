@@ -13,8 +13,7 @@
     // PROBLEMS:
     // todo: need to check for current favorite on each entry because some can be hearted and other's unhearted
     // todo: need to take the unhearted or deleted items out of the rotation during a read or quiz
-
-    $favs = isset($parms['favoriteLists']) ? $parms['favoriteLists'] : null;
+    $favs = isset($parms['favoriteLists']) ? $parms['favoriteLists'] : [];
     $tagId = isset($parms['tagId']) ? $parms['tagId'] : null;
 
     // only need reload if not already showing entries OR sort type would change the entries
@@ -234,7 +233,6 @@
                                 <li data-tagid="{{$list->id}}" ><a id="heartEntryIcon{{$list->id}}" class="dropdown-item" href="" onclick="">{{$list->name}}</a></li>
                             @endif
                         @endforeach
-
                         </ul>
                         <span class="ml-2" id="heartStatus"></span>
 	                </li>

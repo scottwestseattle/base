@@ -194,4 +194,5 @@ return [
 'Italian' => '意大利语',
 'Reload' => '重新加载',
 'Repeat' => '重复进行',
+'Clear All' => '清除所有',
 ];

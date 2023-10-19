@@ -20,6 +20,19 @@ use App\Http\Controllers\Gen\TemplateController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\Gen\ArticleController;
 
+// Generated Entries
+use App\Http\Controllers\Gen\ExerciseController;
+use App\Http\Controllers\Gen\StatController;
+use App\Http\Controllers\Gen\HistoryController;
+use App\Http\Controllers\Gen\LessonController;
+use App\Http\Controllers\Gen\CourseController;
+use App\Http\Controllers\Gen\BookController;
+use App\Http\Controllers\Gen\DefinitionController;
+use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\WordController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,34 +52,15 @@ use App\Http\Controllers\Gen\ArticleController;
     farther down
 *****************************************************************************/
 
+// OLD: works using redirect which Google Search Indexing doesn't like
 // Handle the available languages with prefixed url's
-Route::get('/en/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
-Route::get('/es/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
-Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+//Route::get('/en/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+//Route::get('/es/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+//Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// Front Page
-Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
-Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/language/{locale}', [Controller::class, 'language']);
-Route::get('/about', [HomeController::class, 'about']);
-Route::get('/terms', [HomeController::class, 'terms']);
-Route::get('/privacy', [HomeController::class, 'privacy']);
-Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/hash', [HomeController::class, 'hash']);
-Route::post('/hash', [HomeController::class, 'hash']);
-Route::get('/sites/sitemap', [SiteController::class, 'sitemap']);
-
-// Auth
-Route::get('/login', [LoginController::class, 'login'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/register', [RegisterController::class, 'register'])->name('register');
-Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
-
-// Search
-Route::get('/search', [HomeController::class, 'search']);
-Route::post('/search', [HomeController::class, 'search']);
-Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchAjax']);
+Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
@@ -91,21 +85,53 @@ Route::get('/clear-sessions', function () {
     return "Sessions cleared";
 })->name('flush');
 
+Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+Route::group([
+    'prefix' => '{locale}',
+    'where' => ['locale' => 'en|es|zh']
+], function() {
+
+///////////////////////////////////////////////////////////////////////////////
+// Front Page
+Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
+Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/about', [HomeController::class, 'about']);
+Route::get('/terms', [HomeController::class, 'terms']);
+Route::get('/privacy', [HomeController::class, 'privacy']);
+Route::get('/contact', [HomeController::class, 'contact']);
+Route::get('/hash', [HomeController::class, 'hash']);
+Route::post('/hash', [HomeController::class, 'hash']);
+Route::get('/sites/sitemap', [SiteController::class, 'sitemap']);
+
+// Auth
+Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/register', [RegisterController::class, 'register'])->name('register');
+
+// Search
+Route::get('/search', [HomeController::class, 'search']);
+Route::post('/search', [HomeController::class, 'search']);
+Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchAjax']);
+
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
     // index
     Route::get('/', [ArticleController::class, 'index']);
     Route::get('/index/', [ArticleController::class, 'index']);
-	Route::get('/view/{permalink}', [ArticleController::class, 'permalink']);
-	Route::get('/show/{entry}', [ArticleController::class, 'view']);
+    Route::get('/view/{permalink}', [ArticleController::class, 'permalink'])->name('articles.view');
+    Route::get('/show/{entry}', [ArticleController::class, 'view']);
 
     // add / (create done in entries)
 	Route::get('/add/', [ArticleController::class, 'add']);
 	Route::post('/create/', [ArticleController::class, 'create']);
 
     // read / flashcards
-	Route::get('/read/{entry}', [ArticleController::class, 'read']);
+	Route::get('/read/{entry}', [ArticleController::class, 'read'])->name('articles.read');
 	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
 	Route::get('/flashcards/{entry}/{count?}', [ArticleController::class, 'flashcards']);
 	Route::get('/quiz/{entry}/{qnaType}', [ArticleController::class, 'quiz']);
@@ -239,9 +265,6 @@ Route::group(['prefix' => 'events'], function () {
 // Move permanent routes above this section
 // =================================================================
 
-// GENERATED for Comment model
-use App\Http\Controllers\CommentController;
-
 // Comments
 Route::group(['prefix' => 'comments'], function () {
 	Route::get('/', [CommentController::class, 'index']);
@@ -351,8 +374,6 @@ Route::group(['prefix' => 'sites'], function () {
 	Route::get('/undelete/{id}', [SiteController::class, 'undelete']);
 });
 
-// GENERATED for Word model
-use App\Http\Controllers\WordController;
 
 // Words
 Route::group(['prefix' => 'words'], function () {
@@ -386,9 +407,6 @@ Route::group(['prefix' => 'words'], function () {
 	Route::get('/view/{word}', [WordController::class, 'view']);
 	Route::get('/{permalink}', [WordController::class, 'permalink']);
 });
-
-// GENERATED for Tag model
-use App\Http\Controllers\TagController;
 
 // Tags
 Route::group(['prefix' => 'tags'], function () {
@@ -427,9 +445,6 @@ Route::group(['prefix' => 'tags'], function () {
 	Route::get('/edit-user-favorite-list/{tag}', [TagController::class, 'editUserFavoriteList']);
 });
 
-// GENERATED for Visitor model
-use App\Http\Controllers\VisitorController;
-
 // Visitors
 Route::group(['prefix' => 'visitors'], function () {
 	Route::get('/', [VisitorController::class, 'index']);
@@ -461,9 +476,6 @@ Route::group(['prefix' => 'visitors'], function () {
 	Route::get('/view/{entry}', [EntryController::class, 'view']);
 	Route::get('/{permalink}', [EntryController::class, 'permalink']);
 });
-
-// GENERATED for Definition model
-use App\Http\Controllers\Gen\DefinitionController;
 
 // Favorites lists
 Route::group(['prefix' => 'favorites'], function () {
@@ -505,7 +517,7 @@ Route::group(['prefix' => 'snippets'], function () {
 
 // Daily exercise links - made unique for history uniqueness
 Route::group(['prefix' => 'daily'], function () {
-	Route::get('/flashcards-newest', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/flashcards-newest', [DefinitionController::class, 'flashcardsNewest']);
 	Route::get('/flashcards-attempts', [DefinitionController::class, 'reviewSnippets']);
 	Route::get('/dictionary-newest', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/dictionary-attempts', [DefinitionController::class, 'reviewDictionary']);
@@ -599,9 +611,6 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/conjugationscomponent/{definition}',[DefinitionController::class, 'conjugationsComponentAjax']);
 });
 
-// GENERATED for Book model
-use App\Http\Controllers\Gen\BookController;
-
 // Books
 Route::group(['prefix' => 'books'], function () {
 	Route::get('/', [BookController::class, 'index']);
@@ -645,9 +654,6 @@ Route::group(['prefix' => 'books'], function () {
 
 });
 
-// GENERATED for Course model
-use App\Http\Controllers\Gen\CourseController;
-
 // Courses
 Route::group(['prefix' => 'courses'], function () {
 	Route::get('/', [CourseController::class, 'index']);
@@ -685,9 +691,6 @@ Route::group(['prefix' => 'courses'], function () {
 	Route::get('/deleted', [CourseController::class, 'deleted']);
 	Route::get('/undelete/{id}', [CourseController::class, 'undelete']);
 });
-
-// GENERATED for Lesson model
-use App\Http\Controllers\Gen\LessonController;
 
 // Lessons
 Route::group(['prefix' => 'lessons'], function () {
@@ -734,9 +737,6 @@ Route::group(['prefix' => 'lessons'], function () {
 	Route::get('/{parent_id}', [LessonController::class, 'index']);
 });
 
-// GENERATED for History model
-use App\Http\Controllers\Gen\HistoryController;
-
 // Histories
 Route::group(['prefix' => 'history'], function () {
 	Route::get('/', [HistoryController::class, 'index']);
@@ -766,9 +766,6 @@ Route::group(['prefix' => 'history'], function () {
 	Route::get('/deleted', [HistoryController::class, 'deleted']);
 	Route::get('/undelete/{id}', [HistoryController::class, 'undelete']);
 });
-
-// GENERATED for Stat model
-use App\Http\Controllers\Gen\StatController;
 
 // Stats
 Route::group(['prefix' => 'stats'], function () {
@@ -804,9 +801,6 @@ Route::group(['prefix' => 'stats'], function () {
 	Route::get('/undelete/{id}', [StatController::class, 'undelete']);
 });
 
-// GENERATED for Exercise model
-use App\Http\Controllers\Gen\ExerciseController;
-
 // Exercises
 Route::group(['prefix' => 'exercises'], function () {
 	Route::get('/', [ExerciseController::class, 'index']);
@@ -838,3 +832,5 @@ Route::group(['prefix' => 'exercises'], function () {
 	Route::get('/deleted', [ExerciseController::class, 'deleted']);
 	Route::get('/undelete/{id}', [ExerciseController::class, 'undelete']);
 });
+
+}); // End of Locale Prefix Handler

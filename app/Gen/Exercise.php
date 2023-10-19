@@ -387,7 +387,7 @@ class Exercise extends Model
                     }
 
                     $todo[] = ['done' => $done, 'title' => $exercise->title, 'icon' => $icon, 'linkTitle' => $name,
-                        'linkUrl' => '/articles/read/' . $id . "?source=$exercise->subtype_flag" ];
+                        'linkUrl' => lurl('/articles/read/' . $id . "?source=$exercise->subtype_flag") ];
                 }
                 else if ($exercise->type_flag == HISTORY_TYPE_LESSON) // lesson exercise
                 {
@@ -417,7 +417,7 @@ class Exercise extends Model
                             $title = $courseTitle . ': ' . $title;
                         }
 
-                        $url = "/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag";
+                        $url = lurl("/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag");
                         $todo[] = ['done' => $done, 'title' => $exercise->title, 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
                     }
                 }
@@ -432,10 +432,10 @@ class Exercise extends Model
                         case HISTORY_SUBTYPE_EXERCISE_RANDOM:
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_NEWEST:
-                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-newest?action=flashcards&count=$count&order=desc&source=$exercise->subtype_flag"];
+                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => lurl("/daily/flashcards-newest?action=flashcards&count=$count&order=desc&source=$exercise->subtype_flag")];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_LEAST_USED:
-                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-at&source=$exercise->subtype_flag"];
+                            $todo[] = ['done' => $done, 'title' => $titleSnippets, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => lurl("/daily/flashcards-attempts?action=flashcards&count=$count&order=attempts-at&source=$exercise->subtype_flag")];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_MOST_COMMON:
                             break;
@@ -451,13 +451,13 @@ class Exercise extends Model
                         case HISTORY_SUBTYPE_EXERCISE_OTD:
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_RANDOM:
-                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/definitions/review-random-words?action=flashcards&count=$count"];
+                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => lurl("/definitions/review-random-words?action=flashcards&count=$count")];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_NEWEST:
-                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/dictionary-newest?action=flashcards&count=$count"];
+                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => lurl("/daily/dictionary-newest?action=flashcards&count=$count")];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_LEAST_USED:
-                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => "/daily/dictionary-attempts"];
+                            $todo[] = ['done' => $done, 'title' => $titleDictionary, 'icon' => $icon, 'linkTitle' => $exercise->title, 'linkUrl' => lurl("/daily/dictionary-attempts")];
                             break;
                         case HISTORY_SUBTYPE_EXERCISE_MOST_COMMON:
                             break;
@@ -491,8 +491,8 @@ class Exercise extends Model
 
                     $todo[] = [
                         'done' => $done, 'title' => $titleFavorites, 'icon' => $icon, 'linkTitle' => $exercise->title,
-                        'linkUrl' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-at&source=$exercise->subtype_flag",
-                        'linkUrl2' => "/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=desc&source=$exercise->subtype_flag"
+                        'linkUrl' => lurl("/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=attempts-at&source=$exercise->subtype_flag"),
+                        'linkUrl2' => lurl("/definitions/favorites-review?tagId=$exercise->program_id&action=flashcards&count=20&order=desc&source=$exercise->subtype_flag")
                         ];
                 }
             }

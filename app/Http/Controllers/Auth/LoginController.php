@@ -126,7 +126,7 @@ class LoginController extends Controller
 			else
 			{
 				// Authentication passed...
-				return redirect()->intended('dashboard');
+				return redirect()->intended(lurl('dashboard'));
 			}
         }
 		else
@@ -134,6 +134,6 @@ class LoginController extends Controller
 			logWarning(__FUNCTION__, 'Invalid credentials', ['email' => $data['email']]);
 		}
 
-		return redirect('/login');
+		return redirect()->back();
     }
 }

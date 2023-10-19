@@ -218,4 +218,5 @@ return [
 'Intermediate' => '中级',
 'Advanced' => '高级',
 'My level is' => '我的水平是',
+'Least Used' => '使用最少的',
 ];
