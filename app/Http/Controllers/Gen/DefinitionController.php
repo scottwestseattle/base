@@ -1976,7 +1976,7 @@ class DefinitionController extends Controller
                 {
                     $text .= $labelDefinition . ':  ';
                     $text .= ucfirst($record->title);
-                    $text .= ', ' . ucfirst($record->title) . '';
+                    //no $text .= ', ' . ucfirst($record->title) . '';
 
                     //
                     // add the definition
@@ -1984,18 +1984,12 @@ class DefinitionController extends Controller
                     $d = $record->definition;
                     $d = str_replace('1.', $label1, $d);
                     $d = str_replace('2.', $label2, $d);
-                    $d = str_replace('3.', $label3, $d);
-                    $d = str_replace('4.', $label4, $d);
-                    $d = str_replace('5.', $label5, $d);
+                    //no $d = str_replace('3.', $label3, $d);
+                    //no $d = str_replace('4.', $label4, $d);
+                    //no $d = str_replace('5.', $label5, $d);
 
                     $text .= '; ' . ucfirst($d);
 
-                    //
-                    // say the word again
-                    //
-                    if (!Str::endsWith($text, ';'))
-                        $text .= ';';
-                    $text .= '  ' . ucfirst($record->title) . ';';
 
                     //
                     // add the examples
@@ -2006,12 +2000,14 @@ class DefinitionController extends Controller
                             $text .= ';';
 
                         $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
-
-                        // repeat the word one more time
-                        if (!Str::endsWith($text, ';'))
-                            $text .= ';';
-                        $text .= '  ' . ucfirst($record->title) . ';';
                     }
+
+                    //
+                    // say the word again at the end
+                    //
+                    if (!Str::endsWith($text, ';'))
+                        $text .= ';';
+                    $text .= '  ' . ucfirst($record->title) . ';';
                 }
 
                 $lines[] = $text;
