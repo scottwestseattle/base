@@ -1974,22 +1974,23 @@ class DefinitionController extends Controller
                 }
                 else
                 {
-                    $text .= $labelDefinition . ':  ';
-                    $text .= ucfirst($record->title);
+                    $text = ucfirst($record->title) . '; ';
                     //no $text .= ', ' . ucfirst($record->title) . '';
 
                     //
                     // add the definition
                     //
-                    $d = $record->definition;
+                    $text .= $labelDefinition . ':  ';
+                    $d = $record->definition;//sbw
+            		$d = splitSentences($record->definition);
+            		$d = (is_array($d) && count($d) >= 1) ? $d[0] : $record->definition;
                     $d = str_replace('1.', $label1, $d);
-                    $d = str_replace('2.', $label2, $d);
+                    //no $d = str_replace('2.', $label2, $d);
                     //no $d = str_replace('3.', $label3, $d);
                     //no $d = str_replace('4.', $label4, $d);
                     //no $d = str_replace('5.', $label5, $d);
 
-                    $text .= '; ' . ucfirst($d);
-
+                    $text .= ucfirst($d);
 
                     //
                     // add the examples
