@@ -42,6 +42,7 @@
 	data-random="{{$random}}"
 	data-touchpath="{{$touchPath}}"
 	data-language="{{$language}}"
+	data-locale="{{app()->getLocale()}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

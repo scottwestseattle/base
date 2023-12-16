@@ -1,6 +1,9 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Add Article'))
-@section('menu-submenu')@component('gen.articles.menu-submenu')@endcomponent @endsection
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['locale' => $locale])@endcomponent @endsection
 @section('content')
 @php
     $type_flag = isAdmin() ? null : ENTRY_TYPE_ARTICLE;

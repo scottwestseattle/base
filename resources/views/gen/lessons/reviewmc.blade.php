@@ -24,6 +24,7 @@
 	data-quiztext-override-wrong="@LANG('content.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('content.Score Changed')"
 	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
+	data-locale="{{app()->getLocale()}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

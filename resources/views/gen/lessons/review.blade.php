@@ -25,6 +25,7 @@
 	data-lessonid="{{$record->id}}"
 	data-touchPath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-random="{{(isset($random) ? $random : 1)}}"
+	data-locale="{{app()->getLocale()}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

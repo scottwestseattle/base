@@ -119,11 +119,12 @@ function deck() {
 	this.slides = [];   // slides
     this.slideOrder = null; // slide order
 	this.speech = null;
-	this.language = "";
+	this.language = "not set";
 	this.languageLong = "";
 	this.isAdmin = false;
 	this.userId = 0;
     this.title = 'not set';
+    this.locale = 'not set';
 
     // add History
     this.programName = 'not set';
@@ -405,8 +406,9 @@ function loadData()
     	// new settings
 		deck.quizTextDone = container.data('quiztext-done');
 		deck.touchPath = container.data('touchpath');
-		deck.language = container.data('language');			// this is the language that the web site is in
-		deck.languageLong = container.data('language-long');		// long version like: eng-BGR
+		deck.language = container.data('language');             // this is the language that the web site is in
+		deck.locale = container.data('locale');                 // needed to create links
+		deck.languageLong = container.data('language-long');	// long version like: eng-BGR
 		//console.log('languages: ' + deck.language + ", " + deck.languageLong);
 		deck.isAdmin = container.data('isadmin') == '1';
 		deck.userId = parseInt(container.data('userid'), 10);

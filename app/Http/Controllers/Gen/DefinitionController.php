@@ -270,7 +270,7 @@ class DefinitionController extends Controller
 		return redirect('/definitions/view/' . $record->permalink);
     }
 
-    public function permalink(Request $request, $permalink)
+    public function permalink(Request $request, $locale, $permalink)
     {
 		$record = null;
 		$permalink = alphanum($permalink);
@@ -295,7 +295,7 @@ class DefinitionController extends Controller
     		return redirect($this->redirectTo);
 		}
 
-		return $this->view($record);
+		return $this->view($request, $locale, $record);
 	}
 
     public function display(Request $request, $word)
@@ -359,7 +359,7 @@ class DefinitionController extends Controller
 
 	}
 
-	public function view(Definition $definition)
+	public function view(Request $request, $locale, Definition $definition)
     {
 		$record = $definition;
 
@@ -384,17 +384,19 @@ class DefinitionController extends Controller
 			]);
     }
 
-	public function editOrShow(Definition $definition)
+	public function editOrShow(Request $request, $locale, Definition $definition)
     {
 		$record = $definition;
 
         if ($record->user_id == Auth::id()) // if it's mine
-            return redirect('/definitions/edit/' . $record->id);
+            //return redirect('/definitions/edit/' . $record->id);
+            return redirect(route('definitions.edit', ['locale' => app()->getLocale(), 'definition' => $record->id]));
         else
-            return redirect('/definitions/show/' . $record->id);
+            //return redirect('/definitions/show/' . $record->id);
+            return redirect(route('definitions.show', ['locale' => app()->getLocale(), 'definition' => $record->id]));
     }
 
-	public function edit(Definition $definition)
+	public function edit(Request $request, $locale, Definition $definition)
     {
 		$record = $definition;
 		$forms = null;
@@ -840,7 +842,7 @@ class DefinitionController extends Controller
         }
     }
 
-	public function viewSnippet($permalink)
+	public function viewSnippet(Request $request, $locale, $permalink)
     {
 		$permalink = alphanum($permalink, /* strict = */ true);
 		$record = Definition::getPermalink($permalink);
@@ -854,7 +856,7 @@ class DefinitionController extends Controller
         }
     }
 
-	public function showSnippet(Definition $definition)
+	public function showSnippet(Request $request, $locale, Definition $definition)
     {
 		$record = $definition;
 

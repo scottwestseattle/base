@@ -21,7 +21,7 @@ use App\Status;
 use App\User;
 
 define('PREFIX', '/articles/');
-define('VIEW', '/articles/view/');
+define('VIEW', '/' . app()->getLocale() . '/articles/view/');
 define('VIEWS', 'gen.articles');
 define('LOG_CLASS', 'ArticleController');
 
@@ -298,7 +298,7 @@ class ArticleController extends Controller
 		return redirect(VIEW . $record->permalink);
     }
 
-	public function edit(Entry $entry)
+	public function edit(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -321,7 +321,7 @@ class ArticleController extends Controller
 			]);
     }
 
-    public function update(Request $request, Entry $entry)
+    public function update(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 		$prevTitle = $record->title;
@@ -592,7 +592,7 @@ class ArticleController extends Controller
     }
 
 
-	public function flashcards(Request $request, Entry $entry)
+	public function flashcards(Request $request, $locale, Entry $entry)
     {
         $record = $entry;
 		$reviewType = 1;

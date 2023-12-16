@@ -1,12 +1,15 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Edit Article'))
-@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['locale' => $locale, 'record' => $record])@endcomponent @endsection
 @section('content')
 <div class="container page-normal">
 
 	<h1>Edit</h1>
 
-	<form method="POST" action="/articles/update/{{ $record->id }}">
+	<form method="POST" action="{{route('articles.update', ['locale' => $locale, 'entry' => $record->id])}}">
 		<div class="form-group form-control-big">
 
             @component('components.control-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent

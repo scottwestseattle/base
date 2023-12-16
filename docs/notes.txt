@@ -1,3 +1,11 @@
+->name('articles.edit')
+$locale = app()->getLocale();
+
+{{route('articles.index', ['locale' => $locale, 'entry' => $record->id])}}
+{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}
+
+===========
+
 
 Newest practice text is OLD text
 

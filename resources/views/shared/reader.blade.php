@@ -56,6 +56,7 @@
 	data-labelof="{{$labels['of']}}"
 	data-labelreadingtime="{{$labels['readingTime']}}"
 	data-randomorder="{{$randomOrder ? 1 : 0}}"
+	data-locale="{{app()->getLocale()}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

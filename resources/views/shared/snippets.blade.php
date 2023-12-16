@@ -43,6 +43,7 @@
 	data-userid="0"
 	data-readlocation="0"
 	data-useKeyboard="0"
+	data-locale="{{app()->getLocale()}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

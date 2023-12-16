@@ -30,7 +30,7 @@
                             </div>
                             @if (App\Entry::hasTranslationStatic($record))
                             <div class="float-left ml-2">
-                                <a class="btn btn-success btn-xs" role="button" href="/articles/flashcards/{{$record->id}}">
+                                <a class="btn btn-success btn-xs" role="button" href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}">
                                     @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                                 </a>
                             </div>
@@ -52,7 +52,7 @@
                                     @component('components.control-button-publish', ['record' => $record, 'btnStyle' => 'btn-xxs', 'prefix' => 'articles', 'showPublic' => true, 'ajax' => true, 'reload' => true])@endcomponent
                                 </div>
                                 @endif
-                                <div style="margin-right:5px; float:left;"><a href='/articles/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
+                                <div style="margin-right:5px; float:left;"><a href='{{route('articles.edit', ['locale' => $locale, 'entry' => $record->id])}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
                                 <div style="margin-right:0px; float:left;">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/articles/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
                             @endif
                         </td>

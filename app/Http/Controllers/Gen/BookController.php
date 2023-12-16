@@ -183,7 +183,7 @@ class BookController extends Controller
 		return redirect($record->getRedirect()['view']);
     }
 
-    public function permalink(Request $request, $permalink)
+    public function permalink(Request $request, $locale, $permalink)
     {
  		$record = null;
 		$permalink = alphanum($permalink);

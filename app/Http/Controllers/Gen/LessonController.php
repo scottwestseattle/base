@@ -679,7 +679,7 @@ class LessonController extends Controller
 	//
 	// this is the version updated to work with review.js
 	//
-	public function review(Request $request, Lesson $lesson, $reviewType = null, $count = 0)
+	public function review(Request $request, $locale, Lesson $lesson, $reviewType = null, $count = 0)
     {
         $record = $lesson;
 		$reviewType = intval($reviewType);

@@ -69,6 +69,7 @@ Route::get('/set-session/', [Controller::class, 'setSession']);
 Route::get('/sitemap', [HomeController::class, 'sitemap']);
 Route::get('/test', [HomeController::class, 'test']);
 Route::get('/d-e-b-u-g', [HomeController::class, 'debug']);
+Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchAjax']);
 
 Route::get('/clear-cache', function() {
     Cache::flush();
@@ -86,6 +87,18 @@ Route::get('/clear-sessions', function () {
 })->name('flush');
 
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
+// articles AJAX
+Route::group(['prefix' => 'articles'], function () {
+	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
+	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']); // for ajax
+});
+
+// history AJAX
+Route::group(['prefix' => 'history'], function () {
+    Route::get('/rss', [HistoryController::class, 'rss']);
+	Route::get('/add-public/', [HistoryController::class, 'addPublic']);
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
@@ -115,41 +128,37 @@ Route::get('/register', [RegisterController::class, 'register'])->name('register
 // Search
 Route::get('/search', [HomeController::class, 'search']);
 Route::post('/search', [HomeController::class, 'search']);
-Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchAjax']);
 
 // Articles
 Route::group(['prefix' => 'articles'], function () {
 
     // index
-    Route::get('/', [ArticleController::class, 'index']);
-    Route::get('/index/', [ArticleController::class, 'index']);
+    Route::get('/', [ArticleController::class, 'index'])->name('articles.default');
+    Route::get('/index/', [ArticleController::class, 'index'])->name('articles.index');
     Route::get('/view/{permalink}', [ArticleController::class, 'permalink'])->name('articles.view');
     Route::get('/show/{entry}', [ArticleController::class, 'view']);
 
     // add / (create done in entries)
-	Route::get('/add/', [ArticleController::class, 'add']);
-	Route::post('/create/', [ArticleController::class, 'create']);
+	Route::get('/add/', [ArticleController::class, 'add'])->name('articles.add');
+	Route::post('/create/', [ArticleController::class, 'create'])->name('articles.create');
 
     // read / flashcards
 	Route::get('/read/{entry}', [ArticleController::class, 'read'])->name('articles.read');
-	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
-	Route::get('/flashcards/{entry}/{count?}', [ArticleController::class, 'flashcards']);
-	Route::get('/quiz/{entry}/{qnaType}', [ArticleController::class, 'quiz']);
+	Route::get('/flashcards/{entry}/{count?}', [ArticleController::class, 'flashcards'])->name('articles.flashcards');
+	Route::get('/quiz/{entry}/{qnaType}', [ArticleController::class, 'quiz'])->name('articles.quiz');
 
     // edit / update
-	Route::get('/edit/{entry}', [ArticleController::class, 'edit']);
-	Route::post('/update/{entry}', [ArticleController::class, 'update']);
+	Route::get('/edit/{entry}', [ArticleController::class, 'edit'])->name('articles.edit');
+	Route::post('/update/{entry}', [ArticleController::class, 'update'])->name('articles.update');
 
     // confirm delete / delte
-	Route::get('/confirmdelete/{entry}', [ArticleController::class, 'confirmDelete']);
-	Route::get('/delete/{entry}', [ArticleController::class, 'delete']);
-	Route::post('/delete/{entry}', [ArticleController::class, 'delete']);
+	Route::get('/confirmdelete/{entry}', [ArticleController::class, 'confirmDelete'])->name('articles.confirmdelete');
+	Route::post('/delete/{entry}', [ArticleController::class, 'delete'])->name('articles.delete');
+	Route::get('/delete/{entry}', [ArticleController::class, 'delete'])->name('articles.deleteGet');
 
 	// publish
-	Route::get('/publish/{entry}', [ArticleController::class, 'publish']);
-	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']);
-	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']); // for ajax
-
+	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishupdate');
+	Route::get('/publish/{entry}', [ArticleController::class, 'publish'])->name('articles.publish');
 });
 
 // MVC
@@ -523,7 +532,6 @@ Route::group(['prefix' => 'daily'], function () {
 	Route::get('/dictionary-attempts', [DefinitionController::class, 'reviewDictionary']);
 });
 
-
 // Verbs
 Route::get('/verbs/conjugation/{verb}', [DefinitionController::class, 'verbs']);
 Route::get('/dictionary/definition/{word}', [DefinitionController::class, 'display']);
@@ -540,8 +548,8 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::post('/create', [DefinitionController::class, 'create']);
 
 	// edit
-	Route::get('/edit/{definition}', [DefinitionController::class, 'edit']);
-	Route::get('/edit-or-show/{definition}', [DefinitionController::class, 'editOrShow']);
+	Route::get('/edit/{definition}', [DefinitionController::class, 'edit'])->name('definitions.edit');
+	Route::get('/edit-or-show/{definition}', [DefinitionController::class, 'editOrShow'])->name('definitions.editOrShow');
 	Route::post('/update/{definition}', [DefinitionController::class, 'update']);
 
 	// publish
@@ -559,8 +567,8 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/undelete/{id}', [DefinitionController::class, 'undelete']);
 
 	// view
-	Route::get('/show/{definition}', [DefinitionController::class, 'view']);
-	Route::get('/view/{permalink}', [DefinitionController::class, 'permalink']);
+	Route::get('/show/{definition}', [DefinitionController::class, 'view'])->name('definitions.show');
+	Route::get('/view/{permalink}', [DefinitionController::class, 'permalink'])->name('definitions.view');
 
 	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
@@ -619,7 +627,7 @@ Route::group(['prefix' => 'books'], function () {
 
 	// view
 	Route::get('/view/{entry}', [BookController::class, 'view']);
-	Route::get('/show/{permalink}', [BookController::class, 'permalink']);
+	Route::get('/show/{permalink}', [BookController::class, 'permalink'])->name('books.show');
 	Route::get('/chapters/{tag}', [BookController::class, 'chapters']);
 
 	// read
@@ -697,7 +705,7 @@ Route::group(['prefix' => 'lessons'], function () {
 	Route::get('/', [LessonController::class, 'index']);
 
 	Route::get('/admin', [LessonController::class, 'admin']);
-	Route::get('/view/{lesson}',[LessonController::class, 'view']);
+	Route::get('/view/{lesson}',[LessonController::class, 'view'])->name('lessons.view');
 	Route::post('/view/{lesson}',[LessonController::class, 'view']); // just in case they hit enter on the ajax form
 	Route::get('/review-orig/{lesson}/{reviewType?}',[LessonController::class, 'reviewOrig']);
 	Route::get('/reviewmc/{lesson}/{reviewType?}',[LessonController::class, 'reviewmc']);
@@ -749,7 +757,6 @@ Route::group(['prefix' => 'history'], function () {
 
 	// add
 	Route::get('/add', [HistoryController::class, 'add']);
-	Route::get('/add-public/', [HistoryController::class, 'addPublic']);
 
 	Route::post('/create', [HistoryController::class, 'create']);
 

@@ -111,6 +111,7 @@ function quiz() {
     this.historyPath = 'not set';
     this.historyRoute = 'not set';
     this.touchPath = 'not set';
+    this.locale = 'not set';
 
     this.showParameters = function()
     {
@@ -376,6 +377,7 @@ function loadData()
 		quiz.historyRoute = container.data('historyroute');
 		quiz.touchPath = container.data('touchpath');
 		quiz.language = container.data('language');
+		quiz.locale = container.data('locale');                 // needed to create links
         quiz.showParameters();
 
 		// new settings

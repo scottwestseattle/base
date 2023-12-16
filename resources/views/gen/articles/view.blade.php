@@ -11,10 +11,11 @@
     // quizes
     $qnaPorPara = isset($options['qnaPorPara']) ? $options['qnaPorPara']['count'] : 0;
     $qnaEraFue = isset($options['qnaEraFue']) ? $options['qnaEraFue']['count'] : 0;
+    $locale = app()->getLocale();
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
-@section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['locale' => $locale, 'record' => $record])@endcomponent @endsection
 @section('content')
     <!------------------------------------>
     <!-- Top Navigation Buttons -->
