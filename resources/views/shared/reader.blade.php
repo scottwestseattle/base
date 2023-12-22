@@ -66,18 +66,18 @@
 @foreach($lines['text'] as $line)
     @php
         $id = isset($lines['ids'][$loop->index]) ? $lines['ids'][$loop->index] : -5;
+        $translation = ($hasTranslation && isset($lines['translation'][$loop->index])) ? $lines['translation'][$loop->index] : '';
     @endphp
 	<div class="data-slides"
 	    data-title="{{$line}}"
 	    data-number="1"
 	    data-description="{{$line}}"
-	    data-translation="{{$hasTranslation ? $lines['translation'][$loop->index] : ''}}"
+	    data-translation="{{$translation}}"
 	    data-id="{{$id}}"
 	    data-seconds="10"
 	    data-between="2"
 	    data-countdown="1"
-	>
-	</div>
+	></div>
 @endforeach
 
 <div class="container">

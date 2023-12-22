@@ -13,7 +13,7 @@
 
 	<h1>{{__('proj.Add Article')}}</h1>
 
-	<form method="POST" action="/articles/create">
+	<form method="POST" action="{{route('articles.create', ['locale' => $locale])}}">
 		<div class="form-control-big">
 
             @component('components.control-date', ['div' => true, 'months' => $dates['months'], 'years' => $dates['years'], 'days' => $dates['days'], 'filter' => $filter])@endcomponent

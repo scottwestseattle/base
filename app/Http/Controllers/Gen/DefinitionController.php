@@ -130,7 +130,7 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function add(Request $request, $word = null)
+    public function add(Request $request, $locale, $word = null)
     {
 		if ($request->isMethod('post'))
         {
@@ -146,7 +146,7 @@ class DefinitionController extends Controller
 			]);
 	}
 
-    public function create(Request $request)
+    public function create(Request $request, $locale)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 
@@ -207,10 +207,10 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect('/dictionary');
+		return redirect(route('dictionary.index', ['locale' => app()->getLocale()]) . '/search/3');
     }
 
-    public function createQuick(Request $request, $title = null)
+    public function createQuick(Request $request, $locale, $title = null)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 
@@ -416,7 +416,7 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function update(Request $request, Definition $definition)
+    public function update(Request $request, $locale, Definition $definition)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 		$record = $definition;
@@ -564,7 +564,7 @@ class DefinitionController extends Controller
 		return redirect($returnPath);
 	}
 
-    public function confirmDelete(Definition $definition)
+    public function confirmDelete(Request $request, $locale, Definition $definition)
     {
 		$record = $definition;
 
@@ -573,7 +573,7 @@ class DefinitionController extends Controller
 		]);
     }
 
-    public function delete(Request $request, Definition $definition)
+    public function delete(Request $request, $locale, Definition $definition)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 		$record = $definition;
@@ -682,7 +682,7 @@ class DefinitionController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function createSnippet(Request $request)
+    public function createSnippet(Request $request, $locale)
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
         $msg = null;
@@ -733,7 +733,7 @@ class DefinitionController extends Controller
                 // if it already exists let user or visitor update it
                 $exists = true;
                 $record->visitor_id = getVisitorInfo()['hash'];
-                $link = '/definitions/view/' . $record->permalink;
+                $link = route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink]);
             }
 
             if (!$exists) // not found in snippets, check dictionary
@@ -742,7 +742,7 @@ class DefinitionController extends Controller
                 if (isset($record))
                 {
                     $exists = true;
-                    $link = '/definitions/view/' . $record->permalink;
+                    $link = route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink]);
                 }
             }
 
@@ -936,7 +936,7 @@ class DefinitionController extends Controller
         $options['siteLanguage'] = $siteLanguage;
         $options['snippetLanguages'] = getLanguageOptions();
         $options['languageCodes'] = getSpeechLanguage($siteLanguage);
-        $options['returnUrl'] = '/practice';
+        $options['returnUrl'] = '/' . app()->getLocale() . '/practice';
 
         // command line supercedes cookie
         $id = isset($id) ? intval($id) : intval(Cookie::get('snippetId'));
@@ -995,7 +995,7 @@ class DefinitionController extends Controller
 	//
 	// This is now the main index page
 	//
-    public function search(Request $request, $sort = null)
+    public function search(Request $request, $locale, $sort = null)
     {
 		$sort = intval($sort);
 		$records = [];
@@ -2119,7 +2119,7 @@ class DefinitionController extends Controller
 		return __('base.' . $msg);
     }
 
-	public function convertTextToFavorites(Request $request, Entry $entry)
+	public function convertTextToFavorites(Request $request, $locale, Entry $entry)
     {
         $record = $entry;
         $parms = null;

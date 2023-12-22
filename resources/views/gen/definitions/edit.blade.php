@@ -1,3 +1,6 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Edit Definition'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions', 'record' => $record])@endcomponent @endsection
@@ -5,8 +8,7 @@
 @component('gen.definitions.component-search-toolbar', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent
 <h1>{{__('proj.Edit Definition')}}</h1>
 @component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent
-<form method="POST" id="form-edit" action="/definitions/update/{{$record->id}}">
-
+<form method="POST" id="form-edit" action="{{route('definitions.update', ['locale' => $locale, 'definition' => $record->id])}}">
     <div class="form-group">
         <label for="title" class="control-label mb-0">@LANG('proj.Word, Phrase, or Practice Text'):</label>
         <a onclick="event.preventDefault(); $('#title').val(''); $('#title').focus();" href="" tabindex="-1" class="ml-3"><span id="" class="glyphicon glyphicon-remove" ></span></a>

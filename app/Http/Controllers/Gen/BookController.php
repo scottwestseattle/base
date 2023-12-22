@@ -223,7 +223,7 @@ class BookController extends Controller
 		//todo: $visitor = $this->saveVisitor(LOG_MODEL_ENTRIES, LOG_PAGE_PERMALINK, $id);
 		//todo: $isRobot = isset($visitor) && $visitor->robot_flag;
 
-        $backLink = '/books';
+        $backLink = route('books', ['locale' => $locale]);
 		if (isset($record))
 		{
 			$record->tagRecent(); // tag it as recent for the user so it will move to the top of the list
@@ -232,7 +232,7 @@ class BookController extends Controller
 			$record->description = nl2br($record->description);
 			$book = Book::getBook($entry);
 			if (isset($book))
-			    $backLink .= '/chapters/' . $book->id;
+			    $backLink = route('books.chapters', ['locale' => $locale, 'tag' => $book->id]);
 		}
 		else
 		{
@@ -470,7 +470,7 @@ class BookController extends Controller
 
 		$lines = self::getLines($record);
 
-		$backLink = '/books/show/' . $record->permalink;
+		$backLink = route('books.show', ['locale' => $locale, 'entry' => $record->permalink]);
 
 		return $this->doRead($lines, $title, $record->id, $readLocation, $record->language_flag, $backLink);
     }

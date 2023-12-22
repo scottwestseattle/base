@@ -200,7 +200,7 @@ class ArticleController extends Controller
 			]);
 	}
 
-    public function add(Request $request)
+    public function add(Request $request, $locale)
     {
 		return view(VIEWS . '.add', [
 			'languageOptions' => getLanguageOptions(),
@@ -210,7 +210,7 @@ class ArticleController extends Controller
 			]);
 	}
 
-    public function create(Request $request)
+    public function create(Request $request, $locale)
     {
 		$record = new Entry();
 
@@ -536,7 +536,7 @@ class ArticleController extends Controller
     }
 
     //todo: make a quiz from an article: para/por, estaba/estuvo, ser/estar, etc.
-	public function quiz(Request $request, Entry $entry, $qnaType)
+	public function quiz(Request $request, $locale, Entry $entry, $qnaType)
     {
         $record = $entry;
 		$reviewType = 2;

@@ -1146,7 +1146,24 @@ class Definition extends Model
                 ->orderByRaw($orderBy)
                 ->offset($start)
                 ->limit($limit)
+                //->toSql();
                 ->get();
+
+/* the query...
+select `definitions`.*, `stats`.`qna_attempts`, `stats`.`qna_score`, `stats`.`qna_at`, `stats`.`views`,
+`stats`.`viewed_at`, `stats`.`reads`, `stats`.`read_at` from `definitions`
+left join `definition_user`
+on `definition_user`.`definition_id` = `definitions`.`id`
+and `definition_user`.`user_id` = `definitions`.`user_id`
+left join `stats`
+on `stats`.`definition_id` = `definitions`.`id`
+and `stats`.`user_id` = ?
+where `definitions`.`type_flag` = ?
+and `definitions`.`language_flag` = ?
+and (`definitions`.`release_flag` >= ? or `definitions`.`user_id` = ?)
+and `definitions`.`deleted_at` is null
+order by definitions.release_flag, id DESC limit 50 offset 0
+*/
 		}
 		catch (\Exception $e)
 		{

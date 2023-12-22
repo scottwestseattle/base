@@ -1,13 +1,12 @@
 ->name('articles.edit')
 $locale = app()->getLocale();
 
-{{route('articles.index', ['locale' => $locale, 'entry' => $record->id])}}
-{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}
-
-===========
-
-
-Newest practice text is OLD text
+{{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}
+{{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}
+{{route('definitions.add', ['locale' => $locale])}}
+{{route('articles.', ['locale' => $locale])}}
+{{route('articles.', ['locale' => $locale, 'entry' => $record->id])}}
+{{route('articles.', ['locale' => $locale, 'permalink' => $record->permalink])}}
 
 ===== NEW DB Changes =====
 update `tags` set language_flag = 1 where 1 and type_flag = 3 and language_flag = 0

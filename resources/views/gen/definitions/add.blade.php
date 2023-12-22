@@ -1,3 +1,6 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Add Definition'))
 @section('menu-submenu')@component('gen.definitions.menu-submenu', ['prefix' => 'definitions'])@endcomponent @endsection
@@ -7,7 +10,7 @@
 
 @component('components.control-accent-chars-esp', ['visible' => true, 'target' => null, 'flat' => true])@endcomponent
 
-<form method="POST" action="/definitions/create">
+<form method="POST" action="{{route('definitions.create', ['locale' => $locale])}}">
 
     <div class="form-group">
         <label for="title" class="control-label">@LANG('proj.Word'):</label>

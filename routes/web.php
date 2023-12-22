@@ -94,6 +94,11 @@ Route::group(['prefix' => 'articles'], function () {
 	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']); // for ajax
 });
 
+// definitions AJAX
+Route::group(['prefix' => 'definitions'], function () {
+	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
+});
+
 // history AJAX
 Route::group(['prefix' => 'history'], function () {
     Route::get('/rss', [HistoryController::class, 'rss']);
@@ -313,7 +318,7 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/index', [EntryController::class, 'index']);
 
 	// stats
-	Route::get('/stats/{entry}', [EntryController::class, 'stats']);
+	Route::get('/stats/{entry}', [EntryController::class, 'stats'])->name('entries.stats');
 	Route::get('/superstats', [EntryController::class, 'superstats']);
 
 	// view
@@ -349,7 +354,7 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/remove-definition-user/{entry}/{defId}', [EntryController::class, 'removeDefinitionUser']);
 
 	// permalink
-	Route::get('/{permalink}', [EntryController::class, 'permalink']);
+	Route::get('/{permalink}', [EntryController::class, 'permalink'])->name('entries.permalink');
 });
 
 // GENERATED for Site model
@@ -495,7 +500,7 @@ Route::group(['prefix' => 'favorites'], function () {
 
 // Practice text (Snippets)
 Route::group(['prefix' => 'practice'], function () {
-    Route::get('/index/', [DefinitionController::class, 'indexSnippets']);
+    Route::get('/index/', [DefinitionController::class, 'indexSnippets'])->name('practice.index');
     Route::get('/view/{permalink}', [DefinitionController::class, 'viewSnippet']);
     Route::get('/show/{definition}', [DefinitionController::class, 'showSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
@@ -507,19 +512,19 @@ Route::group(['prefix' => 'practice'], function () {
 
 // Dictionary
 Route::group(['prefix' => 'dictionary'], function () {
-    Route::get('/', [DefinitionController::class, 'search']);
-	Route::get('/search/{sort}', [DefinitionController::class, 'search']);
-	Route::get('/create-quick/{text}', [DefinitionController::class, 'createQuick']);
-	Route::post('/create-quick', [DefinitionController::class, 'createQuick']);
+    Route::get('/', [DefinitionController::class, 'search'])->name('dictionary.index');
+	Route::get('/search/{sort}', [DefinitionController::class, 'search'])->name('dictionary.search');
+	Route::get('/create-quick/{text}', [DefinitionController::class, 'createQuick'])->name('dictionary.createQuickGet');
+	Route::post('/create-quick', [DefinitionController::class, 'createQuick'])->name('dictionary.createQuick');
 });
 
 // Snippets
 Route::group(['prefix' => 'snippets'], function () {
-	Route::get('/read', [DefinitionController::class, 'readSnippets']);
+	Route::get('/read', [DefinitionController::class, 'readSnippets'])->name('snippets.read');
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 
 	// flashcards / quiz have two routes
-	Route::get('/review', [DefinitionController::class, 'reviewSnippets']);
+	Route::get('/review', [DefinitionController::class, 'reviewSnippets'])->name('snippets.review');
 	Route::get('/flashcards', [DefinitionController::class, 'snippetsFlashcards']);
 	Route::get('/quiz', [DefinitionController::class, 'snippetsQuiz']);
 });
@@ -538,40 +543,40 @@ Route::get('/dictionary/definition/{word}', [DefinitionController::class, 'displ
 
 // Definitions
 Route::group(['prefix' => 'definitions'], function () {
-	Route::get('/', [DefinitionController::class, 'index']);
+	Route::get('/', [DefinitionController::class, 'index'])->name('definitions.index');
 	Route::get('/index', [DefinitionController::class, 'index']);
 
 	// add
-	Route::get('/add', [DefinitionController::class, 'add']);
-	Route::post('/add', [DefinitionController::class, 'add']);
-	Route::get('/add/{word}', [DefinitionController::class, 'add']);
-	Route::post('/create', [DefinitionController::class, 'create']);
+	Route::post('/add', [DefinitionController::class, 'add'])->name('definitions.add');
+	Route::get('/add', [DefinitionController::class, 'add'])->name('definitions.addGet');
+	Route::get('/add/{word}', [DefinitionController::class, 'add'])->name('definitions.addWord');
+	Route::post('/create', [DefinitionController::class, 'create'])->name('definitions.create');
 
 	// edit
 	Route::get('/edit/{definition}', [DefinitionController::class, 'edit'])->name('definitions.edit');
 	Route::get('/edit-or-show/{definition}', [DefinitionController::class, 'editOrShow'])->name('definitions.editOrShow');
-	Route::post('/update/{definition}', [DefinitionController::class, 'update']);
+	Route::post('/update/{definition}', [DefinitionController::class, 'update'])->name('definitions.update');
 
 	// publish
-	Route::get('/publish/{definition}', [DefinitionController::class, 'publish']);
-	Route::post('/publishupdate/{definition}', [DefinitionController::class, 'updatePublish']);
-	Route::get('/publishupdate/{definition}', [DefinitionController::class, 'updatePublish']);
+	Route::get('/publish/{definition}', [DefinitionController::class, 'publish'])->name('definitions.publish');
+	Route::post('/publishupdate/{definition}', [DefinitionController::class, 'updatePublish'])->name('definitions.publishUpdate');
+	Route::get('/publishupdate/{definition}', [DefinitionController::class, 'updatePublish'])->name('definitions.publishUpdate');
 
 	// delete
-	Route::get('/confirmdelete/{definition}', [DefinitionController::class, 'confirmDelete']);
-	Route::post('/delete/{definition}', [DefinitionController::class, 'delete']);
-	Route::get('/delete/{definition}', [DefinitionController::class, 'delete']);
+	Route::get('/confirmdelete/{definition}', [DefinitionController::class, 'confirmDelete'])->name('definitions.confirmDelete');
+	Route::post('/delete/{definition}', [DefinitionController::class, 'delete'])->name('definitions.delete');
+	Route::get('/delete/{definition}', [DefinitionController::class, 'delete'])->name('definitions.deleteGet');
 
 	// undelete
-	Route::get('/deleted', [DefinitionController::class, 'deleted']);
-	Route::get('/undelete/{id}', [DefinitionController::class, 'undelete']);
+	Route::get('/deleted', [DefinitionController::class, 'deleted'])->name('definitions.deleted');
+	Route::get('/undelete/{id}', [DefinitionController::class, 'undelete'])->name('definitions.undelete');
 
 	// view
 	Route::get('/show/{definition}', [DefinitionController::class, 'view'])->name('definitions.show');
 	Route::get('/view/{permalink}', [DefinitionController::class, 'permalink'])->name('definitions.view');
 
 	// custom
-	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet']);
+	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet'])->name('definitions.createSnippet');
 	Route::get('/list-tag/{tag}', [DefinitionController::class, 'listTag']);
 	Route::get('/read-list/{tag}', [DefinitionController::class, 'readList']);
 	Route::get('/read-random-words/{count?}', [DefinitionController::class, 'readRandomWords']);
@@ -587,7 +592,7 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// actions on all favorites: read, qna, flashcards
 	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview']);
-	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites']);
+	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavorites');
 	Route::post('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites']);
 
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
@@ -604,7 +609,6 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);
 	Route::get('/unheart/{definition}',[DefinitionController::class, 'unheartAjax']);
 	Route::get('/move-favorites/{tag}/{tagToId?}',[DefinitionController::class, 'moveFavorites']);
-	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
 	Route::get('/get-random-word/',[DefinitionController::class, 'getRandomWordAjax']);
 	Route::get('/scrape-definition/{word}',[DefinitionController::class, 'scrapeDefinitionAjax']);
 
@@ -621,14 +625,14 @@ Route::group(['prefix' => 'definitions'], function () {
 
 // Books
 Route::group(['prefix' => 'books'], function () {
-	Route::get('/', [BookController::class, 'index']);
-	Route::get('/admin', [BookController::class, 'admin']);
-	Route::get('/index', [BookController::class, 'index']);
+	Route::get('/', [BookController::class, 'index'])->name('books');
+	Route::get('/admin', [BookController::class, 'admin'])->name('books.admin');
+	Route::get('/index', [BookController::class, 'index'])->name('books.index');
 
 	// view
-	Route::get('/view/{entry}', [BookController::class, 'view']);
+	Route::get('/view/{entry}', [BookController::class, 'view'])->name('books.view');
 	Route::get('/show/{permalink}', [BookController::class, 'permalink'])->name('books.show');
-	Route::get('/chapters/{tag}', [BookController::class, 'chapters']);
+	Route::get('/chapters/{tag}', [BookController::class, 'chapters'])->name('books.chapters');
 
 	// read
 	Route::get('/read/{entry}', [BookController::class, 'read']);

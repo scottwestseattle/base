@@ -1,4 +1,5 @@
 @php
+    $locale = app()->getLocale();
     $favoriteLists = (isset($options['favoriteLists'])) ? $options['favoriteLists'] : null;
     $showForm = (isset($options['showForm'])) ? $options['showForm'] : false;
     $count = (isset($options['count']) && $options['count'] > 0) ? $options['count'] : DEFAULT_LIST_LIMIT;
@@ -67,7 +68,7 @@
 @if ($showForm)
 <div class="record-form text-center p-1">
 
-	<form method="POST" action="/definitions/create-snippet">
+	<form method="POST" action="{{route('definitions.createSnippet', ['locale' => $locale])}}">
         <div class="">
             <button class="btn btn-xs btn-primary float-left mt-2" style="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" >{{__('ui.Add')}}</button>
         </div>
@@ -127,22 +128,22 @@
 @if ($hasSnippets)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($snippets)}})</span>
-        @component('components.icon-read', ['href' => "/snippets/read?count=$countRead&order=$order", 'float' => 'float-left'])@endcomponent
+        @component('components.icon-read', ['href' => route('snippets.read', ['locale' => $locale]) . "?count=$countRead&order=$order", 'float' => 'float-left'])@endcomponent
     </h3>
     <div style="clear:both;">
         <div class="medium-text" style="margin-bottom:3px;">
-            <span class="mb-3"     style="vertical-align:bottom;"><a href="/snippets/review?action=flashcards&order={{$order}}">@LANG('proj.Flashcards')</a></span>
-            <span class="ml-2" style="vertical-align:bottom;"><a href="/snippets/review?action=flashcards&count=20&order={{$order}}">@LANG('proj.Flashcards') (20)</a></span>
+            <span class="mb-3"     style="vertical-align:bottom;"><a href="{{route('snippets.review', ['locale' => $locale])}}?action=flashcards&order={{$order}}">@LANG('proj.Flashcards')</a></span>
+            <span class="ml-2" style="vertical-align:bottom;"><a href="{{route('snippets.review', ['locale' => $locale])}}?action=flashcards&count=20&order={{$order}}">@LANG('proj.Flashcards') (20)</a></span>
             <a class="ml-2 btn btn-success btn-xs" onclick="$('#filter-menu').toggle()" type="button">@LANG('ui.Sort')</a>
-            <a id="publicButton" class="ml-2 btn btn-primary btn-xs" type="button" href="/practice/index?order=public&count={{$count}}">@LANG('ui.Public')</a>
+            <a id="publicButton" class="ml-2 btn btn-primary btn-xs" type="button" href="{{route('practice.index', ['locale' => $locale])}}?order=public&count={{$count}}">@LANG('ui.Public')</a>
             <div id="filter-menu" class="hidden mt-2">
-                <span class=""     style="vertical-align:bottom;"><a href="/practice/index?order=asc&count=50">@LANG('ui.Oldest')</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=desc&count=50">@LANG('ui.Newest')</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=atoz&count=50">A-Z</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=ztoa&count=50">Z-A</a></span>
+                <span class=""     style="vertical-align:bottom;"><a href="{{route('practice.index', ['locale' => $locale])}}?order=asc&count=50">@LANG('ui.Oldest')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="{{route('practice.index', ['locale' => $locale])}}?order=desc&count=50">@LANG('ui.Newest')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="{{route('practice.index', ['locale' => $locale])}}?order=atoz&count=50">A-Z</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="{{route('practice.index', ['locale' => $locale])}}?order=ztoa&count=50">Z-A</a></span>
                 @if (Auth::check())
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=owner&count=50">@LANG('proj.My Text')</a></span>
-                <span class="ml-2" style="vertical-align:bottom;"><a href="/practice/index?order=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="{{route('practice.index', ['locale' => $locale])}}?order=owner&count=50">@LANG('proj.My Text')</a></span>
+                <span class="ml-2" style="vertical-align:bottom;"><a href="{{route('practice.index', ['locale' => $locale])}}?order=incomplete&count=50">@LANG('ui.Not Translated')</a></span>
                 @endif
             </div>
         </div>
@@ -214,15 +215,15 @@
                                     @if (!isset($record->translation_en))
                                         @if (isAdmin() || $isOwner)
                                             <div class="float-left mr-3 pb-1">
-                                                <a href="/definitions/edit/{{$record->id}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
+                                                <a href="{{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}"><span style="color:{{$linkColor}};">@LANG('proj.Add Translation')</span></a>
                                             </div>
                                         @endif
                                     @endif
 
                                     <div style="float:left;">
                                         @if (isAdmin() || $isOwner)
-                                            <div class="middle float-left"><a href='/definitions/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
-                                    		<div class="middle float-left ml-2">@component('components.control-delete-glyph', ['svg' => 'trash-fill', 'style' => "color:$linkColor", 'href' => "/definitions/delete/$record->id", 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
+                                            <div class="middle float-left"><a href='{{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit" style="color:{{$iconColor}}"></span></a></div>
+                                    		<div class="middle float-left ml-2">@component('components.control-delete-glyph', ['svg' => 'trash-fill', 'style' => "color:$linkColor", 'href' => route('definitions.delete', ['locale' => $locale, 'definition' => $record->id]), 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
                                             <div class="float-left">@component('gen.definitions.component-heart', ['record' => $record, 'id' => 1, 'lists' => $favoriteLists])@endcomponent</div>
                                         @endif
 

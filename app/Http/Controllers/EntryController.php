@@ -332,7 +332,7 @@ class EntryController extends Controller
         return $this->reader($entry, ['return' => 'entries']);
     }
 
-    public function stats(Request $request, Entry $entry)
+    public function stats(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 

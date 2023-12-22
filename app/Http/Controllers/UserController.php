@@ -45,12 +45,12 @@ class UserController extends Controller
 		return view('users.view', ['user' => $user, 'data' => null]);
     }
 
-    public function edit(User $user)
+    public function edit(Request $request, $locale, User $user)
     {
 		return view('users.edit', ['user' => $user, 'data' => null]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $locale, User $user)
     {
 		$user->name = alphanum($request->name);
 		$user->email = alphanum($request->email);

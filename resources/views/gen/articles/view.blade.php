@@ -26,13 +26,13 @@
     @if (isset($prev) || isset($record->parent_id) || isset($next))
     <div style="margin-top: 10px;">
         @if (isset($prev))
-            <a href="/entries/{{$prev->permalink}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
+            <a href="{{route('entries.permalink', ['locale' => $locale, 'permalink' => $record->permalink])}}"><button type="button" class="btn btn-blog-nav"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
         @endif
 
         <a href="{{$backLink}}"><button type="button" class="btn btn-blog-nav">@LANG($backLinkText)<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-up"></span></button></a>
 
         @if (isset($next))
-            <a href="/entries/{{$next->permalink}}"><button type="button" class="btn btn-blog-nav">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
+            <a href="{{route('entries.permalink', ['locale' => $locale, 'permalink' => $next->permalink])}}"><button type="button" class="btn btn-blog-nav">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
         @endif
 
     </div>
@@ -56,28 +56,28 @@
         <!-- Stats -->
         <div class="mb-2">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/articles/read/{{$record->id}}" >{{__('ui.Read')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @if ($options['lineCount'] > 25)
-                    <a type="button" class="btn btn-primary mt-1" href="/articles/read/{{$record->id}}?count=20&random=1" ><span style="font-size:.9em;">{{__('ui.Read')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                    <a type="button" class="btn btn-primary mt-1" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" ><span style="font-size:.9em;">{{__('ui.Read')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @endif
                 @if ($record->hasTranslation())
-				    <a href="/articles/flashcards/{{$record->id}}"><button class="btn btn-success mt-1">@LANG('proj.Flashcards') <span class="title-count">({{$options['lineCount']}})</span></button></a>
+				    <a href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}"><button class="btn btn-success mt-1">@LANG('proj.Flashcards') <span class="title-count">({{$options['lineCount']}})</span></button></a>
                     @if ($options['lineCount'] > 25)
-                        <a type="button" class="btn btn-success mt-1" href="/articles/flashcards/{{$record->id}}?count=20&random=1" >{{__('proj.Flashcards')}}<span class="title-count">(20)</span></a>
+                        <a type="button" class="btn btn-success mt-1" href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" >{{__('proj.Flashcards')}}<span class="title-count">(20)</span></a>
                     @endif
 				@endif
 				@if ($qnaPorPara)
-				    <a href="/articles/quiz/{{$record->id}}/por"><button class="btn btn-success mt-1">@LANG('POR vs PARA') ({{$qnaPorPara}})</button></a>
+				    <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'por'])}}"><button class="btn btn-success mt-1">@LANG('POR vs PARA') ({{$qnaPorPara}})</button></a>
                 @endif
                 @if ($qnaEraFue)
-				    <a href="/articles/quiz/{{$record->id}}/era"><button class="btn btn-success mt-1">@LANG('Pretérito vs Imperfecto') ({{$qnaEraFue}})</button></a>
+				    <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'era'])}}"><button class="btn btn-success mt-1">@LANG('Pretérito vs Imperfecto') ({{$qnaEraFue}})</button></a>
                 @endif
             </div>
 
             <div class="small-text">
                 <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
                 <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
-                <div style="margin-right:10px; float:left;"><a href="/entries/stats/{{$record->id}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
+                <div style="margin-right:10px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
                 <div style="margin-right:10px; float:left;">{{$options['letterCount']}} {{trans_choice('ui.Letter', 2)}}</div>
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true,  'ajax' => true, 'reload' => true])@endcomponent
@@ -97,7 +97,7 @@
                         </a>
                     </div>
                     <div class="mr-2 float-left">
-                        <a href="/definitions/convert-text-to-favorites/{{$record->id}}" class="btn btn-xs btn-primary" role="button">
+                        <a href="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
                             <div class="middle mr-0" style="">{{trans_choice('proj.Convert to Favorites', 2)}}</div>
                         </a>
                     </div>
@@ -158,12 +158,12 @@
 	<div class="trim-text" style="max-width:100%; margin-top: 30px;">
 		@if (isset($prev))
 			<div class="" style="float:left; margin: 0 5px 5px 0;" >
-				<a href="/entries/{{$prev->permalink}}"><button type="button" class="btn btn-nav-bottom"><span class="glyph-nav-bottom glyphicon glyphicon-circle-arrow-left"></span>{{$prev->title}}</button></a>
+				<a href="{{route('entries.permalink', ['locale' => $locale, 'entry' => $prev->permalink])}}"><button type="button" class="btn btn-nav-bottom"><span class="glyph-nav-bottom glyphicon glyphicon-circle-arrow-left"></span>{{$prev->title}}</button></a>
 			</div>
 		@endif
 		@if (isset($next))
 			<div style="float:left;">
-				<a href="/entries/{{$next->permalink}}"><button type="button" class="btn btn-nav-bottom"><span class="glyph-nav-bottom glyphicon glyphicon-circle-arrow-right"></span>{{$next->title}}</button></a>
+				<a href="{{route('entries.permalink', ['locale' => $locale, 'entry' => $next->permalink])}}"><button type="button" class="btn btn-nav-bottom"><span class="glyph-nav-bottom glyphicon glyphicon-circle-arrow-right"></span>{{$next->title}}</button></a>
 			</div>
 		@endif
 	</div>
