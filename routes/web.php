@@ -493,9 +493,9 @@ Route::group(['prefix' => 'visitors'], function () {
 
 // Favorites lists
 Route::group(['prefix' => 'favorites'], function () {
-    Route::get('/', [DefinitionController::class, 'favorites']);
-    Route::get('/rss', [DefinitionController::class, 'favoritesRss']);
-    Route::get('/rss-reader/{tag}', [DefinitionController::class, 'favoritesRssReader']);
+    Route::get('/', [DefinitionController::class, 'favorites'])->name('favorites');
+    Route::get('/rss', [DefinitionController::class, 'favoritesRss'])->name('favorites.rss');
+    Route::get('/rss-reader/{tag}', [DefinitionController::class, 'favoritesRssReader'])->name('favorites.rssReader');
 });
 
 // Practice text (Snippets)
@@ -577,7 +577,7 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// custom
 	Route::post('/create-snippet', [DefinitionController::class, 'createSnippet'])->name('definitions.createSnippet');
-	Route::get('/list-tag/{tag}', [DefinitionController::class, 'listTag']);
+	Route::get('/list-tag/{tag}', [DefinitionController::class, 'listTag'])->name('definitions.listTag');
 	Route::get('/read-list/{tag}', [DefinitionController::class, 'readList']);
 	Route::get('/read-random-words/{count?}', [DefinitionController::class, 'readRandomWords']);
 	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);

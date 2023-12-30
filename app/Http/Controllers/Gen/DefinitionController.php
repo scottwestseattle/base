@@ -1709,7 +1709,7 @@ class DefinitionController extends Controller
 			]);
 	}
 
-    public function listTag(Request $request, Tag $tag)
+    public function listTag(Request $request, $locale, Tag $tag)
     {
         $parms = crackParms($request, ['tagId' => $tag->id]);
 
@@ -2144,7 +2144,8 @@ class DefinitionController extends Controller
         {
             // do the conversion
             $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
-           	return redirect('/definitions/list-tag/' . $parms['tagId'] . '?order=desc');
+//           	return redirect('/definitions/list-tag/' . $parms['tagId'] . '?order=desc');
+           	return redirect(route('definitions.listTag', ['locale' => $locale, 'tag' => $parms['tagId']]) . '?order=desc');
         }
 
 		return view(VIEWS . '.convert-text-to-favorites', [

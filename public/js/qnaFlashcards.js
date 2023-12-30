@@ -108,14 +108,14 @@ function showQuestion()
     // set up 'Go To Entry' and 'Delete Entry' links
     //
     var id = quiz.qna[quiz.qna[curr].order].id;
-    var href = '/definitions/edit-or-show/' + id;
+    var href = '/' + quiz.locale + '/definitions/edit-or-show/' + id;
 	$('#goToEntry').attr("href", href);
 
     //
     // set up Delete for current record
     //
 //old??    var href = '/definitions/confirmdelete/' + id;
-    var hrefDelete = '/definitions/delete/' + id;
+    var hrefDelete = '/' + quiz.locale + '/definitions/delete/' + id;
     var onclick = 'event.preventDefault(); ajaxexec("' + hrefDelete + '"); $("#deleteStatus").text("deleted")';
 //old??	$('#deleteEntry').attr("href", href);
 	$('#deleteEntryIcon').attr("onclick", onclick);
@@ -123,7 +123,7 @@ function showQuestion()
     //
     // set up Heart for current record
     //
-    var hrefUnheart = '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/0';
+    var hrefUnheart = '/' + quiz.locale + '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/0';
     var unheart = 'event.preventDefault(); ajaxexec("' + hrefUnheart + '"); $("#heartStatus").text("unhearted")';
 	$('#unheartEntryIcon').attr("onclick", unheart);
 
@@ -134,7 +134,7 @@ function showQuestion()
         var favId = container.data('tagid'); // the 'to id' is stored on the 'li' element
         if (favId !== 'undefined') // skip the unheart which has no 'to id'
         {
-            var hrefHeart = '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/' + favId;
+            var hrefHeart = '/' + quiz.locale + '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/' + favId;
             var heart = 'event.preventDefault(); ajaxexec("' + hrefHeart + '"); $("#heartStatus").text("hearted")';
             $('#heartEntryIcon' + favId).attr("onclick", heart);
             //console.log('heart url: ' + heart);

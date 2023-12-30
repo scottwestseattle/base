@@ -1,6 +1,7 @@
 @php
     // books options looks like: books-es
     $books = 'books-' . App\Site::getLanguage()['code'];
+    $locale = app()->getLocale();
 @endphp
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top app-color-primary">
 	<a class="navbar-brand" href="/">
@@ -86,7 +87,7 @@
 			</div>
 		</a>
 @endif
-		<a class="navbar-item" href="/favorites">
+		<a class="navbar-item" href="{{route('favorites', ['locale' => $locale])}}">
 			<div>
 				<svg class="" width="20" height="20" fill="currentColor" >
 					<use xlink:href="/img/bootstrap-icons.svg#heart-fill" />

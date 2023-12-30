@@ -40,7 +40,7 @@ class UserController extends Controller
 		]);
 	}
 
-    public function view(User $user)
+    public function view(Request $request, $locale, User $user)
     {
 		return view('users.view', ['user' => $user, 'data' => null]);
     }

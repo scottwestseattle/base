@@ -1127,10 +1127,10 @@ function updateLinks()
     // set up 'Go To Entry' and 'Delete Entry' links
     var id = getCurrentId();
 
-    var href = '/definitions/edit-or-show/' + id;
+    var href = '/' + deck.locale + '/definitions/edit-or-show/' + id;
 	$('#goToEntry').attr("href", href);
 
-    var href = '/definitions/confirmdelete/' + id;
+    var href = '/' + deck.locale + '/definitions/confirmdelete/' + id;
 	$('#deleteEntry').attr("href", href);
 
     console.log('href: ' + $('#goToEntry').attr("href"));

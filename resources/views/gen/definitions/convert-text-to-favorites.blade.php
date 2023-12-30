@@ -3,12 +3,13 @@
 @section('content')
 @php
     $translation = isset($parms['translation']) ? $parms['translation'] : null;
+    $locale = app()->getLocale();
 @endphp
 <div class="container page-normal">
 
     <h1>{{__('proj.Convert Text to Favorites')}}</h1>
 
-	<form method="POST" action="/definitions/convert-text-to-favorites/{{ $record->id }}">
+	<form method="POST" action="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}">
 
 		<h4>{{$record->title}}</h4>
 
