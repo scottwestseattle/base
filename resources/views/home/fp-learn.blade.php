@@ -6,6 +6,7 @@
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 @php
+    $locale = app()->getLocale();
     $showGlobalSearchBox = false;
     $banner = isset($options['banner']) ? $options['banner'] : null;
     $wotd = isset($options['wotd']) ? $options['wotd'] : null;
@@ -211,14 +212,14 @@
     $style = 'width: 20%; max-width:90px;';
 @endphp
         <div class="" style="{{$style}}">
-            <a class="purple" href="/practice">
+            <a class="purple" href="{{route('practice', ['locale' => $locale])}}">
                 <div class="glyphicon glyphicon-blackboard" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{__('proj.Practice')}}</div>
             </a>
         </div>
 
         <div class="" style="{{$style}}">
-            <a class="purple" href="/articles">
+            <a class="purple" href="{{route('articles', ['locale' => $locale])}}">
                 <div class="glyphicon glyphicon-globe" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{trans_choice('proj.Article', 2)}}</div>
             </a>
@@ -226,14 +227,14 @@
 
         @if (\App\Site::hasOption('books'))
         <div class="" style="{{$style}}">
-            <a class="purple" href="/books">
+            <a class="purple" href="{{route('books', ['locale' => $locale])}}">
                 <div class="glyphicon glyphicon-book" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{trans_choice('proj.Book', 2)}}</div>
             </a>
         </div>
         @else
         <div class="" style="{{$style}}">
-            <a class="purple" href="/favorites">
+            <a class="purple" href="{{route('favorites', ['locale' => $locale])}}">
                 <div class="glyphicon glyphicon-heart" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{trans_choice('ui.Favorite', 2)}}</div>
             </a>
@@ -241,7 +242,7 @@
         @endif
 
         <div class="" style="{{$style}}">
-            <a class="purple" href="/dictionary">
+            <a class="purple" href="{{route('dictionary', ['locale' => $locale])}}">
                 <div class="glyphicon glyphicon-text-background" style="font-size:35px;"></div>
                 <div class="" style="font-size:10px;">{{__('proj.Dictionary')}}</div>
             </a>
@@ -249,7 +250,7 @@
 
         @if (isAdmin() || \App\Site::hasOption('courses'))
             <div class="" style="{{$style}}">
-                <a class="purple" href="/courses">
+                <a class="purple" href="{{route('courses', ['locale' => $locale])}}">
                     <div class="glyphicon glyphicon-education" style="font-size:35px;"></div>
                     <div class="" style="font-size:10px;">{{trans_choice('proj.Course', 2)}}</div>
                 </a>
@@ -257,14 +258,14 @@
         @else
             @if (Auth::check())
             <div class="" style="{{$style}}">
-                <a class="purple" href="/logout">
+                <a class="purple" href="{{route('logout', ['locale' => $locale])}}">
                     <div class="glyphicon glyphicon-log-out" style="font-size:35px;"></div>
                     <div class="" style="font-size:10px;">{{__('ui.Log-out')}}</div>
                 </a>
             </div>
             @else
             <div class="" style="{{$style}}">
-                <a class="purple" href="/login">
+                <a class="purple" href="{{route('login', ['locale' => $locale])}}">
                     <div class="glyphicon glyphicon-user" style="font-size:35px;"></div>
                     <div class="" style="font-size:10px;">{{__('ui.Login')}}</div>
                 </a>

@@ -1232,7 +1232,7 @@ function getSelectedText(clicks)
 			{
 				//orig: html += "&nbsp;<a target='_blank' href='/dictionary/create-quick/" + text + "'>(add)</a>";
 				html += "&nbsp;<a href='' onclick='event.preventDefault(); ";
-				html += 'ajaxexec("/dictionary/create-quick/' + text + '"); $("#selected-word").html("<p>Added</p>"); \'>(add)</a>';
+				html += 'ajaxexec("/" + deck.locale + "/dictionary/create-quick/' + text + '"); $("#selected-word").html("<p>Added</p>"); \'>(add)</a>';
 				//console.log(html);
 			}
 			html+= "</div>";
@@ -1244,7 +1244,7 @@ function getSelectedText(clicks)
 		// check the dictionary for the selected text
 		if (deck.contentId > 0)
 		{
-            var url = '/definitions/get/' + text + '/' + deck.contentId;
+            var url = '/' + deck.locale + '/definitions/get/' + text + '/' + deck.contentId;
             ajaxexec(url, '#selected-word-definition', false, translateCallback);
 		}
 		else
@@ -1267,7 +1267,7 @@ function translateCallback(definition)
 function xlate(word)
 {
 	$('#selected-word-definition').text('translating...');
-	ajaxexec('/definitions/translate/' + word + '/' + deck.contentId + '', '#selected-word-definition', false, translateCallback);
+	ajaxexec('/' + deck.locale + '/definitions/translate/' + word + '/' + deck.contentId + '', '#selected-word-definition', false, translateCallback);
 }
 
 function zoom(event, amount)

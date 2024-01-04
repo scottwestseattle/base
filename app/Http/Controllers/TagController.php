@@ -301,19 +301,19 @@ class TagController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function addUserFavoriteList(Request $request)
+    public function addUserFavoriteList(Request $request, $locale)
     {
     	return view('tags.add-user-favorite-list', [
     	]);
     }
 
-    public function createUserFavoriteList(Request $request)
+    public function createUserFavoriteList(Request $request, $locale)
     {
         $name = alphanum($request->name);
 
         Tag::createUserFavoriteList($name);
 
-		return redirect('/favorites');
+		return redirect(route('favorites', ['locale' => app()->getLocale()]));
     }
 
     public function editUserFavoriteList(Request $request, Tag $tag)

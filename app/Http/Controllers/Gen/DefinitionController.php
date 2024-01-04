@@ -207,7 +207,7 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect(route('dictionary.index', ['locale' => app()->getLocale()]) . '/search/3');
+		return redirect(route('dictionary', ['locale' => app()->getLocale()]) . '/search/3');
     }
 
     public function createQuick(Request $request, $locale, $title = null)
@@ -1106,13 +1106,16 @@ class DefinitionController extends Controller
 		$record = Definition::get($text);
 		if (isset($record))
 		{
-			$rc = "<a href='" . self::$_showLink . $record->id . "'>" . $record->title . ": already in dictionary (show)</a>&nbsp;<a href='/definitions/edit/" . $record->id . "'>(edit)</a>";
+		    $locale = app()->getLocale();
+		    $hrefShow = route('definitions.show', ['locale' => $locale, 'definition' => $record->id]);
+		    $hrefEdit = route('definitions.editOrShow', ['locale' => $locale, 'definition' => $record->id]);
+			$rc = "<a href='" . $hrefShow . "'>" . $record->title . ": already in dictionary (show)</a>&nbsp;<a href=$hrefEdit>(edit)</a>";
 		}
 
 		return $rc;
     }
 
-    public function getAjax(Request $request, $text, $entryId)
+    public function getAjax(Request $request, $locale, $text, $entryId)
     {
 		$entryId = intval($entryId);
 
@@ -1161,7 +1164,7 @@ class DefinitionController extends Controller
 		return $rc;
 	}
 
-    public function translateAjax(Request $request, $text, $entryId = null)
+    public function translateAjax(Request $request, $locale, $text, $entryId = null)
     {
 		$entryId = intval($entryId);
 		$rc = self::translateMicrosoft($text);

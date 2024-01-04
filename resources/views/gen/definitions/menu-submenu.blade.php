@@ -5,7 +5,7 @@
   <div class="">
     <ul class="nav">
         @if (isAdmin())
-            <li class="nav-item"><a class="nav-link" href="{{route('dictionary.index', ['locale' => $locale])}}">
+            <li class="nav-item"><a class="nav-link" href="{{route('dictionary', ['locale' => $locale])}}">
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
             </a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('definitions.index', ['locale' => $locale])}}">

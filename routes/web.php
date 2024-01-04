@@ -97,6 +97,7 @@ Route::group(['prefix' => 'articles'], function () {
 // definitions AJAX
 Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
+	Route::get('/wordexists/{text}', [DefinitionController::class, 'wordExistsAjax']);
 });
 
 // history AJAX
@@ -138,7 +139,7 @@ Route::post('/search', [HomeController::class, 'search']);
 Route::group(['prefix' => 'articles'], function () {
 
     // index
-    Route::get('/', [ArticleController::class, 'index'])->name('articles.default');
+    Route::get('/', [ArticleController::class, 'index'])->name('articles');
     Route::get('/index/', [ArticleController::class, 'index'])->name('articles.index');
     Route::get('/view/{permalink}', [ArticleController::class, 'permalink'])->name('articles.view');
     Route::get('/show/{entry}', [ArticleController::class, 'view']);
@@ -453,10 +454,10 @@ Route::group(['prefix' => 'tags'], function () {
 	Route::get('/view/{tag}', [TagController::class, 'view']);
 
     // custom
-	Route::get('/add-user-favorite-list', [TagController::class, 'addUserFavoriteList']);
-	Route::post('/create-user-favorite-list', [TagController::class, 'createUserFavoriteList']);
-	Route::get('/confirm-user-favorite-list-delete/{tag}', [TagController::class, 'confirmUserFavoriteListDelete']);
-	Route::get('/edit-user-favorite-list/{tag}', [TagController::class, 'editUserFavoriteList']);
+	Route::get('/add-user-favorite-list', [TagController::class, 'addUserFavoriteList'])->name('tags.addUserFavoriteList');
+	Route::post('/create-user-favorite-list', [TagController::class, 'createUserFavoriteList'])->name('tags.createUserFavoriteList');
+	Route::get('/confirm-user-favorite-list-delete/{tag}', [TagController::class, 'confirmUserFavoriteListDelete'])->name('tags.confirmUserFavoriteListDelete');
+	Route::get('/edit-user-favorite-list/{tag}', [TagController::class, 'editUserFavoriteList'])->name('tags.editUserFavoriteList');
 });
 
 // Visitors
@@ -508,11 +509,12 @@ Route::group(['prefix' => 'practice'], function () {
 	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 	Route::get('/filter/{parms}', [DefinitionController::class, 'filterSnippets']);
     Route::get('/{id?}', [DefinitionController::class, 'snippets']);
+    Route::get('/', [DefinitionController::class, 'indexSnippets'])->name('practice');
 });
 
 // Dictionary
 Route::group(['prefix' => 'dictionary'], function () {
-    Route::get('/', [DefinitionController::class, 'search'])->name('dictionary.index');
+    Route::get('/', [DefinitionController::class, 'search'])->name('dictionary');
 	Route::get('/search/{sort}', [DefinitionController::class, 'search'])->name('dictionary.search');
 	Route::get('/create-quick/{text}', [DefinitionController::class, 'createQuick'])->name('dictionary.createQuickGet');
 	Route::post('/create-quick', [DefinitionController::class, 'createQuick'])->name('dictionary.createQuick');
@@ -591,9 +593,9 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/quiz/{tag}', [DefinitionController::class, 'favoritesQuiz']);
 
 	// actions on all favorites: read, qna, flashcards
-	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview']);
+	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview'])->name('definitions.favoritesReview');
 	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavorites');
-	Route::post('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites']);
+	Route::post('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavoritesPost');
 
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
 	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);
@@ -603,7 +605,6 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);
-	Route::get('/wordexists/{text}', [DefinitionController::class, 'wordExistsAjax']);
 	Route::get('/get/{text}/{entryId}',[DefinitionController::class, 'getAjax']);
 	Route::get('/translate/{text}/{entryId?}',[DefinitionController::class, 'translateAjax']);
 	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);
@@ -668,9 +669,9 @@ Route::group(['prefix' => 'books'], function () {
 
 // Courses
 Route::group(['prefix' => 'courses'], function () {
-	Route::get('/', [CourseController::class, 'index']);
-	Route::get('/admin', [CourseController::class, 'admin']);
-	Route::get('/index', [CourseController::class, 'index']);
+	Route::get('/', [CourseController::class, 'index'])->name('courses');
+	Route::get('/admin', [CourseController::class, 'admin'])->name('courses.admin');
+	Route::get('/index', [CourseController::class, 'index'])->name('courses.index');
 
 	Route::get('/view/{course}', [CourseController::class, 'view']);
 	Route::get('/rss', [CourseController::class, 'rss']);

@@ -1,17 +1,18 @@
+@php
+    $order = 'desc';
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', trans_choice('ui.List', 2))
 @section('menu-submenu')@component('tags.menu-submenu')@endcomponent @endsection
 @section('content')
-@php
-    $order = 'desc';
-@endphp
 <!--------------------------------------------------------------------->
 <!-- Favorites Lists                                                 -->
 <!--------------------------------------------------------------------->
 
 @if (isset($favorites))
 <h1 class="mb-0">{{trans_choice('ui.Favorite', 2)}}
-    <a class="btn btn-info btn-xs" role="button" href="/tags/add-user-favorite-list">
+    <a class="btn btn-info btn-xs" role="button" href="{{route('tags.addUserFavoriteList', ['locale' => $locale])}}">
         @LANG('ui.Add New List')<span class="glyphicon glyphicon-plus-sign ml-1"></span>
     </a>
 </h1>
@@ -27,7 +28,7 @@
     <div class="mb-3 mr-0">
         <div class="card-body drop-box-ghost">
             <h5 class="card-title">
-                <a href="/definitions/favorites-review?order={{$order}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
+                <a href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?order={{$order}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
             </h5>
             <p class="card-text">
                 <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count={{$favoritesCnt}}&order={{$order}}">

@@ -9,7 +9,7 @@
 
     <h1>{{__('proj.Convert Text to Favorites')}}</h1>
 
-	<form method="POST" action="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}">
+	<form method="POST" action="{{route('definitions.convertTextToFavoritesPost', ['locale' => $locale, 'entry' => $record->id])}}">
 
 		<h4>{{$record->title}}</h4>
 
