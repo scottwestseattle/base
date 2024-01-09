@@ -281,7 +281,7 @@ class HistoryController extends Controller
         $msg = History::add($request);
 		//$msg = History::add($typeFlag, urldecode($programName), $programId, urldecode($sessionName), $sessionId, $seconds);
 
-        $rc = '<a href="/history">' . $msg . '</a>';
+        $rc = '<a href="' . route('history', ['locale' => app()->getLocale()]) . '">' . $msg . '</a>';
 
 		return $rc;
 	}

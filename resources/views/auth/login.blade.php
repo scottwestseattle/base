@@ -1,3 +1,6 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', 'Login')
 @section('content')
@@ -56,7 +59,7 @@
 								@LANG('ui.Login')
 							</button>
 
-							<a class="btn btn-link" href="/password/request-reset">
+							<a class="btn btn-link" href="{{route('password.requestReset', ['locale' => $locale])}}">
 								@LANG('ui.Forgot Your Password')
 							</a>
 						</div>

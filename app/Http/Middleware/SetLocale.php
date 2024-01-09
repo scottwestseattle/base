@@ -21,9 +21,25 @@ class SetLocale
     {
         //dump($request->locale);
 
+        $locale = Cookie::get('locale');
         if (!is_null($request->locale))
         {
             app()->setLocale($request->locale);
+            if (strcmp($locale, $request->locale) === 0)
+            {
+                // current locale already set in cookie
+            }
+            else
+            {
+                // set locale in cookie
+                Cookie::queue('locale', $request->locale, COOKIE_WEEK);
+            }
+        }
+        else
+        {
+            // not set, set from cookie or default to English
+            $locale = isset($locale) ? $locale : 'en';
+            app()->setLocale($locale);
         }
 
         return $next($request);

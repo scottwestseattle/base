@@ -4,7 +4,7 @@
     $locale = app()->getLocale();
 @endphp
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top app-color-primary">
-	<a class="navbar-brand" href="/">
+	<a class="navbar-brand" href="{{route('home.frontpage', ['locale' => $locale])}}">
 		<div class="brand logo middle">
 		    @if (Str::endsWith(domainName(), '.com'))
                 <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:40px;"/>
@@ -101,9 +101,15 @@
 				<img width="25" src="/img/flags/{{App::getLocale()}}.png" />
 			</a>
 			<ul style="float: left; background-color:transparent; border:0;"  class="dropdown-menu">
+			@if (false)
 				<li><a href="/language/en"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
 				<li><a href="/language/es"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
 				<li><a href="/language/zh"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
+            @else
+				<li><a href="/en"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
+				<li><a href="/es"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
+				<li><a href="/zh"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
+            @endif
 			</ul>
 		</div>
 	</div>

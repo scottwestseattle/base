@@ -59,7 +59,7 @@ use App\Http\Controllers\WordController;
 //Route::get('/zh/{one?}/{two?}/{three?}/{four?}/{five?}', [Controller::class, 'routeLocale']);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Route::get('/language/{locale}', [Controller::class, 'language']);
+Route::get('/language/{locale}', [Controller::class, 'language'])->name('language');
 Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
 
 // Global
@@ -116,7 +116,7 @@ Route::group([
 
 ///////////////////////////////////////////////////////////////////////////////
 // Front Page
-Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
+Route::get('/', [HomeController::class, 'frontpage'])->name('home.frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/about', [HomeController::class, 'about']);
 Route::get('/terms', [HomeController::class, 'terms']);
@@ -137,7 +137,6 @@ Route::post('/search', [HomeController::class, 'search']);
 
 // Articles
 Route::group(['prefix' => 'articles'], function () {
-
     // index
     Route::get('/', [ArticleController::class, 'index'])->name('articles');
     Route::get('/index/', [ArticleController::class, 'index'])->name('articles.index');
@@ -254,7 +253,7 @@ Route::group(['prefix' => 'translations'], function () {
 Route::group(['prefix' => 'password'], function () {
 
 	// reset via email
-	Route::get('/request-reset', [ResetPasswordController::class, 'requestReset']);
+	Route::get('/request-reset', [ResetPasswordController::class, 'requestReset'])->name('password.requestReset');
 	Route::post('/send-password-reset', [ResetPasswordController::class, 'sendPasswordReset']);
 	Route::get('/reset/{user}/{token}', [ResetPasswordController::class, 'resetPassword']);
 	Route::post('/reset-update/{user}', [ResetPasswordController::class, 'updatePassword']);
@@ -266,12 +265,12 @@ Route::group(['prefix' => 'password'], function () {
 
 // Events
 Route::group(['prefix' => 'events'], function () {
-	Route::get('/', [EventController::class, 'index'])->middleware('admin');
-	Route::get('/confirmdelete', [EventController::class, 'confirmdelete'])->middleware('admin');
-	Route::get('/delete/{filter?}', [EventController::class, 'delete'])->middleware('admin');
+	Route::get('/', [EventController::class, 'index'])->middleware('admin')->name('events');
+	Route::get('/confirmdelete', [EventController::class, 'confirmdelete'])->middleware('admin')->name('events.confirmDelete');
+	Route::get('/delete/{filter?}', [EventController::class, 'delete'])->middleware('admin')->name('events.delete');
 
 	// has to go last
-	Route::get('/index/{filter?}', [EventController::class, 'index'])->middleware('admin');
+	Route::get('/index/{filter?}', [EventController::class, 'index'])->middleware('admin')->name('events.index');
 });
 
 
@@ -752,18 +751,18 @@ Route::group(['prefix' => 'lessons'], function () {
 
 // Histories
 Route::group(['prefix' => 'history'], function () {
-	Route::get('/', [HistoryController::class, 'index']);
-	Route::get('/index', [HistoryController::class, 'index']);
-	Route::get('/admin', [HistoryController::class, 'admin']);
-    Route::get('/rss', [HistoryController::class, 'rss']);
+	Route::get('/', [HistoryController::class, 'index'])->name('history');
+	Route::get('/index', [HistoryController::class, 'index'])->name('history.index');
+	Route::get('/admin', [HistoryController::class, 'admin'])->name('history.admin');
+    Route::get('/rss', [HistoryController::class, 'rss'])->name('history.rss');
 
 	// view
-	Route::get('/show/{history}', [HistoryController::class, 'view']);
+	Route::get('/show/{history}', [HistoryController::class, 'view'])->name('history.view');
 
 	// add
-	Route::get('/add', [HistoryController::class, 'add']);
+	Route::get('/add', [HistoryController::class, 'add'])->name('history.add');
 
-	Route::post('/create', [HistoryController::class, 'create']);
+	Route::post('/create', [HistoryController::class, 'create'])->name('history.create');
 
 	// edit
 	Route::get('/edit/{history}', [HistoryController::class, 'edit']);

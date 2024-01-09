@@ -811,7 +811,7 @@ class DefinitionController extends Controller
 
 			if (isset($link))
 			{
-    			$msg .= ': <a href="' . $link . '">' . (strlen($snippet) <= 15 ? $snippet : 'show') . '</a>';
+    			$msg .= ': <a href="' . $link . '">' . (strlen($snippet) <= 15 ? $snippet : 'show') . '</a>'; //route()
 			}
 
             logException($f, $e->getMessage(), $msg, ['msg' => $msg]);
