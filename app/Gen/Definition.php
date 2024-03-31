@@ -1131,10 +1131,10 @@ class Definition extends Model
                     'definitions.*',
                     'stats.qna_attempts', 'stats.qna_score', 'stats.qna_at', 'stats.views', 'stats.viewed_at', 'stats.reads', 'stats.read_at'
                 )
-                ->leftJoin('definition_user', function($join) {
-                    $join->on('definition_user.definition_id', '=', 'definitions.id');
-                    $join->on('definition_user.user_id', 'definitions.user_id'); // works for users not logged in
-                })
+//                ->leftJoin('definition_user', function($join) {
+//                    $join->on('definition_user.definition_id', '=', 'definitions.id');
+//                    $join->on('definition_user.user_id', 'definitions.user_id'); // works for users not logged in
+//                })
                 ->leftJoin('stats', function($join) use($userId) {
                     $join->on('stats.definition_id', 'definitions.id')->where('stats.user_id', $userId);
                 })
@@ -1147,7 +1147,7 @@ class Definition extends Model
                 ->orderByRaw($orderBy)
                 ->offset($start)
                 ->limit($limit)
-                //->toSql();
+                //->toSql(); dd($records);
                 ->get();
 
 /* the query...
