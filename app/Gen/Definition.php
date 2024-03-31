@@ -1113,7 +1113,8 @@ class Definition extends Model
 
         // release_flag splits it by user's and public; TODO: add collation so it will sort right
 
-        $orderBy = 'definitions.release_flag, ' . $orderBy;
+        // todo: why was release_flag in here before?
+        // $orderBy = 'definitions.release_flag, ' . $orderBy;
 
         if ($order === 'public')
         {
