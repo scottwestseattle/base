@@ -679,11 +679,12 @@ class LessonController extends Controller
 	//
 	// this is the version updated to work with review.js
 	//
-	public function review(Request $request, $locale, Lesson $lesson, $reviewType = null, $count = 0)
+	public function review(Request $request, $locale, Lesson $lesson, $reviewType = null)
     {
         $record = $lesson;
 		$reviewType = intval($reviewType);
-		$count = intval($count);
+		$count = isset($request['count']) ? intval($request['count']) : PHP_INT_MAX;
+		$random = isset($request['random']) ? intval($request['random']) : 1; // default is 1
 
 		$prev = Lesson::getPrev($lesson);
 		$next = Lesson::getNext($lesson);
@@ -726,7 +727,7 @@ class LessonController extends Controller
             'returnPath' => Site::getReturnPath(),
 			'parentTitle' => $lesson->title,
 			'settings' => $settings,
-			'random' => $lesson->isTranslation() ? 0 : 1,
+			'random' => $random,
 			'history' => $history,
 			'touchPath' => null, //todo: need to implement stats
 			]);

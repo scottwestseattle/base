@@ -37,11 +37,11 @@
     <hr/>
     <div><a target="_blank" href="/lessons/view/1303">Género en General</a></div>
     <div><a target="_blank" href="/lessons/review/1303/2">Género en General - Quiz</a></div>
-    <div><a target="_blank" href="/lessons/review/1303/2/20">Género en General - Quiz (20)</a></div>
+    <div><a target="_blank" href="/lessons/review/1303/2?count=20">Género en General - Quiz (20)</a></div>
     <hr/>
     <div><a target="_blank" href="/lessons/view/1303">Phrasing</a></div>
     <div><a target="_blank" href="/lessons/review/1330/1">Phrasing - Flashcards</a></div>
-    <div><a target="_blank" href="/lessons/review/1330/1/20">Phrasing - Flashcards (20)</a></div>
+    <div><a target="_blank" href="/lessons/review/1330/1?count=20">Phrasing - Flashcards (20)</a></div>
     <hr/>
 
     <h3 class="{{$classH3}}">Dictionary</h3>

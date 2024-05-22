@@ -1,8 +1,8 @@
+@php @endphp
 ->name('articles.edit')
 $locale = app()->getLocale();
 app()->getLocale()
 return redirect(route('favorites', ['locale' => app()->getLocale()]));
-
 
 {{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}
 {{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}
@@ -17,7 +17,6 @@ update `tags` set language_flag = 1 where 1 and type_flag = 3 and language_flag 
 ===== Done =====
 ALTER TABLE `histories` ADD `action_flag` TINYINT NOT NULL DEFAULT '0' AFTER `subtype_flag`;
 ALTER TABLE `histories` CHANGE `subtype_flag` `subtype_flag` SMALLINT(6) NOT NULL DEFAULT '0';
-
 
 =====================================================================
 == Switching lochost projects on MacBook

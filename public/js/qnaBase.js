@@ -394,7 +394,7 @@ function loadData()
 		quiz.quizTextScoreChanged = container.data('quiztext-score-changed');
 		//quiz.lessonId = container.data('lessonid');
 
-		quiz.random = (container.data('random') !== undefined) ? container.data('random') : true;
+		quiz.random = (container.data('random') !== undefined) ? (container.data('random') !== 0) : true;
         //console.log('loadData: random = ' + quiz.random);
 
 		i++;

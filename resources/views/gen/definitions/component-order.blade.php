@@ -1,4 +1,5 @@
 @php
+    $locale = app()->getLocale();
 	$id = isset($parms['tagId']) ? $parms['tagId'] : 0;
 	$count = isset($parms['count']) ? $parms['count'] : 0;
 	$order = isset($parms['order']) ? $parms['order'] : '';
@@ -10,11 +11,11 @@
 
 	if ($id === 0)
 	{
-    	$link = '/definitions/favorites-review';
+    	$link = route('definitions.favoritesReview', ['locale' => $locale]);
 	}
 	else
 	{
-    	$link = '/definitions/list-tag/' . $id;
+    	$link = route('definitions.listTag', ['locale' => $locale, 'tag' => $id]); // '/definitions/list-tag/' . $id;
 	}
 
 @endphp

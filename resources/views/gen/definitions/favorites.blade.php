@@ -31,13 +31,13 @@
                 <a href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?order={{$order}}">All</a>@component('components.badge', ['text' => $favoritesCnt])@endcomponent
             </h5>
             <p class="card-text">
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count={{$favoritesCnt}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=flashcards&count={{$favoritesCnt}}&order={{$order}}">
                     @LANG('proj.Flashcards') ({{$favoritesCnt}})<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=flashcards&count=20&order={{$order}}">
                     @LANG('proj.Flashcards') (20)<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=read&count={{$favoritesCnt}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=read&count={{$favoritesCnt}}&order={{$order}}">
                     @LANG('proj.Reader') ({{$favoritesCnt}})<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
             </p>
@@ -53,16 +53,16 @@
     <div class="mb-3 mr-0">
         <div class="card-body drop-box-ghost">
             <h5 class="card-title">
-                <a href="/definitions/list-tag/{{$record->id}}?order={{$order}}">{{$record->name}}</a>@component('components.badge', ['text' => count($record->definitions)])@endcomponent
+                <a href="{{route('definitions.listTag', ['locale' => $locale, 'tag' => $record->id])}}?order={{$order}}">{{$record->name}}</a>@component('components.badge', ['text' => count($record->definitions)])@endcomponent
             </h5>
             <p class="card-text">
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/review/{{$record->id}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.review', ['locale' => $locale, 'tag' => $record->id])}}">
                     @LANG('ui.Review')<span class="glyphicon glyphicon-eye-open ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=flashcards&count=20&tagId={{$record->id}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=flashcards&count=20&tagId={{$record->id}}&order={{$order}}">
                     @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="/definitions/favorites-review?action=read&count={{DEFAULT_BIG_NUMBER}}&tagId={{$record->id}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=read&count={{DEFAULT_BIG_NUMBER}}&tagId={{$record->id}}&order={{$order}}">
                     @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
                 <a href='/tags/edit/{{$record->id}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>
@@ -77,7 +77,7 @@
     @if (Auth::check())
         <div class="medium-thin-text mb-5 ml-3">@LANG('proj.No lists')</div>
     @else
-        <div class="medium-thin-text mb-5 ml-3"><a href="/login">@LANG('ui.Login')</a> @LANG('ui.or') <a href="/register">@LANG('proj.Register to create lists')</a></div>
+        <div class="medium-thin-text mb-5 ml-3"><a href="{{route('login', ['locale' => $locale])}}">@LANG('ui.Login')</a> @LANG('ui.or') <a href="/register">@LANG('proj.Register to create lists')</a></div>
     @endif
 @endif
 @endif

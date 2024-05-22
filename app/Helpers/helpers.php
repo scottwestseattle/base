@@ -527,7 +527,10 @@ if (!function_exists('lurl')) {
     function lurl($route)
     {
         $slash = Str::startsWith($route, '/') ? '' : '/';
-        return '/' . app()->getLocale() . $slash . $route;
+
+        //todo:locale
+        //return; // no locale version
+        return '/' . app()->getLocale() . $slash . $route; // locale version
     }
 }
 

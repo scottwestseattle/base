@@ -118,14 +118,17 @@
 					<div style="margin: 10px 0;">
 						<a href="/lessons/review/{{$record->id}}/2"><button class="btn btn-success">Review ({{$sentenceCount}})</button></a>
 						@if ($sentenceCount > 20)
-						    <a href="/lessons/review/{{$record->id}}/2/20"><button class="btn btn-success">Review (20)</button></a>
+						    <a href="/lessons/review/{{$record->id}}/2?count=20"><button class="btn btn-success">Review (20)</button></a>
 						@endif
+						@if (isAdmin())
+						    <a href="/lessons/review/{{$record->id}}/2?count=10&random=0"><button class="btn btn-primary">Test (10)</button></a>
+                        @endif
 					</div>
                 @elseif ($record->isFlashcards())
 					<div style="margin: 10px 0;">
 						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
 						@if ($sentenceCount > 20)
-    						<a href="/lessons/review/{{$record->id}}/1/20"><button class="btn btn-success">Flashcards (20)</button></a>
+    						<a href="/lessons/review/{{$record->id}}/1?count=20"><button class="btn btn-success">Flashcards (20)</button></a>
                         @endif
 					</div>
                 @elseif ($record->isTranslation())

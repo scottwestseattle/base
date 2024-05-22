@@ -417,7 +417,7 @@ class Exercise extends Model
                             $title = $courseTitle . ': ' . $title;
                         }
 
-                        $url = lurl("/lessons/review/$record->id/$action/20?source=$exercise->subtype_flag");
+                        $url = lurl("/lessons/review/$record->id/$action?count=20&source=$exercise->subtype_flag");
                         $todo[] = ['done' => $done, 'title' => $exercise->title, 'icon' => $icon, 'linkTitle' => $title, 'linkUrl' => $url];
                     }
                 }

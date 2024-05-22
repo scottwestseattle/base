@@ -129,6 +129,8 @@ class RegisterController extends Controller
 
 	public function register(Request $request)
     {
+		return redirect('/');
+
         $min = 1;
         $max = 20;
 

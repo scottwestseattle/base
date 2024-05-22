@@ -109,6 +109,7 @@ Route::group(['prefix' => 'history'], function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+//todo:locale
 Route::group([
     'prefix' => '{locale}',
     'where' => ['locale' => 'en|es|zh']
@@ -581,13 +582,13 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/list-tag/{tag}', [DefinitionController::class, 'listTag'])->name('definitions.listTag');
 	Route::get('/read-list/{tag}', [DefinitionController::class, 'readList']);
 	Route::get('/read-random-words/{count?}', [DefinitionController::class, 'readRandomWords']);
-	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList']);
+	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList'])->name('definitions.setFavoriteList');
 	Route::get('/read-examples', [DefinitionController::class, 'readExamples']);
 	Route::get('/stats/{tag}', [DefinitionController::class, 'stats']);
 	Route::get('/update-stats/{definition}', [DefinitionController::class, 'updateStats']);
 
     // quiz / flashcards
-	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review']);
+	Route::get('/review/{tag}/{reviewType?}', [DefinitionController::class, 'review'])->name('definitions.review');
 	Route::get('/flashcards/{tag}', [DefinitionController::class, 'favoritesFlashcards']);
 	Route::get('/quiz/{tag}', [DefinitionController::class, 'favoritesQuiz']);
 
@@ -713,7 +714,7 @@ Route::group(['prefix' => 'lessons'], function () {
 	Route::post('/view/{lesson}',[LessonController::class, 'view']); // just in case they hit enter on the ajax form
 	Route::get('/review-orig/{lesson}/{reviewType?}',[LessonController::class, 'reviewOrig']);
 	Route::get('/reviewmc/{lesson}/{reviewType?}',[LessonController::class, 'reviewmc']);
-	Route::get('/review/{lesson}/{reviewType?}/{count?}',[LessonController::class, 'review']);
+	Route::get('/review/{lesson}/{reviewType?}',[LessonController::class, 'review']);
 	Route::get('/read/{lesson}',[LessonController::class, 'read']);
 	Route::get('/log-quiz/{lessonId}/{score}', [LessonController::class, 'logQuiz']);
 	Route::get('/start/{lesson}/', [LessonController::class, 'start']);
@@ -844,4 +845,5 @@ Route::group(['prefix' => 'exercises'], function () {
 	Route::get('/undelete/{id}', [ExerciseController::class, 'undelete']);
 });
 
+//todo:locale
 }); // End of Locale Prefix Handler

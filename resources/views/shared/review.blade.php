@@ -26,6 +26,7 @@
 	data-quiztext-override-wrong="@LANG('quiz.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('quiz.Score Changed')"
 	data-locale="{{app()->getLocale()}}"
+	data-random="{{$random}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 

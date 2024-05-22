@@ -1309,7 +1309,7 @@ class DefinitionController extends Controller
 		return $rc;
 	}
 
-  	public function setFavoriteList(Request $request, Definition $definition, $tagFromId, $tagToId)
+  	public function setFavoriteList(Request $request, $locale, Definition $definition, $tagFromId, $tagToId)
     {
 		$record = $definition;
 
@@ -1438,7 +1438,7 @@ class DefinitionController extends Controller
         return $this->review($request, $tag, 2);
     }
 
-    public function review(Request $request, Tag $tag, $reviewType = null)
+    public function review(Request $request, $locale, Tag $tag, $reviewType = null)
     {
 		$reviewType = intval($reviewType);
 		$record = $tag;
@@ -1471,8 +1471,8 @@ class DefinitionController extends Controller
 			'settings' => $settings,
 			// History
 			'history' => $history,
-			'touchPath' => '/stats/update-stats'
-			//'random' => true,
+			'touchPath' => '/stats/update-stats',
+			'random' => true,
 			]);
     }
 
@@ -1982,38 +1982,41 @@ class DefinitionController extends Controller
                     $text = ucfirst($record->title) . '; ';
                     //no $text .= ', ' . ucfirst($record->title) . '';
 
-                    //
-                    // add the definition
-                    //
-                    $text .= $labelDefinition . ':  ';
-                    $d = $record->definition;//sbw
-            		$d = splitSentences($record->definition);
-            		$d = (is_array($d) && count($d) >= 1) ? $d[0] : $record->definition;
-                    $d = str_replace('1.', $label1, $d);
-                    //no $d = str_replace('2.', $label2, $d);
-                    //no $d = str_replace('3.', $label3, $d);
-                    //no $d = str_replace('4.', $label4, $d);
-                    //no $d = str_replace('5.', $label5, $d);
-
-                    $text .= ucfirst($d);
 
                     //
                     // add the examples
                     //
                     if (isset($record->examples))
                     {
-                        if (!Str::endsWith($text, ';'))
-                            $text .= ';';
+                        if (!Str::endsWith($text, '; '))
+                            $text .= '; ';
 
-                        $text .= '  ' . $labelExamples . ': ' . ucfirst($record->examples);
+                        $text .= /* '  ' . $labelExamples . ': ' . */ ucfirst($record->examples);
+                    }
+                    else // if no examples, read the definition
+                    {
+                        //
+                        // add the definition
+                        //
+                        $text .= $labelDefinition . ':  ';
+                        $d = $record->definition;//sbw
+                        $d = splitSentences($record->definition);
+                        $d = (is_array($d) && count($d) >= 1) ? $d[0] : $record->definition;
+                        $d = str_replace('1.', $label1, $d);
+                        //no $d = str_replace('2.', $label2, $d);
+                        //no $d = str_replace('3.', $label3, $d);
+                        //no $d = str_replace('4.', $label4, $d);
+                        //no $d = str_replace('5.', $label5, $d);
+
+                        $text .= ucfirst($d);
                     }
 
                     //
                     // say the word again at the end
                     //
-                    if (!Str::endsWith($text, ';'))
-                        $text .= ';';
-                    $text .= '  ' . ucfirst($record->title) . ';';
+                    //if (!Str::endsWith($text, ';'))
+                    //    $text .= ';';
+                    //$text .= '  ' . ucfirst($record->title) . ';';
                 }
 
                 $lines[] = $text;
