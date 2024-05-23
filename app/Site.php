@@ -176,10 +176,11 @@ class Site extends Model
 	{
 	    $dump = false;
 
-        $refererPath = referrer('HTTP_REFERER')['path'];
+        $refererPath = self::getReferrerUrl();
         $requestPath = referrer('REQUEST_URI')['path'];
         if ($dump) dump('request: ' . $requestPath);
         if ($dump) dump('referer: ' . $refererPath);
+        if ($dump) dump(referrer('HTTP_REFERER'));
 
         if (empty($refererPath) || $refererPath === $requestPath)
         {
@@ -200,10 +201,22 @@ class Site extends Model
 
     static public function setReturnPathSession($path = null)
     {
-        $refererPath = isset($path) ? $path : referrer('HTTP_REFERER')['path'];
+        $refererPath = isset($path) ? $path : self::getReferrerUrl();
         session(['returnPath' => $refererPath]);
         //dump($refererPath);
     }
+
+	static public function getReferrerUrl()
+	{
+        $path = referrer('HTTP_REFERER')['path'];
+        $parms = referrer('HTTP_REFERER')['url'];
+        $parms = explode('?', $parms);
+        $parms = (isset($parms) && count($parms) > 1) ? $parms[1] : null;
+
+        $rc = isset($parms) ? $path . '?' . $parms : $path;
+
+        return $rc;
+	}
 
 	static public function getReturnPathSession($default = '/')
 	{

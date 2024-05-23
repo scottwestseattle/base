@@ -559,7 +559,7 @@ class DefinitionController extends Controller
 			logFlash('info', $f, __('base.No changes were made'));
 		}
 
-        $returnPath = '/practice';
+        $returnPath = Site::getReturnPath();
 
 		return redirect($returnPath);
 	}
@@ -936,7 +936,7 @@ class DefinitionController extends Controller
         $options['siteLanguage'] = $siteLanguage;
         $options['snippetLanguages'] = getLanguageOptions();
         $options['languageCodes'] = getSpeechLanguage($siteLanguage);
-        $options['returnUrl'] = '/' . app()->getLocale() . '/practice';
+        $options['returnUrl'] = route('practice', ['locale' => app()->getLocale()]);
 
         // command line supercedes cookie
         $id = isset($id) ? intval($id) : intval(Cookie::get('snippetId'));
@@ -1772,7 +1772,7 @@ class DefinitionController extends Controller
         }
         $lines = ['text' => $text, 'translations' => $translations, 'ids' => $ids];
 
-        $options['return'] = '/' . $return;
+        $options['return'] = Site::getReturnPath();
         $options['randomOrder'] = true;
         $options['touchPath'] = '/stats/update-stats';
 
@@ -1898,7 +1898,8 @@ class DefinitionController extends Controller
 
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
 
-	    $options['return'] = '/favorites';
+	    $options['return'] = Site::getReturnPath();
+
         $options['touchPath'] = '/stats/update-stats';
 
         $labels = [

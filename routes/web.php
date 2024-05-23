@@ -106,6 +106,11 @@ Route::group(['prefix' => 'history'], function () {
 	Route::get('/add-public/', [HistoryController::class, 'addPublic']);
 });
 
+// stats AJAX
+Route::group(['prefix' => 'stats'], function () {
+	Route::get('/update-stats', [StatController::class, 'updateStats']);
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -796,7 +801,6 @@ Route::group(['prefix' => 'stats'], function () {
 	// edit
 	Route::get('/edit/{stat}', [StatController::class, 'edit']);
 	Route::post('/update/{stat}', [StatController::class, 'update']);
-	Route::get('/update-stats', [StatController::class, 'updateStats']);
 
 	// publish
 	Route::get('/publish/{stat}', [StatController::class, 'publish']);
