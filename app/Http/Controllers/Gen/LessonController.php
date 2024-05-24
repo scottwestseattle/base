@@ -219,7 +219,7 @@ class LessonController extends Controller
 		return $t;
 	}
 
-	public function view(Lesson $lesson)
+	public function view(Request $request, $locale, Lesson $lesson)
     {
 		$lesson->text = self::convertToHtml($lesson->text);
 		$lesson->text_translation = self::convertToHtml($lesson->text_translation);

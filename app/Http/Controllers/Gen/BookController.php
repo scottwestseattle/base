@@ -77,7 +77,7 @@ class BookController extends Controller
 		]);
     }
 
-    public function chapters(Request $request, Tag $tag)
+    public function chapters(Request $request, $locale, Tag $tag)
     {
     	return view(VIEWS . '.chapters', [
 			'book' => $tag,

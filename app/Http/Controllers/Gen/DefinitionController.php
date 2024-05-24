@@ -1387,7 +1387,7 @@ class DefinitionController extends Controller
 		return $rc;
     }
 
-	public function moveFavorites(Request $request, Tag $tag, $tagToId = null)
+	public function moveFavorites(Request $request, $locale, Tag $tag, $tagToId = null)
     {
         $rc = '';
 		$records = []; // make this countable so view will always work
@@ -1425,7 +1425,7 @@ class DefinitionController extends Controller
 
         logInfo('moveFavorites', $rc, null, ['tag' => $tag->name, 'id' => $tag->id, 'tagToId' => $tagToId]);
 
-		return redirect('/' . PREFIX . '/list-tag/' . $tag->id);
+		return redirect(route('definitions.listTag', ['locale' => $locale, 'tag' => $tag->id]));
     }
 
     public function favoritesFlashcards(Request $request, Tag $tag)
