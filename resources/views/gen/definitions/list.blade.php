@@ -8,7 +8,9 @@
     $order = isset($parms['order']) ? $parms['order'] : null;
     $nextStart = $start + $count;
     $lengthLimit = 125;
-    $moreButtonUrl = empty($tagId) ? 'favorites-review/' : 'list-tag/' . $tagId;
+    $moreButtonUrl = empty($tagId)
+        ? route('definitions.favoritesReview', ['locale' => $locale])
+        : route('definitions.listTag', ['locale' => $locale, 'tag' => $tagId]);
     $lists = isset($lists) ? $lists : [];
 @endphp
 @extends('layouts.app')
@@ -31,10 +33,10 @@
             @LANG('proj.Reader')<span class="ml-1 glyphicon glyphicon-volume-up"></span>
         </a>
     @else
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=quiz&order={{$order}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?count=20&action=quiz&order={{$order}}">
             @LANG('ui.Review')&nbsp;<span class="glyphicon glyphicon-eye-open"></span>
         </a>
-        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="/definitions/favorites-review?count=20&action=flashcards&order={{$order}}">
+        <a class="btn btn-primary btn-sm btn-nav-top" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?count=20&action=flashcards&order={{$order}}">
             @LANG('proj.Flashcards')<span class="ml-1 glyphicon glyphicon-flash"></span>
         </a>
     @endif
@@ -54,14 +56,17 @@
                     <ul class="small-thin-text dropdown-menu dropdown-menu-right" style="z-index:{{DEFAULT_BIG_NUMBER}}; background-color:white;">
                         @foreach($lists as $list)
                             @if ($list->id != $tag->id)
-                                <li><a class="dropdown-item" href="/definitions/move-favorites/{{$tag->id}}/{{$list->id}}">{{$list->name}}</a></li>
+                                <li><a class="dropdown-item" href="{{route('definitions.moveFavorites', ['locale' => $locale, 'tag' => $tag->id, 'tagToId' => $list->id])}}">{{$list->name}}</a></li>
                             @endif
                         @endforeach
                     </ul>
                 </div>
             </div>
 
-           @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => '/definitions/move-favorites/' . $tag->id . '', 'prompt' => 'ui.Confirm Remove All'])@endcomponent
+            @php
+                $url = route('definitions.moveFavorites', ['locale' => $locale, 'tag' => $tag->id, 'tagToId' => 0]);
+            @endphp
+            @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => $url, 'prompt' => 'ui.Confirm Remove All'])@endcomponent
 
         </span>
     @endif
@@ -74,26 +79,28 @@
     <tbody>
     @foreach($records as $record)
         @php
-        $isSnippet = App\Gen\Definition::isSnippetStatic($record);
+            $isSnippet = App\Gen\Definition::isSnippetStatic($record);
+            $urlEdit = route('definitions.edit', ['locale' => $locale, 'definition' => $record->id]);
+            $urlPractice = route('practice', ['locale' => $locale]);
         @endphp
         <tr id="row{{$record->id}}">
             <td style="width:100%;">
                 @if ($isSnippet)
-                    <a href="/definitions/view/{{$record->permalink}}">{{Str::limit($record->title, $lengthLimit)}}</a>
+                    <a href="{{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">{{Str::limit($record->title, $lengthLimit)}}</a>
                     <div>
                         @if (isset($record->translation_en))
                             <div class="medium-thin-text" >{{Str::limit($record->translation_en, $lengthLimit)}}</div>
                         @else
-                            <a class="small-thin-text red" href="/definitions/edit/{{$record->id}}">@LANG('proj.Add Translation')</a>
+                            <a class="small-thin-text red" href="{{$urlEdit}}">@LANG('proj.Add Translation')</a>
                         @endif
                     </div>
                 @else
-                    <a href="/definitions/view/{{$record->permalink}}">{{$record->title}}</a>
+                    <a href="{{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">{{$record->title}}</a>
                     <div>
                         @if (isset($record->translation_en))
                             <div class="medium-thin-text" >{{$record->translation_en}}</div>
                         @else
-                            <a class="small-thin-text red" href="/definitions/edit/{{$record->id}}">@LANG('proj.Add Translation')</a>
+                            <a class="small-thin-text red" href="{{$urlEdit}}">@LANG('proj.Add Translation')</a>
                         @endif
                     </div>
                 @endif
@@ -109,7 +116,7 @@
                 </div>
                 @if (isAdmin() || App\User::isOwner($record->user_id))
                 <div class="float-left mr-2 mt-1">
-                    <a href="/{{$isSnippet ? 'practice' : 'definitions'}}/edit/{{$record->id}}">@component('components.icon-edit')@endcomponent</a>
+                    <a href="/{{$isSnippet ? $urlPractice : $urlEdit}}">@component('components.icon-edit')@endcomponent</a>
                 </div>
                 @endif
 
@@ -124,6 +131,6 @@
     </tbody>
 </table>
 
-<div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/definitions/{{$moreButtonUrl}}?start={{$nextStart}}&count={{$count}}&order={{$order}}">@LANG('ui.Show More')</a></div>
+<div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="{{$moreButtonUrl}}?start={{$nextStart}}&count={{$count}}&order={{$order}}">@LANG('ui.Show More')</a></div>
 
 @endsection

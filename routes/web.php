@@ -438,8 +438,8 @@ Route::group(['prefix' => 'tags'], function () {
 	Route::post('/create', [TagController::class, 'create']);
 
 	// edit
-	Route::get('/edit/{tag}', [TagController::class, 'edit']);
-	Route::post('/update/{tag}', [TagController::class, 'update']);
+	Route::get('/edit/{tag}', [TagController::class, 'edit'])->name('tags.edit');
+	Route::post('/update/{tag}', [TagController::class, 'update'])->name('tags.update');
 
 	// publish
 	Route::get('/publish/{tag}', [TagController::class, 'publish']);
@@ -588,7 +588,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/read-list/{tag}', [DefinitionController::class, 'readList']);
 	Route::get('/read-random-words/{count?}', [DefinitionController::class, 'readRandomWords']);
 	Route::get('/set-favorite-list/{definition}/{tagFromId}/{tagToId}',[DefinitionController::class, 'setFavoriteList'])->name('definitions.setFavoriteList');
-	Route::get('/read-examples', [DefinitionController::class, 'readExamples']);
+	Route::get('/read-examples', [DefinitionController::class, 'readExamples'])->name('definitions.readExamples');
 	Route::get('/stats/{tag}', [DefinitionController::class, 'stats']);
 	Route::get('/update-stats/{definition}', [DefinitionController::class, 'updateStats']);
 
@@ -602,11 +602,11 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavorites');
 	Route::post('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavoritesPost');
 
-	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest']);
-	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs']);
-	Route::get('/review-random-words/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomWords']);
-	Route::get('/review-random-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomVerbs']);
-	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs']);
+	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest'])->name('definitions.reviewNewest');
+	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs'])->name('definitions.reviewNewestVerbs');
+	Route::get('/review-random-words/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomWords'])->name('definitions.reviewRandomWords');
+	Route::get('/review-random-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRandomVerbs'])->name('definitions.reviewRandomVerbs');
+	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs'])->name('definitions.reviewTop20Verbs');
 
 	// ajax calls
 	Route::get('/find/{text}', [DefinitionController::class, 'find']);
@@ -614,7 +614,7 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/translate/{text}/{entryId?}',[DefinitionController::class, 'translateAjax']);
 	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);
 	Route::get('/unheart/{definition}',[DefinitionController::class, 'unheartAjax']);
-	Route::get('/move-favorites/{tag}/{tagToId?}',[DefinitionController::class, 'moveFavorites']);
+	Route::get('/move-favorites/{tag}/{tagToId?}',[DefinitionController::class, 'moveFavorites'])->name('definitions.moveFavorites');
 	Route::get('/get-random-word/',[DefinitionController::class, 'getRandomWordAjax']);
 	Route::get('/scrape-definition/{word}',[DefinitionController::class, 'scrapeDefinitionAjax']);
 
@@ -641,8 +641,8 @@ Route::group(['prefix' => 'books'], function () {
 	Route::get('/chapters/{tag}', [BookController::class, 'chapters'])->name('books.chapters');
 
 	// read
-	Route::get('/read/{entry}', [BookController::class, 'read']);
-	Route::get('/read-book/{tag}', [BookController::class, 'readBook']);
+	Route::get('/read/{entry}', [BookController::class, 'read'])->name('books.read');
+	Route::get('/read-book/{tag}', [BookController::class, 'readBook'])->name('books.readBook');
 
 	// add
 	Route::get('/add', [BookController::class, 'add']);
@@ -650,17 +650,17 @@ Route::group(['prefix' => 'books'], function () {
 	Route::post('/create', [BookController::class, 'create']);
 
 	// edit
-	Route::get('/edit/{entry}', [BookController::class, 'edit']);
-	Route::post('/update/{entry}', [BookController::class, 'update']);
+	Route::get('/edit/{entry}', [BookController::class, 'edit'])->name('books.edit');
+	Route::post('/update/{entry}', [BookController::class, 'update'])->name('books.update');
 
 	// publish
-	Route::get('/publish/{entry}', [BookController::class, 'publish']);
-	Route::post('/publishupdate/{entry}', [BookController::class, 'updatePublish']);
+	Route::get('/publish/{entry}', [BookController::class, 'publish'])->name('books.publish');
+	Route::post('/publishupdate/{entry}', [BookController::class, 'updatePublish'])->name('books.updatePublish');
 	Route::get('/publishupdate/{entry}', [BookController::class, 'updatePublish']); // for ajax: toggles publish
 
 	// delete
-	Route::get('/confirmdelete/{entry}', [BookController::class, 'confirmDelete']);
-	Route::post('/delete/{entry}', [BookController::class, 'delete']);
+	Route::get('/confirmdelete/{entry}', [BookController::class, 'confirmDelete'])->name('books.confirmDelete');
+	Route::post('/delete/{entry}', [BookController::class, 'delete'])->name('books.delete');
 	Route::get('/delete/{entry}', [BookController::class, 'delete']);
 
 	// undelete
@@ -668,7 +668,7 @@ Route::group(['prefix' => 'books'], function () {
 	Route::get('/undelete/{id}', [BookController::class, 'undelete']);
 
 	// stats
-	Route::get('/stats/{tag}', [BookController::class, 'stats']);
+	Route::get('/stats/{tag}', [BookController::class, 'stats'])->name('books.stats');
 
 });
 

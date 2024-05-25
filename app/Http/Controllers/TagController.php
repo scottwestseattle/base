@@ -141,7 +141,7 @@ class TagController extends Controller
 			]);
     }
 
-	public function edit(Tag $tag)
+	public function edit(Request $request, $locale, Tag $tag)
     {
 		$record = $tag;
 
@@ -151,7 +151,7 @@ class TagController extends Controller
 			]);
     }
 
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, $locale, Tag $tag)
     {
 		$record = $tag;
 
@@ -189,7 +189,7 @@ class TagController extends Controller
 		return redirect($redirect);
 	}
 
-    public function confirmDelete(Tag $tag)
+    public function confirmDelete(Request $request, $locale, Tag $tag)
     {
 		$record = $tag;
 
@@ -198,7 +198,7 @@ class TagController extends Controller
 		]);
     }
 
-    public function delete(Request $request, Tag $tag)
+    public function delete(Request $request, $locale, Tag $tag)
     {
 		$record = $tag;
 

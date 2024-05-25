@@ -3,6 +3,8 @@
 @section('menu-submenu')@component('gen.books.menu-submenu', ['index' => 'books', 'isIndex' => true])@endcomponent @endsection
 @section('content')
 @php
+    $locale = app()->getLocale();
+
     $colors = [
         'Tomato',
         'MediumSeaGreen',
@@ -31,7 +33,7 @@
             style="min-width:100px; max-width:45%; border-radius:10px; background-color: {{$photo ? 'default' : $colors[$colorIndex % 10]}};
                 background-image:url('/img/books/pattern.png'); background-size:cover;">
 
-                <a href="/books/chapters/{{$record->id}}">
+                <a href="{{route('books.chapters', ['locale' => $locale, 'tag' => $record->id])}}">
                     @if ($photo)
                         <img style="height:230px;" src="/img/books/{{$record->id}}.png" />
                     @else
@@ -49,7 +51,7 @@
                 @foreach($record->books as $r)
                 <div class="ml-2 mt-1" style="font-size:14px;">
                     <div class="">
-                        <a href="/books/show/{{$r->permalink}}">{{$r->title}}</a>
+                        <a href="{{route('books.show', ['locale' => $locale, 'permalink' => $r->permalink])}}">{{$r->title}}</a>
                     </div>
                 </div>
                 @endforeach
@@ -67,14 +69,14 @@
 		<div class="drop-box-ghost mb-4" style="padding:10px 10px 0px 15px;">
 		    <div class="medium-thin-text" >{{$record->source}}</div>
 			<div class="large-thin-text">
-				<a href="/books/show/{{$record->permalink}}">{{$record->title}}</a>
+				<a href="{{route('books.show', ['locale' => $locale, 'permalink' => $r->permalink])}}">{{$record->title}}</a>
 			</div>
 
 			<div class="small-thin-text middle" style="line-height:30px;">
 				<div style="float:left;">
-					@component('components.icon-read', ['href' => "/books/read/$record->id"])@endcomponent
+					@component('components.icon-read', ['href' => "{{route('books.read', ['locale' => $locale, 'entry' => $record->id])}}"])@endcomponent
 					<div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.View', 2)}}</div>
-					<div style="margin-right:15px; float:left;"><a href="/entries/stats/{{$record->id}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
+					<div style="margin-right:15px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{str_word_count($record->description)}} {{trans_choice('ui.Word', 2)}}</a></div>
 					@if (App\User::isAdmin())
 						<div style="margin-right:15px; float:left;">
 							@component('components.control-button-publish', ['record' => $record, 'prefix' => 'entries', 'showPublic' => true, 'ajax' => true, 'reload' => true])@endcomponent
@@ -83,7 +85,7 @@
 				</div>
 				<div style="float:left;">
 					@if (App\User::isAdmin())
-					<div style="margin-right:5px; float:left;"><a href='/books/edit/{{$record->id}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
+					<div style="margin-right:5px; float:left;"><a href='{{route('books.edit', ['locale' => $locale, 'entry' => $record->id])}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
 					@component('components.control-delete-glyph', ['glyphicon' => 'glyphCustom glyphCustom-lt glyphicon-trash', 'href' => '/entries/delete/' . $record->id . '', 'prompt' => 'Confirm Delete'])@endcomponent
 					@endif
 				</div>
