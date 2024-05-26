@@ -27,10 +27,12 @@ define('LOG_CLASS', 'BookController');
 
 class BookController extends Controller
 {
-	private $redirectTo = PREFIX;
+	private $redirectTo = null;
 
 	public function __construct()
 	{
+    	$this->redirectTo = route('books', ['locale' => app()->getLocale()]);
+
         $this->middleware('admin')->except([
             'index', 'view', 'permalink',
             'read', 'readBook', 'chapters',
@@ -40,7 +42,7 @@ class BookController extends Controller
 		parent::__construct();
 	}
 
-    public function admin(Request $request)
+    public function admin(Request $request, $locale)
     {
 		$records = [];
 
@@ -61,7 +63,7 @@ class BookController extends Controller
 		]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $locale)
     {
 		//todo: $this->saveVisitor(LOG_MODEL_BOOKS, LOG_PAGE_INDEX);
 
@@ -122,7 +124,7 @@ class BookController extends Controller
 			]);
 	}
 
-    public function create(Request $request)
+    public function create(Request $request, $locale)
     {
 		$record = new Entry();
 
@@ -211,7 +213,7 @@ class BookController extends Controller
         return $this->view($record);
 	}
 
-	public function view(Entry $entry)
+	public function view(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -267,7 +269,7 @@ class BookController extends Controller
 			]);
     }
 
-    public function update(Request $request, Entry $entry)
+    public function update(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 		$prevTitle = $record->title;
@@ -308,7 +310,8 @@ class BookController extends Controller
 			return back();
 		}
 
-		return redirect('/books/show/' . $record->permalink);
+        $url = route('books.show', ['locale' => $locale, 'permalink' => $record->permalink]);
+		return redirect($url);
 	}
 
     public function confirmDelete(Entry $entry)
@@ -321,7 +324,7 @@ class BookController extends Controller
 		]);
     }
 
-    public function delete(Request $request, Entry $entry)
+    public function delete(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -339,7 +342,7 @@ class BookController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function undelete(Request $request, $id)
+    public function undelete(Request $request, $locale, $id)
     {
 		$id = intval($id);
 
@@ -383,7 +386,7 @@ class BookController extends Controller
 		]);
     }
 
-    public function publish(Request $request, Entry $entry)
+    public function publish(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -395,7 +398,7 @@ class BookController extends Controller
 		]);
     }
 
-    public function updatePublish(Request $request, Entry $entry)
+    public function updatePublish(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -422,11 +425,11 @@ class BookController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo . 'show/' . $record->permalink);
+		return redirect(route('books.show', ['locale' => $locale, 'permalink' => $record->permalink]));
     }
 
     // this is read book
-    public function readBook(Request $request, Tag $tag)
+    public function readBook(Request $request, $locale, Tag $tag)
     {
 		$sentences = [];
         $languageFlag = null;
@@ -451,11 +454,13 @@ class BookController extends Controller
         // translations isn't handled for books yet so $lines['translation'] isn't set
         $lines['text'] = $sentences;
 
-		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, '/books/chapters/' . $tag->id);
+		$backLink = route('books.chapters', ['locale' => $locale, 'tag' => $tag->id]);
+
+		return $this->doRead($lines, $tag->name, $recordId, $readLocation, $languageFlag, $backLink);
     }
 
     // this is read chapter
-    public function read(Request $request, Entry $entry)
+    public function read(Request $request, $locale, Entry $entry)
     {
         $record = $entry;
 		$readLocation = $record->tagRecent(); // tag it as recent for the user so it will move to the top of the list

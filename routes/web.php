@@ -346,8 +346,8 @@ Route::group(['prefix' => 'entries'], function () {
 
 	// delete
 	Route::get('/confirmdelete/{entry}', [EntryController::class, 'confirmDelete']);
-	Route::post('/delete/{entry}', [EntryController::class, 'delete']);
-	Route::get('/delete/{entry}', [EntryController::class, 'delete']);
+	Route::post('/delete/{entry}', [EntryController::class, 'delete'])->name('entries.delete');
+	Route::get('/delete/{entry}', [EntryController::class, 'delete'])->name('entries.deleteGet');
 
 	// undelete
 	Route::get('/deleted', [EntryController::class, 'deleted']);

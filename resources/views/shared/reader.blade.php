@@ -2,6 +2,7 @@
 @section('title', __('Reading') . ' ' . $title )
 @section('content')
 @php
+    $locale = app()->getLocale();
     $recordId = isset($recordId) ? $recordId : -1;
     $readLocation = isset($readLocation) ? $readLocation : null;
     $count = isset($options['count']) ? $options['count'] : count($lines['text']);
@@ -91,7 +92,7 @@
 		<!-------------------------------------------------------->
 		<div class="" style="row-height:50px; background-color:default;">
 			<span class="glyphReader" style="">
-		        <a href="/"><span style="margin-right:3px; font-size:.9em;" class="glyphicon glyphicon-home"></span></a>
+		        <a href="{{route('home.frontpage', ['locale' => $locale])}}"><span style="margin-right:3px; font-size:.9em;" class="glyphicon glyphicon-home"></span></a>
             </span>
 			<span class="glyphReader">
                 <a href="{{$options['return']}}"><button type="button" class="btn btn-sm btn-primary mb-2"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
