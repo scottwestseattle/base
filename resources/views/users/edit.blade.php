@@ -2,26 +2,29 @@
 @section('title', 'Edit User')
 @section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
 @section('content')
+@php
+    $locale = app()->getLocale();
+@endphp
 <div>
-	<form method="POST" action="/users/update/{{ $user->id }}">
+	<form method="POST" action="{{route('users.update', ['locale' => $locale, 'user' => $user->id])}}">
 
 		<div class="form-group">
 			<input type="text" name="name" class="form-control" value="{{$user->name }}"></input>
 		</div>
-		
+
 		<div class="form-group">
 			<input type="text" name="email" class="form-control" value="{{$user->email }}"></input>
 		</div>
-					
+
 		@if (isAdmin())
 			<div class="form-group">
 				<select name="user_type" id="user_type">
 					@foreach ($user->getUserTypes() as $key => $value)
 						<option value="{{$key}}" {{ $key == $user->user_type ? 'selected' : ''}}>@LANG('ui.' . $value)</option>
 					@endforeach
-				</select>			
+				</select>
 			</div>
-			
+
 			<div class="form-group">
 				<input type="text" name="password" class="form-control" value="{{$user->password}}"></input>
 			</div>

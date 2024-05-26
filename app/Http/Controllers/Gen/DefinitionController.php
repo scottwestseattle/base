@@ -155,7 +155,7 @@ class DefinitionController extends Controller
 		if (isset($record))
 		{
 			flash('danger', __('base.record already exists'));
-			return redirect('/' . PREFIX . '/edit/' . $record->id);
+			return redirect(route('definitions.edit', ['locale' => $locale]));
 		}
 
 		$record = new Definition();
@@ -207,7 +207,9 @@ class DefinitionController extends Controller
 			return back();
 		}
 
-		return redirect(route('dictionary', ['locale' => app()->getLocale()]) . '/search/3');
+        $url = route('dictionary', ['locale' => app()->getLocale()]) . '/search/3';
+
+		return redirect($url);
     }
 
     public function createQuick(Request $request, $locale, $title = null)
@@ -449,6 +451,12 @@ class DefinitionController extends Controller
 		{
     		$record->release_flag = copyDirty($record->release_flag, isset($request->public) ? RELEASEFLAG_PUBLIC : RELEASEFLAG_NOTSET, $isDirty, $changes);
 		    $record->user_id = copyDirty($record->user_id, intval($request->user_id), $isDirty, $changes);
+
+		    if (isset($request->public))
+		    {
+		        // user 1 owns the public dictionary entries
+		        $record->user_id = 1;
+		    }
 		}
 
 		$forms 	= Spanish::formatForms($request->forms);

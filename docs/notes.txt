@@ -1,8 +1,11 @@
 @php @endphp
 ->name('articles.edit')
-$locale = app()->getLocale();
 app()->getLocale()
 return redirect(route('favorites', ['locale' => app()->getLocale()]));
+
+$locale = app()->getLocale();
+{{route('definitions', ['locale' => $locale, 'entry' => $record->id])}}
+
 
 {{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}
 {{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}

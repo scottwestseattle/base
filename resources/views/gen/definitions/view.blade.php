@@ -58,7 +58,7 @@
 					<div class="small-thin-text mt-2"><a href="/{{PREFIX . '/conjugationsgen/' . $record->id}}/">generate conjugations</a>
 				@endif
 				@if (App\Gen\Spanish::fixConjugations($record))
-					<div class="small-thin-text mt-2"><a href="/{{PREFIX . '/edit/' . $record->id}}/">fix conjugation</a>
+					<div class="small-thin-text mt-2"><a href="{{route('definitions.edit', ['locale' => $locale, 'entry' => $record->id])}}">fix conjugation</a>
 				@endif
 			@endif
 

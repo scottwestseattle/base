@@ -221,16 +221,16 @@ Route::group(['prefix' => 'templates'], function () {
 
 // Users
 Route::group(['prefix' => 'users'], function () {
-	Route::get('/', [UserController::class, 'index']);
-	Route::get('/index', [UserController::class, 'index']);
-	Route::get('/view/{user}', [UserController::class, 'view']);
+	Route::get('/', [UserController::class, 'index'])->name('users');
+	Route::get('/index', [UserController::class, 'index'])->name('users.index');
+	Route::get('/view/{user}', [UserController::class, 'view'])->name('users.view');
 
 	// add
 	Route::post('/create', [RegisterController::class, 'create']);
 
 	// edit
-	Route::get('/edit/{user}', [UserController::class, 'edit']);
-	Route::post('/update/{user}', [UserController::class, 'update']);
+	Route::get('/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
+	Route::post('/update/{user}', [UserController::class, 'update'])->name('users.update');
 
 	// delete
 	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete']);

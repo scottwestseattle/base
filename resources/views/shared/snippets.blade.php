@@ -69,9 +69,6 @@
 <div class="record-form text-center p-1">
 
 	<form method="POST" action="{{route('definitions.createSnippet', ['locale' => $locale])}}">
-        <div class="">
-            <button class="btn btn-xs btn-primary float-left mt-2" style="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEdit').focus();" >{{__('ui.Add')}}</button>
-        </div>
         <h3 class="practice-title mt-0 pt-0" style="" >@LANG('proj.Practice Speaking')</h3>
 		<div class="">
 		    <div style="">
@@ -87,7 +84,7 @@
         </div>
 
         <span class='mini-menu'>
-            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEditTranslation').val(''); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
+            <a type="button" class="btn btn-primary btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEditTranslation').val(''); $('#div-trans').show(); $('#textEdit').focus();" class="ml-1">@LANG('ui.Add')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="copySnippet(event);" class="ml-1">@LANG('ui.Copy')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="pasteSnippet(event);" class="ml-1">@LANG('ui.Paste')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#div-trans').toggle(); $('#translation').focus()" class="ml-1">{{trans_choice('ui.Translation', 1)}}<a/>
@@ -249,7 +246,7 @@
             @endforeach
             </table>
             @if ($options['showAllButton'])
-                <div class="my-3"><a class="btn btn-sm btn-success" role="button" href="/practice/index?order={{$order}}&start={{$startNext}}&count={{$countNext}}">@LANG('ui.Show More')</a></div>
+                <div class="my-3"><a class="btn btn-sm btn-success" role="button" href="{{route('practice.index', ['locale' => $locale])}}?order={{$order}}&start={{$startNext}}&count={{$countNext}}">@LANG('ui.Show More')</a></div>
             @endif
         </div>
     </div>

@@ -75,7 +75,7 @@ class UserController extends Controller
 			return back();
 		}
 
-		return redirect(User::isAdmin() ? '/users' : '/dashboard');
+		return redirect(User::isAdmin() ? route('users', ['locale' => $locale]) : route('dashboard', ['locale' => $locale]));
     }
 
     public function confirmdelete(User $user)
