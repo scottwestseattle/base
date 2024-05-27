@@ -3,8 +3,11 @@
 app()->getLocale()
 return redirect(route('favorites', ['locale' => app()->getLocale()]));
 
-$locale = app()->getLocale();
-{{route('definitions', ['locale' => $locale, 'entry' => $record->id])}}
+@php
+    $locale = app()->getLocale();
+@endphp
+{{route('courses', ['locale' => $locale])}}
+{{route('lessons', ['locale' => $locale, 'lesson' => $record->id])}}
 
 
 {{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}

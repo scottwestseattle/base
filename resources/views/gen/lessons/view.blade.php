@@ -1,5 +1,8 @@
 @php
     $prefix = 'lessons';
+    $locale = app()->getLocale();
+    $prev = isset($prev) ? route('lessons.view', ['locale' => $locale, 'lesson' => $prev]) : null;
+    $next = isset($next) ? route('lessons.view', ['locale' => $locale, 'lesson' => $next]) : null;
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('proj.Course', 2) )
@@ -8,17 +11,17 @@
 	<div class="page-nav-buttons">
 		<a class="btn btn-success btn-sm btn-nav-lesson-sm" role="button"
             @if($record->isText())
-                href="/courses/view/{{$record->parent_id}}"
+                href="{{route('courses.view', ['locale' => $locale, 'course' => $record->parent_id])}}"
             @else
-                href="/lessons/start/{{$record->id}}"
+                href="{{route('lessons.start', ['locale' => $locale, 'lesson' => $record->id])}}"
 		    @endif
 		>@LANG('proj.Back to')&nbsp;{{$courseTitle}}<span class="glyphicon glyphicon-circle-arrow-up"></span></a>
-		<a class="btn btn-success btn-sm btn-nav-lesson-sm {{isset($nextChapter) ? '' : 'hidden'}}" role="button" href="/lessons/view/{{$nextChapter}}">@LANG('proj.Next Chapter')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+		<a class="btn btn-success btn-sm btn-nav-lesson-sm {{isset($nextChapter) ? '' : 'hidden'}}" role="button" href="{{route('lessons.view', ['locale' => $locale, 'lesson' => $nextChapter])}}">@LANG('proj.Next Chapter')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
 	</div>
 
 	<div class="page-nav-buttons">
-		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($prev) ? '' : 'disabled'}}" role="button" href="/{{$prefix}}/view/{{$prev}}"><span class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</a>
-		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($next) ? '' : 'disabled'}}" role="button" href="/{{$prefix}}/view/{{$next}}">@LANG('ui.Next')<span class="glyphicon glyphicon-circle-arrow-right"></span>
+		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($prev) ? '' : 'disabled'}}" role="button" href="{{$prev}}"><span class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</a>
+		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($next) ? '' : 'disabled'}}" role="button" href="{{$next}}">@LANG('ui.Next')<span class="glyphicon glyphicon-circle-arrow-right"></span>
 		</a>
 	</div>
 
@@ -33,13 +36,13 @@
 			@if ($record->isVocab())
 				&nbsp;<a href="/words/add/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-pencil"></span></a>
 			@else
-				&nbsp;<a href="/{{$prefix}}/edit2/{{$record->id}}"><span class="glyphCustom-sm glyphicon glyphicon-pencil"></span></a>
+				&nbsp;<a href="{{route('lessons.edit2', ['locale' => $locale, 'lesson' => $record->id])}}"><span class="glyphCustom-sm glyphicon glyphicon-pencil"></span></a>
 			@endif
 			@if (!($published=$record->getStatus())['done'])
-				<a class="btn {{$published['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{$published['text']}}</a>
+				<a class="btn {{$published['btn']}} btn-xs" role="button" href="{{route('lessons.publish', ['locale' => $locale, 'lesson' => $record->id])}}">{{$published['text']}}</a>
 			@endif
 			@if (!($finished=$record->getFinishedStatus())['done'])
-				<a class="btn {{$finished['btn']}} btn-xs" role="button" href="/{{$prefix}}/publish/{{$record->id}}">{{$finished['text']}}</a>
+				<a class="btn {{$finished['btn']}} btn-xs" role="button" href="{{route('lessons.publish', ['locale' => $locale, 'lesson' => $record->id])}}">{{$finished['text']}}</a>
 			@endif
 		@endif
 	</div>
@@ -47,12 +50,12 @@
 	<h3 name="title" class="mb-2">
 
 		@if ($record->isReading())
-			@component('components.icon-read', ['href' => "/lessons/read/$record->id"])@endcomponent
+			@component('components.icon-read', ['href' => route('lessons.read', ['locale' => $locale, 'lesson' => $record->id])])@endcomponent
 		@endif
 
 	    {{$record->title }}
 	    @if (false && $record->isText())
-            <div><a href="/lessons/convert-to-list/{{$record->id}}"><button class="btn btn-info btn-xs">Convert</button></a></div>
+            <div><a href="{{route('lessons.convertToList', ['locale' => $locale, 'lesson' => $record->id])}}"><button class="btn btn-info btn-xs">Convert</button></a></div>
         @endif
     </h3>
 
@@ -116,24 +119,24 @@
 
                 @if ($record->isMc())
 					<div style="margin: 10px 0;">
-						<a href="/lessons/review/{{$record->id}}/2"><button class="btn btn-success">Review ({{$sentenceCount}})</button></a>
+						<a href="{{route('lessons.review', ['locale' => $locale, 'lesson' => $record->id, 'reviewType' => 2])}}"><button class="btn btn-success">Review ({{$sentenceCount}})</button></a>
 						@if ($sentenceCount > 20)
-						    <a href="/lessons/review/{{$record->id}}/2?count=20"><button class="btn btn-success">Review (20)</button></a>
+						    <a href="{{route('lessons.review', ['locale' => $locale, 'lesson' => $record->id, 'reviewType' => 2])}}?count=20"><button class="btn btn-success">Review (20)</button></a>
 						@endif
 						@if (isAdmin())
-						    <a href="/lessons/review/{{$record->id}}/2?count=10&random=0"><button class="btn btn-primary">Test (10)</button></a>
+						    <a href="{{route('lessons.review', ['locale' => $locale, 'lesson' => $record->id, 'reviewType' => 2])}}?count=10&random=0"><button class="btn btn-primary">Test (10)</button></a>
                         @endif
 					</div>
                 @elseif ($record->isFlashcards())
 					<div style="margin: 10px 0;">
-						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
+						<a href="{{route('lessons.review', ['locale' => $locale, 'lesson' => $record->id, 'reviewType' => 1])}}"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
 						@if ($sentenceCount > 20)
-    						<a href="/lessons/review/{{$record->id}}/1?count=20"><button class="btn btn-success">Flashcards (20)</button></a>
+    						<a href="{{route('lessons.review', ['locale' => $locale, 'lesson' => $record->id, 'reviewType' => 1])}}?count=20"><button class="btn btn-success">Flashcards (20)</button></a>
                         @endif
 					</div>
                 @elseif ($record->isTranslation())
 					<div style="margin: 10px 0;">
-						<a href="/lessons/review/{{$record->id}}/1"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
+						<a href="{{route('lessons.review', ['locale' => $locale, 'lesson' => $record->id, 'reviewType' => 1])}}"><button class="btn btn-success">Flashcards ({{$sentenceCount}})</button></a>
 					</div>
                 @endif
 

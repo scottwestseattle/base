@@ -678,75 +678,75 @@ Route::group(['prefix' => 'courses'], function () {
 	Route::get('/admin', [CourseController::class, 'admin'])->name('courses.admin');
 	Route::get('/index', [CourseController::class, 'index'])->name('courses.index');
 
-	Route::get('/view/{course}', [CourseController::class, 'view']);
+	Route::get('/view/{course}', [CourseController::class, 'view'])->name('courses.view');
 	Route::get('/rss', [CourseController::class, 'rss']);
-	Route::get('/rss-reader', [CourseController::class, 'rssReader']);
+	Route::get('/rss-reader', [CourseController::class, 'rssReader'])->name('courses.rssReader');
 	Route::get('/start', [CourseController::class, 'start']);
 
 	// view
 	//Route::get('/view/{permalink}', [CourseController::class, 'permalink']);
-	Route::get('/show/{course}', [CourseController::class, 'view']);
+	Route::get('/show/{course}', [CourseController::class, 'view'])->name('courses.show');
 
 	// add
-	Route::get('/add', [CourseController::class, 'add']);
-	Route::post('/create', [CourseController::class, 'create']);
+	Route::get('/add', [CourseController::class, 'add'])->name('courses.add');
+	Route::post('/create', [CourseController::class, 'create'])->name('courses.create');
 
 	// edit
-	Route::get('/edit/{course}', [CourseController::class, 'edit']);
-	Route::post('/update/{course}', [CourseController::class, 'update']);
+	Route::get('/edit/{course}', [CourseController::class, 'edit'])->name('courses.edit');
+	Route::post('/update/{course}', [CourseController::class, 'update'])->name('courses.update');
 
 	// publish
-	Route::get('/publish/{course}', [CourseController::class, 'publish']);
-	Route::post('/publishupdate/{course}', [CourseController::class, 'updatePublish']);
-	Route::get('/publishupdate/{course}', [CourseController::class, 'updatePublish']);
+	Route::get('/publish/{course}', [CourseController::class, 'publish'])->name('courses.publish');
+	Route::post('/publishupdate/{course}', [CourseController::class, 'updatePublish'])->name('courses.update');
+	Route::get('/publishupdate/{course}', [CourseController::class, 'updatePublish'])->name('courses.updateGet');
 
 	// delete
-	Route::get('/confirmdelete/{course}', [CourseController::class, 'confirmDelete']);
-	Route::post('/delete/{course}', [CourseController::class, 'delete']);
-	Route::get('/delete/{course}', [CourseController::class, 'delete']);
+	Route::get('/confirmdelete/{course}', [CourseController::class, 'confirmDelete'])->name('courses.confirmDelete');
+	Route::post('/delete/{course}', [CourseController::class, 'delete'])->name('courses.delete');
+	Route::get('/delete/{course}', [CourseController::class, 'delete'])->name('courses.deleteGet');
 
 	// undelete
-	Route::get('/deleted', [CourseController::class, 'deleted']);
-	Route::get('/undelete/{id}', [CourseController::class, 'undelete']);
+	Route::get('/deleted', [CourseController::class, 'deleted'])->name('courses.deleted');
+	Route::get('/undelete/{id}', [CourseController::class, 'undelete'])->name('courses.undelete');
 });
 
 // Lessons
 Route::group(['prefix' => 'lessons'], function () {
-	Route::get('/', [LessonController::class, 'index']);
+	Route::get('/', [LessonController::class, 'index'])->name('lessons');
 
-	Route::get('/admin', [LessonController::class, 'admin']);
+	Route::get('/admin', [LessonController::class, 'admin'])->name('lessons.admin');
 	Route::get('/view/{lesson}',[LessonController::class, 'view'])->name('lessons.view');
 	Route::post('/view/{lesson}',[LessonController::class, 'view']); // just in case they hit enter on the ajax form
 	Route::get('/review-orig/{lesson}/{reviewType?}',[LessonController::class, 'reviewOrig']);
-	Route::get('/reviewmc/{lesson}/{reviewType?}',[LessonController::class, 'reviewmc']);
-	Route::get('/review/{lesson}/{reviewType?}',[LessonController::class, 'review']);
+	Route::get('/reviewmc/{lesson}/{reviewType?}',[LessonController::class, 'reviewmc'])->name('lessons.reviewmc');
+	Route::get('/review/{lesson}/{reviewType?}',[LessonController::class, 'review'])->name('lessons.review');
 	Route::get('/read/{lesson}',[LessonController::class, 'read']);
-	Route::get('/log-quiz/{lessonId}/{score}', [LessonController::class, 'logQuiz']);
-	Route::get('/start/{lesson}/', [LessonController::class, 'start']);
+	Route::get('/log-quiz/{lessonId}/{score}', [LessonController::class, 'logQuiz'])->name('lessons.logQuiz');
+	Route::get('/start/{lesson}/', [LessonController::class, 'start'])->name('lessons.start');
 	Route::get('/rss/{lesson}/', [LessonController::class, 'rss']);
-	Route::get('/rss-reader/{lesson}', [LessonController::class, 'rssReader']);
+	Route::get('/rss-reader/{lesson}', [LessonController::class, 'rssReader'])->name('lessons.rssReader');
 
 	// add/create
-	Route::get('/add/{course?}',[LessonController::class, 'add']);
-	Route::post('/create',[LessonController::class, 'create']);
+	Route::get('/add/{course?}',[LessonController::class, 'add'])->name('lessons.add');
+	Route::post('/create',[LessonController::class, 'create'])->name('lessons.create');
 
 	// edit/update
-	Route::get('/edit/{lesson}',[LessonController::class, 'edit']);
-	Route::post('/update/{lesson}',[LessonController::class, 'update']);
-	Route::get('/edit2/{lesson}',[LessonController::class, 'edit2']);
-	Route::post('/update2/{lesson}',[LessonController::class, 'update2']);
+	Route::get('/edit/{lesson}',[LessonController::class, 'edit'])->name('lessons.edit');
+	Route::post('/update/{lesson}',[LessonController::class, 'update'])->name('lessons.update');
+	Route::get('/edit2/{lesson}',[LessonController::class, 'edit2'])->name('lessons.edit2');
+	Route::post('/update2/{lesson}',[LessonController::class, 'update2'])->name('lessons.update2');
 
 	// delete
-	Route::get('/confirmdelete/{lesson}',[LessonController::class, 'confirmdelete']);
-	Route::post('/delete/{lesson}',[LessonController::class, 'delete']);
-	Route::get('/undelete/{id}', [LessonController::class, 'undelete']);
+	Route::get('/confirmdelete/{lesson}',[LessonController::class, 'confirmdelete'])->name('lessons.confirmDelete');
+	Route::post('/delete/{lesson}',[LessonController::class, 'delete'])->name('lessons.delete');
+	Route::get('/undelete/{id}', [LessonController::class, 'undelete'])->name('lessons.undelete');
 
 	// add/create
-	Route::get('/publish/{lesson}',[LessonController::class, 'publish']);
-	Route::post('/publishupdate/{lesson}',[LessonController::class, 'publishupdate']);
+	Route::get('/publish/{lesson}',[LessonController::class, 'publish'])->name('lessons.publish');
+	Route::post('/publishupdate/{lesson}',[LessonController::class, 'publishupdate'])->name('lessons.publishUpdate');
 
     // convert to list
-	Route::get('/convert-to-list/{lesson}',[LessonController::class, 'convertToList']);
+	Route::get('/convert-to-list/{lesson}',[LessonController::class, 'convertToList'])->name('lessons.convertToList');
 
 	// ajax
 	Route::get('/finished/{lesson}',[LessonController::class, 'toggleFinished']);

@@ -1,4 +1,7 @@
 @if (isAdmin())
+@php
+    $locale = app()->getLocale();
+@endphp
 <nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
     <ul class="nav">
@@ -10,28 +13,28 @@
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
             </a></li>
 		    @if (false && isset($record->permalink))
-                <li class="nav-item"><a class="nav-link" href="/lessons/view/{{$record->permalink}}">
+                <li class="nav-item"><a class="nav-link" href="{{route('lessons.view', ['locale' => $locale, 'lesson' => $permalink])}}">
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
                 </a></li>
 			@else
-                <li class="nav-item"><a class="nav-link" href="/lessons/view/{{$record->id}}">
+                <li class="nav-item"><a class="nav-link" href="{{route('lessons.view', ['locale' => $locale, 'lesson' => $record->id])}}">
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#eye" /></svg>
                 </a></li>
 			@endif
-			<li class="nav-item"><a class="nav-link" href="/lessons/edit/{{$record->id}}">
+			<li class="nav-item"><a class="nav-link" href="{{route('lessons.edit', ['locale' => $locale, 'lesson' => $record->id])}}">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#pencil-square" /></svg>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" href="/lessons/publish/{{$record->id}}">
+			<li class="nav-item"><a class="nav-link" href="{{route('lessons.publish', ['locale' => $locale, 'lesson' => $record->id])}}">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#lightning" /></svg>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" href="/lessons/confirmdelete/{{$record->id}}">
+			<li class="nav-item"><a class="nav-link" href="{{route('lessons.confirmDelete', ['locale' => $locale, 'lesson' => $record->id])}}">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
 			</a></li>
-            <li class="nav-item"><a class="nav-link" href="/lessons/rss-reader/{{$record->id}}">
+            <li class="nav-item"><a class="nav-link" href="{{route('lessons.rssReader', ['locale' => $locale, 'lesson' => $record->id])}}">
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#rss" /></svg>
             </a></li>
 		@else
-			<li class="nav-item"><a class="nav-link" href="/lessons/deleted">
+			<li class="nav-item"><a class="nav-link" href="{{route('lessons.deleted', ['locale' => $locale])}}">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>
 			</a></li>
 		@endisset

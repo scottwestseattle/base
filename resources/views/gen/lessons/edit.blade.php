@@ -1,6 +1,7 @@
 @php
     $prefix = 'lessons';
     $isAdmin = isAdmin();
+    $locale = app()->getLocale();
 @endphp
 @extends('layouts.app')
 @section('title', __('proj.Edit Lesson') )
@@ -9,7 +10,7 @@
 
 <h1>@LANG('proj.Edit Lesson') - {{$record->title}}</h1>
 
-<form method="POST" id="form-edit" action="/{{$prefix}}/update/{{$record->id}}">
+<form method="POST" id="form-edit" action="{{route('lessons.update', ['locale' => $locale, 'lesson' => $record->id])}}">
 
 @if ($record->isText())
     <ul class="nav nav-tabs">
@@ -26,7 +27,7 @@
             <button type="submit" name="update" style="margin-top:5px; margin-left:5px;" class="btn btn-sm btn-primary">@LANG('ui.Save')</button>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href='/{{$prefix}}/edit2/{{$record->id}}'><span class="glyphCustom glyphicon glyphicon-pencil"></span></a>
+            <a class="nav-link" href='{{route('lessons.edit2', ['locale' => $locale, 'lesson' => $record->id])}}'><span class="glyphCustom glyphicon glyphicon-pencil"></span></a>
         </li>
         <li class="nav-item">
             @component('components.control-accent-chars-esp', ['target' => 'text', 'visible' => true, 'tinymce' => true, 'flat' => true])@endcomponent

@@ -299,7 +299,7 @@ class LessonController extends Controller
     	    return back();
     }
 
-	public function edit(Lesson $lesson)
+	public function edit(Request $request, $locale, Lesson $lesson)
     {
 		return view(VIEWS . '.edit', [
 			'record' => $lesson,
@@ -309,7 +309,7 @@ class LessonController extends Controller
 			]);
     }
 
-    public function update(Request $request, Lesson $lesson)
+    public function update(Request $request, $locale, Lesson $lesson)
     {
 		$record = $lesson;
 
@@ -379,21 +379,21 @@ class LessonController extends Controller
 		}
 
         if ($record->isText())
-            $redirect = '/lessons/view/' . $record->id;
+            $redirect = route('lessons.view', ['locale' => $locale, 'lesson' => $record->id]);
         else
-            $redirect = '/lessons/start/' . $record->id;
+            $redirect = route('lessons.start', ['locale' => $locale, 'lesson' => $record->id]);
 
 		return redirect($redirect);
 	}
 
-	public function edit2(Lesson $lesson)
+	public function edit2(Request $request, $locale, Lesson $lesson)
     {
 		return view(VIEWS . '.edit2', [
 			'record' => $lesson,
 			]);
     }
 
-    public function update2(Request $request, Lesson $lesson)
+    public function update2(Request $request, $locale, Lesson $lesson)
     {
 		$record = $lesson;
 
@@ -425,14 +425,14 @@ class LessonController extends Controller
 		return redirect('/' . PREFIX . '/view/' . $record->id);
 	}
 
-    public function confirmdelete(Lesson $lesson)
+    public function confirmdelete(Request $request, $locale, Lesson $lesson)
     {
 		return view(VIEWS . '.confirmdelete', [
 			'record' => $lesson,
 		]);
     }
 
-    public function delete(Request $request, Lesson $lesson)
+    public function delete(Request $request, $locale, Lesson $lesson)
     {
 		$record = $lesson;
         $courseId = $record->parent_id;
@@ -452,7 +452,7 @@ class LessonController extends Controller
 		return redirect('/courses/view/' . $courseId);
     }
 
-    public function undelete()
+    public function undelete(Request $request, $locale)
     {
 		$records = []; // make this countable so view will always work
 
@@ -474,14 +474,14 @@ class LessonController extends Controller
 		]);
 	}
 
-    public function publish(Request $request, Lesson $lesson)
+    public function publish(Request $request, $locale, Lesson $lesson)
     {
 		return view(VIEWS . '.publish', [
 			'record' => $lesson,
 		]);
     }
 
-    public function publishupdate(Request $request, Lesson $lesson)
+    public function publishupdate(Request $request, $locale, Lesson $lesson)
     {
 		$record = $lesson;
 

@@ -63,7 +63,7 @@ class CourseController extends Controller
 		return redirect()->back();
 	}
 
-    public function index(Request $request)
+    public function index(Request $request, $locale)
     {
 		$showAll = isset($showAll);
 
@@ -181,7 +181,7 @@ class CourseController extends Controller
 			]);
 	}
 
-	public function view(Course $course)
+	public function view(Request $request, $locale, Course $course)
     {
         if ($course->isTimedSlides())
             return $this->startTimedSlides($course);

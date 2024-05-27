@@ -2,14 +2,16 @@
 @section('title', trans_choice('proj.Course', 2) )
 @section('menu-submenu')@component('gen.courses.menu-submenu', ['prefix' => 'courses'])@endcomponent @endsection
 @section('content')
+@php
+    $locale = app()->getLocale();
+@endphp
 
 <h1>{{trans_choice('proj.Course', 2)}}<span class="title-count">({{count($public)}})</span></h1>
-
 <div class="row row-course">
     @foreach($public as $record)
     <div class="col-sm-12 col-lg-6 col-course"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-course {{$record->getCardColor()}} truncate">
-            <a href="/courses/view/{{$record->id}}">
+            <a href="{{route('courses.view', ['locale' => $locale, 'course' => $record->id])}}">
                 <div class="card-header">
                     <div>{{$record->title}}</div>
                     @component('components.data-sitename', ['isAdmin' => isAdmin(), 'siteId' => $record->site_id])@endcomponent
@@ -30,7 +32,7 @@
     @foreach($private as $record)
     <div class="col-sm-12 col-lg-6 col-course"><!-- outer div needed for the columns and the padding, otherwise they won't center -->
         <div class="card card-course {{$record->getCardColor()}} truncate">
-        <a href="/courses/view/{{$record->id}}">
+        <a href="{{route('courses.view', ['locale' => $locale, 'course' => $record->id])}}">
             <div class="card-header">
                 <div>{{$record->title}}</div>
                 @component('components.data-sitename', ['isAdmin' => isAdmin(), 'siteId' => $record->site_id])@endcomponent

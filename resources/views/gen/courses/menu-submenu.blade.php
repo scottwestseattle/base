@@ -1,11 +1,14 @@
 @if (isAdmin())
+@php
+    $locale = app()->getLocale();
+@endphp
 <nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
     <ul class="nav">
-		<li class="nav-item"><a class="nav-link" href="/courses/admin">
+		<li class="nav-item"><a class="nav-link" href="{{route('courses.admin', ['locale' => $locale])}}">
 			<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
 		</a></li>
-		<li class="nav-item"><a class="nav-link" href="/courses/add">
+		<li class="nav-item"><a class="nav-link" href="{{route('courses.add', ['locale' => $locale])}}">
 			<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
 		</a></li>
 		@isset($record)
@@ -28,11 +31,11 @@
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
 			</a></li>
 		@else
-			<li class="nav-item"><a class="nav-link" href="/courses/deleted">
+			<li class="nav-item"><a class="nav-link" href="{{route('courses.deleted', ['locale' => $locale])}}">
 				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>
 			</a></li>
 		@endisset
-    	<li class="nav-item"><a class="nav-link" href="/courses/rss-reader">
+    	<li class="nav-item"><a class="nav-link" href="{{route('courses.rssReader', ['locale' => $locale])}}">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#rss" /></svg>
         </a></li>
     </ul>

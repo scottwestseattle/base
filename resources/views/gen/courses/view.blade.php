@@ -7,7 +7,7 @@
 @section('content')
 
 	<div class="page-nav-buttons">
-		<a class="btn btn-success btn-md" role="button" href="/{{$prefix}}/">@LANG('content.HERE Back to Course List')
+		<a class="btn btn-success btn-md" role="button" href="/{{$prefix}}/">@LANG('content.Back to Course List')
 		    <span class="glyphicon glyphicon-button-back-to"></span>
 		</a>
 	</div>
