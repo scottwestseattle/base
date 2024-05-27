@@ -521,7 +521,7 @@
         <tr style="" class=""><td colspan="2"><div style="height:15px;">&nbsp;</div></td></tr>
         @endforeach
         </table>
-        <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/dictionary">@LANG('proj.Dictionary')</a></div>
+        <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="{{route('dictionary', ['locale' => $locale])}}">@LANG('proj.Dictionary')</a></div>
     </div>
 </div>
 @endif

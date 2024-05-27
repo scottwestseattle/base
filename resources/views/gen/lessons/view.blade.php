@@ -3,6 +3,7 @@
     $locale = app()->getLocale();
     $prev = isset($prev) ? route('lessons.view', ['locale' => $locale, 'lesson' => $prev]) : null;
     $next = isset($next) ? route('lessons.view', ['locale' => $locale, 'lesson' => $next]) : null;
+    $nextChapterRoute = isset($nextChapter) ? route('lessons.view', ['locale' => $locale, 'lesson' => $nextChapter]) : null;
 @endphp
 @extends('layouts.app')
 @section('title', trans_choice('proj.Course', 2) )
@@ -16,7 +17,7 @@
                 href="{{route('lessons.start', ['locale' => $locale, 'lesson' => $record->id])}}"
 		    @endif
 		>@LANG('proj.Back to')&nbsp;{{$courseTitle}}<span class="glyphicon glyphicon-circle-arrow-up"></span></a>
-		<a class="btn btn-success btn-sm btn-nav-lesson-sm {{isset($nextChapter) ? '' : 'hidden'}}" role="button" href="{{route('lessons.view', ['locale' => $locale, 'lesson' => $nextChapter])}}">@LANG('proj.Next Chapter')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+		<a class="btn btn-success btn-sm btn-nav-lesson-sm {{isset($nextChapter) ? '' : 'hidden'}}" role="button" href="{{$nextChapterRoute}}">@LANG('proj.Next Chapter')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
 	</div>
 
 	<div class="page-nav-buttons">
@@ -297,8 +298,8 @@
 
     @if ($record->isText())
 	<div class="page-nav-buttons">
-		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($prev) ? '' : 'disabled'}}" role="button" href="/{{$prefix}}/view/{{$prev}}"><span class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</a>
-		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($next) ? '' : 'disabled'}}" role="button" href="/{{$prefix}}/view/{{$next}}">@LANG('ui.Next')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($prev) ? '' : 'disabled'}}" role="button" href="{{$prev}}"><span class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</a>
+		<a class="btn btn-primary btn-lg btn-nav-lesson {{isset($next) ? '' : 'disabled'}}" role="button" href="{{$next}}">@LANG('ui.Next')<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
 	</div>
 	@endif
 

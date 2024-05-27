@@ -7,7 +7,7 @@ return redirect(route('favorites', ['locale' => app()->getLocale()]));
     $locale = app()->getLocale();
 @endphp
 {{route('courses', ['locale' => $locale])}}
-{{route('lessons', ['locale' => $locale, 'lesson' => $record->id])}}
+{{route('tags.view', ['locale' => $locale, 'tag' => $record->id])}}
 
 
 {{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}

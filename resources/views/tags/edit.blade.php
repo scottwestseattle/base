@@ -2,12 +2,11 @@
 @section('title', __('base.Edit Tag'))
 @section('menu-submenu')@component('tags.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
-
 <div class="container page-normal">
 
 	<h1>{{__('proj.Edit ' . $record->getTypeFlagName())}}</h1>
 
-	<form method="POST" id="form-edit" action="/tags/update/{{$record->id}}">
+	<form method="POST" id="form-edit" action="{{route('tags.update', ['locale' => app()->getLocale(), 'tag' => $record->id])}}">
 
 		<div class="form-group">
 			<label for="name" class="control-label">@LANG('ui.Name'):</label>

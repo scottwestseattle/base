@@ -430,33 +430,33 @@ Route::group(['prefix' => 'words'], function () {
 
 // Tags
 Route::group(['prefix' => 'tags'], function () {
-	Route::get('/', [TagController::class, 'index']);
-	Route::get('/index', [TagController::class, 'index']);
+	Route::get('/', [TagController::class, 'index'])->name('tags');
+	Route::get('/index', [TagController::class, 'index'])->name('tags.index');
 
 	// add
-	Route::get('/add', [TagController::class, 'add']);
-	Route::post('/create', [TagController::class, 'create']);
+	Route::get('/add', [TagController::class, 'add'])->name('tags.add');
+	Route::post('/create', [TagController::class, 'create'])->name('tags.create');
 
 	// edit
 	Route::get('/edit/{tag}', [TagController::class, 'edit'])->name('tags.edit');
 	Route::post('/update/{tag}', [TagController::class, 'update'])->name('tags.update');
 
 	// publish
-	Route::get('/publish/{tag}', [TagController::class, 'publish']);
-	Route::post('/publishupdate/{tag}', [TagController::class, 'updatePublish']);
+	Route::get('/publish/{tag}', [TagController::class, 'publish'])->name('tags.publish');
+	Route::post('/publishupdate/{tag}', [TagController::class, 'updatePublish'])->name('tags.publishUpdate');
 	Route::get('/publishupdate/{tag}', [TagController::class, 'updatePublish']);
 
 	// delete
-	Route::get('/confirmdelete/{tag}', [TagController::class, 'confirmDelete']);
-	Route::post('/delete/{tag}', [TagController::class, 'delete']);
+	Route::get('/confirmdelete/{tag}', [TagController::class, 'confirmDelete'])->name('tags.confirmDelete');
+	Route::post('/delete/{tag}', [TagController::class, 'delete'])->name('tags.delete');
 	Route::get('/delete/{tag}', [TagController::class, 'delete']);
 
 	// undelete
-	Route::get('/deleted', [TagController::class, 'deleted']);
-	Route::get('/undelete/{id}', [TagController::class, 'undelete']);
+	Route::get('/deleted', [TagController::class, 'deleted'])->name('tags.deleted');
+	Route::get('/undelete/{id}', [TagController::class, 'undelete'])->name('tags.undelete');
 
 	// view
-	Route::get('/view/{tag}', [TagController::class, 'view']);
+	Route::get('/view/{tag}', [TagController::class, 'view'])->name('tags.view');
 
     // custom
 	Route::get('/add-user-favorite-list', [TagController::class, 'addUserFavoriteList'])->name('tags.addUserFavoriteList');

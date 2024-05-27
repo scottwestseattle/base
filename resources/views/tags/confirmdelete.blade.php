@@ -5,7 +5,7 @@
 <div class="container page-normal">
 
 	<h1>{{__('base.Delete Tag')}}</h1>
-	<form method="POST" action="/tags/delete/{{ $record->id }}">
+	<form method="POST" action="{{route('tags.delete', ['locale' => app()->getLocale(), 'tag' => $record->id])}}">
 
 		<h4>{{$record->name}}</h4>
 

@@ -74,7 +74,7 @@
         @endforeach
         </table>
         @if (!$showingAll)
-            <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="/articles/index?sort={{$orderBy}}&start={{$start}}&count={{$count}}">@LANG('ui.Show More')</a></div>
+            <div class="mb-4"><a class="btn btn-sm btn-success" role="button" href="{{route('articles.index', ['locale' => $locale])}}?sort={{$orderBy}}&start={{$start}}&count={{$count}}">@LANG('ui.Show More')</a></div>
         @endif
     </div>
 </div>

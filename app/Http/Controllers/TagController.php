@@ -20,8 +20,6 @@ define('LOG_CLASS', 'TagController');
 
 class TagController extends Controller
 {
-	private $redirectTo = PREFIX;
-
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
@@ -184,7 +182,7 @@ class TagController extends Controller
 			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
-        $redirect = isAdmin() ? 'tags' : 'favorites';
+        $redirect = isAdmin() ? route('tags', ['locale' => $locale]) : route('favorites', ['locale' => $locale]);
 
 		return redirect($redirect);
 	}
@@ -213,7 +211,7 @@ class TagController extends Controller
 			return back();
 		}
 
-        $redirect = (isAdmin()) ? $this->redirectTo : '/favorites';
+        $redirect = (isAdmin()) ? route('tags', ['locale' => $locale]) : route('favorites', ['locale' => $locale]);
 
 		return redirect($redirect);
     }
@@ -237,7 +235,7 @@ class TagController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+		return redirect(route('tags', ['locale' => $locale]));
     }
 
     public function deleted()
@@ -298,7 +296,7 @@ class TagController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo);
+		return redirect(route('tags', ['locale' => $locale]));
     }
 
     public function addUserFavoriteList(Request $request, $locale)
