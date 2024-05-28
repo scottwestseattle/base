@@ -53,7 +53,7 @@
                                 </div>
                                 @endif
                                 <div style="margin-right:5px; float:left;"><a href='{{route('articles.edit', ['locale' => $locale, 'entry' => $record->id])}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
-                                <div style="margin-right:0px; float:left;">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => '/articles/delete/' . $record->id . '', 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
+                                <div style="margin-right:0px; float:left;">@component('components.control-delete-glyph', ['svg' => 'trash', 'href' => route('articles.delete', ['locale' => $locale, 'entry' => $record->id]), 'prompt' => 'ui.Confirm Delete'])@endcomponent</div>
                             @endif
                         </td>
                     </tr>

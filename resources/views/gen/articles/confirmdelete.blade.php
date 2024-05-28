@@ -6,7 +6,7 @@
 
 	<h1>{{__('proj.Delete Article')}}</h1>
 
-	<form method="POST" action="/articles/delete/{{ $record->id }}">
+	<form method="POST" action="{{route('articles.delete', ['locale' => app()->getLocale(), 'entry' => $record->id])}}">
 
 		<div class="submit-button mb-3">
 			<button type="submit" class="btn btn-primary">@LANG('ui.Confirm Delete')</button>

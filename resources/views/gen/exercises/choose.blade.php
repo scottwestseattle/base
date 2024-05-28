@@ -12,7 +12,7 @@
 <div class="">
 @if ($enabled)
 	<h1 class="mb-1">@LANG('proj.Choose Daily Practice Exercises')</h1>
-	<form method="POST" action="/exercises/set">
+	<form method="POST" action="{{route('exercises.set', ['locale' => app()->getLocale()])}}">
 
 		<div class="form-group">
 			<button type="submit" name="update" class="mt-3 btn btn-primary">@LANG('ui.Save')</button>

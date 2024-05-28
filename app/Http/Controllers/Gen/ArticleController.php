@@ -27,10 +27,12 @@ define('LOG_CLASS', 'ArticleController');
 
 class ArticleController extends Controller
 {
-	private $redirectTo = PREFIX;
+	private $redirectTo = null;
 
 	public function __construct()
 	{
+	    $this->redirectTo = route('articles', ['locale' => app()->getLocale()]);
+
         $this->middleware('admin')->except([
             'index',
             'view',
@@ -410,7 +412,7 @@ class ArticleController extends Controller
 		return redirect(VIEW . $record->permalink);
 	}
 
-    public function confirmDelete(Entry $entry)
+    public function confirmDelete(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -421,7 +423,7 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function delete(Request $request, Entry $entry)
+    public function delete(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -439,7 +441,7 @@ class ArticleController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function undelete(Request $request, $id)
+    public function undelete(Request $request, $locale, $id)
     {
 		$id = intval($id);
 
@@ -461,7 +463,7 @@ class ArticleController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function deleted()
+    public function deleted(Request $request, $locale)
     {
 		$records = []; // make this countable so view will always work
 
@@ -481,7 +483,7 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function publish(Request $request, Entry $entry)
+    public function publish(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -492,7 +494,7 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function updatePublish(Request $request, Entry $entry)
+    public function updatePublish(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 

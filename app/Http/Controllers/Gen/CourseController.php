@@ -80,9 +80,9 @@ class CourseController extends Controller
 			if (($cntPublic /* + $cntPrivate */) == 1)
 			{
 			    if ($cntPublic > 0)
-    			    return redirect('/' . PREFIX . '/view/' . $public[0]->id);
+    			    return redirect(route('courses.view', ['locale' => $locale, 'course' => $public[0]->id]));
 			    if ($cntPrivate > 0)
-    			    return redirect('/' . PREFIX . '/view/' . $private[0]->id);
+    			    return redirect(route('courses.view', ['locale' => $locale, 'course' => $private[0]->id]));
 			}
 		}
 		catch (\Exception $e)
@@ -97,7 +97,7 @@ class CourseController extends Controller
 		]);
     }
 
-    public function admin(Request $request)
+    public function admin(Request $request, $locale)
     {
 		$records = []; // make this countable so view will always work
 
@@ -150,7 +150,7 @@ class CourseController extends Controller
 			return back();
 		}
 
-		return redirect('/' . PREFIX . '/view/' . $record->id);
+		return redirect(route('courses.view', ['locale' => $locale, 'course' => $record->id]));
     }
 
     public function permalink(Request $request, $permalink)

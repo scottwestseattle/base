@@ -265,8 +265,8 @@ Route::group(['prefix' => 'password'], function () {
 	Route::post('/reset-update/{user}', [ResetPasswordController::class, 'updatePassword']);
 
 	// edit
-	Route::get('/edit/{user}', [LoginController::class, 'editPassword']);
-	Route::post('/update/{user}', [LoginController::class, 'updatePassword']);
+	Route::get('/edit/{user}', [LoginController::class, 'editPassword'])->name('password.edit');
+	Route::post('/update/{user}', [LoginController::class, 'updatePassword'])->name('password.update');
 });
 
 // Events
@@ -819,7 +819,7 @@ Route::group(['prefix' => 'stats'], function () {
 
 // Exercises
 Route::group(['prefix' => 'exercises'], function () {
-	Route::get('/', [ExerciseController::class, 'index']);
+	Route::get('/', [ExerciseController::class, 'index'])->name('exercises');
 	Route::get('/admin', [ExerciseController::class, 'admin']);
 	Route::get('/index', [ExerciseController::class, 'index']);
 
@@ -836,8 +836,8 @@ Route::group(['prefix' => 'exercises'], function () {
 	Route::post('/update/{exercise}', [ExerciseController::class, 'update']);
 
 	// for user's to choose, set, and adjust their list
-	Route::get('/choose', [ExerciseController::class, 'choose']);
-	Route::post('/set', [ExerciseController::class, 'set']);
+	Route::get('/choose', [ExerciseController::class, 'choose'])->name('exercises.choose');
+	Route::post('/set', [ExerciseController::class, 'set'])->name('exercises.set');
 
 	// delete
 	Route::get('/confirmdelete/{exercise}', [ExerciseController::class, 'confirmDelete']);

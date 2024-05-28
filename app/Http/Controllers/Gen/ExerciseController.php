@@ -164,7 +164,7 @@ class ExerciseController extends Controller
 		return redirect($this->redirectTo);
 	}
 
-    public function choose()
+    public function choose(Request $request, $locale)
     {
         $enabled = Exercise::isEnabled();
         if ($enabled)
@@ -201,7 +201,7 @@ class ExerciseController extends Controller
 		return view(VIEWS . '.choose', ['parms' => $parms]);
 	}
 
-    public function set(Request $request)
+    public function set(Request $request, $locale)
     {
         $record = null;
 

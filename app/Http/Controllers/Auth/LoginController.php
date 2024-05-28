@@ -43,13 +43,13 @@ class LoginController extends Controller
 		return redirect('/');
 	}
 
-	public function editPassword(Request $request, User $user)
+	public function editPassword(Request $request, $locale, User $user)
     {
 		$token = uniqueToken();
 		return view('auth.passwords.edit', ['user' => $user, 'token' => $token]);
 	}
 
-    public function updatePassword(Request $request, User $user)
+    public function updatePassword(Request $request, $locale, User $user)
     {
 		$data = $request->validate([
 			'current_password' => 'required|string|min:8|max:25',
@@ -96,7 +96,7 @@ class LoginController extends Controller
 			return back();
 		}
 
-		return redirect('/login');
+		return redirect(route('login', ['locale' => $locale]));
     }
 
     /**

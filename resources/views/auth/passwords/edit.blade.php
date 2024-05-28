@@ -7,7 +7,7 @@
                 <div class="card-header">{{ __('base.Update Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/password/update/{{$user->id}}">
+                    <form method="POST" action="{{route('password.update', ['locale' => app()->getLocale(), 'user' => $user->id])}}">
                         @csrf
 
                         <div class="form-group row">

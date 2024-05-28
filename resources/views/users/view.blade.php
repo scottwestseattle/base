@@ -2,6 +2,9 @@
 @section('title', 'View User Profile')
 @section('menu-submenu')@component('users.menu-submenu', ['record' => $user]) @endcomponent @endsection
 @section('content')
+@php
+    $locale = app()->getLocale();
+@endphp
 <div>
 	<h3>{{trans_choice('base.Account', 1)}}</h3>
 
@@ -40,8 +43,8 @@
     @endif
 
     <div class="mt-3">
-        <a type="button" class="btn btn-primary" href="/users/edit/{{Auth::id()}}">@LANG('ui.Edit')</a>
-        <a type="button" class="btn btn-primary" href="/password/edit/{{Auth::id()}}">@LANG('base.Update Password')</a>
+        <a type="button" class="btn btn-primary" href="{{route('users.edit', ['locale' => $locale, 'user' => Auth::id()])}}">@LANG('ui.Edit')</a>
+        <a type="button" class="btn btn-primary" href="{{route('password.edit', ['locale' => $locale, 'user' => Auth::id()])}}">@LANG('base.Update Password')</a>
     </div>
 
 </div>

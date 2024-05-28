@@ -1,3 +1,6 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 <nav class="navbar navbar-light navbar-submenu" style="background-color: #e3f2fd;">
   <div class="">
     <ul class="nav">

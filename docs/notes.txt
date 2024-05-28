@@ -1,21 +1,9 @@
-@php @endphp
 ->name('articles.edit')
-app()->getLocale()
-return redirect(route('favorites', ['locale' => app()->getLocale()]));
-
 @php
     $locale = app()->getLocale();
 @endphp
 {{route('courses', ['locale' => $locale])}}
-{{route('tags.view', ['locale' => $locale, 'tag' => $record->id])}}
-
-
-{{route('definitions.view', ['locale' => $locale, 'permalink' => $record->permalink])}}
-{{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}
-{{route('definitions.add', ['locale' => $locale])}}
-{{route('', ['locale' => $locale])}}
-{{route('', ['locale' => $locale, 'entry' => $record->id])}}
-{{route('', ['locale' => $locale, 'permalink' => $record->permalink])}}
+{{route('courses.view', ['locale' => $locale, 'course' => $record->id])}}
 
 ===== NEW DB Changes =====
 update `tags` set language_flag = 1 where 1 and type_flag = 3 and language_flag = 0
