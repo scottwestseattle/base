@@ -6,7 +6,7 @@
 
 	<h1>{{__('proj.Edit Exercise')}}</h1>
 
-	<form method="POST" id="form-edit" action="/exercises/update/{{$record->id}}">
+	<form method="POST" id="form-edit" action="{{route('exercises.update', ['locale' => app()->getLocale(), 'exercise' => $record->id])}}">
 
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

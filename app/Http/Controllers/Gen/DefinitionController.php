@@ -508,7 +508,7 @@ class DefinitionController extends Controller
 			logFlash('info', $f, __('base.No changes were made'));
 		}
 
-        $returnPath = Site::getReturnPathSession('/definitions/view/' . $record->permalink);
+        $returnPath = Site::getReturnPathSession(route('definitions.view', ['locale' => $locale, 'definition' => $record->permalink]));
 
 		return redirect($returnPath);
 	}

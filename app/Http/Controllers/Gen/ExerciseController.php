@@ -23,10 +23,12 @@ define('LOG_CLASS', 'ExerciseController');
 
 class ExerciseController extends Controller
 {
-	private $redirectTo = PREFIX;
+	private $redirectTo = null;
 
 	public function __construct()
 	{
+        $this->redirectTo = route('exercises', ['locale' => app()->getLocale()]);
+
         $this->middleware('admin')->except([
             'choose', 'set'
         ]);
@@ -38,7 +40,7 @@ class ExerciseController extends Controller
 		parent::__construct();
 	}
 
-    public function admin(Request $request)
+    public function admin(Request $request, $locale)
     {
 		$records = [];
 
@@ -59,7 +61,7 @@ class ExerciseController extends Controller
 		]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $locale)
     {
 		$records = [];
 
@@ -80,13 +82,13 @@ class ExerciseController extends Controller
 		]);
     }
 
-    public function add()
+    public function add(Request $request, $locale)
     {
 		return view(VIEWS . '.add', [
 			]);
 	}
 
-    public function create(Request $request)
+    public function create(Request $request, $locale)
     {
 		$record = new Exercise();
 
@@ -119,7 +121,7 @@ class ExerciseController extends Controller
 		return redirect($this->redirectTo);
     }
 
-	public function edit(Exercise $exercise)
+	public function edit(Request $request, $locale, Exercise $exercise)
     {
 		$record = $exercise;
 
@@ -129,7 +131,7 @@ class ExerciseController extends Controller
 			]);
     }
 
-    public function update(Request $request, Exercise $exercise)
+    public function update(Request $request, $locale, Exercise $exercise)
     {
 		$record = $exercise;
 
@@ -244,7 +246,7 @@ class ExerciseController extends Controller
 		return redirect('/');
     }
 
-	public function view(Request $request, Exercise $exercise)
+	public function view(Request $request, $locale, Exercise $exercise)
     {
 		$record = $exercise;
 
@@ -253,7 +255,7 @@ class ExerciseController extends Controller
 			]);
     }
 
-    public function confirmDelete(Exercise $exercise)
+    public function confirmDelete(Request $request, $locale, Exercise $exercise)
     {
 		$record = $exercise;
 
@@ -262,7 +264,7 @@ class ExerciseController extends Controller
 		]);
     }
 
-    public function delete(Request $request, Exercise $exercise)
+    public function delete(Request $request, $locale, Exercise $exercise)
     {
 		$record = $exercise;
 
@@ -280,7 +282,7 @@ class ExerciseController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function undelete(Request $request, $id)
+    public function undelete(Request $request, $locale, $id)
     {
 		$id = intval($id);
 
@@ -302,7 +304,7 @@ class ExerciseController extends Controller
 		return redirect($this->redirectTo);
     }
 
-    public function deleted()
+    public function deleted(Request $request, $locale)
     {
 		$records = []; // make this countable so view will always work
 

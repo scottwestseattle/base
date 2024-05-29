@@ -4,7 +4,7 @@
 @section('content')
 <div class="">
 	<h1>{{__('proj.Add Exercise')}}</h1>
-	<form method="POST" action="/exercises/create">
+	<form method="POST" action="{{route('exercises.create', ['locale' => $locale])}}">
 
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('base.Title'):</label>

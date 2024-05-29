@@ -820,33 +820,33 @@ Route::group(['prefix' => 'stats'], function () {
 // Exercises
 Route::group(['prefix' => 'exercises'], function () {
 	Route::get('/', [ExerciseController::class, 'index'])->name('exercises');
-	Route::get('/admin', [ExerciseController::class, 'admin']);
-	Route::get('/index', [ExerciseController::class, 'index']);
+	Route::get('/admin', [ExerciseController::class, 'admin'])->name('exercises.admin');
+	Route::get('/index', [ExerciseController::class, 'index'])->name('exercises.index');
 
 	// view
-	Route::get('/view/{permalink}', [ExerciseController::class, 'permalink']);
-	Route::get('/show/{exercise}', [ExerciseController::class, 'view']);
+	Route::get('/view/{permalink}', [ExerciseController::class, 'permalink'])->name('exercises.view');
+	Route::get('/show/{exercise}', [ExerciseController::class, 'view'])->name('exercises.show');
 
 	// add - for admin to add exercises to be chosen by users
-	Route::get('/add', [ExerciseController::class, 'add']);
-	Route::post('/create', [ExerciseController::class, 'create']);
+	Route::get('/add', [ExerciseController::class, 'add'])->name('exercises.add');
+	Route::post('/create', [ExerciseController::class, 'create'])->name('exercises.create');
 
 	// edit - for admin to update individual exercises
-	Route::get('/edit/{exercise}', [ExerciseController::class, 'edit']);
-	Route::post('/update/{exercise}', [ExerciseController::class, 'update']);
+	Route::get('/edit/{exercise}', [ExerciseController::class, 'edit'])->name('exercises.edit');
+	Route::post('/update/{exercise}', [ExerciseController::class, 'update'])->name('exercises.update');
 
 	// for user's to choose, set, and adjust their list
-	Route::get('/choose', [ExerciseController::class, 'choose'])->name('exercises.choose');
-	Route::post('/set', [ExerciseController::class, 'set'])->name('exercises.set');
+	Route::get('/choose', [ExerciseController::class, 'choose'])->name('exercises.choose')->name('exercises.choose');
+	Route::post('/set', [ExerciseController::class, 'set'])->name('exercises.set')->name('exercises.set');
 
 	// delete
-	Route::get('/confirmdelete/{exercise}', [ExerciseController::class, 'confirmDelete']);
-	Route::post('/delete/{exercise}', [ExerciseController::class, 'delete']);
-	Route::get('/delete/{exercise}', [ExerciseController::class, 'delete']);
+	Route::get('/confirmdelete/{exercise}', [ExerciseController::class, 'confirmDelete'])->name('exercises.confirmDelete');
+	Route::post('/delete/{exercise}', [ExerciseController::class, 'delete'])->name('exercises.delete');
+	Route::get('/delete/{exercise}', [ExerciseController::class, 'delete'])->name('exercises.deleteGet');
 
 	// undelete
-	Route::get('/deleted', [ExerciseController::class, 'deleted']);
-	Route::get('/undelete/{id}', [ExerciseController::class, 'undelete']);
+	Route::get('/deleted', [ExerciseController::class, 'deleted'])->name('exercises.deleted');
+	Route::get('/undelete/{id}', [ExerciseController::class, 'undelete'])->name('exercises.undelete');
 });
 
 //todo:locale
