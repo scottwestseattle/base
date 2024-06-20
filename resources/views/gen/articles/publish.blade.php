@@ -5,7 +5,7 @@
 
 <h1>{{__('proj.Publish Article')}}</h1>
 
-<form method="POST" action="/articles/publishupdate/{{$record->id}}">
+<form method="POST" action="{{route('articles.publishUpdate', ['locale' => $locale, 'article' => $record->id])}}">
 
     <h3 name="title" class="">{{$record->title}}</h3>
 

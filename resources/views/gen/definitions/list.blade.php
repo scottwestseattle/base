@@ -116,7 +116,7 @@
                 </div>
                 @if (isAdmin() || App\User::isOwner($record->user_id))
                 <div class="float-left mr-2 mt-1">
-                    <a href="/{{$isSnippet ? $urlPractice : $urlEdit}}">@component('components.icon-edit')@endcomponent</a>
+                    <a href="{{$urlEdit}}">@component('components.icon-edit')@endcomponent</a>
                 </div>
                 @endif
 

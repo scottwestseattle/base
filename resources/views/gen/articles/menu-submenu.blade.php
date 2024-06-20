@@ -6,7 +6,7 @@
     <ul class="nav">
 
         @if (false)
-        <li class="nav-item"><a class="nav-link" href="/articles/index/default/20">
+        <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale, 'default' => 'default', 'count' => 20])}}">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
         </a></li>
         @endif

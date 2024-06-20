@@ -98,6 +98,7 @@ Route::group(['prefix' => 'articles'], function () {
 Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
 	Route::get('/wordexists/{text}', [DefinitionController::class, 'wordExistsAjax']);
+	Route::get('/find/{text}', [DefinitionController::class, 'find'])->name('definitions.find');
 });
 
 // history AJAX
@@ -609,7 +610,6 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/review-top-20-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewRankedVerbs'])->name('definitions.reviewTop20Verbs');
 
 	// ajax calls
-	Route::get('/find/{text}', [DefinitionController::class, 'find']);
 	Route::get('/get/{text}/{entryId}',[DefinitionController::class, 'getAjax']);
 	Route::get('/translate/{text}/{entryId?}',[DefinitionController::class, 'translateAjax']);
 	Route::get('/heart/{definition}',[DefinitionController::class, 'heartAjax']);

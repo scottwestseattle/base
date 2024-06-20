@@ -155,7 +155,7 @@ class DefinitionController extends Controller
 		if (isset($record))
 		{
 			flash('danger', __('base.record already exists'));
-			return redirect(route('definitions.edit', ['locale' => $locale]));
+			return redirect(route('definitions.edit', ['locale' => $locale, 'definition' => $record]));
 		}
 
 		$record = new Definition();
@@ -425,11 +425,30 @@ class DefinitionController extends Controller
 		$isDirty = false;
 		$changes = '';
 		$parent = null;
+		$returnPath = null;
 
 		$record->title = copyDirty($record->title, $request->title, $isDirty, $changes);
 
 		if ($isDirty) // only update the premalink and token if text has changed
+		{
     		$record->permalink = copyDirty($record->permalink, createPermalink($request->title), $isDirty, $changes);
+            $returnPath = Site::getReturnPathSession(route('definitions.show', ['locale' => $locale, 'definition' => $record->id]));
+            if (strpos($returnPath, 'view') > 0) // if it's going to fail because it has the old permalink, fix it
+            {
+                // klugey way to fix the return path piece by piece
+                $parts = explode('/', $returnPath);
+                if (count($parts) >= 5)
+                {
+                    $returnPath = '';
+                    $parts[4] = $record->permalink;
+                    foreach($parts as $part)
+                    {
+                        if (!empty($part))
+                            $returnPath .= '/' . $part;
+                    }
+                }
+            }
+		}
 
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
 
@@ -508,7 +527,8 @@ class DefinitionController extends Controller
 			logFlash('info', $f, __('base.No changes were made'));
 		}
 
-        $returnPath = Site::getReturnPathSession(route('definitions.view', ['locale' => $locale, 'definition' => $record->permalink]));
+        if (empty($returnPath))
+            $returnPath = Site::getReturnPathSession(route('definitions.show', ['locale' => $locale, 'definition' => $record->id]));
 
 		return redirect($returnPath);
 	}

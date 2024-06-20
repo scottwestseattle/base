@@ -3,7 +3,7 @@
     $locale = app()->getLocale();
 @endphp
 {{route('courses', ['locale' => $locale])}}
-{{route('courses.view', ['locale' => $locale, 'course' => $record->id])}}
+{{route('articles.undelete', ['locale' => $locale, 'article' => $record->id])}}
 
 ===== NEW DB Changes =====
 update `tags` set language_flag = 1 where 1 and type_flag = 3 and language_flag = 0

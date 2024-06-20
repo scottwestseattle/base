@@ -84,7 +84,7 @@
                 </span>
                 @if (isset($record->definitions) && count($record->definitions) > 0)
                     <div class="mr-2 float-left">
-                        <a href="/entries/vocabulary/{{$record->id}}" class="btn btn-xs btn-primary" role="button">
+                        <a href="{{route('entries.vocabulary', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
                             <div class="middle mr-0" style="margin-bottom:2px;">Vocabulary</div>
                             <div class="badge badge-small badge-white middle ml-0">{{count($record->definitions)}}</div>
                         </a>

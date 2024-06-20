@@ -114,13 +114,14 @@ class Entry extends Model
 	public function getViewLink()
 	{
 	    $rc = '';
+        $locale = app()->getLocale();
 
 	    if ($this->isArticle())
-		    $rc = '/articles/view/' . $this->permalink;
+		    $rc = route('articles.view', ['locale' => $locale, 'permalink' => $this->permalink]);
 	    else if ($this->isBook())
-		    $rc = '/books/view/' . $this->id;
+		    $rc = route('books.view', ['locale' => $locale, 'book' => $this->id]);
         else
-		    $rc = '/entries/view/' . $this->id;
+		    $rc = route('entries.view', ['locale' => $locale, 'entry' => $this->id]);
 
 		return $rc;
 	}

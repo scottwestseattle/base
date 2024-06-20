@@ -2,7 +2,9 @@
 @section('title', __('proj.Stats') . ' - ' . $record->title)
 @section('menu-submenu')@component('entries.menu-submenu', ['record' => $record, 'index' => $index])@endcomponent @endsection
 @section('content')
-
+@php
+    $locale = app()->getLocale();
+@endphp
 <div class="page-size container">
 
 	<div class="mb-5">
