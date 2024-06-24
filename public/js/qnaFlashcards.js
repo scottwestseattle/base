@@ -98,11 +98,11 @@ function flipCard(e, correct = true)
 	}
 }
 
-function showQuestion()
+function showQuestion() //Flashcard()
 {
 	var q = getQuestion();
 	var a = getAnswer();
-	var extra = getExtra();
+	var extra = getRule();
 
     //
     // set up 'Go To Entry' and 'Delete Entry' links
@@ -114,10 +114,8 @@ function showQuestion()
     //
     // set up Delete for current record
     //
-//old??    var href = '/definitions/confirmdelete/' + id;
     var hrefDelete = '/' + quiz.locale + '/definitions/delete/' + id;
     var onclick = 'event.preventDefault(); ajaxexec("' + hrefDelete + '"); $("#deleteStatus").text("deleted")';
-//old??	$('#deleteEntry').attr("href", href);
 	$('#deleteEntryIcon').attr("onclick", onclick);
 
     //
@@ -140,8 +138,6 @@ function showQuestion()
             //console.log('heart url: ' + heart);
         }
     });
-
-    //console.log('unheart: ' + unheart);
 
     //
 	// show question

@@ -55,6 +55,7 @@
 	    data-answer="{{$rec['a']}}"
 	    data-definition="{{$rec['definition']}}"
 	    data-extra="{{$rec['extra']}}"
+	    data-rule="{{$rec['rule']}}"
 	    data-options="{{$rec['options']}}"
 	    data-id="{{$rec['id']}}"
 	    data-ix="{{$rec['ix']}}" >
@@ -81,7 +82,7 @@
             <!-------------------------------------------------------->
 			<div class="middle mb-0">
 	    		<span id="statsCount" class="mr-2"></span>
-    			<span id="statsScore" class=""></span>
+    			<span id="statsScore"></span>
 		    	<span id="statsAlert"></span><!-- what is this? -->
 		    </div>
 		</div>
@@ -114,8 +115,7 @@
 	<!-------------------------------------------------------->
 	<!-- QUESTION -->
 	<!-------------------------------------------------------->
-
-	<div class="text-center" style="">
+	<div id="show-flashcards" class="text-center" style="">
     @if ($article)
         <div class="text-center" style="font-size: {{$settings['options']['font-size']}};">
             <a href="" style="color: black; background-color:LightGray; text-decoration:none;" onclick="flipCard(event, true);">

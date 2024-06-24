@@ -1,14 +1,28 @@
 @extends('layouts.review')
-@section('title', __('proj.Review'))
+@section('title', __('proj.Flashcards'))
 @section('content')
 @php
     $quizCount = isset($quizCount) ? $quizCount : $sentenceCount;
+    $article = isset($article) ? $article : false;
+    $random = isset($random) && $random ? 1 : 0;
+    $touchPath = isset($touchPath) ? $touchPath : null;
+    $language = getSpeechLanguageShort();
+    $programName = isset($history['programName']) ? $history['programName'] : null;
+
+    // set up favorites lists
+    // PROBLEMS:
+    // todo: need to check for current favorite on each entry because some can be hearted and other's unhearted
+    // todo: need to take the unhearted or deleted items out of the rotation during a read or quiz
+    $favs = isset($parms['favoriteLists']) ? $parms['favoriteLists'] : [];
+    $tagId = isset($parms['tagId']) ? $parms['tagId'] : null;
+
+    // only need reload if not already showing entries OR sort type would change the entries
+    $showReload = isset($parms['showReload']) ? $parms['showReload'] : false;
 @endphp
 <!-------------------------------------------------------->
 <!-- Add misc data needed by the JS during runtime -->
 <!-------------------------------------------------------->
 <div class="data-misc"
-	data-touchpath="{{(isset($touchPath) ? $touchPath : '')}}"
 	data-max="{{$sentenceCount}}"
 	data-quizcount="{{$quizCount}}"
 	data-prompt="@LANG('quiz.' . $settings['options']['prompt'])"
@@ -25,8 +39,10 @@
 	data-quiztext-override-correct="@LANG('quiz.Change to Correct')"
 	data-quiztext-override-wrong="@LANG('quiz.Change to Wrong')"
 	data-quiztext-score-changed="@LANG('quiz.Score Changed')"
-	data-locale="{{app()->getLocale()}}"
 	data-random="{{$random}}"
+	data-touchpath="{{$touchPath}}"
+	data-language="{{$language}}"
+	data-locale="{{app()->getLocale()}}"
     @component('components.history-parameters', ['history' => $history])@endcomponent
 ></div>
 
@@ -52,12 +68,12 @@
 	<!-------------------------------------------------------->
 	<!-- Header -->
 	<!-------------------------------------------------------->
-	<div style="margin-top: 5px;">
+	<div style="margin-top: 5px; margin-bottom:0px;">
 		<div id="statsRuntime">
             <!-------------------------------------------------------->
             <!-- Top Return Button -->
             <!-------------------------------------------------------->
-			<div class="middle mr-1 mb-1">
+			<div class="middle mr-1 mb-0">
                 <a href="/"><span style="margin-right:3px;" class="glyphicon glyphicon-home"></span></a>
                 <a href="{{$returnPath}}"><button type="button" class="btn btn-xs btn-primary mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</div>
@@ -65,29 +81,34 @@
             <!-------------------------------------------------------->
             <!-- Run-time Stats -->
             <!-------------------------------------------------------->
-			<div class="middle mb-2">
-       			<span id="statsCount" class="mr-2"></span>
-        		<span id="statsScore"></span>
-	        	<span id="statsAlert"></span><!-- what is this? -->
-	        </div>
+			<div class="middle mb-0">
+	    		<span id="statsCount" class="mr-2"></span>
+    			<span id="statsScore"></span>
+		    	<span id="statsAlert"></span><!-- what is this? -->
+		    </div>
 		</div>
-	</div>
+    </div>
 
 	<!---------------------------------------------------------------------------------------------------------------->
 	<!-- Quiz Panel -->
 	<!---------------------------------------------------------------------------------------------------------------->
 	<div id="panel-quiz" class="quiz-panel">
 
-    @if (count($records) > 0)
+	@if (count($records) > 0)
 
-    <section class="quizSection" id='sectionQna'>
+	<section class="" id='sectionQna'>
 
 	<!-------------------------------------------------------->
 	<!-- Instructions -->
 	<!-------------------------------------------------------->
-	<div class="text-center" id="" style="font-size: 1em; margin-bottom:10px;">
+	<div class="text-center steelblue" id="" style="font-size: .9em; margin-bottom:10px;">
 		<!-------------------------------------------------------->
-		<!-- SHOW Question prompt and results RIGHT/WRONG -->
+		<!-- Show the title -->
+		<!-------------------------------------------------------->
+        <div style="font-weight:500; font-size:1.1em;">{{$programName}}</div>
+
+		<!-------------------------------------------------------->
+		<!-- Show Question prompt and results RIGHT/WRONG -->
 		<!-------------------------------------------------------->
 		<span id="alertPrompt"></span>
 	</div>
@@ -96,25 +117,52 @@
 	<!-- QUESTION -->
 	<!-------------------------------------------------------->
 
-	<div id="question-graphics" class="text-center" style="font-size: {{$settings['options']['font-size']}}; margin-bottom:20px;">
-		<span id="prompt"></span>
+	<!-------------------------------------------------------->
+	<!-- FLASHCARD -->
+	<!-------------------------------------------------------->
+	<div id="show-flashcards" class="text-center">
+    @if ($article)
+        <div class="text-center" style="font-size: {{$settings['options']['font-size']}};">
+            <a href="" style="color: black; background-color:LightGray; text-decoration:none;" onclick="flipCard(event, true);">
+                <div style="min-height: 300px; ">
+                    <div class="" style="">
+                        <div id="prompt" class="mb-3"></div>
+                    </div>
+                    <div class="steelblue">
+                        <p id="flashcard-answer" class="hidden"></p>
+                        <p id="flashcard-extra" class="large-text hidden"></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    @else
+        <div class="card card-flashcard card-blue text-center" style="font-size: {{$settings['options']['font-size']}};">
+            <a href="" onclick="flipCard(event, true);">
+                <div class="card-header">
+                    <div class="prompt" class="card-text"></div>
+                </div>
+                <div class="card-body">
+                    <p id="flashcard-answer" class="card-text hidden"></p>
+                    <p id="flashcard-extra" class="large-text hidden"></p>
+                </div>
+            </a>
+        </div>
+    @endif
 	</div>
 
 	<!-------------------------------------------------------->
-	<!-- ANSWER -->
+	<!-- MULTIPLE CHOICE -->
 	<!-------------------------------------------------------->
-
-	<div class="">
+	<div id="show-multiple-choice" class="hidden">
 		<fieldset id="runtimeFields">
 
-		<div class="text-center">
-			<!-------------------------------------------------------->
-			<!-- TEXTBOX TO ENTER ANSWER -->
-			<!-------------------------------------------------------->
-			<input class="form-control" autocomplete="off" type="text" name="answer" id="attemptInput" onkeypress="onKeypress(event)" />
+        <div class="text-center mb-3" style="font-size: {{$settings['options']['font-size']}};">
+            <div class="prompt" class=""></div>
+        </div>
 
+		<div class="text-center mb-3">
 			<!-------------------------------------------------------->
-			<!-- SPACE TO SHOW SCORED ANSWER -->
+			<!-- SHOW: RIGHT! or WRONG! -->
 			<!-------------------------------------------------------->
 			<div style="display: none; padding: 10px 0; font-size: {{$settings['options']['font-size']}}; min-height: 70px; margin-top: 20px;" id="answer-show-div"></div>
 		</div>
@@ -122,15 +170,22 @@
 		<!-------------------------------------------------------->
 		<!-- ANSWER OPTION BUTTONS  -->
 		<!-------------------------------------------------------->
-		<div style="width:100%;" id="optionButtons">
-			<div><button id="0" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
-			<div><button id="1" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
-			<div><button id="2" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
-			<div><button id="3" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
-			<div><button id="4" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:none;"></button></div>
+		@php
+		    $show = 'none';
+		@endphp
+		<div style="width:100%;" id="optionButtons" class="">
+			<div><button id="0" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:{{$show}};"></button></div>
+			<div><button id="1" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:{{$show}};"></button></div>
+			<div><button id="2" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:{{$show}};"></button></div>
+			<div><button id="3" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:{{$show}};"></button></div>
+			<div><button id="4" onclick="checkAnswerFromButtonClick(event)" class="btn btn-primary btn-quiz-mc3" style="display:{{$show}};"></button></div>
 		</div>
 
 		</fieldset>
+    </div>
+
+	<div class="">
+		<fieldset id="runtimeFields">
 
 	<!----------------------------------------------------------------------------->
 	<!-- CONTROL BUTTONS -->
@@ -138,7 +193,7 @@
 
 		<!-- BUTTONS ROW 1 -->
 
-		<div class="btn-panel-bottom pb-2">
+		<div class="btn-panel-bottom pb-0 mb-0">
 			<button class="btn btn-success btn-quiz" onclick="event.preventDefault(); nextAttempt()" id="button-next-attempt">@LANG('ui.Next')</button>
 			<input class="btn btn-default btn-quiz " type="button" value="@LANG('quiz.I KNOW IT') (Alt+k)" onclick="checkAnswer(2)" id="button-know" style="display: default; background-color: green; color: white;">
 			<input class="btn btn-default btn-quiz" type="button" value="@LANG('quiz.I DONT KNOW') (Alt+d)" onclick="checkAnswer(3)" id="button-dont-know" style="display: none; background-color: red; color: white;">
@@ -146,17 +201,78 @@
 		</div>
 
 		<div class="form-group">
-			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
-			<button class="btn btn-warning btn-quiz" onclick="event.preventDefault(); stopQuiz()" id="button-stop">@LANG('quiz.Stop Review')</button>
-			<button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); showAnswerOptionButtons()" id="button-show-options">@LANG('quiz.Show Choices')</button>
-			<button class="btn btn-success btn-quiz" onclick="event.preventDefault(); showAnswer()" id="button-show-answer">@LANG('quiz.Show Answer')</button>
-			<div class="mt-2 ml-1">
-				<input type="checkbox" name="checkbox-hide-options" id="checkbox-hide-options" onclick="displayAnswerButtons()" />
-				<label for="checkbox-hide-options" class="checkbox-xs" onclick="displayAnswerButtons()">@LANG('quiz.Hide choices before answering')</label>
+		    <div class="mt-0 pt-0">
+			    <button class="btn btn-primary btn-quiz" onclick="event.preventDefault(); checkAnswer(1)" id="button-check-answer">@LANG('quiz.Check Typed Answer')</button>
+                @if (false)
+                <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, true)" id="button-remove">@LANG('quiz.Remove')</button>
+                @endif
+
+                <div class="text-center">
+                    <button class="btn btn-success btn-quiz hidden" onclick="flipCard(event, false)" id="button-repeat">@LANG('quiz.Repeat')</button><!-- this is te I GOT IT WRONG button -->
+                </div>
+            </div>
+			<div class="mt-1 ml-1">
+				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion('checkbox-flip-flashcards');" />
+				<label for="checkbox-flip" class="checkbox-xs steelblue" onclick="reloadQuestion('checkbox-flip-flashcards');">@LANG('quiz.Reverse question and answer')</label>
 			</div>
 			<div class="mt-1 ml-1">
-				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion('checkbox-flip-review');" />
-				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion('checkbox-flip-review');">@LANG('quiz.Reverse question and answer')</label>
+				<input type="checkbox" name="checkbox-random" id="checkbox-random" onclick="updateRandom();" {{$random ? 'checked' : ''}} />
+				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
+			</div>
+
+            @php
+                $iconSize = 16;
+                $iconSizeBigger = $iconSize + 5;
+                $iconColor = 'steelblue';
+            @endphp
+			<div class="small-thin-text">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="goToEntry" href="" target="_blank">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#pencil-square" /></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="readEntry" href="" onclick="event.preventDefault(); read($('#flashcard-answer').html())">
+                            <svg class="" width="{{$iconSizeBigger}}" height="{{$iconSizeBigger}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#volume-up" /></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="copyEntry" href="" onclick="clipboardCopy(event, '', 'flashcard-answer', false, true);">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#clipboard" /></svg>
+                        </a>
+                        <span class="ml-2" id="copyStatus"></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="" href="" onclick="event.preventDefault(); $('#panel-show').toggle();">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#list-ol" /></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="dropdown" role="button" href="" onclick="" tablindex="-1">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
+                        </a>
+                        <ul class="small-thin-text dropdown-menu dropdown-menu-right">
+                            <li><a id="deleteEntryIcon" class="dropdown-item" href="" onclick="">@LANG('ui.Confirm Delete')</a></li>
+                        </ul>
+                        <span class="ml-2" id="deleteStatus"></span>
+	                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="dropdown" role="button" href="" onclick="" tablindex="-1">
+                            <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}" ><use xlink:href="/img/bootstrap-icons.svg#heart{{isset($tagId) ? '-fill' : ''}}" /></svg>
+                        </a>
+                        <ul id="favs" class="small-thin-text dropdown-menu dropdown-menu-right">
+                        @foreach($favs as $list)
+                            @if ($tagId == $list->id)
+                                <li><a id="unheartEntryIcon" class="dropdown-item steelblue" href="" onclick="">Remove from {{$list->name}}</a></li>
+                            @else
+                                <li data-tagid="{{$list->id}}" ><a id="heartEntryIcon{{$list->id}}" class="dropdown-item" href="" onclick="">{{$list->name}}</a></li>
+                            @endif
+                        @endforeach
+                        </ul>
+                        <span class="ml-2" id="heartStatus"></span>
+	                </li>
+	            </ul>
 			</div>
 		</div>
 
@@ -188,7 +304,7 @@
 		</div>
 	</div>
 
-</section>
+	</section>
 
 	</div>
 	<!---------------------------------------------------------------------------------------------------------------->
@@ -224,6 +340,7 @@
 			<h3>@LANG('quiz.Correct Answers')</h3>
 			<h1 id="panelResultsCount"></h1>
 			<h3 id="panelResultsPercent"></h3>
+			<p>Click Continue to answer to incorrect questions</p>
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
@@ -234,7 +351,7 @@
 	</div>
 
 	<!---------------------------------------------------------------------------------------------------------------->
-	<!-- End of Quiz Panel -->
+	<!-- End of Flashcards Panel -->
 	<!---------------------------------------------------------------------------------------------------------------->
 	<div id="panel-endofquiz" class="quiz-panel text-center">
 
@@ -249,23 +366,23 @@
 		</div>
 
 		<div class="btn-panel-bottom pb-2">
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); location.reload();" id="button-continue2">@LANG('ui.Reload')</button>
-			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Restart')</button>
+		    @if ($showReload)
+    			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); location.reload();" id="button-reload">@LANG('ui.Reload')</button>
+            @endif
+			<button class="btn btn-lg btn-primary btn-quiz" onclick="event.preventDefault(); startQuiz();" id="button-continue2">@LANG('ui.Repeat')</button>
 			<a class="" role="" href="{{$returnPath}}"><button class="btn btn-lg btn-primary btn-quiz" >@LANG('ui.Quit')</button></a>
 		</div>
 
 	</div>
 
 	<!---------------------------------------------------------------------------------------------------------------->
-	<!-- Debug Info -->
+	<!-- Show Flashcards Panel -->
 	<!---------------------------------------------------------------------------------------------------------------->
-@if (false) // debug dump
-	<div>
-	@foreach($records as $rec)
-		<p>{!!$rec['q']!!}</p>
-	@endforeach
-	</div>
-@endif
+    <div id="panel-show" style="clear:both; display:none; min-height:500px; overflow-y:auto;">
+        <span id="translation" name="translation" class="">
+            @component('shared.flashcards-view', ['records' => $records])@endcomponent
+        </span>
+    </div>
 
 @endif
 

@@ -1514,18 +1514,75 @@ order by definitions.release_flag, id DESC limit 50 offset 0
                 $question = getOrSetString($record->title, 'snippet not set');
                 $translation = getOrSetString($record->translation_en, 'translation not set');
                 $definition = getOrSetString($record->definition, 'definition not set');
+                $rule = getOrSetString($record->notes, null);
 		    }
 		    else
 		    {
                 $question = $record->title;
                 $translation = getOrSetString($record->translation_en, $question . ': translation not set');
                 $definition = getOrSetString($record->definition, $question . ': definition not set');
+                $rule = getOrSetString($record->notes, null);
 		    }
 
+            // see if there are embedded answer choices such "El [es, está] alto."
+            if (isset($rule) && strlen($rule) > 0)
+            {
+                // multiple choice looks like:
+                //data-question="Las cosas fueron de mal __________ peor."
+                //data-answer="en"
+                //data-choices="a|de|por|en"
+
+                //$choices = str_replace(', ', '|', trim($choices[0], '[]')); // leaves in a string separated by '|'
+                $choices = explode('|', $rule);
+                $wordsReplace = (count($choices) > 0) ? explode('-', $choices[0]) : []; // get the words to test on (4 or 4-5);
+                $start = $end = null;
+                if (count($wordsReplace) > 0)
+                {
+                    $start = $wordsReplace[0];
+                    $end = $start;
+                }
+                if (count($wordsReplace) > 1)
+                {
+                    $end = $wordsReplace[1];
+                }
+
+                $answer = $translation; // << put in blank
+                //preg_replace('/\[.*\]/i', '__________', $text);
+
+                // replace the word(s) with a blank
+                $wordsQuestion = explode(' ', $question); // split all of the words in the question
+                foreach($wordsQuestion as $index => $word)
+                {
+                    for($i = intval($start); $i <= intval($end); $i++)
+                    {
+                        // if word is within the start/end pair, remove it (forming the question)
+                        if (($index + 1) == $i)
+                        {
+                            $wordsQuestion[$index] = '_';
+                        }
+                    }
+                }
+
+                $question = implode(' ', $wordsQuestion);
+
+                $answer = count($choices) > 2 ? $choices[2] : 'error answer';
+                $choices = count($choices) > 1 ? $choices[1] : 'error choices';
+                $choices = preg_replace('/, /', '|', $choices);
+                $pattern = ($end > $start) ? '/_.*_/' : '/_/';
+                $question = preg_replace($pattern, '__________', $question); // embed the options within the question
+         }
+            else
+            {
+                $choices = null;
+                $answer = $translation;
+            }
+
             $qna[$cnt]['q'] = $question;
-            $qna[$cnt]['a'] = $translation;
+            $qna[$cnt]['a'] = $answer;
+            $qna[$cnt]['choices'] = $choices;
             $qna[$cnt]['definition'] = $definition;
             $qna[$cnt]['translation'] = $translation;
+            $qna[$cnt]['rule'] = $rule;
             $qna[$cnt]['extra'] = '';
             $qna[$cnt]['id'] = $record->id;
             $qna[$cnt]['ix'] = $cnt; // this will be the button id, just needs to be unique
@@ -1533,8 +1590,6 @@ order by definitions.release_flag, id DESC limit 50 offset 0
 
 			$cnt++;
 		}
-
-		//dd($qna);
 
 		return $qna;
 	}

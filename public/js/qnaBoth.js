@@ -10,7 +10,7 @@ $( document ).ready(function() {
 	var checked = (localStorage.getItem('checkbox-hide-options') == 'true');
 	$('#checkbox-hide-options').prop('checked', checked);
 
-	checked = (localStorage.getItem('checkbox-flip-review') == 'true');
+	checked = (localStorage.getItem('checkbox-flip-flashcards') == 'true');
 	$('#checkbox-flip').prop('checked', checked);
 
 	checked = (localStorage.getItem('checkbox-use-definition') == 'true');
@@ -23,6 +23,13 @@ $( document ).ready(function() {
 	quiz.showAnswersClick();
 	quiz.typeAnswersClick();
 
+    //
+    // this will override the random setting based on the last state of the checkbox
+    //
+	checked = (localStorage.getItem('checkbox-random') == 'true');
+	$('#checkbox-random').prop('checked', checked);
+    updateRandom(/* reloadOrder = */ false); // load order will be called again after this
+
 	$("#checkbox-type-answers").prop('checked', startWithTypeAnswers());
 
 	quiz.showPanel();
@@ -30,7 +37,134 @@ $( document ).ready(function() {
 	quiz.start();
 });
 
-function showQuestion() //MultipleChoice(rule)
+function getExtra()
+{
+	var rc = null;
+
+	index = quiz.qna[curr].order;
+	rc = quiz.qna[index].extra;
+
+	return rc;
+
+}
+
+function updateScoreCount(correct)
+{
+	if (correct)
+	{
+	    // default is correct (when it's clicked after answer is shown)
+	    right++;
+	}
+	else
+	{
+	    // this is from the "I got it wrong" button
+	    wrong++;
+	}
+
+    quiz.setCorrect(correct);
+
+	//console.log('right: ' + right);
+	//console.log('wrong: ' + wrong);
+	//console.log('total: ' + (right + wrong));
+}
+
+function flipCard(e, correct = true)
+{
+	e.preventDefault();
+
+	if ($("#flashcard-answer").is(":hidden"))
+	{
+	    //
+	    // show the answer
+	    //
+		$('#flashcard-answer').show();
+		$('#flashcard-extra').show();
+		$('#button-remove').show();
+		$('#button-repeat').show();
+	}
+	else
+	{
+	    //
+	    // hide answer, update score, and load next question
+	    //
+		$('#flashcard-answer').hide();
+		$('#flashcard-extra').hide();
+		$('#button-remove').hide();
+		$('#button-repeat').hide();
+
+        updateScoreCount(correct);
+
+		nextAttempt();
+	}
+}
+
+function showQuestion() //Flashcard()
+{
+    // are we doing flashcards or mc?
+	var extra = getRule();
+    if (extra !== null && extra.length > 0) // extra hold the MC options
+	{
+	    $("#show-multiple-choice").show();
+	    $("#show-flashcards").hide();
+        showQuestionMultipleChoice();
+	}
+	else // show flashcards
+	{
+	    $("#show-multiple-choice").hide();
+	    $("#show-flashcards").show();
+	}
+
+	var q = getQuestion();
+	var a = getAnswer();
+
+    //
+    // set up 'Go To Entry' and 'Delete Entry' links
+    //
+    var id = quiz.qna[quiz.qna[curr].order].id;
+    var href = '/' + quiz.locale + '/definitions/edit-or-show/' + id;
+	$('#goToEntry').attr("href", href);
+
+    //
+    // set up Delete for current record
+    //
+    var hrefDelete = '/' + quiz.locale + '/definitions/delete/' + id;
+    var onclick = 'event.preventDefault(); ajaxexec("' + hrefDelete + '"); $("#deleteStatus").text("deleted")';
+	$('#deleteEntryIcon').attr("onclick", onclick);
+
+    //
+    // set up Heart for current record
+    //
+    var hrefUnheart = '/' + quiz.locale + '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/0';
+    var unheart = 'event.preventDefault(); ajaxexec("' + hrefUnheart + '"); $("#heartStatus").text("unhearted")';
+	$('#unheartEntryIcon').attr("onclick", unheart);
+
+    // set the heart li's; have to loop through each item, get the 'to id' from the 'data' and set the onclick url dynamically
+    var favs = $("#favs li");
+    favs.each(function(idx, li) {
+        var container = $(li);
+        var favId = container.data('tagid'); // the 'to id' is stored on the 'li' element
+        if (favId !== 'undefined') // skip the unheart which has no 'to id'
+        {
+            var hrefHeart = '/' + quiz.locale + '/definitions/set-favorite-list/' + id + '/' + quiz.programId + '/' + favId;
+            var heart = 'event.preventDefault(); ajaxexec("' + hrefHeart + '"); $("#heartStatus").text("hearted")';
+            $('#heartEntryIcon' + favId).attr("onclick", heart);
+            //console.log('heart url: ' + heart);
+        }
+    });
+
+    //
+	// show question
+	//
+	$(".prompt").html(q);
+	$("#flashcard-answer").html(a);
+	$("#flashcard-extra").html(extra);
+
+	quiz.setAlertPrompt(quiz.promptQuestion, COLOR_QUESTION_PROMPT);
+
+	$("#statsRuntime").show();
+}
+
+function showQuestionMultipleChoice()
 {
 	clear();
 	var q = getQuestion();
@@ -38,6 +172,8 @@ function showQuestion() //MultipleChoice(rule)
 	var currIndex = quiz.qna[curr].order;
 	var currQuestion = quiz.qna[currIndex];
 	var choices = currQuestion.choices;
+    console.log(choices);
+
 	var debugOn = false;
 
 	// show question
@@ -137,6 +273,7 @@ function showQuestion() //MultipleChoice(rule)
 	$(".btn-quiz-mc3").css('background-color', '#2fa360');
 	$(".btn-quiz-mc3").css('border-color', '#2d995b');
 	$(".btn-quiz-mc3").css('color', 'white');
+	$(".btn-quiz-mc3").hide();
 
     //
     // now update the static view buttons with the answers using the unique list of
@@ -224,12 +361,12 @@ function displayAnswerButtons()
 	localStorage.setItem('checkbox-hide-options', checked);
 }
 
-function showAnswer()
+function restartQuiz()
 {
-	$("#button-show-answer").hide();
-	var id = $(".btn-right").attr('id');
-	$('.btn-right').addClass('btn-right-show');
-	checkAnswerFromButton(id, true);
+	quiz.showPanel();
+	resetQuiz();
+	quiz.runState = RUNSTATE_ASKING;
+	loadQuestion();
 }
 
 function resetEndPanels()
@@ -266,12 +403,11 @@ function nextAttempt()
 				$("#rounds").append(results);
 
 				$state = (wrong == 0) ? RUNSTATE_ENDOFQUIZ : RUNSTATE_ENDOFROUND;
-
 				quiz.showPanel($state);
 			}
 			else
 			{
-				// not end of round yet
+				//alert('End of Round???');
 			}
 
 			//alert('End of Round ' + round + ': ' + score.toFixed(2) + '% (' + right + ' of ' + (right+wrong) + ')');
@@ -308,3 +444,4 @@ function nextAttempt()
 		}
 	}
 }
+

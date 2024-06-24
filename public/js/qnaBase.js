@@ -202,13 +202,13 @@ function quiz() {
 	this.flip = function() {
 		this._flip = !this._flip;
 		this.promptQuestion = (this._flip ? this.promptQuestionReverse : this.promptQuestionNormal);
-		showQuestion();
+		showQuestionBase();
 	}
 
 	this.start = function() {
 		$("#rounds").text($("#roundsStart").text());
 		resetQuiz();
-		showQuestion();
+		showQuestionBase();
 		nbr = 1;
 		updateScore();
 
@@ -325,6 +325,7 @@ function loadData()
 		var answer = container.data('answer');
 		var choices = container.data('choices');
 		var def = container.data('definition');
+		var rule = container.data('rule');
 		var extra = container.data('extra');
 		var options = container.data('options'); // mc options
 		var id = container.data('id');
@@ -337,6 +338,7 @@ function loadData()
 		    choices:(choices) ? choices.toString() : null,
 			definition:def.toString(),
 			extra:extra.toString(),
+			rule:rule.toString(),
 		    id:id.toString(),
 		    options:options.toString(),
 		    order:0,
@@ -425,7 +427,7 @@ function loadOrder()
 		quiz.qna[i].order = order[i];
 
 		//todo: try to find out why first question is blank sometimes
-		console.log('todo order: ' + i + ' - ' + order[i]);
+		//console.log('todo order: ' + i + ' - ' + order[i]);
 	}
 
     if (false)
@@ -550,7 +552,7 @@ function getAnswer(index = null)
 	var rc = null;
 	index = (index == null) ? quiz.qna[curr].order : index;
 
-	if (quiz.flipped())
+	if (quiz.flipped() && !isMC())
 	{
 		rc = quiz.qna[index].q;
 	}
@@ -570,7 +572,7 @@ function getQuestion(index = null)
 	var rc = null;
 	index = (index == null) ? quiz.qna[curr].order : index;
 
-	if (quiz.flipped())
+	if (quiz.flipped() && !isMC())
 	{
 		if (quiz.useDefinition())
 			rc = quiz.qna[index].definition;
@@ -583,15 +585,31 @@ function getQuestion(index = null)
 	}
 
 	//todo: debug blank questions
-	console.log('todo getQuestion: ' + index + ' - ' + rc);
+	//console.log('todo getQuestion: ' + index + ' - ' + rc);
 
 	return rc;
 
 }
 
+function getRule()
+{
+	var rc = null;
+
+	index = quiz.qna[curr].order;
+	rc = quiz.qna[index].rule;
+
+	return rc;
+}
+
+function isMC()
+{
+    rule = getRule();
+    return (rule !== null && rule.length > 0);
+}
+
 function loadQuestion()
 {
-	showQuestion();
+	showQuestionBase();
 	nbr++;
 	updateScore();
 
@@ -601,9 +619,14 @@ function loadQuestion()
 	$("#heartStatus").text("");     // clear status msg
 }
 
+function showQuestionBase()
+{
+    showQuestion();
+}
+
 function reloadQuestion(qnaType = 'checkbox-flip')
 {
-	showQuestion();
+	showQuestionBase();
 
 	// one of these triggered this call so save the state
 	var checked = $('#checkbox-flip').prop('checked') ? 'true' : '';

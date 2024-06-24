@@ -1582,7 +1582,7 @@ class DefinitionController extends Controller
         // get user's favorites lists
         $parms['favoriteLists'] = Definition::getUserFavoriteLists();
 
-        //dump($parms);//
+        //dump($settings);
 
 		return view($settings['view'], [
 		    'parms' => $parms,

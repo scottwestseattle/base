@@ -485,7 +485,10 @@ class DateTimeEx
         }
 
         // client timezone is put into a cookie by javascript after first page load
+        // to clear this cookie in the browsers, have to clear for 'learn.codespace.us' and 'codespace.us'
         $timezone = intval(self::getTimezoneOffset());
+        //dump($_COOKIE);
+        //dump($timezone);
 
         // make time change parameter for DateInterval
         $change = 'PT' . abs($timezone) . 'H';

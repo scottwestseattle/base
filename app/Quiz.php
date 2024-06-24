@@ -251,19 +251,24 @@ class Quiz
 		return ['text' => $text, 'count' => count($records)];
 	}
 
-	//
-	// this is the new way to multiple choice qna, updated for review.js
-	//
-	static public function makeQna($text)
+    static public function makeQnaFromText($text)
     {
 		$records = [];
 		// chop it into lines by using the <p>'s
 	    $text = str_replace(['&ndash;', '&nbsp;'], ['-', ' '], $text);
 		preg_match_all('#<p>(.*?)</p>#is', $text, $records, PREG_SET_ORDER);
 
+        return self::makeQna($records);
+    }
+
+	//
+	// this is the new way to multiple choice qna, updated for review.js
+	//
+	static public function makeQna($records)
+    {
 		$qna = [];
 		$cnt = 0;
-		$delim = (strpos($text, ' | ') !== false) ? ' | ' : ' - ';
+		$delim = ' - ';
 
 		foreach($records as $record)
 		{
@@ -295,6 +300,7 @@ class Quiz
 				$qna[$cnt]['definition'] = 'false';
 				$qna[$cnt]['translation'] = '';
 				$qna[$cnt]['extra'] = '';
+				$qna[$cnt]['rule'] = null;
 				$qna[$cnt]['id'] = $cnt;
 				$qna[$cnt]['ix'] = $cnt; // this will be the button id, just needs to be unique
 				$qna[$cnt]['options'] = '';
@@ -305,8 +311,6 @@ class Quiz
 			    $cnt++;
 			}
 		}
-
-		//dd($qna);
 
 		return $qna;
 	}
@@ -475,8 +479,8 @@ class Quiz
 		else if ($type == LESSON_TYPE_QUIZ_FLASHCARDS)
 		{
 			$options['prompt'] = 'Tap or click to continue';
-			$view = 'shared.flashcards';
-			$loadJs = 'qnaFlashcards.js';
+			$view = 'shared.qna';
+			$loadJs = 'qnaBoth.js';
 			$programName = 'Flashcards';
 		}
 		else if ($type == LESSON_TYPE_QUIZ_WHEELOFFORTUNE)
