@@ -56,7 +56,10 @@
     @endif
 
     <div class="form-group">
-        <label for="notes" class="control-label">{{trans_choice('ui.Note', 2)}} (@LANG('ui.optional')):</label>
+        <label for="notes" class="control-label">{{trans_choice('proj.Multiple Choice Choices', 2)}} (@LANG('ui.optional')):</label>
+        @if (isset($wordNumbers))
+            <div>{{$wordNumbers}}</div>
+        @endif
         <input type="text" name="notes" id="notes" class="form-control" autocomplete="off" value="{{$record->notes}}"/>
     </div>
 

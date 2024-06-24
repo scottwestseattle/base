@@ -210,7 +210,7 @@ class BookController extends Controller
     		return redirect($this->redirectTo);
 		}
 
-        return $this->view($record);
+        return $this->view($request, app()->getLocale(), $record);
 	}
 
 	public function view(Request $request, $locale, Entry $entry)
@@ -475,7 +475,7 @@ class BookController extends Controller
 
 		$lines = self::getLines($record);
 
-		$backLink = route('books.show', ['locale' => $locale, 'entry' => $record->permalink]);
+		$backLink = route('books.show', ['locale' => $locale, 'permalink' => $record->permalink]);
 
 		return $this->doRead($lines, $title, $record->id, $readLocation, $record->language_flag, $backLink);
     }

@@ -538,4 +538,17 @@ class Quiz
         return $r;
     }
 
+    static public function getWordNumbers($text)
+    {
+        $words = explode(' ', $text);
+
+        foreach($words as $index => $word)
+        {
+            $words[$index] = $word . '(' . ($index + 1) . ')';
+        }
+
+        $text = implode(' ', $words);
+
+        return $text;
+    }
 }

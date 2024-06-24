@@ -409,12 +409,15 @@ class DefinitionController extends Controller
 			$forms = Spanish::getFormsPretty($record->forms);
 		}
 
+        $wordNumbers = Quiz::getWordNumbers($record->title);
+
         Site::setReturnPathSession(); // save the return path for when update() is called
 
 		return view(VIEWS . '.edit', [
 			'record' => $record,
 			'formsPretty' => $forms,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
+			'wordNumbers' => $wordNumbers,
 		]);
     }
 
