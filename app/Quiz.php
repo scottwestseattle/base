@@ -251,7 +251,7 @@ class Quiz
 		return ['text' => $text, 'count' => count($records)];
 	}
 
-    static public function makeQnaFromText($text)
+    static public function makeQnaFromHtml($text)
     {
 		$records = [];
 		// chop it into lines by using the <p>'s
@@ -261,18 +261,27 @@ class Quiz
         return self::makeQna($records);
     }
 
+    static public function makeQnaFromText($questions, $answers = null)
+    {
+		// chop up into lines by using the CRLF's
+        $questions = explode("\r\n", $questions);
+        $answers = isset($answers) ? explode("\r\n", $answers) : null;
+
+        return self::makeQna($questions, $answers);
+    }
+
 	//
 	// this is the new way to multiple choice qna, updated for review.js
 	//
-	static public function makeQna($records)
+	static public function makeQna($records, $answers = null)
     {
 		$qna = [];
 		$cnt = 0;
 		$delim = ' - ';
 
-		foreach($records as $record)
+		foreach($records as $index => $record)
 		{
-			$line = $record[1];
+			$line = (is_array($record) && count($record)) > 1 ? $record[1] : $record;
 			$line = strip_tags($line);
 			$parts = explode($delim, $line); // split the line into q and a, looks like: "question text - correct answer text"
 
@@ -296,9 +305,9 @@ class Quiz
 
 				$qna[$cnt]['q'] = $q;
 				$qna[$cnt]['a'] = array_key_exists(1, $parts) ? trim($parts[1]) : null;
+				$qna[$cnt]['translation_en'] = isset($answers[$index]) ? $answers[$index] : null;
 				$qna[$cnt]['choices'] = $choices;
 				$qna[$cnt]['definition'] = 'false';
-				$qna[$cnt]['translation'] = '';
 				$qna[$cnt]['extra'] = '';
 				$qna[$cnt]['rule'] = null;
 				$qna[$cnt]['id'] = $cnt;

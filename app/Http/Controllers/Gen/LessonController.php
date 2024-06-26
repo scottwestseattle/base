@@ -699,7 +699,7 @@ class LessonController extends Controller
 		    if ($lesson->isTranslation())
     			$quiz = self::makeQnaTranslation($lesson->text, $lesson->text_translation);
     		else
-    			$quiz = Quiz::makeQnaFromText($lesson->text); // split text into questions and answers
+    			$quiz = Quiz::makeQnaFromHtml($lesson->text); // split text into questions and answers
 		}
 		catch (\Exception $e)
 		{

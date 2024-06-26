@@ -76,7 +76,8 @@ class DefinitionController extends Controller
 
             // favorites lists
 			'favorites', 'favoritesRss', 'favoritesRssReader',
-			'setSnippetCookie', 'readList', 'convertTextToFavorites'
+			'setSnippetCookie', 'readList', 'convertTextToFavorites',
+			'convertQuestionsToSnippets',
         ]);
 
         $this->middleware('auth')->only([
@@ -86,6 +87,7 @@ class DefinitionController extends Controller
 			'createSnippet',
 			'favoritesReview',
             'convertTextToFavorites',
+			'convertQuestionsToSnippets',
 		]);
 
         $this->middleware('owner')->only([
@@ -94,6 +96,7 @@ class DefinitionController extends Controller
 			'review', 'readList',
 			'confirmDelete', 'delete',
 			'unheartAjax', 'moveFavorites', 'convertTextToFavorites',
+			'convertQuestionsToSnippets',
 		]);
 
 		parent::__construct();
@@ -2182,7 +2185,6 @@ class DefinitionController extends Controller
         {
             // do the conversion
             $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
-//           	return redirect('/definitions/list-tag/' . $parms['tagId'] . '?order=desc');
            	return redirect(route('definitions.listTag', ['locale' => $locale, 'tag' => $parms['tagId']]) . '?order=desc');
         }
 
@@ -2207,7 +2209,8 @@ class DefinitionController extends Controller
                 {
                     $definition = Definition::addDefinition([
                         'title' => $r['q'],
-                        'translation_en' => $r['a'],
+                        'translation_en' => $r['translation_en'],
+                        'notes' => $r['choices'],
                         'language_flag' => $request->language_flag,
                         ]);
                     if (!empty($definition))
@@ -2220,4 +2223,82 @@ class DefinitionController extends Controller
 
         return ['tagId' => $tag->id];
     }
+
+	public function convertQuestionsToSnippets(Request $request, $locale, Entry $entry)
+    {
+        $record = $entry;
+        $parms = null;
+        $records = null;
+
+        //
+        // split text into text and translations
+        //
+        try
+        {
+            $records = Quiz::makeQnaFromText($record->description, $record->description_translation);
+        }
+        catch (\Exception $e)
+        {
+            $msg = 'Error making flashcards';
+            //$m = $e->getMessage();
+            //dd($m);
+            logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+            return back();
+        }
+
+        foreach($records as $index => $rec)
+        {
+            $answer = explode(' ', $rec['a']);
+            //if (count($answer) > 1)
+            //    dd($answer);
+
+            $space = 0;
+            $words = explode(' ', $rec['q']);
+            foreach($words as $wordIx => $word)
+            {
+                if (Str::startsWith($word, '_'))
+                {
+                    $words[$wordIx] = ($rec['a'] === '(nada)') ? '' : $rec['a'];
+                    $answerIndex = $wordIx + 1;
+                    break;
+                }
+            }
+            //dump($answerIndex);
+
+            // put in the location
+            $choices = $answerIndex;
+            if (count($answer) > 1)
+                $choices .= '-' . ($answerIndex + count($answer));
+            $choices .= '|';
+
+            // put in the choices
+            $choices .= str_replace('|', ', ', $rec['choices']);
+            $choices .= '|';
+
+            // put in the right answer
+            $choices .= $rec['a'];
+            $records[$index]['choices'] = $choices;
+
+            // put in the question with embedded choices removed
+            $question = implode(' ', $words);
+            $question = str_replace('  ', ' ', $question); // remove double spaces left from skipping '(nada)'.
+            $records[$index]['q'] = $question;
+            //dump($choices);
+        }
+
+   		if ($request->isMethod('post'))
+        {
+            // do the conversion
+            $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
+           	return redirect(route('definitions.listTag', ['locale' => $locale, 'tag' => $parms['tagId']]) . '?order=desc');
+        }
+
+        $parms['translation'] = $records;
+
+		return view(VIEWS . '.convert-questions-to-snippets', [
+			'record' => $record,
+			'parms' => $parms,
+		]);
+    }
+
 }

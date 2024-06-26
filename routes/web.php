@@ -602,6 +602,8 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/favorites-review', [DefinitionController::class, 'favoritesReview'])->name('definitions.favoritesReview');
 	Route::get('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavorites');
 	Route::post('/convert-text-to-favorites/{entry}', [DefinitionController::class, 'convertTextToFavorites'])->name('definitions.convertTextToFavoritesPost');
+	Route::get('/convert-questions-to-snippets/{entry}', [DefinitionController::class, 'convertQuestionsToSnippets'])->name('definitions.convertQuestionsToSnippets');
+	Route::post('/convert-questions-to-snippets/{entry}', [DefinitionController::class, 'convertQuestionsToSnippets'])->name('definitions.convertQuestionsToSnippetsPost');
 
 	Route::get('/review-newest/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewest'])->name('definitions.reviewNewest');
 	Route::get('/review-newest-verbs/{reviewType?}/{count?}', [DefinitionController::class, 'reviewNewestVerbs'])->name('definitions.reviewNewestVerbs');

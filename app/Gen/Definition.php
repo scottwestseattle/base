@@ -1044,12 +1044,12 @@ class Definition extends Model
 	{
         $f = __CLASS__ . ':' . __FUNCTION__;
 		$record = new Definition();
-
 		$record->title 			= isset($parms['title']) ? $parms['title'] : null; // let it throw if not set
 		$record->user_id 		= Auth::id();
 		$record->language_flag 	= isset($parms['language_flag']) ? $parms['language_flag'] : getLanguageId();
 		$record->translation_en	= isset($parms['translation_en']) ? $parms['translation_en'] : null;
 		$record->permalink		= createPermalink($record->title);
+		$record->notes          = isset($parms['notes']) ? $parms['notes'] : null;
 		$record->wip_flag		= WIP_DEFAULT;
 		$record->pos_flag   	= isset($parms['pos_flag']) ? $parms['pos_flag'] : DEFINITIONS_POS_SNIPPET;
 		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;

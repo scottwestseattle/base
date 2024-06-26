@@ -364,11 +364,15 @@ if (!function_exists('alphanumHarsh')) {
 
 		if (isset($text))
 		{
-		    $clean = str_replace('[', '(', $text);
-		    $clean = str_replace(']', ')', $clean);
+		    $clean = $text;
+
+		    //todo: took these out so I could convert the lesson quizes to snippets
+		    //$clean = str_replace('[', '(', $clean);
+		    //$clean = str_replace(']', ')', $clean);
 
 			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
-            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\=\%\/\&\-\+\r\n]/u", '', $clean);
+            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\[\]\=\%\/\&\-\+\r\n]/u", '', $clean); //todo: added '[' and ']' for quiz conversion
+            //orig: $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\=\%\/\&\-\+\r\n]/u", '', $clean);
             $chino = '\。\，';
 
             if ($debug)

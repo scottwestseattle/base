@@ -105,6 +105,9 @@
                 @if (!$translationMatches)
                     <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT ({{$cntSentences}}<>{{$cntTranslations}})</div>
                 @endif
+                <a href="{{route('definitions.convertQuestionsToSnippets', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
+                    <div class="middle mr-0" style="">{{__('proj.Convert Questions to Snippets')}}</div>
+                </a>
             </div>
         </div>
 
