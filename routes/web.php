@@ -112,6 +112,18 @@ Route::group(['prefix' => 'stats'], function () {
 	Route::get('/update-stats', [StatController::class, 'updateStats']);
 });
 
+// Translations
+Route::group(['prefix' => 'translations'], function () {
+	// index
+	Route::get('/', [TranslationController::class, 'index'])->name('translations')->middleware('auth');
+	Route::get('/view/{filename}', [TranslationController::class, 'view']);
+
+	// edit
+	Route::get('/edit/{filename}',[TranslationController::class, 'edit']);
+	Route::post('/update/{filename}',[TranslationController::class, 'update']);
+});
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,17 +255,6 @@ Route::group(['prefix' => 'users'], function () {
 	// email verification
 	Route::get('/verify-email/{user}/{token}', [VerificationController::class, 'verifyEmail']);
 
-});
-
-// Translations
-Route::group(['prefix' => 'translations'], function () {
-	// index
-	Route::get('/', [TranslationController::class, 'index'])->name('translations')->middleware('auth');
-	Route::get('/view/{filename}', [TranslationController::class, 'view']);
-
-	// edit
-	Route::get('/edit/{filename}',[TranslationController::class, 'edit']);
-	Route::post('/update/{filename}',[TranslationController::class, 'update']);
 });
 
 // Password
@@ -838,8 +839,8 @@ Route::group(['prefix' => 'exercises'], function () {
 	Route::post('/update/{exercise}', [ExerciseController::class, 'update'])->name('exercises.update');
 
 	// for user's to choose, set, and adjust their list
-	Route::get('/choose', [ExerciseController::class, 'choose'])->name('exercises.choose')->name('exercises.choose');
-	Route::post('/set', [ExerciseController::class, 'set'])->name('exercises.set')->name('exercises.set');
+	Route::get('/choose', [ExerciseController::class, 'choose'])->name('exercises.choose');
+	Route::post('/set', [ExerciseController::class, 'set'])->name('exercises.set');
 
 	// delete
 	Route::get('/confirmdelete/{exercise}', [ExerciseController::class, 'confirmDelete'])->name('exercises.confirmDelete');

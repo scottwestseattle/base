@@ -2207,12 +2207,53 @@ class DefinitionController extends Controller
                 // add the snippets to the favorites list
                 foreach($records as $r)
                 {
-                    $definition = Definition::addDefinition([
-                        'title' => $r['q'],
-                        'translation_en' => $r['translation_en'],
-                        'notes' => $r['choices'],
-                        'language_flag' => $request->language_flag,
-                        ]);
+                    if (isset($r['choices']))
+                    {
+                        // then translation should also be set
+                        if (!isset($r['translation_en']))
+                        {
+                            dd('stopping: translation not set');
+                        }
+                    }
+
+                    $title = $r['q'];
+                    $translation = !empty($r['translation_en']) ? $r['translation_en'] : $r['a'];
+                    $choices = isset($r['choices']) ? $r['choices'] : null;
+                    $exists = isset($r['exists']);
+                    if ($exists)
+                    {
+                        $definition = Definition::getById($r['exists'][0]);
+                        if (isset($definition))
+                        {
+                            $definition->translation_en = $translation;
+                            $definition->notes = $choices;
+                            //dd($definition->title);
+                            try
+                            {
+                                $definition->save();
+                            }
+                            catch (\Exception $e)
+                            {
+                                $msg = $e->getMessage();
+                                dd('Error updating existing definition ' . $exists . ': ' . $msg);
+                            }
+                        }
+                        else
+                        {
+                            dd('definition that EXISTS - NOT FOUND');
+                        }
+                    }
+                    else
+                    {
+                        //dd('about to create new record');
+                        $definition = Definition::addDefinition([
+                            'title' => $title,
+                            'translation_en' => $translation,
+                            'notes' => $choices,
+                            'language_flag' => $request->language_flag,
+                            ]);
+                    }
+
                     if (!empty($definition))
                     {
                         $definition->addTag($tag->id);
@@ -2249,9 +2290,7 @@ class DefinitionController extends Controller
         foreach($records as $index => $rec)
         {
             $answer = explode(' ', $rec['a']);
-            //if (count($answer) > 1)
-            //    dd($answer);
-
+            $answerIndex = null;
             $space = 0;
             $words = explode(' ', $rec['q']);
             foreach($words as $wordIx => $word)
@@ -2284,6 +2323,19 @@ class DefinitionController extends Controller
             $question = str_replace('  ', ' ', $question); // remove double spaces left from skipping '(nada)'.
             $records[$index]['q'] = $question;
             //dump($choices);
+
+            //
+            // now, check if the snippet already exists
+            //
+            $snippet = Definition::searchSnippets($question);
+            $count = count($snippet);
+            if ($count > 0)
+            {
+                foreach($snippet as $s)
+                {
+                    $records[$index]['exists'][] = $s->id;
+                }
+            }
         }
 
    		if ($request->isMethod('post'))

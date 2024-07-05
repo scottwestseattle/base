@@ -281,7 +281,7 @@ class Quiz
 
 		foreach($records as $index => $record)
 		{
-			$line = (is_array($record) && count($record)) > 1 ? $record[1] : $record;
+			$line = (is_array($record) && count($record)) > 0 ? $record[1] : $record;
 			$line = strip_tags($line);
 			$parts = explode($delim, $line); // split the line into q and a, looks like: "question text - correct answer text"
 

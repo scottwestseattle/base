@@ -493,7 +493,7 @@ class HomeController extends Controller
         $search = alphanum($searchText);
 		$count = 0;
 
-        //dump($options);
+        //dump($search);
 
         try
         {

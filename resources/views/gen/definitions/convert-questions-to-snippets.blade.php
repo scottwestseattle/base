@@ -1,10 +1,11 @@
-@extends('layouts.app')
-@section('title', __('proj.Convert Text to Favorites'))
-@section('content')
 @php
     $translation = isset($parms['translation']) ? $parms['translation'] : null;
     $locale = app()->getLocale();
 @endphp
+@extends('layouts.app')
+@section('title', __('proj.Convert Text to Favorites'))
+@section('menu-submenu')@component('gen.articles.menu-submenu', ['locale' => $locale, 'record' => $record])@endcomponent @endsection
+@section('content')
 <div class="container page-normal">
 
     <h1>{{__('proj.Convert Questions to Snippets')}}</h1>
@@ -54,7 +55,33 @@
                 @if (isset($translation))
                     <span id="translation" name="translation" class="">
                         @foreach($translation as $card)
-                            <div class="pb-4 pr-4" style="">{{$card['q']}}</div>
+                            @php
+                                $color = 'default';
+                                $count = 0;
+                                if (isset($card['exists']))
+                                {
+                                    $count = count($card['exists']);
+                                    if ($count > 1)
+                                    {
+                                        $color = 'orange';
+                                    }
+                                    else
+                                    {
+                                        $color = 'red';
+                                    }
+                                }
+                            @endphp
+                            @if (isset($card['exists']))
+                                @foreach($card['exists'] as $id)
+                                <div class="pb-4 pr-4" style="">
+                                    <a style="color:{{$color}}" href="/es/definitions/edit/{{$id}}" target="_blank">{{$card['q']}}</a>
+                                </div>
+                                @endforeach
+                            @else
+                            <div class="pb-4 pr-4" style="">
+                                {{$card['q']}}
+                            </div>
+                            @endif
                         @endforeach
                     </span>
                 @endif

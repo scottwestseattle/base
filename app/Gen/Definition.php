@@ -1005,7 +1005,7 @@ class Definition extends Model
 	// search checks title and forms
     static public function searchSnippets($string, $options = null)
     {
-		$string = alpha($string);
+		$string = alphanum($string);
 		$records = null;
 
 		if (isset($string))

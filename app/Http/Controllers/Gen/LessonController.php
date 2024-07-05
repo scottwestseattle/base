@@ -704,7 +704,9 @@ class LessonController extends Controller
 		catch (\Exception $e)
 		{
 			$msg = 'Error making lesson qna';
-   			logException(__FUNCTION__, $e->getMessage(), $msg, ['id' => $record->id]);
+			$msgExc = $e->getMessage();
+   			logException(__FUNCTION__, $msgExc, $msg, ['id' => $record->id]);
+   			//dd($msgExc);
 			return back();
 		}
 

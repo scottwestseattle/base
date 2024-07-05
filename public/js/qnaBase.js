@@ -301,6 +301,7 @@ function quiz() {
 	}
 
 	this.setCorrect = function(correct) {
+	    //console.log('setCorrect');
 	    var q = this.qna[this.qna[curr].order];
 		q.correct = correct;
 		touch(q, correct);
@@ -825,9 +826,6 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 			{
 				right++;
 				rightAnswer = true;
-
-				// mark the question since it was answered correctly
-				//touch(quiz.qna[quiz.qna[curr].order]);
 			}
 		}
 		else
@@ -840,6 +838,10 @@ function checkAnswer(checkOptions, correctButtonClicked = false, showOnly = fals
 			$("#question-wrong").show();
 			wrong++;
 		}
+
+        // mark the question since it was answered correctly
+        touch(quiz.qna[quiz.qna[curr].order], correctAnswer);
+
 	}
 
 	quiz.setAlertPrompt(result, answerColor, /* bold = */ true);
