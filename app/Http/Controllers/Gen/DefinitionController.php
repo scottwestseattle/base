@@ -2302,12 +2302,11 @@ class DefinitionController extends Controller
                     break;
                 }
             }
-            //dump($answerIndex);
 
             // put in the location
             $choices = $answerIndex;
             if (count($answer) > 1)
-                $choices .= '-' . ($answerIndex + count($answer));
+                $choices .= '-' . ($answerIndex + count($answer) - 1);
             $choices .= '|';
 
             // put in the choices
@@ -2327,7 +2326,7 @@ class DefinitionController extends Controller
             //
             // now, check if the snippet already exists
             //
-            $snippet = Definition::searchSnippets($question);
+            $snippet = Definition::searchSnippets($question, ['exact' => true]);
             $count = count($snippet);
             if ($count > 0)
             {

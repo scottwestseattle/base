@@ -1005,16 +1005,28 @@ class Definition extends Model
 	// search checks title and forms
     static public function searchSnippets($string, $options = null)
     {
-		$string = alphanum($string);
+        $string = alphanum($string, /* strict = */ false, /* allow = */ '\/\:\&\%\-\#\;');
 		$records = null;
 
 		if (isset($string))
 		{
-            $search  = '%' . $string . '%';
-            $startsWith = getOrSet($options['startsWith'], false);
+            $search = '';
+            $startsWith = isset($options['startsWith']) ? getOrSet($options['startsWith'], false) : false;
+            $exact = isset($options['exact']) ? getOrSet($options['exact'], false) : false;
+
             if ($startsWith)
             {
-                $search = '' . $string . '%';
+                $search  = $string . '%';
+                $search = ' like "' . $search . '"';
+            }
+            else if ($exact)
+            {
+                $search = ' like "' . $string . '"';
+            }
+            else
+            {
+                $search  = '%' . $string . '%';
+                $search = ' like "' . $search . '"';
             }
 
             try
@@ -1024,8 +1036,8 @@ class Definition extends Model
                     ->where('language_flag', getLanguageId())
                     ->where(function ($query) use ($search) {
                         $query
-                        ->whereRaw('title ' . CASE_INSENSITIVE . ' like "' . $search . '"')
-                        ->orWhereRaw('translation_en ' . CASE_INSENSITIVE . ' like "' . $search . '"')
+                        ->whereRaw('title ' . CASE_INSENSITIVE . $search)
+                        ->orWhereRaw('translation_en ' . CASE_INSENSITIVE . $search)
                         ;})
                     ->orderBy('title')
                     ->get();
@@ -1307,7 +1319,7 @@ order by definitions.release_flag, id DESC limit 50 offset 0
                 $orderBy = 'translation_en, id';
                 break;
             case 'attempts':
-                $orderBy = 'stats.qna_attempts DESC, id DESC';
+                $orderBy = 'stats.qna_attempts ASC, id DESC';
                 $showReload = true;
                break;
             case 'attempts-asc':
@@ -1319,17 +1331,17 @@ order by definitions.release_flag, id DESC limit 50 offset 0
                 $showReload = true;
                 break;
             case 'score':
-                $orderBy = 'stats.qna_score DESC, id DESC';
+                $orderBy = 'stats.qna_score ASC, id DESC';
                 $showReload = true;
                 break;
             case 'views':
-                $orderBy = 'stats.views DESC, id DESC';
+                $orderBy = 'stats.views ASC, id DESC';
                 break;
             case 'views-asc':
                 $orderBy = 'stats.views, stats.viewed_at, id';
                 break;
             case 'reads':
-                $orderBy = 'stats.reads DESC, id DESC';
+                $orderBy = 'stats.reads ASC, id DESC';
                 break;
             case 'reads-asc':
                 $orderBy = 'stats.reads, stats.read_at, id';

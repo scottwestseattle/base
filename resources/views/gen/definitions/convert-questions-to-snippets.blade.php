@@ -63,11 +63,11 @@
                                     $count = count($card['exists']);
                                     if ($count > 1)
                                     {
-                                        $color = 'orange';
+                                        $color = 'red';
                                     }
                                     else
                                     {
-                                        $color = 'red';
+                                        $color = 'default';
                                     }
                                 }
                             @endphp
