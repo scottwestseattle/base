@@ -83,7 +83,6 @@ return [
 'Title' => 'Title',
 'Description' => 'Description',
 'Accept' => 'Accept',
-'Contact' => 'Contact',
 'Privacy Policy' => 'Privacy Policy',
 'Terms of Use' => 'Terms of Use',
 'European Union Privacy Notice' => 'This web site uses cookies to personalize content and to analyze traffic.',
@@ -195,4 +194,10 @@ return [
 'Reload' => 'Reload',
 'Repeat' => 'Repeat',
 'Clear All' => 'Clear All',
+'Contact' => 'Contact|Contacts',
+'Account' => 'Account',
+'Number' => 'Number|Numbers',
+'Access' => 'Access',
+'Verify' => 'Verify',
+'Address' => 'Address',
 ];

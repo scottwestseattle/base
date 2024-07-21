@@ -123,6 +123,15 @@ Route::group(['prefix' => 'translations'], function () {
 	Route::post('/update/{filename}',[TranslationController::class, 'update']);
 });
 
+// MVC
+Route::group(['prefix' => 'mvc'], function () {
+	Route::get('/', [MvcController::class, 'index']);
+	Route::get('/add/', [MvcController::class, 'add']);
+	Route::post('/create/', [MvcController::class, 'create']);
+	Route::get('/view/{model}/{views}', [MvcController::class, 'view']);
+	Route::get('/confirmdelete/{views}', [MvcController::class, 'confirmDelete']);
+	Route::post('/delete', [MvcController::class, 'delete']);
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
@@ -183,16 +192,6 @@ Route::group(['prefix' => 'articles'], function () {
 	// publish
 	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishupdate');
 	Route::get('/publish/{entry}', [ArticleController::class, 'publish'])->name('articles.publish');
-});
-
-// MVC
-Route::group(['prefix' => 'mvc'], function () {
-	Route::get('/', [MvcController::class, 'index']);
-	Route::get('/add/', [MvcController::class, 'add']);
-	Route::post('/create/', [MvcController::class, 'create']);
-	Route::get('/view/{model}/{views}', [MvcController::class, 'view']);
-	Route::get('/confirmdelete/{views}', [MvcController::class, 'confirmDelete']);
-	Route::post('/delete', [MvcController::class, 'delete']);
 });
 
 // Email
@@ -854,3 +853,38 @@ Route::group(['prefix' => 'exercises'], function () {
 
 //todo:locale
 }); // End of Locale Prefix Handler
+
+// GENERATED for Contact model
+use App\Http\Controllers\Gen\ContactController;
+
+// Contacts
+Route::group(['prefix' => 'contacts'], function () {
+	Route::get('/', [ContactController::class, 'index']);
+	Route::get('/index', [ContactController::class, 'index']);
+
+	// view
+	Route::get('/view/{contact}', [ContactController::class, 'view']);
+	Route::get('/show/{contact}', [ContactController::class, 'view']);
+
+	// add
+	Route::get('/add', [ContactController::class, 'add']);
+	Route::post('/create', [ContactController::class, 'create']);
+
+	// edit
+	Route::get('/edit/{contact}', [ContactController::class, 'edit']);
+	Route::post('/update/{contact}', [ContactController::class, 'update']);
+
+	// publish
+	Route::get('/publish/{contact}', [ContactController::class, 'publish']);
+	Route::post('/publishupdate/{contact}', [ContactController::class, 'updatePublish']);
+	Route::get('/publishupdate/{contact}', [ContactController::class, 'updatePublish']);
+
+	// delete
+	Route::get('/confirmdelete/{contact}', [ContactController::class, 'confirmDelete']);
+	Route::post('/delete/{contact}', [ContactController::class, 'delete']);
+	Route::get('/delete/{contact}', [ContactController::class, 'delete']);
+
+	// undelete
+	Route::get('/deleted', [ContactController::class, 'deleted']);
+	Route::get('/undelete/{id}', [ContactController::class, 'undelete']);
+});

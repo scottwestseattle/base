@@ -219,4 +219,8 @@ return [
 'Advanced' => 'Avanzado',
 'My level is' => 'Mi nivel es',
 'Least Used' => 'Menos Usados',
+'Convert Questions to Snippets' => 'Convertir Prguntas en Fragmentos',
+'View Contact' => 'Mostrar Contacto',
+'Add Contact' => 'Agregar contacto',
+'Edit Contact' => 'Editar contacto',
 ];

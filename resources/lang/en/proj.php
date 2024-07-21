@@ -219,4 +219,8 @@ return [
 'Advanced' => 'Advanced',
 'My level is' => 'My level is',
 'Least Used' => 'Least Used',
+'Convert Questions to Snippets' => 'Convert Questions to Snippets',
+'View Contact' => 'View Contact',
+'Add Contact' => 'Add Contact',
+'Edit Contact' => 'Edit Contact',
 ];

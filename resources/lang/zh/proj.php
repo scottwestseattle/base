@@ -219,4 +219,8 @@ return [
 'Advanced' => '高级',
 'My level is' => '我的水平是',
 'Least Used' => '使用最少的',
+'Convert Questions to Snippets' => '将问题转换为片段',
+'View Contact' => '查看联系方式',
+'Add Contact' => '添加文章',
+'Edit Contact' => '编辑联系方式',
 ];

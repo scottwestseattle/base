@@ -83,7 +83,6 @@ return [
 'Title' => '标题',
 'Description' => '描述',
 'Accept' => '接受',
-'Contact' => '联系',
 'Privacy Policy' => '隐私政策',
 'Terms of Use' => '使用条款',
 'European Union Privacy Notice' => '该网站使用cookie来个性化内容和分析流量。',
@@ -195,4 +194,10 @@ return [
 'Reload' => '重新加载',
 'Repeat' => '重复进行',
 'Clear All' => '清除所有',
+'Contact' => '联系方式|联系方式',
+'Account' => '账户',
+'Number' => '数字|数字',
+'Access' => '访问',
+'Verify' => '验证',
+'Address' => '地址',
 ];

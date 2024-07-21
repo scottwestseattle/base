@@ -83,7 +83,6 @@ return [
 'Title' => 'Título',
 'Description' => 'Descripción',
 'Accept' => 'Estoy de acuerdo',
-'Contact' => 'Contactar',
 'Privacy Policy' => 'Política de Privacidad',
 'Terms of Use' => 'Términos de Uso',
 'European Union Privacy Notice' => 'Este sitio web utiliza cookies para personalizar el contenido y analizar el tráfico.',
@@ -195,4 +194,10 @@ return [
 'Reload' => 'Recargar',
 'Repeat' => 'Repitir',
 'Clear All' => 'Borrar Todo',
+'Contact' => 'Contacto|Contactos',
+'Account' => 'Cuenta',
+'Number' => 'Numero|Numeros',
+'Access' => 'Accesso',
+'Verify' => 'Verificar',
+'Address' => 'Dirección',
 ];

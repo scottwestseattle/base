@@ -1235,3 +1235,53 @@ if (!function_exists('startsWithUpper')) {
         return mb_strtolower($chr, "UTF-8") != $chr;
     }
 }
+
+if (!function_exists('fixNumbers')) {
+    function format_number($str, $unfix = false)
+    {
+        $rand = ['Q', 'X', 'Y', 'Z', 'A', 'R', 'B', 'M'];
+        $rc = '';
+        $str = trim($str);
+        if (!empty($str))
+            foreach(str_split($str) as $c)
+            {
+                if ($unfix)
+                {
+                    if (is_numeric($c))
+                    {
+                        $c--;
+                    }
+                    else if ($c === ' ')
+                    {
+                    }
+                    else
+                    {
+                        $c = 9;
+                    }
+
+                    $rc .= $c;
+                }
+                else
+                {
+                    if (is_numeric($c))
+                    {
+                        $c++;
+                        if ($c == 10)
+                        {
+                            $x = rand(0, count($rand) - 1);
+                            $c = $rand[$x];
+                        }
+                    }
+                    else
+                    {
+
+                    }
+
+                    $rc .= $c;
+                }
+            }
+
+        return $rc;
+    }
+}
+
