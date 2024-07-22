@@ -550,13 +550,17 @@ class Quiz
     static public function getWordNumbers($text)
     {
         $words = explode(' ', $text);
-
+        $buttons = '';
         foreach($words as $index => $word)
         {
-            $words[$index] = $word . '(' . ($index + 1) . ')';
+            $word = trim(strtolower($word), ",.;!?");
+            $onclick = "setOptions(event, " . $index . ", " . '"' . $word . '"' . ");";
+            $id = $index;
+            $buttons .= "<input type='checkbox' name='". $word . "' class='btn-check mcButtons mr-1' id='" . $id . "' onclick='" . $onclick . "' autocomplete='off' >";
+            $buttons .= "<label class='btn btn-primary mr-2' for='" . $id . "'>" . $word . "</label>";
         }
 
-        $text = implode(' ', $words);
+        $text = $buttons;
 
         return $text;
     }

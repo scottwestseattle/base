@@ -57,10 +57,14 @@
 
     <div class="form-group">
         <label for="notes" class="control-label">{{trans_choice('proj.Multiple Choice Choices', 2)}} (@LANG('ui.optional')):</label>
+
         @if (isset($wordNumbers))
-            <div>{{$wordNumbers}}</div>
+            <div class="xbtn-group-toggle mb-1" xdata-toggle="buttons">{!!$wordNumbers!!}</div>
         @endif
-        <input type="text" name="notes" id="notes" class="form-control" autocomplete="off" value="{{$record->notes}}"/>
+
+        <input type="text" name="notes_index" id="notes_index" class="form-control" autocomplete="off" value="{{isset($options['index']) ? $options['index'] : ''}}"/>
+        <input type="text" name="notes_choices" id="notes_choices" class="form-control" autocomplete="off"  value="{{isset($options['choices']) ? $options['choices'] : ''}}"/>
+        <input type="text" name="notes_answer" id="notes_answer" class="form-control" autocomplete="off"  value="{{isset($options['answer']) ? $options['answer'] : ''}}"/>
     </div>
 
     @if (isAdmin())
@@ -148,5 +152,63 @@
     {
         $("#pos_flag").val() == {{DEFINITIONS_POS_SNIPPET}} ? $("#dictionary_fields").hide() : $("#dictionary_fields").show();
         $("#pos_flag").val() == {{DEFINITIONS_POS_VERB}} ? $("#div_conjugations").show() : $("#div_conjugations").hide();
+    }
+
+    function setOptions(event, index, word)
+    {
+        const btns = document.querySelectorAll('.mcButtons');
+        var min = 100;
+        var max = 0;
+        var words = [];
+        btns.forEach(function(btn){
+
+            if (btn.checked)
+            {
+                //console.log(btn.id);
+                if (btn.id < min)
+                {
+                    min = btn.id;
+                }
+                if (btn.id > max)
+                {
+                    max = btn.id;
+                }
+
+                words.push(btn.name);
+            }
+        })
+
+        //console.log("words: " + words.length);
+
+        if (min == 100 && max == 0)
+        {
+            // no buttons clicked, clear the fields
+            $("#notes_index").val('');
+            $("#notes_choices").val('');
+            $("#notes_answer").val('');
+
+        }
+        else
+        {
+            if (min == max)
+            {
+                // one word selected
+                $("#notes_index").val(++min);
+                $("#notes_choices").val(word + ", ");
+                $("#notes_answer").val(word);
+            }
+            else
+            {
+                word = words.toString().replaceAll(',', ' ');
+
+                // multiple words selected
+                $("#notes_index").val(++min + "-" + ++max);
+                $("#notes_choices").val(word + ", ");
+                $("#notes_answer").val(word);
+            }
+
+            $("#notes_choices").focus();
+
+        }
     }
 </script>

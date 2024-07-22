@@ -414,6 +414,19 @@ class DefinitionController extends Controller
 
         $wordNumbers = Quiz::getWordNumbers($record->title);
 
+        // add the notes which are the MC options
+        $options = null;
+        if (isset($record->notes))
+        {
+            $notes = explode('|', $record->notes);
+            if (count($notes) > 0)
+                $options['index'] = $notes[0];
+            if (count($notes) > 1)
+                $options['choices'] = $notes[1];
+            if (count($notes) > 2)
+                $options['answer'] = $notes[2];
+        }
+
         Site::setReturnPathSession(); // save the return path for when update() is called
 
 		return view(VIEWS . '.edit', [
@@ -421,6 +434,7 @@ class DefinitionController extends Controller
 			'formsPretty' => $forms,
 			'favoriteLists' => Definition::getUserFavoriteLists(),
 			'wordNumbers' => $wordNumbers,
+			'options' => $options,
 		]);
     }
 
@@ -468,9 +482,15 @@ class DefinitionController extends Controller
 		$record->definition = copyDirty($record->definition, $request->definition, $isDirty, $changes);
 		$record->translation_en = copyDirty($record->translation_en, $request->translation_en, $isDirty, $changes);
 		$record->examples = copyDirty($record->examples, $request->examples, $isDirty, $changes);
-		$record->notes = copyDirty($record->notes, $request->notes, $isDirty, $changes);
 		$record->rank = copyDirty(intval($record->rank), intval($request->rank), $isDirty, $changes);
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
+
+        // add the notes which are the MC options
+        if (isset($request->notes_index))
+        {
+            $options = $request->notes_index . '|' . $request->notes_choices . '|' . $request->notes_answer;
+	    	$record->notes = copyDirty($record->notes, $options, $isDirty, $changes);
+        }
 
 		if (isAdmin()) // only admin can change user_id and release status
 		{
