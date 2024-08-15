@@ -553,11 +553,15 @@ class Quiz
         $buttons = '';
         foreach($words as $index => $word)
         {
-            $word = trim(strtolower($word), ",.;!?");
+            $word = trim(strtolower($word), ",.;!?()");
             $onclick = "setOptions(event, " . $index . ", " . '"' . $word . '"' . ");";
             $id = $index;
             $buttons .= "<input type='checkbox' name='". $word . "' class='btn-check mcButtons mr-1' id='" . $id . "' onclick='" . $onclick . "' autocomplete='off' >";
             $buttons .= "<label class='btn btn-primary mr-2' for='" . $id . "'>" . $word . "</label>";
+
+            // <input type='checkbox' name='conocido)' class='btn-check mcButtons mr-1' id='8' onclick='setOptions(event, 8, "conocido)");' autocomplete='off' >
+            // <label class='btn btn-primary mr-2' for='8'>conocido)</label>
+
         }
 
         $text = $buttons;

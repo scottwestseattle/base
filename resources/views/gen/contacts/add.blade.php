@@ -38,7 +38,7 @@
 
 		<div class="form-group">
 			<label for="notes" class="control-label">{{trans_choice('ui.Note', 2)}}:</label>
-			<textarea name="notes" class="form-control"></textarea>
+			<textarea name="notes" rows="8" class="form-control"></textarea>
 		<div>
 
 		<div class="form-group">

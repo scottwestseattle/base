@@ -38,7 +38,7 @@
     @if (!empty($record->notes))
     <div class="form-group">
         <b><label for="notes" class="control-label">{{trans_choice('ui.Note', 2)}}</label></b>
-        <p class="ml-4">{{$record->notes}}</p>
+        <p class="ml-4">{!!str_replace("\r\n", "<br/>", $record->notes)!!}</p>
     <div>
     @endif
 

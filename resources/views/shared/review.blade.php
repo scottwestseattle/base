@@ -158,6 +158,9 @@
 				<input type="checkbox" name="checkbox-flip" id="checkbox-flip" onclick="reloadQuestion('checkbox-flip-review');" />
 				<label for="checkbox-flip" class="checkbox-xs" onclick="reloadQuestion('checkbox-flip-review');">@LANG('quiz.Reverse question and answer')</label>
 			</div>
+			<div class="small-thin-text">
+                <a target='_blank' href="/definitions/add/{{'here'}}">Add Snippet</a>
+            </div>
 		</div>
 
 		<!-- BUTTONS ROW 2 -->

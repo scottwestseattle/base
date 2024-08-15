@@ -36,8 +36,11 @@
                 <span class="medium-thin-text">
                     @if (isset($record['linkUrl2']))
                         <b>{{$record['linkTitle']}}</b>
-                        <a class="link-bold " style="color:white;" href="{{$record['linkUrl']}}"><b>(@LANG('proj.Least Used'))</b></a>
-                        <a class="link-bold " style="color:white;" href="{{$record['linkUrl2']}}"><b>(@LANG('ui.Newest'))</b></a>
+                        <a type="button" class="link-bold btn btn-sm btn-success" href="{{$record['linkUrl2']}}"><b>@LANG('ui.Newest')</b></a>
+                        <a type="button" class="link-bold btn btn-sm btn-warning" href="{{$record['linkUrl']}}"><b>@LANG('proj.Least Used')</b></a>
+                        @if (isset($record['linkUrl3']))
+                            <a type="button" class="link-bold btn btn-sm btn-danger" href="{{$record['linkUrl3']}}"><b>@LANG('proj.Lowest Score')</b></a>
+                        @endif
                     @else
                         <a class="link-bold " style="color:white;" href="{{$record['linkUrl']}}"><b>{{$record['linkTitle']}}</b></a>
                     @endif

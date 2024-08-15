@@ -11,7 +11,7 @@
 <!--------------------------------------------------------------------->
 
 @if (isset($favorites))
-<h1 class="mb-0">{{trans_choice('ui.Favorite', 2)}}
+<h1 class="mb-0">{{trans_choice('ui.Favorite', 2)}}<span class="title-count">({{count($favorites)}})</span>
     <a class="btn btn-info btn-xs" role="button" href="{{route('tags.addUserFavoriteList', ['locale' => $locale])}}">
         @LANG('ui.Add New List')<span class="glyphicon glyphicon-plus-sign ml-1"></span>
     </a>

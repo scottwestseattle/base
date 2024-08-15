@@ -68,6 +68,8 @@
             @endphp
             @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => $url, 'prompt' => 'ui.Confirm Remove All'])@endcomponent
 
+            <a class="ml-3" role="button" href="{{route('definitions.listTag', ['locale' => $locale, 'tag' => $tagId])}}?order={{$order}}&count=99999">@LANG('ui.Show All')</a>
+
         </span>
     @endif
 </h3>
@@ -103,6 +105,10 @@
                             <a class="small-thin-text red" href="{{$urlEdit}}">@LANG('proj.Add Translation')</a>
                         @endif
                     </div>
+                @endif
+
+                @if (empty($record->notes))
+                    <div><a class="small-thin-text" style="color:purple;" href="{{$urlEdit}}" >Add Choices</a></div>
                 @endif
 
                 <div class="float-left">

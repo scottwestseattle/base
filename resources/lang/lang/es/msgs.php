@@ -1,0 +1,22 @@
+<?php
+return [
+'Login Error: User is Blocked' => 'Login Error: el usuario está bloqueado',
+'Error adding new record' => 'Error al agregar un nuevo registro',
+'No changes made' => 'No se han realizado cambios',
+'Error updating record' => 'Error al actualizar el registro',
+'New record has been added' => 'Se agregó nuevo registro',
+'Record has been updated' => 'El registro ha sido actualizado',
+'Record has been deleted' => 'El registro ha sido eliminado',
+'Search Error' => 'Error de busqueda',
+'Email has been sent' => 'Email ha sido enviado',
+'Error sending email' => 'Error al enviar email',
+'User updated' => 'Usuario actualizado',
+'Record updated' => 'Registro actualizado',
+'Record status has been updated' => 'El estado del registro se ha actualizado',
+'Error updating record status' => 'Error al actualizar el estado del registro',
+'Translation file has been updated' => 'Archivo de traducción se ha actualizado',
+'Error getting deleted records' => 'Error al obtener registros eliminados',
+'Record has been undeleted' => 'Se ha recuperado el registro',
+'Error getting record list' => 'Error al obtener la lista de registros',
+'Record not found' => 'Registro no encontrado',
+];

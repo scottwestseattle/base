@@ -35,11 +35,6 @@
 			</a></li>
 		@endif
 	@else
-	    @if (isAdmin())
-			<li class="nav-item"><a class="nav-link" href="{{route('tags.deleted', ['locale' => $locale, 'tag' => $record->id])}}">
-				<svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>
-			</a></li>
-		@endif
 	@endisset
 	    @if (isAdmin())
             <li class="nav-item"><a class="nav-link" href="{{route('favorites.rss', ['locale' => $locale])}}">

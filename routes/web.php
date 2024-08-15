@@ -32,6 +32,7 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\WordController;
+use App\Http\Controllers\Gen\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,7 @@ Route::get('/sitemap', [HomeController::class, 'sitemap']);
 Route::get('/test', [HomeController::class, 'test']);
 Route::get('/d-e-b-u-g', [HomeController::class, 'debug']);
 Route::get('/search-ajax/{text}/{searchType?}', [HomeController::class, 'searchAjax']);
+Route::get('/c', [ContactController::class, 'index']);
 
 Route::get('/clear-cache', function() {
     Cache::flush();
@@ -853,9 +855,6 @@ Route::group(['prefix' => 'exercises'], function () {
 
 //todo:locale
 }); // End of Locale Prefix Handler
-
-// GENERATED for Contact model
-use App\Http\Controllers\Gen\ContactController;
 
 // Contacts
 Route::group(['prefix' => 'contacts'], function () {

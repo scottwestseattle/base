@@ -82,7 +82,7 @@
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true,  'ajax' => true, 'reload' => true])@endcomponent
                 </span>
-                @if (isset($record->definitions) && count($record->definitions) > 0)
+                @if (false && isset($record->definitions) && count($record->definitions) > 0)
                     <div class="mr-2 float-left">
                         <a href="{{route('entries.vocabulary', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
                             <div class="middle mr-0" style="margin-bottom:2px;">Vocabulary</div>

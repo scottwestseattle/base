@@ -253,15 +253,6 @@ class Tag extends Model
 		{
             $record = self::getOrCreate($name, TAG_TYPE_DEF_FAVORITE, Auth::id());
 
-            if (false)
-            {
-			$record = new Tag();
-			$record->name = $name;
-			$record->type_flag = TAG_TYPE_DEF_FAVORITE;
-			$record->user_id = Auth::id();
-			$record->save();
-            }
-
 			logInfo(__FUNCTION__, __('proj.New list has been added'), ['name' => $record->name, 'id' => $record->id]);
 		}
 		catch (\Exception $e)

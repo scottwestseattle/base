@@ -486,11 +486,13 @@ class DefinitionController extends Controller
 		$record->language_flag = copyDirty($record->language_flag, $request->language_flag, $isDirty, $changes);
 
         // add the notes which are the MC options
-        if (isset($request->notes_index))
+        $options = null;
+        $request->notes_index = trim($request->notes_index);
+        if (!empty($request->notes_index))
         {
-            $options = $request->notes_index . '|' . $request->notes_choices . '|' . $request->notes_answer;
-	    	$record->notes = copyDirty($record->notes, $options, $isDirty, $changes);
+            $options = $request->notes_index . '|' . trim($request->notes_choices) . '|' . trim($request->notes_answer);
         }
+	    $record->notes = copyDirty($record->notes, $options, $isDirty, $changes);
 
 		if (isAdmin()) // only admin can change user_id and release status
 		{
@@ -2034,21 +2036,17 @@ class DefinitionController extends Controller
                 }
                 else
                 {
-                    $text = ucfirst($record->title) . '; ';
+                    $text = ucfirst($record->title);
                     //no $text .= ', ' . ucfirst($record->title) . '';
-
 
                     //
                     // add the examples
                     //
                     if (isset($record->examples))
                     {
-                        if (!Str::endsWith($text, '; '))
-                            $text .= '; ';
-
-                        $text .= /* '  ' . $labelExamples . ': ' . */ ucfirst($record->examples);
+                        ';' . $text .= /* '  ' . $labelExamples . ': ' . */ ucfirst($record->examples);
                     }
-                    else // if no examples, read the definition
+                    else if (isset($record->definition)) // if no examples, read the definition
                     {
                         //
                         // add the definition
@@ -2063,7 +2061,7 @@ class DefinitionController extends Controller
                         //no $d = str_replace('4.', $label4, $d);
                         //no $d = str_replace('5.', $label5, $d);
 
-                        $text .= ucfirst($d);
+                        ';' . $text .= ucfirst($d);
                     }
 
                     //
@@ -2089,8 +2087,9 @@ class DefinitionController extends Controller
 		$favorites = Definition::getUserFavoriteLists();
 
 		$favoritesCnt = 0;
-		foreach ($favorites as $record)
-            $favoritesCnt += count($record->definitions);
+		if (!empty($favorites))
+            foreach ($favorites as $record)
+                $favoritesCnt += count($record->definitions);
 
 		return view(VIEWS . '.favorites', [
 			'favorites' => $favorites,
@@ -2205,7 +2204,9 @@ class DefinitionController extends Controller
         {
             // do the conversion
             $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
-           	return redirect(route('definitions.listTag', ['locale' => $locale, 'tag' => $parms['tagId']]) . '?order=desc');
+            $parms['urlList'] = route('definitions.listTag', ['locale' => $locale, 'tag' => $parms['tagId']]) . '?order=desc';
+           	$parms['urlArticle'] = route('articles.edit', ['locale' => $locale, 'entry' => $record->id]);
+           	//return redirect($parms['urlList']);
         }
 
 		return view(VIEWS . '.convert-text-to-favorites', [

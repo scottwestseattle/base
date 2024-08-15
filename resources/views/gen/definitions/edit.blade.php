@@ -55,18 +55,6 @@
     </div>
     @endif
 
-    <div class="form-group">
-        <label for="notes" class="control-label">{{trans_choice('proj.Multiple Choice Choices', 2)}} (@LANG('ui.optional')):</label>
-
-        @if (isset($wordNumbers))
-            <div class="xbtn-group-toggle mb-1" xdata-toggle="buttons">{!!$wordNumbers!!}</div>
-        @endif
-
-        <input type="text" name="notes_index" id="notes_index" class="form-control" autocomplete="off" value="{{isset($options['index']) ? $options['index'] : ''}}"/>
-        <input type="text" name="notes_choices" id="notes_choices" class="form-control" autocomplete="off"  value="{{isset($options['choices']) ? $options['choices'] : ''}}"/>
-        <input type="text" name="notes_answer" id="notes_answer" class="form-control" autocomplete="off"  value="{{isset($options['answer']) ? $options['answer'] : ''}}"/>
-    </div>
-
     @if (isAdmin())
     <div class="form-check">
         <input class="form-check-input" type="checkbox" name="public" {{$record->release_flag === RELEASEFLAG_PUBLIC ? 'CHECKED' : ''}}>
@@ -118,11 +106,39 @@
 
         <div class="form-group">
             <div class="submit-button">
-                <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Save')</button>
+                <button type="submit" name="update2" class="btn btn-primary">@LANG('ui.Save')</button>
             </div>
         </div>
 
     </div><!-- dictionary_fields -->
+
+    <div class="form-group">
+        <label for="notes" class="control-label">{{trans_choice('proj.Multiple Choice Choices', 2)}} (@LANG('ui.optional')):</label>
+
+        @if (isset($wordNumbers))
+            <div class="xbtn-group-toggle mb-1" xdata-toggle="buttons">{!!$wordNumbers!!}</div>
+        @endif
+
+        <input type="text" name="notes_index" id="notes_index" class="form-control" autocomplete="off" value="{{isset($options['index']) ? $options['index'] : ''}}"/>
+        <input type="text" name="notes_choices" id="notes_choices" class="form-control" autocomplete="off"  value="{{isset($options['choices']) ? $options['choices'] : ''}}"/>
+        <input type="text" name="notes_answer" id="notes_answer" class="form-control" autocomplete="off"  value="{{isset($options['answer']) ? $options['answer'] : ''}}"/>
+
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "a");' autocomplete='off' >a</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "al");' autocomplete='off' >al</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "con");' autocomplete='off' >con</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "de");' autocomplete='off' >de</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "del");' autocomplete='off' >del</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "en");' autocomplete='off' >en</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "para");' autocomplete='off' >para</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "por");' autocomplete='off' >por</button>
+        <button class='btn btn-xs btn-success m-1' onclick='addOption(event, "sobre");' autocomplete='off' >sobre</button>
+        <button class='btn btn-xs btn-warning m-1' onclick='addOption(event, "es");' autocomplete='off' >es</button>
+        <button class='btn btn-xs btn-warning m-1' onclick='addOption(event, "fue");' autocomplete='off' >fue</button>
+        <button class='btn btn-xs btn-warning m-1' onclick='addOption(event, "era");' autocomplete='off' >era</button>
+        <button class='btn btn-xs btn-primary m-1' onclick='addOption(event, "está");' autocomplete='off' >está</button>
+        <button class='btn btn-xs btn-primary m-1' onclick='addOption(event, "estuvo");' autocomplete='off' >estuvo</button>
+        <button class='btn btn-xs btn-primary m-1' onclick='addOption(event, "estaba");' autocomplete='off' >estaba</button>
+    </div>
 
     @if (isAdmin())
     <div class="form-group">
@@ -141,6 +157,12 @@
         ])@endcomponent
     </div>
 
+        <div class="form-group">
+            <div class="submit-button">
+                <button type="submit" name="update3" class="btn btn-primary">@LANG('ui.Save')</button>
+            </div>
+        </div>
+
     {{ csrf_field() }}
 
 </form>
@@ -152,6 +174,16 @@
     {
         $("#pos_flag").val() == {{DEFINITIONS_POS_SNIPPET}} ? $("#dictionary_fields").hide() : $("#dictionary_fields").show();
         $("#pos_flag").val() == {{DEFINITIONS_POS_VERB}} ? $("#div_conjugations").show() : $("#div_conjugations").hide();
+    }
+
+    function addOption(event, word)
+    {
+        event.preventDefault();
+        var text = $("#notes_choices").val();
+        if (!text.endsWith(', '))
+            text += ", ";
+        text += word;
+        $("#notes_choices").val(text);
     }
 
     function setOptions(event, index, word)

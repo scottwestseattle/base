@@ -558,7 +558,7 @@ class ArticleController extends Controller
     		    $text = Quiz::mineQna($entry->description, Quiz::getQnaParms('era'))['text'];
 		    }
 
-    		$quiz = Quiz::makeQna($text); // split text into questions and answers
+    		$quiz = Quiz::makeQnaFromText($text); // split text into questions and answers
     		//dd($quiz);
 		}
 		catch (\Exception $e)

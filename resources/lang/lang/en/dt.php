@@ -1,0 +1,23 @@
+<?php
+return [
+'Apr' => 'Apr',
+'Aug' => 'Aug',
+'Dec' => 'Dec',
+'Feb' => 'Feb',
+'Jan' => 'Jan',
+'Jul' => 'Jul',
+'Jun' => 'Jun',
+'Mar' => 'Mar',
+'May' => 'May',
+'Nov' => 'Nov',
+'Oct' => 'Oct',
+'Sep' => 'Set',
+'Today' => 'Today',
+'Sunday' => 'Sunday',
+'Monday' => 'Monday',
+'Tuesday' => 'Tuesday',
+'Wednesday' => 'Wednesday',
+'Thursday' => 'Thursday',
+'Friday' => 'Friday',
+'Saturday' => 'Saturday',
+];
