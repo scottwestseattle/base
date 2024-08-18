@@ -176,12 +176,13 @@ class Site extends Model
 	{
 	    $dump = false;
 
-        $refererPath = self::getReferrerUrl();
+        $refererPath = referrer('HTTP_REFERER')['path'];
         $requestPath = referrer('REQUEST_URI')['path'];
         if ($dump) dump('request: ' . $requestPath);
         if ($dump) dump('referer: ' . $refererPath);
         if ($dump) dump(referrer('HTTP_REFERER'));
 
+        // only comparing paths without parms but storing paths with full parms
         if (empty($refererPath) || $refererPath === $requestPath)
         {
             // use last saved return path from session
@@ -191,6 +192,7 @@ class Site extends Model
         else
         {
             // return path is referer path
+            $refererPath = self::getReferrerUrl(); // get full path with parms to save
 	    	self::setReturnPathSession($refererPath);
             $returnPath = $refererPath;
             if ($dump) dump('return path (from referer): ' . $returnPath);
