@@ -61,11 +61,13 @@ class Entry extends Model
         $root = self::$_redirects[$this->type_flag];
         $url['index'] = '/' . $root;
 
-
+        $locale = App()->getLocale();
         if ($this->type_flag == ENTRY_TYPE_ARTICLE)
-            $url['view'] = $root . '/' . $this->permalink;
+            //old: $url['view'] = $root . '/' . $this->permalink;
+            $url['view'] = route("$root.view", ['locale' => $locale, 'permalink' => $this->permalink]);
         else
-            $url['view'] = $root . '/view/' . $this->id;
+            //$url['view'] = $root . '/view/' . $this->id;
+            $url['view'] = route("$root.view", ['locale' => $locale, 'entry' => $this->id]);
 
 		return $url;
 	}

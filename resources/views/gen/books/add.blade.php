@@ -1,8 +1,10 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Add Chapter'))
 @section('menu-submenu')@component('gen.books.menu-submenu', [])@endcomponent @endsection
 @section('content')
-
 <div class="container page-normal">
 
 
@@ -12,7 +14,7 @@
     @else
         <h1>@LANG('proj.Add Book')</h1>
     @endif
-	<form method="POST" action="/books/create">
+	<form method="POST" action="{{route('books.create', ['locale' => $locale])}}">
 		<div class="form-control-big">
 
 			@if (isset($parent_id))

@@ -362,16 +362,14 @@ class DateTimeEx
         return self::getShortDateTime($sDate, 'M-d');
     }
 
-    static public function getShortDateTime($sDate, $format = null)
+    static public function getShortDateTime($sDate, $format = null, $localTime = true)
     {
         $format = isset($format) ? $format : 'M-d H:i';
 
-        $rc = self::getLocalDateTime($sDate);
-
-        //todo: this is how dates should be localized... but it has to be installed.
-        // use IntlDateFormatter;
-        //$formatter = new IntlDateFormatter('de_DE', IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);
-        //$formatter->setPattern('E d.M.yyyy');
+        if ($localTime)
+            $rc = self::getLocalDateTime($sDate);
+        else
+            $rc = (isset($sDate)) ? new DateTime($sDate) : new DateTime();
 
         $l = __('dt.' . $rc->format('l'));
         $M = __('dt.' . $rc->format('M'));

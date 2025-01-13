@@ -1894,7 +1894,6 @@ class DefinitionController extends Controller
                 {
                     // add the first definition
                     $lines = Spanish::getSentences($record->definition);
-                    dd($lines);
                     if (count($lines) > 0)
                     {
                         $text .= ': ' . trim(trim($lines[0], '1.'), '.');
@@ -1949,7 +1948,8 @@ class DefinitionController extends Controller
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
 		$words = self::formatDefinitions($records, $examplesOnly);
-		$lines['text'] = $words;
+		$lines['text'] = $words['text'];
+		$lines['translation'] = $words['translation'];
 		$lines['ids'] = Definition::getIds($records);
 
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
@@ -1999,9 +1999,11 @@ class DefinitionController extends Controller
         $end = ' '. trans_choice('proj.End of the list of :count items.', $count);
 
         $lines = [];
+        $trxs = [];
         foreach($records as $record)
         {
             $text = '';
+            $trx = null;
 
             if ($examplesOnly)
             {
@@ -2027,32 +2029,33 @@ class DefinitionController extends Controller
             }
             else
             {
+                $trx = $record->translation_en;
+
                 //
-                // add the word
+                // add the entry
                 //
                 if (Definition::isSnippetStatic($record))
                 {
+                    //
+                    // snippets
+                    //
                     $text = ucfirst($record->title);
                 }
                 else
                 {
-                    $text = ucfirst($record->title);
+                    //
+                    // dictionary definitions
+                    //
+                    $text = ucfirst($record->title) . ': ';
                     //no $text .= ', ' . ucfirst($record->title) . '';
 
                     //
-                    // add the examples
+                    // add the definition
                     //
-                    if (isset($record->examples))
+                    if (isset($record->definition)) // if no examples, read the definition
                     {
-                        ';' . $text .= /* '  ' . $labelExamples . ': ' . */ ucfirst($record->examples);
-                    }
-                    else if (isset($record->definition)) // if no examples, read the definition
-                    {
-                        //
-                        // add the definition
-                        //
-                        $text .= $labelDefinition . ':  ';
-                        $d = $record->definition;//sbw
+                        $text .= $labelDefinition . ': ';
+                        $d = $record->definition;
                         $d = splitSentences($record->definition);
                         $d = (is_array($d) && count($d) >= 1) ? $d[0] : $record->definition;
                         $d = str_replace('1.', $label1, $d);
@@ -2061,24 +2064,36 @@ class DefinitionController extends Controller
                         //no $d = str_replace('4.', $label4, $d);
                         //no $d = str_replace('5.', $label5, $d);
 
-                        ';' . $text .= ucfirst($d);
+                        ';' . $text .= ucfirst($d) . ';';
+                    }
+
+                    //
+                    // add the examples
+                    //
+                    if (isset($record->examples))
+                    {
+                        $e = splitSentences($record->examples);
+                        $e = (is_array($e) && count($e) >= 1) ? $e[0] : $record->examples;
+                        ':' . $text .= '  ' . $labelExamples . ': ' . ucfirst($e);
                     }
 
                     //
                     // say the word again at the end
                     //
-                    //if (!Str::endsWith($text, ';'))
-                    //    $text .= ';';
-                    //$text .= '  ' . ucfirst($record->title) . ';';
+                    if (true)
+                    {
+                        if (!Str::endsWith($text, ';'))
+                            $text .= ';';
+                        $text .= '  ' . ucfirst($record->title) . ';';
+                    }
                 }
 
                 $lines[] = $text;
+                $trxs[] = $trx;
             }
         }
 
-        // $lines[] = $end; // << removed because it doesn't work in random mode
-
-        return $lines;
+        return ['text' => $lines, 'translation' => $trxs];
     }
 
     public function favorites(Request $request)

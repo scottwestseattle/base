@@ -419,14 +419,8 @@
 @endif
 
 <!--------------------------------------------------------------------------------------->
-<!-- SNIPPETS - PRACTICE TEXT -->
-<!--------------------------------------------------------------------------------------->
-@component('shared.snippets', ['options' => $options, 'history' => $history])@endcomponent
-
-<!--------------------------------------------------------------------------------------->
 <!-- ARTICLES -->
 <!--------------------------------------------------------------------------------------->
-
 @php
     $showPrivate = Auth::check() && isset($options['articlesPrivate']) && count($options['articlesPrivate']) > 0;
     $showOther = isAdmin() && isset($options['articlesOther']) && count($options['articlesOther']) > 0;
@@ -470,7 +464,7 @@
 @endif
 
 <div style="" id="tab-tab1">
-    @component('shared.articles', ['records' => $options['articlesPublic'], 'options' => $options, 'release' => 'public'])@endcomponent
+    @component('shared.stories', ['records' => $options['articlesPublic'], 'options' => $options, 'release' => 'public'])@endcomponent
 </div>
 
 @if ($showPrivate)
@@ -485,12 +479,18 @@
     </div>
 @endif
 
+<!--------------------------------------------------------------------------------------->
+<!-- SNIPPETS - PRACTICE TEXT -->
+<!--------------------------------------------------------------------------------------->
+@if (false)
+@component('shared.snippets', ['options' => $options, 'history' => $history])@endcomponent
+@endif
 
 <!--------------------------------------------------------------------------------------->
 <!-- NEWEST WORDS -->
 <!--------------------------------------------------------------------------------------->
 
-@if (isset($newestWords))
+@if (false && isset($newestWords))
 <h3>{{__('proj.Newest Words')}}<span class="title-count">({{count($newestWords)}})</span></h3>
 <div class="text-center mt-2" style="">
     <div style="display: inline-block; width:100%">

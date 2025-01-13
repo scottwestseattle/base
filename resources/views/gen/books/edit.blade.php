@@ -1,5 +1,6 @@
 @php
-$prefix = 'books';
+    $prefix = 'books';
+    $locale = App()->getLocale();
 @endphp
 @extends('layouts.app')
 @section('title', __('proj.Edit Chapter'))
@@ -10,7 +11,7 @@ $prefix = 'books';
 
 	<h1>{{__('proj.Edit Chapter')}}</h1>
 
-	<form method="POST" action="/{{$prefix}}/update/{{ $record->id }}">
+	<form method="POST" action="{{route('books.update', ['locale' => $locale, 'entry' => $record->id])}}">
 		<div class="form-group form-control-big">
 
 			@component('components.control-accent-chars-esp', ['visible' => true, 'flat' => true])@endcomponent

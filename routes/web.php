@@ -192,7 +192,7 @@ Route::group(['prefix' => 'articles'], function () {
 	Route::get('/delete/{entry}', [ArticleController::class, 'delete'])->name('articles.deleteGet');
 
 	// publish
-	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishupdate');
+	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishUpdate');
 	Route::get('/publish/{entry}', [ArticleController::class, 'publish'])->name('articles.publish');
 });
 
@@ -649,9 +649,9 @@ Route::group(['prefix' => 'books'], function () {
 	Route::get('/read-book/{tag}', [BookController::class, 'readBook'])->name('books.readBook');
 
 	// add
-	Route::get('/add', [BookController::class, 'add']);
-	Route::get('/add-chapter/{tag}', [BookController::class, 'addChapter']);
-	Route::post('/create', [BookController::class, 'create']);
+	Route::get('/add', [BookController::class, 'add'])->name('books.add');
+	Route::get('/add-chapter/{tag}', [BookController::class, 'addChapter'])->name('books.addChapter');
+	Route::post('/create', [BookController::class, 'create'])->name('books.create');
 
 	// edit
 	Route::get('/edit/{entry}', [BookController::class, 'edit'])->name('books.edit');

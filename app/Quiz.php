@@ -187,6 +187,7 @@ class Quiz
                 $qna[$cnt]['translation'] = '';
                 $qna[$cnt]['extra'] = '';
                 $qna[$cnt]['options'] = '';
+                $qna[$cnt]['rule'] = null;
 
                 $cnt++;
             }

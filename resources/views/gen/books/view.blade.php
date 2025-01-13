@@ -1,7 +1,8 @@
 @php
-$prefix = 'books';
-$showPrevNext = (isset($prev) || isset($next));
-$bookId = isset($options['book']) ? $options['book']->id : null;
+    $prefix = 'books';
+    $showPrevNext = (isset($prev) || isset($next));
+    $bookId = isset($options['book']) ? $options['book']->id : null;
+    $locale = App()->getLocale();
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
@@ -14,11 +15,11 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
     @if ($showPrevNext)
     <div>
         @if (isset($prev))
-            <a href="/{{$prefix}}/show/{{$prev->permalink}}"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
+            <a href="{{route('books.show', ['locale' => $locale, 'permalink' => $prev->permalink])}}"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
         @endif
             <a href="{{$options['backLink']}}"><button type="button" class="btn btn-success mb-1"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('proj.Back to Book', 1)}}</button></button></a>
         @if (isset($next))
-            <a href="/{{$prefix}}/show/{{$next->permalink}}"><button type="button" class="btn btn-success mb-1">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
+            <a href="{{route('books.show', ['locale' => $locale, 'permalink' => $next->permalink])}}"><button type="button" class="btn btn-success mb-1">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
         @endif
     </div>
     @endif
@@ -31,7 +32,7 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
         <!-- Stats -->
         <div class="vertical-align">
             <div class="mb-2">
-                <a type="button" class="btn btn-primary" href="/books/read/{{$record->id}}" >{{__('ui.Read')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
+                <a type="button" class="btn btn-primary" href="{{route('books.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="font-size:16px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
             </div>
             <div class="small-text">
                 <div style="margin-right:15px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
@@ -91,10 +92,10 @@ $bookId = isset($options['book']) ? $options['book']->id : null;
     @if ($showPrevNext)
     <div style="margin-top: 10px;">
         @if (isset($prev))
-            <a href="/{{$prefix}}/show/{{$prev->permalink}}"><button type="button" class="btn btn-success"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
+            <a href="{{route('books.show', ['locale' => $locale, 'permalink' => $prev->permalink])}}"><button type="button" class="btn btn-success"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-left"></span>@LANG('ui.Prev')</button></button></a>
         @endif
         @if (isset($next))
-            <a href="/{{$prefix}}/show/{{$next->permalink}}"><button type="button" class="btn btn-success">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
+            <a href="{{route('books.show', ['locale' => $locale, 'permalink' => $next->permalink])}}"><button type="button" class="btn btn-success">@LANG('ui.Next')<span style="margin-left:5px;" class="glyphicon glyphicon-circle-arrow-right"></span></button></a>
         @endif
     </div>
     @endif

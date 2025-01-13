@@ -6,14 +6,26 @@
     $class = 'ml-0 badge-dark badge-green badge-small';
     $style = 'margin-right:3px; font-size:10px; margin-top:5px; float:left;';
     $locale = app()->getLocale();
+    $imgPath = public_path() . '/img/backgrounds/covers';
+    $imgUrl = 'https://codespace.us/img/backgrounds/covers';
+    $imgHeight = '70px';
 @endphp
 @if (isset($records))
 <div class="text-center mt-2">
     <div style="display: inline-block; width:100%">
         <table style="width:100%;">
         @foreach($records as $record)
-
         <tr class="drop-box-ghost-small" style="vertical-align:middle;">
+            <td style="color:default; text-align:left; padding:0; width:10px;">
+                @php $photo = file_exists($imgPath . '/' . $record->id . '.png'); @endphp
+                <a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">
+                    @if ($photo)
+                        <img style="height:{{$imgHeight}};" src="{{$imgUrl}}/{{$record->id}}.png" />
+                    @else
+                        <img style="height:{{$imgHeight}};" src="{{$imgUrl}}/periodico.png" />
+                    @endif
+                </a>
+            </td>
             <td style="color:default; text-align:left; padding:5px 10px;">
                 <table>
                 <tbody>
@@ -22,7 +34,7 @@
                     </tr>
                     <tr>
                         <td class="small-thin-text">
-                            <div class="float-left">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
+                            <div class="float-left">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div>
                             <div class="float-left ml-3">
                                 <a class="btn btn-primary btn-xs" role="button" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}">
                                     @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>

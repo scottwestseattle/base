@@ -5,7 +5,7 @@
 
 	<h1>{{__('proj.Publish Chapter')}}</h1>
 
-	<form method="POST" action="/books/publishupdate/{{$record->id}}">
+	<form method="POST" action="{{route('books.updatePublish', ['locale' => App()->getLocale(), 'entry' => $record->id])}}">
 
 		<h3 name="title" class="">{{$record->title}}</h3>
 

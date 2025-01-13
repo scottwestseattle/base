@@ -97,7 +97,7 @@ class BookController extends Controller
 			]);
 	}
 
-    public function addChapter(Tag $tag)
+    public function addChapter(Request $request, $locale, Tag $tag)
     {
         $book = $tag;
 
@@ -258,7 +258,7 @@ class BookController extends Controller
 			]);
     }
 
-	public function edit(Entry $entry)
+	public function edit(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -314,7 +314,7 @@ class BookController extends Controller
 		return redirect($url);
 	}
 
-    public function confirmDelete(Entry $entry)
+    public function confirmDelete(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
 
@@ -511,7 +511,7 @@ class BookController extends Controller
 		]);
     }
 
-    public function stats(Request $request, Tag $tag)
+    public function stats(Request $request, $locale, Tag $tag)
     {
 		$record = $tag;
 

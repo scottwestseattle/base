@@ -5,7 +5,7 @@
 <div class="container page-normal">
 
 	<h1>{{__('proj.Delete Chapter')}}</h1>
-	<form method="POST" action="/books/delete/{{ $record->id }}">
+	<form method="POST" action="{{route('books.delete', ['locale' => App()->getLocale(), 'entry' => $record->id])}}">
 
 		<h4>{{$record->title}}</h4>
 

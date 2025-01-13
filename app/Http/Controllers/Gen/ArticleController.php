@@ -338,7 +338,6 @@ class ArticleController extends Controller
 		$source				= $request->source;
 		$source_credit		= $request->source_credit;
 		$source_link		= $request->source_link;
-		$display_date       = $request->source_link;
 
         // get the options strings from the checkboxes
 		$options            .= isset($request->read_reverse) ? OPTION_READ_REVERSE . ';' : '';
@@ -521,7 +520,8 @@ class ArticleController extends Controller
 			return back();
 		}
 
-		return redirect($this->redirectTo . 'view/' . $record->permalink);
+        $url = route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink]);
+		return redirect($url);
     }
 
     public function read(Request $request, $locale, Entry $entry)

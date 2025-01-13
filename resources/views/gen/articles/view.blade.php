@@ -57,7 +57,7 @@
         <div class="mb-2">
             <div class="mb-2">
                 <a type="button" class="btn btn-primary" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
-                @if ($options['lineCount'] > 25)
+                @if (!$record->isArticle() && $options['lineCount'] > 25)
                     <a type="button" class="btn btn-primary mt-1" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" ><span style="font-size:.9em;">{{__('ui.Read')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @endif
                 @if ($record->hasTranslation())
@@ -75,7 +75,7 @@
             </div>
 
             <div class="small-text">
-                <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y')}}</div>
+                <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div>
                 <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                 <div style="margin-right:10px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
                 <div style="margin-right:10px; float:left;">{{$options['letterCount']}} {{trans_choice('ui.Letter', 2)}}</div>
@@ -96,18 +96,20 @@
                             <div class="middle mr-0" style="">{{trans_choice('ui.Translation', 2)}}</div>
                         </a>
                     </div>
-                    <div class="mr-2 float-left">
-                        <a href="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
-                            <div class="middle mr-0" style="">{{trans_choice('proj.Convert to Favorites', 2)}}</div>
+                    @if (isAdmin())
+                        <div class="mr-2 float-left">
+                            <a href="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
+                                <div class="middle mr-0" style="">{{trans_choice('proj.Convert to Favorites', 2)}}</div>
+                            </a>
+                        </div>
+                        <a href="{{route('definitions.convertQuestionsToSnippets', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
+                            <div class="middle mr-0" style="">{{__('proj.Convert Questions to Snippets')}}</div>
                         </a>
-                    </div>
+                    @endif
+                    @if (!$translationMatches)
+                        <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT ({{$cntSentences}}<>{{$cntTranslations}})</div>
+                    @endif
                 @endif
-                @if (!$translationMatches)
-                    <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT ({{$cntSentences}}<>{{$cntTranslations}})</div>
-                @endif
-                <a href="{{route('definitions.convertQuestionsToSnippets', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
-                    <div class="middle mr-0" style="">{{__('proj.Convert Questions to Snippets')}}</div>
-                </a>
             </div>
         </div>
 

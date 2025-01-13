@@ -249,7 +249,8 @@ class HomeController extends Controller
 		{
 		    $parms = Site::getLanguage();
 		    $parms['type'] = ENTRY_TYPE_ARTICLE;
-            $parms['limit'] = 5;
+		    //sbw $parms['subType'] = ENTRY_SUBTYPE_STORY;
+            $parms['limit'] = 20;
 
             // get public articles
             $parms['release'] = 'public';

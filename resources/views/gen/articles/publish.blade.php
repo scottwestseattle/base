@@ -1,11 +1,13 @@
+@php
+    $locale = App()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('proj.Publish Article'))
 @section('menu-submenu')@component('gen.articles.menu-submenu', ['record' => $record])@endcomponent @endsection
 @section('content')
-
 <h1>{{__('proj.Publish Article')}}</h1>
 
-<form method="POST" action="{{route('articles.publishUpdate', ['locale' => $locale, 'article' => $record->id])}}">
+<form method="POST" action="{{route('articles.publishUpdate', ['locale' => $locale, 'entry' => $record->id])}}">
 
     <h3 name="title" class="">{{$record->title}}</h3>
 

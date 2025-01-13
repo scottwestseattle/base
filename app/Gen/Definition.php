@@ -1582,7 +1582,7 @@ order by definitions.release_flag, id DESC limit 50 offset 0
                 $choices = preg_replace('/, /', '|', $choices);
                 $pattern = ($end > $start) ? '/_.*_/' : '/_/';
                 $question = preg_replace($pattern, '__________', $question); // embed the options within the question
-         }
+             }
             else
             {
                 $choices = null;

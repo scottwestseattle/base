@@ -38,7 +38,7 @@
 				</div>
 				<div style="float:left;">
 					@if (App\User::isAdmin())
-					<div style="margin-right:5px; float:left;"><a href='{{route('books.edit', ['locale' => $locale, 'tag' => $record->id])}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
+					<div style="margin-right:5px; float:left;"><a href='{{route('books.edit', ['locale' => $locale, 'entry' => $record->id])}}'><span class="glyphCustom glyphCustom-lt glyphicon glyphicon-edit"></span></a></div>
 					@component('components.control-delete-glyph', ['glyphicon' => 'glyphCustom glyphCustom-lt glyphicon-trash', 'href' => route('entries.delete', ['locale' => $locale, 'entry' => $record->id]), 'prompt' => 'Confirm Delete'])@endcomponent
 					@endif
 				</div>
