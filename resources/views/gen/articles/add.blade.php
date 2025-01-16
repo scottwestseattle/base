@@ -72,6 +72,11 @@
 			</div>
 
             <div class="form-check">
+                <input class="form-check-input middle" type="checkbox" name="sub_type_flag" >
+                <label class="form-check-label" for="sub_type_flag">Story</label>
+            </div>
+
+            <div class="form-check">
                 <input class="form-check-input middle" type="checkbox" name="read_reverse" >
                 <label class="form-check-label" for="read_reverse">Read Reverse</label>
             </div>

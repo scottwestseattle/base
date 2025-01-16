@@ -165,17 +165,19 @@ class ArticleController extends Controller
         	$options['qnaPorPara'] = Quiz::mineQna($options['sentences'], Quiz::getQnaParms('por'));
         	$options['qnaEraFue'] = Quiz::mineQna($options['sentences'], Quiz::getQnaParms('era'));
 
-            //dd($options);
-
 			if (strlen($record->description_translation) > 0)
 			{
 	        	$options['sentences_translation'] = Spanish::getSentences($record->description_translation);
 	        	$options['translation_matches'] = (count($options['sentences']) === count($options['sentences_translation']));
 
+                // 2025: new way doesn't needs makeFlashcards because sentences/trxs are already split correctly above
+                if (false)
+                {
                 if (count($options['sentences']) >= count($options['sentences_translation']))
     	        	$options['translation'] = Quiz::makeFlashcards($record->description, $record->description_translation);
     	        else
     	        	$options['translation'] = Quiz::makeFlashcards($record->description_translation, $record->description);
+                }
 			}
 
 			$record->description = nl2br($record->description);
@@ -266,6 +268,7 @@ class ArticleController extends Controller
 		$record->wip_flag 			= WIP_FINISHED;
 		$record->language_flag		= isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			= ENTRY_TYPE_ARTICLE;
+		$record->sub_type_flag 		= isset($request->sub_type_flag) ? ENTRY_SUB_TYPE_STORY : null;
 		$record->permalink          = createPermalink($record->title, $record->created_at);
 
 		try
@@ -380,6 +383,7 @@ class ArticleController extends Controller
 		$record->source_link		    = trimNull($source_link);
 		$record->language_flag		    = isset($request->language_flag) ? $request->language_flag : Site::getLanguage()['id'];
 		$record->type_flag 			    = ENTRY_TYPE_ARTICLE;
+		$record->sub_type_flag 			= isset($request->sub_type_flag) ? ENTRY_SUB_TYPE_STORY : null;
 		$record->permalink              = createPermalink($record->title, $record->created_at);
 		$record->options                = trimNull($options);
 
@@ -533,6 +537,7 @@ class ArticleController extends Controller
         $parms['randomOrder'] = $random;
         $parms['readRandom'] = $entry->readRandom();
         $parms['readReverse'] = $entry->readReverse();
+        $parms['viewUrl'] = route('articles.view', ['locale' => $locale, 'permalink' => $entry->permalink]);
 
         return $this->reader($entry, $parms);
     }

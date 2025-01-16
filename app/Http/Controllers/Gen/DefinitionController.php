@@ -1826,7 +1826,7 @@ class DefinitionController extends Controller
             $translations[] = $record->translation_en;
             $ids[] = $record->id;
         }
-        $lines = ['text' => $text, 'translations' => $translations, 'ids' => $ids];
+        $lines = ['text' => $text, 'translation' => $translations, 'ids' => $ids];
 
         $options['return'] = Site::getReturnPath();
         $options['randomOrder'] = true;

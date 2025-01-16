@@ -5,7 +5,9 @@
 {{route('courses', ['locale' => $locale])}}
 {{route('articles.undelete', ['locale' => $locale, 'article' => $record->id])}}
 
-===== NEW DB Changes =====
+===== 2025 DB Changes =====
+ALTER TABLE `entries` ADD `sub_type_flag` TINYINT NULL AFTER `type_flag`;
+ALTER TABLE `entries` CHANGE `sub_type_flag` `sub_type_flag` TINYINT(4) NULL DEFAULT NULL COMMENT 'null=not set, 1=story, 99=other';
 update `tags` set language_flag = 1 where 1 and type_flag = 3 and language_flag = 0
 
 ===== Done =====

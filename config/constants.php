@@ -126,7 +126,7 @@ define('SNIPPET_CATEGORY_ESP_PREPOSITION',          7);
 define('SNIPPET_CATEGORY_ESP_GRAMMAR',              8);
 
 //
-// entries
+// entry types
 //
 define('ENTRY_TYPE_NOTSET', 	-1);
 define('ENTRY_TYPE_NOTUSED', 	0);
@@ -135,6 +135,11 @@ define('ENTRY_TYPE_ARTICLE', 	2);
 define('ENTRY_TYPE_BOOK',	 	3);
 define('ENTRY_TYPE_LESSON',	 	4);
 define('ENTRY_TYPE_OTHER',		99);
+
+//
+// entry sub types
+//
+define('ENTRY_SUB_TYPE_STORY', 1);
 
 //
 // Tags

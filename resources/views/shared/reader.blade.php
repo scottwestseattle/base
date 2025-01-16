@@ -97,7 +97,15 @@
 			<span class="glyphReader">
                 <a href="{{$options['return']}}"><button type="button" class="btn btn-sm btn-primary mb-2"><span style="margin-right:5px;" class="glyphicon glyphicon-circle-arrow-up"></span>{{trans_choice('ui.Return', 1)}}</button></button></a>
 			</span>
-			<span class="glyphReader"><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
+
+			@if (isset($options['viewUrl']))
+                <span class="glyphReader" style="">
+                    <a href="{{$options['viewUrl']}}"><span style="margin-right:3px; font-size:.9em;" class="glyphicon glyphicon-list"></span></a>
+                </span>
+            @else
+    			<span class="glyphReader"><a onclick="event.preventDefault(); reload()" href=""><span id="button-repeat" class="glyphicon glyphicon-repeat"></span></a></span>
+            @endif
+
 			<span class="glyphReader"><a onclick="zoom(event, -3);" href=""><span class="glyphicon glyphicon-zoom-out"></span></a></span>
 			<span class="glyphReader"><a onclick="zoom(event, 3);" href=""><span class="glyphicon glyphicon-zoom-in"></span></a></span>
 			<span class="glyphReader"><a onclick="event.preventDefault(); $('#settings').toggle();" href=""><span class="glyphicon glyphicon-cog"></span></a></span>
@@ -130,13 +138,13 @@
 				<div><a onclick="event.preventDefault(); runContinue()"  href="" class="btn btn-success mb-3" id="button-continue-reading" style="display:none;" role="button">{{__('proj.Continue reading from line')}}</a></div>
 				<div><a onclick="event.preventDefault(); runContinueOther()"  href="" class="btn btn-warning mb-3" id="button-continue-reading-other" style="display:none;" role="button">{{__('proj.Continue reading from location on other device')}}</a></div>
 				<div>
-					<a onclick="incLine(event, -50)" href=""><span id="button-decrement-line" class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
-					<div id="readCurrLine" class="middle large-text mb-2" style="min-width:85px;">{{trans_choice('ui.Line', 2)}} </div>
-					<a onclick="incLine(event, 50)" href=""><span id="button-increment-line" class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
-
+				    @if (isAdmin())
+                        <a onclick="incLine(event, -50)" href=""><span id="button-decrement-line" class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>
+                        <div id="readCurrLine" class="middle large-text mb-2" style="min-width:85px;">{{trans_choice('ui.Line', 2)}} </div>
+                        <a onclick="incLine(event, 50)" href=""><span id="button-increment-line" class="glyphicon glyphCustom glyphicon-plus-sign"></span></a>
+    					<div class="statusMsg" class="ml-3"></div>
+                    @endif
 					<div id="elapsedTime" class="mt-5"></div>
-					<div class="statusMsg" class="ml-3"></div>
-
 				</div>
 
 			</div>
@@ -196,7 +204,14 @@
                 <div name="languages" id="languages" class="middle center" style="">
                     <select class="" onchange="changeVoice();" name="selectVoice" id="selectVoice"></select>
                 </div>
-			</div>
+            </div>
+			<div class="mb-2">
+            <div>
+                <label for="languages" class="checkbox-big-label mb-0">{{trans_choice('proj.Prompt Voice', 1)}}:</label>
+                <div name="" id="" class="middle center" style="">
+                    <select class="" onchange="changeVoice();" name="selectPromptVoice" id="selectPromptVoice"></select>
+                </div>
+            </div>
             <div class="m-0" style="">
                 <label for="read_flag" class="checkbox-big-label" style="margin:0;">@LANG('ui.Read'):</label>
                 <select name="read_flag" id="read_flag">

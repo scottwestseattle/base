@@ -1,5 +1,5 @@
 @php
-    $translation = isset($options['translation']) ? $options['translation'] : null;
+    $translation = isset($options['sentences_translation']) ? $options['sentences_translation'] : null;
     $translationMatches = true;
     if (isset($options['translation_matches']) && !$options['translation_matches'])
     {
@@ -130,7 +130,17 @@
                     <span id="description" name="description" class="">{!! $record->description !!}</span>
                     @if (isset($translation))
                         <span id="translation" name="translation" class="hidden">
-                            @component('shared.flashcards-view', ['records' => $translation])@endcomponent
+                            <table>
+                                <tbody>
+                                    @foreach($options['sentences'] as $s)
+                                        <tr class="mb-3">
+                                            <td class="pb-4 pr-4" style="vertical-align:top; width:50%;"><span class="mr-2 fn">{{$loop->index + 1}}</span>{{$s}}</td>
+                                            @php $trx = isset($options['sentences_translation'][$loop->index]) ? $options['sentences_translation'][$loop->index] : null; @endphp
+                                            <td class="pb-4" style="vertical-align:top;"><span class="mr-2 fn">{{$loop->index + 1}}</span>{{$trx}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </span>
                     @endif
                 </div>

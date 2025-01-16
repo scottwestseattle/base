@@ -97,6 +97,11 @@ class Entry extends Model
 		return($this->type_flag == ENTRY_TYPE_ARTICLE);
 	}
 
+	public function isStory()
+	{
+		return($this->sub_type_flag == ENTRY_SUB_TYPE_STORY);
+	}
+
 	public function getHistoryType()
 	{
 	    $rc = HISTORY_TYPE_OTHER;
@@ -564,6 +569,8 @@ class Entry extends Model
 	    $limit = isset($parms['limit']) ? intval($parms['limit']) : DEFAULT_LIST_LIMIT;
 
 		$type = intval($parms['type']);
+		$subType = isset($parms['sub_type']) ? intval($parms['sub_type']) : 0;
+		$subTypeCondition = isset($subType) && $subType > 0 ? '=' : '>=';
 		$languageFlag = $parms['id'];
 		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
 		$records = [];
@@ -679,6 +686,7 @@ class Entry extends Model
 					->whereNull('entries.deleted_at')
 					->where('entries.language_flag', $languageCondition, $languageFlag)
 					->where('entries.type_flag', $type)
+					->whereRaw("IFNULL(entries.sub_type_flag, 0) $subTypeCondition $subType")
 					->where('entries.release_flag', $releaseCondition, $releaseFlag)
 					->where('entries.user_id', $ownerCondition, $ownerId)
 					->count();
@@ -693,12 +701,14 @@ class Entry extends Model
 					->whereNull('entries.deleted_at')
 					->where('entries.language_flag', $languageCondition, $languageFlag)
 					->where('entries.type_flag', $type)
+					->whereRaw("IFNULL(entries.sub_type_flag, 0) $subTypeCondition $subType")
 					->where('entries.release_flag', $releaseCondition, $releaseFlag)
 					->where('entries.user_id', $ownerCondition, $ownerId)
 					->orderByRaw($orderBy)
 					->offset($start)
 					->limit($limit)
 					->get();
+					//->toSql();dd($records);
 			}
 			catch (\Exception $e)
 			{

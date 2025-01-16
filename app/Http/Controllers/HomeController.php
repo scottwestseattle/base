@@ -249,14 +249,14 @@ class HomeController extends Controller
 		{
 		    $parms = Site::getLanguage();
 		    $parms['type'] = ENTRY_TYPE_ARTICLE;
-		    //sbw $parms['subType'] = ENTRY_SUBTYPE_STORY;
-            $parms['limit'] = 20;
+		    $parms['sub_type'] = ENTRY_SUB_TYPE_STORY;
+            $parms['limit'] = 200;
 
             // get public articles
             $parms['release'] = 'public';
     		$options['articlesPublic'] = Entry::getRecentList($parms)['records'];
 
-            // removed for speed: get private articles
+            // get private articles
             $parms['release'] = 'private';
             $options['articlesPrivate'] = null; //Entry::getRecentList($parms)['records'];
 
