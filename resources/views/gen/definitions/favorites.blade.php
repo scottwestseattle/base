@@ -62,7 +62,7 @@
                 <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=flashcards&count=20&tagId={{$record->id}}&order={{$order}}">
                     @LANG('proj.Flashcards')<span class="glyphicon glyphicon-flash ml-1"></span>
                 </a>
-                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=read&count={{DEFAULT_BIG_NUMBER}}&tagId={{$record->id}}&order={{$order}}">
+                <a class="btn btn-primary btn-xs" role="button" href="{{route('definitions.favoritesReview', ['locale' => $locale])}}?action=read&count={{50/*DEFAULT_BIG_NUMBER*/}}&tagId={{$record->id}}&order={{$order}}">
                     @LANG('proj.Reader')<span class="glyphicon glyphicon-volume-up ml-1"></span>
                 </a>
                 <a href='{{route('tags.edit', ['locale' => $locale, 'tag' => $record->id])}}'><span class="glyphCustom-sm glyphicon glyphicon-edit"></span></a></td>

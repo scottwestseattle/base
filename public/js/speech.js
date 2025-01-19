@@ -1,6 +1,7 @@
 var _voices = null;
 var _voicesLoadAttempts = 0;
 var _voiceIndex = 0;
+var _promptVoiceIndex = 0;
 
 var _languages = [
     'en-EN',    // 0
@@ -36,6 +37,9 @@ $(document).ready(function() {
     console.log('speech.js ready');
 });
 
+//
+// get language index from the specified SELECT control
+//
 function getLanguageIndex(id)
 {
     var index = -1; // not set
@@ -80,7 +84,11 @@ function loadVoicesGlobal()
     var language = _languages[index];
     var languageLong = _languagesLong[index];
 
-    loadVoices(language, languageLong);
+    if (loadVoices(language, languageLong, 'selectVoice'))
+        changeVoice();
+
+    if (loadVoices(language, languageLong, 'selectPromptVoice'))
+        changePromptVoice();
 
 	if (_voices.length == 0 && _voicesLoadAttempts++ < 10)
 	{
@@ -90,29 +98,13 @@ function loadVoicesGlobal()
 	}
 }
 
-function isLanguageMatch(lang, deckLang1, deckLang2)
-{
-    // check for 'es-' or 'es_'
-    if (lang.search(deckLang1 + "-") !== -1 || lang.search(deckLang1 + "_") !== -1)
-    {
-        return true;
-    }
-
-    // check for 'spa-' or 'spa_'
-    if (lang.search(deckLang2 + "-") !== -1 || lang.search(deckLang2 + "_") !== -1)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-function loadVoices(language, languageLong)
+function loadVoices(language, languageLong, selectVoiceId)
 {
     //console.log('language: ' + language);
     //console.log('loading voices...');
 
-	_voices = window.speechSynthesis.getVoices();
+	if (_voices == null)
+	    _voices = window.speechSynthesis.getVoices();
 
 	if (_voices.length == 0 && _voicesLoadAttempts++ < 10)
 	{
@@ -121,10 +113,10 @@ function loadVoices(language, languageLong)
 
 	//tts('ready with ' + _voices.length + ' voices');
 
-	var voiceSelect = document.querySelector('#selectVoice');
+	var voiceSelect = document.querySelector('#' + selectVoiceId);
 
     // un-hide the voice list
-    document.getElementById('selectVoice').style.display = 'inline-block';
+    document.getElementById(selectVoiceId).style.display = 'inline-block';
 
     // empty the voices from the select
     var length = voiceSelect.options.length;
@@ -149,6 +141,7 @@ function loadVoices(language, languageLong)
             {
                 // if at least one found, bail out
                 //console.log('one found: ' + lang);
+                //2025:
                 showAll = false;
                 break;
             }
@@ -208,7 +201,7 @@ function loadVoices(language, languageLong)
 	if (found)
 	{
 		setSelectedVoice(voiceSelect);
-		changeVoice();
+		//2025: changeVoice();
 	}
 	else
 	{
@@ -216,6 +209,45 @@ function loadVoices(language, languageLong)
 		$("#language").text(msg);
 		$("#languages").show();
 	}
+
+	return found;
+}
+
+function isLanguageMatch(lang, deckLang1, deckLang2)
+{
+    // check for 'es-' or 'es_'
+    if (lang.search(deckLang1 + "-") !== -1 || lang.search(deckLang1 + "_") !== -1)
+    {
+        return true;
+    }
+
+    // check for 'spa-' or 'spa_'
+    if (lang.search(deckLang2 + "-") !== -1 || lang.search(deckLang2 + "_") !== -1)
+    {
+        return true;
+    }
+
+    // check for 'en-' or 'en_'
+    if (lang.search("en-") !== -1 || lang.search("en_") !== -1)
+    {
+        return true;
+    }
+
+    // check for 'eng-' or 'eng'
+    if (lang.search("eng-") !== -1 || lang.search("eng_") !== -1)
+    {
+        return true;
+    }
+
+    // check for 'Spanish'
+    var word = 'Spanish';
+    var word2 = 'English';
+    if (lang.search(word) !== -1 || lang.search(word2) !== -1)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 function saveSelectedVoice(voiceIndex)
@@ -239,22 +271,44 @@ function setSelectedVoice(voiceSelect)
 
 function changeVoice()
 {
-	var index = $("#selectVoice")[0].selectedIndex;
+	if (typeof(deck) != "undefined")
+	{
+	    var result = _changeVoice("#selectVoice");
+        deck.voice = result.voice;
+        _voiceIndex = result.index;
+	}
+}
+
+function changePromptVoice()
+{
+	if (typeof(deck) != "undefined")
+	{
+	    var result = _changeVoice("#selectPromptVoice");
+        deck.promptVoice = result.voice;
+        _promptVoiceIndex = result.index;
+    }
+}
+
+function _changeVoice(selectVoiceId)
+{
+	var index = $(selectVoiceId)[0].selectedIndex;
 	saveSelectedVoice(index);
 
-	var voiceIndex = $("#selectVoice").children("option:selected").val();
+	var voiceIndex = $(selectVoiceId).children("option:selected").val();
 	voice = _voices[voiceIndex];
-
-	if (typeof(deck) != "undefined")
-	    deck.voice = voice;
 
 	if (_utter != null)
 	{
 		_utter.voice = voice;
 	}
 
-    _voiceIndex = index;
+	//$("#language").text("Language: " + deck.voice.lang + ", voice: " + deck.voice.name);
+	//console.log('voiceIndex: ' + voiceIndex);
+	//console.log('selectVoiceId: ' + selectVoiceId);
     //console.log('reading voice set to: ' + index);
 
-	//$("#language").text("Language: " + deck.voice.lang + ", voice: " + deck.voice.name);
+   return {
+        voice: voice,
+        index: index
+    };
 }

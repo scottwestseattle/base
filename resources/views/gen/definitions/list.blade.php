@@ -68,7 +68,7 @@
             @endphp
             @component('components.control-delete-glyph', ['linkText' => 'ui.Remove All', 'href' => $url, 'prompt' => 'ui.Confirm Remove All'])@endcomponent
 
-            <a class="ml-3" role="button" href="{{route('definitions.listTag', ['locale' => $locale, 'tag' => $tagId])}}?order={{$order}}&count=99999">@LANG('ui.Show All')</a>
+            <a class="ml-3" role="button" href="{{route('definitions.listTag', ['locale' => $locale, 'tag' => $tagId])}}?order={{$order}}&count=50">@LANG('ui.Show All')</a>
 
         </span>
     @endif

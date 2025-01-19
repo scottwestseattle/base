@@ -1831,6 +1831,7 @@ class DefinitionController extends Controller
         $options['return'] = Site::getReturnPath();
         $options['randomOrder'] = true;
         $options['touchPath'] = '/stats/update-stats';
+        $options['readPrompts'] = true;
 
         if (isset($orderBy))
             $options['orderBy'] = $orderBy;
@@ -1955,8 +1956,8 @@ class DefinitionController extends Controller
         $languageFlag = count($records) > 0 ? $records[0]->language_flag : LANGUAGE_EN;
 
 	    $options['return'] = Site::getReturnPath();
-
         $options['touchPath'] = '/stats/update-stats';
+        $options['readPrompts'] = true;
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),

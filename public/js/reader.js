@@ -12,8 +12,13 @@ const RUNSTATE_BETWEEN      = 4;
 const RUNSTATE_END          = 5;
 
 //
-// numbers
+// globals
 //
+var _speechTimerId = null;
+var _clockTimerId = null;
+var _pauseTimerId = null;
+var _utter = null;
+
 var curr = 0;   // current slide
 var max = 0;    // number of slides
 var _readContinuous = false; // read and loop
@@ -125,6 +130,8 @@ function deck() {
 	this.userId = 0;
     this.title = 'not set';
     this.locale = 'not set';
+    this.voice = null;
+    this.promptVoice = null;
 
     // add History
     this.programName = 'not set';
@@ -299,6 +306,10 @@ function deck() {
 		return $('#checkbox-flip').prop('checked');
 	}
 
+	this.readPrompts = function() {
+		return $('#checkbox-read-prompts').prop('checked');
+	}
+
     this.getText = function (mainText = true) {
 
 	    var slide = getCurrentSlide();
@@ -323,7 +334,65 @@ function deck() {
 	}
 
 	this.readSlide = function() {
-		read(deck.getText(), 0);
+
+	    // read the prompt
+	    var text = deck.getText();
+
+	    if (this.readPrompts())
+	    {
+            var prompt = deck.getText(false /* translation */);
+            const promptArray = [
+            "Translate the following: ",
+            "How do you say the following: ",
+            "Say this in Spanish: ",
+            "Try to translate this: ",
+            "Try to say this in Spanish: ",
+            "Can you say this: ",
+            "Repeat this in Spanish: ",
+            "Attempt to say this: ",
+            "Attempt to say this in Spanish: ",
+            "How would this be said in Spanish: ",
+            "How would this be translated: ",
+            "What would this be in Spanish: "
+            ];
+
+            const randomIndex = Math.floor(Math.random() * promptArray.length);
+            prompt = promptArray[randomIndex] + prompt;
+
+            // read the prompt
+            readPrompt(prompt);
+
+            //
+            // calculate pause time based on length of text
+            //
+            var words = countWords(text);
+            var shortWait = 6;
+            var mediumWait = 8;
+            var longWait = 10;
+            var longerWait = 14;
+
+            if (words <= 4)
+                waitSeconds = shortWait;
+            else if (words <= 7)
+                waitSeconds = mediumWait;
+            else if (words <= 10)
+                waitSeconds = longWait;
+            else
+                waitSeconds = longerWait;
+
+            console.log('wait seconds: ' + waitSeconds + ', words: ' + words);
+
+            // read the text
+            setTimeout(() => {
+                // Code to execute after 5 seconds
+                read(text, 0);
+            }, waitSeconds * 1000);
+        }
+        else
+        {
+            // read the text
+            read(text, 0);
+        }
 	}
 
 	this.setAlertPrompt = function(text, color, bold = false) {
@@ -331,6 +400,14 @@ function deck() {
 		//$("#alertPrompt").css('color', color);
 		//$("#alertPrompt").css('font-weight', bold ? 'bold' : 'normal');
 	}
+}
+
+function countWords(text) {
+  // Split the text into an array of words using whitespace as the delimiter
+  const words = text.trim().split(/\s+/);
+
+  // Return the length of the array, which represents the number of words
+  return words.length;
 }
 
 var deck = new deck();
@@ -838,10 +915,32 @@ function playAudioFile(file)
     }
 }
 
-var _speechTimerId = null;
-var _clockTimerId = null;
-var _pauseTimerId = null;
-var _utter = null;
+function readPrompt(text, charIndex = 0)
+{
+	_utter = new SpeechSynthesisUtterance();
+	_utter.volume = 1; // range is 0-1
+
+	if (deck.voice != null)
+	{
+        //console.log('read() - deck: ' + deck.voice.lang);
+		_utter.voice = deck.promptVoice;  // if voices for language were found, then use the one we saved on start-up
+		_utter.lang = deck.voice.lang;
+	}
+	else
+	{
+		_utter.lang = deck.language; // if voice not found, try to the language from the web site
+	}
+
+	_utter.text = text.substring(charIndex).toLowerCase();
+
+	_utter.onend = function(event) {
+	}
+
+    _utter.lang = 'en-US';
+	window.speechSynthesis.speak(_utter);
+	//_speechTimerId = setTimeout(speechBugWorkaround, 10000);
+}
+
 function read(text, charIndex, textId = '#slideDescription' /* used to highlight the current word */)
 {
 	_cancelled = false;
@@ -855,7 +954,7 @@ function read(text, charIndex, textId = '#slideDescription' /* used to highlight
 
 	if (deck.voice != null)
 	{
-        //console.log('reading: ' + deck.voice.lang);
+        //console.log('read() - deck: ' + deck.voice.lang);
 		_utter.voice = deck.voice;  // if voices for language were found, then use the one we saved on start-up
 		_utter.lang = deck.voice.lang;
 	}
@@ -1057,7 +1156,8 @@ function tts(text)
 
 function loadVoicesDeck()
 {
-    loadVoices(deck.language, deck.languageLong);
+    loadVoices(deck.language, deck.languageLong, 'selectVoice');
+    loadVoices(deck.language, deck.languageLong, 'selectPromptVoice');
 
 	if (_voices.length == 0 && _voicesLoadAttempts++ < 10)
 	{
@@ -1133,7 +1233,7 @@ function updateLinks()
     var href = '/' + deck.locale + '/definitions/confirmdelete/' + id;
 	$('#deleteEntry').attr("href", href);
 
-    console.log('href: ' + $('#goToEntry').attr("href"));
+    //console.log('href: ' + $('#goToEntry').attr("href"));
 }
 
 function touchReads()
@@ -1166,11 +1266,11 @@ function touch(reads, views = false)
         if (reads || views)
             ajaxexec(path); // touch it and update stats
 
-        console.log('reader::touch() ajax path: ' + path);
+        //console.log('reader::touch() ajax path: ' + path);
     }
     else
     {
-    	console.log('reader::touch() path not set');
+    	//console.log('reader::touch() path not set');
     }
 }
 

@@ -29,6 +29,7 @@
     $readRandom = isset($options['readRandom']) ? $options['readRandom'] : false;
     $randomOrder = $randomOrder || $readRandom;
     $readReverse = isset($options['readReverse']) ? $options['readReverse'] : false;
+    $readPrompts = isset($options['readPrompts']) ? $options['readPrompts'] : false;
 @endphp
 
 <!-------------------------------------------------------->
@@ -175,7 +176,7 @@
 					<div class="" style="color: green;" id="selected-word"></div>
 					<div class="" style="color: green;" id="selected-word-definition"></div>
                     @if ($hasTranslation)
-    					<div style="font-size:.8em;"><a href="" onclick="event.preventDefault(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a></div>
+    					<div style="font-size:.8em;"><a href="" onclick="event.preventDefault(); pause(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a></div>
                         <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
 					@endif
 				</div><!-- panel-run -->
@@ -197,7 +198,7 @@
 	<!--------------------------------------------------------------->
 	<!-- Settings panel popup   ------------------------------------->
 	<!--------------------------------------------------------------->
-	<div id="settings" class="overlay" style="display:none;">
+	<div id="settings" class="overlay" style="display:default;">
 		<div class="text-center mt-3">
 			<div class="mb-2">
                 <label for="languages" class="checkbox-big-label mb-0">{{trans_choice('ui.Voice', 1)}}:</label>
@@ -206,10 +207,9 @@
                 </div>
             </div>
 			<div class="mb-2">
-            <div>
-                <label for="languages" class="checkbox-big-label mb-0">{{trans_choice('proj.Prompt Voice', 1)}}:</label>
+                <label for="" class="checkbox-big-label mb-0">{{trans_choice('proj.Prompt Voice', 1)}}:</label>
                 <div name="" id="" class="middle center" style="">
-                    <select class="" onchange="changeVoice();" name="selectPromptVoice" id="selectPromptVoice"></select>
+                    <select class="" onchange="changePromptVoice();" name="selectPromptVoice" id="selectPromptVoice"></select>
                 </div>
             </div>
             <div class="m-0" style="">
@@ -256,6 +256,10 @@
                     <div class="mt-1 ml-1">
                         <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" {{$readReverse ? 'checked' : ''}} />
                         <label for="checkbox-flip" class="checkbox-sm steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
+                    </div>
+                    <div class="mt-1 ml-1">
+                        <input type="checkbox" name="checkbox-read-prompts" id="checkbox-read-prompts" style="height:20px; position:static;" {{$readPrompts ? 'checked' : ''}} />
+                        <label for="checkbox-read-prompts" class="checkbox-sm steelblue" onclick="">@LANG('proj.Read Prompts')</label>
                     </div>
                 </div>
                 @endif
