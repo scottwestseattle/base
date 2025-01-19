@@ -380,7 +380,7 @@ function deck() {
             else
                 waitSeconds = longerWait;
 
-            console.log('wait seconds: ' + waitSeconds + ', words: ' + words);
+            //console.log('wait seconds: ' + waitSeconds + ', words: ' + words);
 
             // read the text
             setTimeout(() => {
@@ -1156,8 +1156,17 @@ function tts(text)
 
 function loadVoicesDeck()
 {
-    loadVoices(deck.language, deck.languageLong, 'selectVoice');
-    loadVoices(deck.language, deck.languageLong, 'selectPromptVoice');
+    if (loadVoices(deck.language, deck.languageLong, 'selectVoice'))
+    {
+        setSelectedVoice('selectVoice', 'readVoiceIndex');
+        changeVoice();
+    }
+
+    if (loadVoices(deck.language, deck.languageLong, 'selectPromptVoice'))
+    {
+        setSelectedVoice('selectPromptVoice', 'readPromptIndex');
+        changePromptVoice();
+    }
 
 	if (_voices.length == 0 && _voicesLoadAttempts++ < 10)
 	{
