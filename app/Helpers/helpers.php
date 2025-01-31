@@ -599,8 +599,12 @@ if (!function_exists('convertAccentChars')) {
 if (!function_exists('getLanguageId')) {
 	function getLanguageId()
 	{
-        $language = Cookie::get('languageId');
-        $language = isset($language) ? $language : LANGUAGE_EN;
+        $language = LANGUAGE_ES; //2025: force to ESP
+	    if (false) //2025: only offering ESP for the moment
+	    {
+            $language = Cookie::get('languageId');
+            $language = isset($language) ? $language : LANGUAGE_EN;
+	    }
 
         return intval($language);
     }

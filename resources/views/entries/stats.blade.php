@@ -22,7 +22,7 @@
 
 		<div>
 
-		@if ($stats['uniqueCount'] <= 300)
+		@if (false && $stats['uniqueCount'] <= 300)
 
 			<h3 class="mt-3">{{__('proj.Most Commonly Used')}}</h3>
 			@foreach($stats['sortCount'] as $key => $value)
@@ -37,7 +37,7 @@
 		@elseif (isset($articleCount))
 
 			<h3 class="mt-3">{{__('proj.Most Common Words')}}</h3>
-			<?php $i = 0; $max = 500; ?>
+			<?php $i = 0; $max = 50000; ?>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
 				<?php if ($i++ > $max) break; ?>
@@ -52,15 +52,22 @@
 
 		@else
 
-			<h3 class="mt-3">{{__('proj.Most Common Words')}}</h3>
-			<?php $i = 0; $max = 200; ?>
+			<h3 class="mt-3">{{__('proj.Ordered by Number of uses')}}</h3>
+			<?php $i = 0; $max = 20000; ?>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>
 				<?php if ($i++ > $max) break; ?>
 			@endforeach
 
+			<?php $i = 0; ?>
+			<h3 class="mt-3">{{__('proj.Alphabetical Order')}}</h3>
+			@foreach($stats['sortAlpha'] as $key => $value)
+				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span>
+				<?php if ($i++ > $max) break; ?>
+			@endforeach
 		@endif
 
+@if (false)
         <div class="mt-3">
             <h3>{{__('proj.Possible Verbs')}} ({{$possibleVerbs}})</h3>
 
@@ -77,6 +84,7 @@
                 @endif
             @endforeach
         </div>
+@endif
 
 		</div>
 

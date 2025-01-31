@@ -18,6 +18,9 @@
     if (isset($aotd))
         $articleText = (Auth::check()) ? trunc($aotd->description, 300) : $aotd->description;
     //dump($options);
+
+    $showWidgets = isset($options['showWidgets']) && $options['showWidgets'];
+    $showWidgets = true;
 @endphp
 
 @extends('layouts.app')
@@ -39,8 +42,7 @@
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
 @guest
-    @if (\App\Site::hasOption('fpheader') && (!isLanguageCookieSet() /* || !isUserLevelCookieSet() */))
-        <!-- Header Photo -->
+    @if (false && \App\Site::hasOption('fpheader') && (!isLanguageCookieSet() /* || !isUserLevelCookieSet() */))
         <div class="fpbox-header">
             <div class="row row-course">
                 @if (!isLanguageCookieSet())
@@ -160,6 +162,7 @@
 @endif
 
 </div>
+
 @endsection
 
 <!--------------------------------------------------------------------------------------->
@@ -167,6 +170,7 @@
 <!-- Page Body -->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
+
 @section('content')
 
 <!--------------------------------------------------------------------------------------->
@@ -203,11 +207,12 @@
     </div>
 @endif
 
+
 <!--------------------------------------------------------------------------------------->
 <!-- Big Shortcuts widget -->
 <!--------------------------------------------------------------------------------------->
-@if (isset($options['showWidgets']) && $options['showWidgets'])
-    <div class="d-block d-lg-none d-flex justify-content-center text-center bg-none mb-2 mt-0" style="xmax-width: 500px;">
+@if ($showWidgets)
+    <div class="d-block d-lg-none d-flex justify-content-center text-center bg-none mb-2 mt-0" style="sbwxmax-width: 500px;">
 @php
     $style = 'width: 20%; max-width:90px;';
 @endphp

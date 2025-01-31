@@ -198,7 +198,7 @@
 	<!--------------------------------------------------------------->
 	<!-- Settings panel popup   ------------------------------------->
 	<!--------------------------------------------------------------->
-	<div id="settings" class="overlay" style="display:default;">
+	<div id="settings" class="overlay" style="display:none;">
 		<div class="text-center mt-3">
 			<div class="mb-2">
                 <label for="languages" class="checkbox-big-label mb-0">{{trans_choice('ui.Voice', 1)}}:</label>

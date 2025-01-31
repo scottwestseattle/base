@@ -190,7 +190,12 @@ function deck() {
     // this shows the beginning count down and then starts the first slide
 	this.run = function(fromBeginning = true) {
 		if (fromBeginning)
+		{
 			reset();
+
+            if (deck.readPrompts())
+    		    deck.readIntro();
+		}
 		this.setStates(RUNSTATE_COUNTDOWN);
 	    deck.showSlide();
 		this.runSlide();
@@ -307,7 +312,7 @@ function deck() {
 	}
 
 	this.readPrompts = function() {
-		return $('#checkbox-read-prompts').prop('checked');
+		return ($('#checkbox-read-prompts').prop('checked'));
 	}
 
     this.getText = function (mainText = true) {
@@ -333,31 +338,50 @@ function deck() {
 		read(deck.getText(), _lastCharIndex);
 	}
 
+    this.readIntro = function() {
+            const promptArray = [
+                "Attempt to say the following phrases in Spanish: ",
+                "Try to say the following phrases in Spanish: ",
+                "Practice saying the following phrases in Spanish: ",
+            ];
+
+            const randomIndex = Math.floor(Math.random() * promptArray.length);
+            var prompt = promptArray[randomIndex];
+
+            // read the prompt
+            readPrompt(prompt);
+    }
+
 	this.readSlide = function() {
 
-	    // read the prompt
+        // get the text we are trying to learn
 	    var text = deck.getText();
 
 	    if (this.readPrompts())
 	    {
-            var prompt = deck.getText(false /* translation */);
-            const promptArray = [
-            "Translate the following: ",
-            "How do you say the following: ",
-            "Say this in Spanish: ",
-            "Try to translate this: ",
-            "Try to say this in Spanish: ",
-            "Can you say this: ",
-            "Repeat this in Spanish: ",
-            "Attempt to say this: ",
-            "Attempt to say this in Spanish: ",
-            "How would this be said in Spanish: ",
-            "How would this be translated: ",
-            "What would this be in Spanish: "
-            ];
+    	    // get the translated text to use as the prompt
+            var prompt = deck.getText(false /* translated */);
 
-            const randomIndex = Math.floor(Math.random() * promptArray.length);
-            prompt = promptArray[randomIndex] + prompt;
+            if (false)
+            {
+                const promptArray = [
+                "Translate the following: ",
+                "How do you say the following: ",
+                "Say this in Spanish: ",
+                "Try to translate this: ",
+                "Try to say this in Spanish: ",
+                "Can you say this: ",
+                "Repeat this in Spanish: ",
+                "Attempt to say this: ",
+                "Attempt to say this in Spanish: ",
+                "How would this be said in Spanish: ",
+                "How would this be translated: ",
+                "What would this be in Spanish: "
+                ];
+
+                const randomIndex = Math.floor(Math.random() * promptArray.length);
+                prompt = promptArray[randomIndex] + prompt;
+            }
 
             // read the prompt
             readPrompt(prompt);
