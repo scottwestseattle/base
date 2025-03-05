@@ -2219,7 +2219,8 @@ class DefinitionController extends Controller
    		if ($request->isMethod('post'))
         {
             // do the conversion
-            $parms = $this->doConvertTextToFavorites($request, alphanum($request->title), $records);
+            $tagTitle = !empty($request->title) ? $request->title : null;
+            $parms = $this->doConvertTextToFavorites($request, alphanum($tagTitle), $records);
             $parms['urlList'] = route('definitions.listTag', ['locale' => $locale, 'tag' => $parms['tagId']]) . '?order=desc';
            	$parms['urlArticle'] = route('articles.edit', ['locale' => $locale, 'entry' => $record->id]);
            	//return redirect($parms['urlList']);
@@ -2233,56 +2234,64 @@ class DefinitionController extends Controller
 
     private function doConvertTextToFavorites($request, $title, $records)
     {
+        $f = __CLASS__ . ':' . __FUNCTION__;
+        $tagId = -1;
+        $existCnt = 0;
+        $addedCnt = 0;
+
         if (!empty($records))
         {
+            $tag = null;
+
             // create the favorites list tag
-            $name = alphanum($title);
-            $tag = Tag::createUserFavoriteList($name);
-
-            if (!empty($tag))
+            if (!empty($title))
             {
-                // add the snippets to the favorites list
-                foreach($records as $r)
+                $name = alphanum($title);
+                $tag = Tag::createUserFavoriteList($name);
+            }
+
+            // add the snippets to the favorites list
+            foreach($records as $r)
+            {
+                if (isset($r['choices']))
                 {
-                    if (isset($r['choices']))
+                    // then translation should also be set
+                    if (!isset($r['translation_en']))
                     {
-                        // then translation should also be set
-                        if (!isset($r['translation_en']))
+                        dd('stopping: translation not set');
+                    }
+                }
+
+                $title = $r['q'];
+                $translation = !empty($r['translation_en']) ? $r['translation_en'] : $r['a'];
+                $choices = isset($r['choices']) ? $r['choices'] : null;
+                $definition = !empty($r['q']) ? Definition::get($r['q']) : null;
+                if (isset($definition))
+                {
+                    $existCnt++;
+                    if (false) //2025: if it exists, don't mess with it
+                    {
+                        $definition->translation_en = $translation;
+                        $definition->notes = $choices;
+
+                        try
                         {
-                            dd('stopping: translation not set');
+                            $definition->save();
+                        }
+                        catch (\Exception $e)
+                        {
+                            $msg = $e->getMessage();
+                            dd('Error updating existing definition ' . $exists . ': ' . $msg);
                         }
                     }
 
-                    $title = $r['q'];
-                    $translation = !empty($r['translation_en']) ? $r['translation_en'] : $r['a'];
-                    $choices = isset($r['choices']) ? $r['choices'] : null;
-                    $exists = isset($r['exists']);
-                    if ($exists)
+                    //dump('FOUND: ' . $title , ' - ', $translation);
+                }
+                else
+                {
+                    //dd('about to create new record');
+                    if (false)
                     {
-                        $definition = Definition::getById($r['exists'][0]);
-                        if (isset($definition))
-                        {
-                            $definition->translation_en = $translation;
-                            $definition->notes = $choices;
-                            //dd($definition->title);
-                            try
-                            {
-                                $definition->save();
-                            }
-                            catch (\Exception $e)
-                            {
-                                $msg = $e->getMessage();
-                                dd('Error updating existing definition ' . $exists . ': ' . $msg);
-                            }
-                        }
-                        else
-                        {
-                            dd('definition that EXISTS - NOT FOUND');
-                        }
-                    }
-                    else
-                    {
-                        //dd('about to create new record');
                         $definition = Definition::addDefinition([
                             'title' => $title,
                             'translation_en' => $translation,
@@ -2290,16 +2299,27 @@ class DefinitionController extends Controller
                             'language_flag' => $request->language_flag,
                             ]);
                     }
-
-                    if (!empty($definition))
+                    else
                     {
-                        $definition->addTag($tag->id);
+                        dump('NEED TO ADD: ' . $title , ' - ', $translation);
                     }
+
+                    $addedCnt++;
+                }
+
+                if (isset($tag) && !empty($definition))
+                {
+                    $tagId = $tag->id;
+                    $definition->addTag($tagId);
                 }
             }
+
         }
 
-        return ['tagId' => $tag->id];
+        $msg = __('base.Records added') . ': ' . $addedCnt . ', ' . __('base.Records already exist') . ': ' . $existCnt;
+        logInfo($f, $msg);
+
+        return ['tagId' => $tagId];
     }
 
 	public function convertQuestionsToSnippets(Request $request, $locale, Entry $entry)

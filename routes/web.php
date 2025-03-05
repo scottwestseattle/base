@@ -93,7 +93,6 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 // articles AJAX
 Route::group(['prefix' => 'articles'], function () {
 	Route::get('/flashcards/view/{entry}', [ArticleController::class, 'flashcardsView']); // for ajax: format flashcards to view
-	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish']); // for ajax
 });
 
 // definitions AJAX
@@ -192,6 +191,7 @@ Route::group(['prefix' => 'articles'], function () {
 	Route::get('/delete/{entry}', [ArticleController::class, 'delete'])->name('articles.deleteGet');
 
 	// publish
+	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishUpdateGet'); // for ajax
 	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishUpdate');
 	Route::get('/publish/{entry}', [ArticleController::class, 'publish'])->name('articles.publish');
 });
