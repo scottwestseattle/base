@@ -933,14 +933,19 @@ class DefinitionController extends Controller
 		return $this->getSnippets($request);
     }
 
+    // this is NOT the one in use (see below)
 	public function indexSnippets(Request $request)
     {
         $request['showForm'] = true;
         return $this->getSnippets($request);
     }
 
+    // this is the one
 	public function snippets($id = null)
     {
+        // set default to 'practice' page
+        session(['startPage' => 1]);
+
         $parms['id'] = isset($id) ? intval($id) : null;
         $parms['showForm'] = true;
         $parms['order'] = 'desc';
@@ -1829,9 +1834,9 @@ class DefinitionController extends Controller
         $lines = ['text' => $text, 'translation' => $translations, 'ids' => $ids];
 
         $options['return'] = Site::getReturnPath();
-        $options['randomOrder'] = true;
         $options['touchPath'] = '/stats/update-stats';
-        $options['readPrompts'] = true;
+        $options['readPrompts'] = false;
+        $options['randomOrder'] = false;
 
         if (isset($orderBy))
             $options['orderBy'] = $orderBy;
@@ -1948,7 +1953,8 @@ class DefinitionController extends Controller
         $siteLanguage = Site::getLanguage()['id'];
 		$languageFlagCondition = ($siteLanguage == LANGUAGE_ALL) ? '>=' : '=';
 
-		$words = self::formatDefinitions($records, $examplesOnly);
+		$words = self::formatDefinitionsShort($records);
+		//$words = self::formatDefinitions($records, $examplesOnly); // original long version
 		$lines['text'] = $words['text'];
 		$lines['translation'] = $words['translation'];
 		$lines['ids'] = Definition::getIds($records);
@@ -1957,7 +1963,8 @@ class DefinitionController extends Controller
 
 	    $options['return'] = Site::getReturnPath();
         $options['touchPath'] = '/stats/update-stats';
-        $options['readPrompts'] = true;
+        $options['readPrompts'] = false;
+        $options['randomOrder'] = false;
 
         $labels = [
             'start' => Lang::get('proj.Start Reading'),
@@ -1985,6 +1992,40 @@ class DefinitionController extends Controller
 			'labels' => $labels,
 			'history' => $history,
 		]);
+    }
+
+    static public function formatDefinitionsShort($records)
+    {
+        $lines = [];
+        $trxs = [];
+        foreach($records as $record)
+        {
+            $text = '';
+            $trx = $record->translation_en;
+
+            //
+            // add the entry
+            //
+            if (Definition::isSnippetStatic($record))
+            {
+                //
+                // snippets
+                //
+                $text = $record->title;
+            }
+            else
+            {
+                //
+                // dictionary definitions
+                //
+                $text = $record->title;
+            }
+
+            $lines[] = $text;
+            $trxs[] = $trx;
+        }
+
+        return ['text' => $lines, 'translation' => $trxs];
     }
 
     static public function formatDefinitions($records, $examplesOnly = false)

@@ -31,7 +31,7 @@ class HomeController extends Controller
 	public function __construct ()
 	{
         $this->middleware('admin')->except([
-			'frontpage', 'about', 'contact',
+			'frontpage', 'frontpageDefault', 'about', 'contact',
 			'privacy', 'terms', 'sitemap',
 			'search', 'searchAjax',
 			'dashboard', 'debug'
@@ -44,8 +44,26 @@ class HomeController extends Controller
 		parent::__construct();
 	}
 
+    // default landing URL
+	public function frontpageDefault(Request $request)
+	{
+		// sbw: if the practice page was most recently accessed
+        $startPage = session('startPage'); // access it like this
+        if ($startPage === 1)
+        	return redirect(route('practice.index', ['locale' => app()->getLocale()]));
+
+        return self::frontpage($request);
+    }
+
+    // from links within the site
 	public function frontpage(Request $request)
 	{
+        // set default to frontpage
+        session(['startPage' => 0]);
+
+    	//
+        // continue loading default frontpage
+        //
 	    $view = 'home.frontpage';
 
 	    //
@@ -59,6 +77,7 @@ class HomeController extends Controller
             //
             // get the frontpage from the site record
             //
+            $rp = resource_path();
             $viewFile = resource_path() . '/views/home/' . $frontpage . '.blade.php';
             if (!file_exists($viewFile))
                 throw new \Exception('Site frontpage file not found: ' . $viewFile);

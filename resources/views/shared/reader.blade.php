@@ -12,6 +12,8 @@
     $isDefinition = true;
     $pauseSecondsId = "pause_seconds_definitions";
     $pauseSecondsIdPound = '#' . $pauseSecondsId;
+    $readLineOrderId = '#read_line_order';
+
 	if ($contentType === 'Entry') // save 'pause seconds' separately for entries and definitions
 	{
 	    // articles or books
@@ -25,11 +27,14 @@
 	}
 
     // read options
+
+
     $randomOrder = isset($options['randomOrder']) ? $options['randomOrder'] : false;
     $readRandom = isset($options['readRandom']) ? $options['readRandom'] : false;
     $randomOrder = $randomOrder || $readRandom;
     $readReverse = isset($options['readReverse']) ? $options['readReverse'] : false;
     $readPrompts = isset($options['readPrompts']) ? $options['readPrompts'] : false;
+
 @endphp
 
 <!-------------------------------------------------------->
@@ -176,7 +181,10 @@
 					<div class="" style="color: green;" id="selected-word"></div>
 					<div class="" style="color: green;" id="selected-word-definition"></div>
                     @if ($hasTranslation)
-    					<div style="font-size:.8em;"><a href="" onclick="event.preventDefault(); pause(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a></div>
+                        <input type="checkbox" name="show-translation" id="show-translation" style="height:20px; position:static;" onchange="setReadOption('show_translation', $('#show-translation').prop('checked'));" />
+                        <label for="show-translation" class="checkbox-sm steelblue">
+    					    <div style="font-size:.8em;"><a href="" onclick="event.preventDefault(); pause(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a></div>
+                        </label>
                         <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
 					@endif
 				</div><!-- panel-run -->
@@ -236,9 +244,9 @@
             <hr />
             <div class="m-0">
                 <div>@LANG('proj.Line Order'):</div>
-                <input type="radio" id="random_order" name="random_order" value="0" {{$randomOrder ? '' : 'checked'}}>
+                <input type="radio" id="random_order" name="random_order" value="0" onclick="setReadOption('random_order', false);" {{$randomOrder ? '' : 'checked'}}>
                 <label for="random_order">@LANG('ui.Default')</label><br>
-                <input type="radio" id="random_order" name="random_order" value="1" {{$randomOrder ? 'checked' : ''}}>
+                <input type="radio" id="random_order" name="random_order" value="1" onclick="setReadOption('random_order', true);" {{$randomOrder ? 'checked' : ''}}>
                 <label for="random_order">@LANG('ui.Random')</label><br>
             </div>
 
@@ -254,12 +262,12 @@
                 @if ($showTranslationControls)
                 <div>
                     <div class="mt-1 ml-1">
-                        <input type="checkbox" name="checkbox-flip" id="checkbox-flip" style="height:20px; position:static;" {{$readReverse ? 'checked' : ''}} />
-                        <label for="checkbox-flip" class="checkbox-sm steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
+                        <input type="checkbox" name="read-reverse" id="read-reverse" style="height:20px; position:static;" onchange="setReadOption('read_reverse', $('#read-reverse').prop('checked'));" />
+                        <label for="read-reverse" class="checkbox-sm steelblue" onclick="">@LANG('proj.Reverse text and translation')</label>
                     </div>
                     <div class="mt-1 ml-1">
-                        <input type="checkbox" name="checkbox-read-prompts" id="checkbox-read-prompts" style="height:20px; position:static;" {{$readPrompts ? 'checked' : ''}} />
-                        <label for="checkbox-read-prompts" class="checkbox-sm steelblue" onclick="">@LANG('proj.Read Prompts')</label>
+                        <input type="checkbox" name="read-prompt" id="read-prompt" style="height:20px; position:static;" onchange="setReadOption('read_prompt', $('#read-prompt').prop('checked'));" />
+                        <label for="read-prompt" class="checkbox-sm steelblue" onclick="">@LANG('proj.Read Prompts')</label>
                     </div>
                 </div>
                 @endif

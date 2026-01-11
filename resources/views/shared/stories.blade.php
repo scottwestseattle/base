@@ -40,7 +40,7 @@
                 <a href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}">
                 @endif
                     @if ($photo)
-                        <img style="height:230px;" src="img/backgrounds/covers/{{$record->id}}.png" />
+                        <img style="height:230px;" src="/img/backgrounds/covers/{{$record->id}}.png" />
                     @else
                         <div style="height:230px; width:151px;">
                             <div style="color: white; padding: 30% 20px; overflow-wrap:break-word; font-weight:bold; font-size:20px;">

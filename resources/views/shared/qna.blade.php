@@ -121,7 +121,7 @@
 	<!-- FLASHCARD -->
 	<!-------------------------------------------------------->
 	<div id="show-flashcards" class="text-center">
-    @if ($article)
+    @if (false && $article)
         <div class="text-center" style="font-size: {{$settings['options']['font-size']}};">
             <a href="" style="color: black; background-color:LightGray; text-decoration:none;" onclick="flipCard(event, true);">
                 <div style="min-height: 300px; ">

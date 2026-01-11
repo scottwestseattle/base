@@ -18,11 +18,7 @@
     if (isset($aotd))
         $articleText = (Auth::check()) ? trunc($aotd->description, 300) : $aotd->description;
     //dump($options);
-
-    $showWidgets = isset($options['showWidgets']) && $options['showWidgets'];
-    $showWidgets = true;
 @endphp
-
 @extends('layouts.app')
 @section('title', __(isset($options['title']) ? $options['title'] : 'base.Site Title') )
 <!--------------------------------------------------------------------------------------->
@@ -38,12 +34,12 @@
 @else
 <div style="width:100%; background-color: white;">
 @endif
-
 <!--------------------------------------------------------------------------------------->
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
 @guest
-    @if (false && \App\Site::hasOption('fpheader') && (!isLanguageCookieSet() /* || !isUserLevelCookieSet() */))
+    @if (\App\Site::hasOption('fpheader') && (!isLanguageCookieSet() /* || !isUserLevelCookieSet() */))
+        <!-- Header Photo -->
         <div class="fpbox-header">
             <div class="row row-course">
                 @if (!isLanguageCookieSet())
@@ -163,7 +159,6 @@
 @endif
 
 </div>
-
 @endsection
 
 <!--------------------------------------------------------------------------------------->
@@ -171,7 +166,6 @@
 <!-- Page Body -->
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
-
 @section('content')
 
 <!--------------------------------------------------------------------------------------->
@@ -211,8 +205,8 @@
 <!--------------------------------------------------------------------------------------->
 <!-- Big Shortcuts widget -->
 <!--------------------------------------------------------------------------------------->
-@if ($showWidgets)
-    <div class="d-block d-lg-none d-flex justify-content-center text-center bg-none mb-2 mt-0" style="sbwxmax-width: 500px;">
+@if (isset($options['showWidgets']) && $options['showWidgets'])
+    <div class="d-block d-lg-none d-flex justify-content-center text-center bg-none mb-2 mt-0" style="xmax-width: 500px;">
 @php
     $style = 'width: 20%; max-width:90px;';
 @endphp
@@ -384,7 +378,8 @@
 <!-- LIST OF THINGS TO DO DAILY -->
 <!--------------------------------------------------------------------------------------->
 @component('shared.todo', ['options' => $options])@endcomponent
-@if (isset($options['todo']))
+
+@if (false && isset($options['todo']))
     @php
     @endphp
 
@@ -423,8 +418,14 @@
 @endif
 
 <!--------------------------------------------------------------------------------------->
+<!-- SNIPPETS - PRACTICE TEXT -->
+<!--------------------------------------------------------------------------------------->
+@component('shared.snippets', ['options' => $options, 'history' => $history])@endcomponent
+
+<!--------------------------------------------------------------------------------------->
 <!-- ARTICLES -->
 <!--------------------------------------------------------------------------------------->
+
 @php
     $showPrivate = Auth::check() && isset($options['articlesPrivate']) && count($options['articlesPrivate']) > 0;
     $showOther = isAdmin() && isset($options['articlesOther']) && count($options['articlesOther']) > 0;
@@ -467,8 +468,8 @@
 </h3>
 @endif
 
-<div style="SBW" id="tab-tab1">
-    @component('shared.stories', ['records' => $options['articlesPublic'], 'options' => $options, 'release' => 'public'])@endcomponent
+<div style="" id="tab-tab1">
+    @component('shared.articles', ['records' => $options['articlesPublic'], 'options' => $options, 'release' => 'public'])@endcomponent
 </div>
 
 @if ($showPrivate)
@@ -483,18 +484,12 @@
     </div>
 @endif
 
-<!--------------------------------------------------------------------------------------->
-<!-- SNIPPETS - PRACTICE TEXT -->
-<!--------------------------------------------------------------------------------------->
-@if (false)
-@component('shared.snippets', ['options' => $options, 'history' => $history])@endcomponent
-@endif
 
 <!--------------------------------------------------------------------------------------->
 <!-- NEWEST WORDS -->
 <!--------------------------------------------------------------------------------------->
 
-@if (false && isset($newestWords))
+@if (isset($newestWords))
 <h3>{{__('proj.Newest Words')}}<span class="title-count">({{count($newestWords)}})</span></h3>
 <div class="text-center mt-2" style="">
     <div style="display: inline-block; width:100%">

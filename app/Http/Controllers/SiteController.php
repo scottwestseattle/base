@@ -113,7 +113,7 @@ class SiteController extends Controller
 			]);
 	}
 
-	public function view(Site $site)
+	public function view(Request $request, $locale, Site $site)
     {
 		$record = $site;
 
@@ -122,7 +122,7 @@ class SiteController extends Controller
 			]);
     }
 
-	public function edit(Site $site)
+	public function edit(Request $request, $locale, Site $site)
     {
 		$record = $site;
 
@@ -165,7 +165,7 @@ class SiteController extends Controller
 		return redirect('/' . PREFIX . '/view/' . $record->id);
 	}
 
-    public function confirmDelete(Site $site)
+    public function confirmDelete(Request $request, $locale, Site $site)
     {
 		$record = $site;
 

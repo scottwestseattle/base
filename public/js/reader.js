@@ -84,11 +84,29 @@ $(document).ready(function() {
     //
     // get the last random setting and use it
     //
-    var randomOrder = localStorage['#random_order'];
-	randomOrder = (randomOrder) ? randomOrder : "";
-	//console.log('pause seconds: ' + pauseSeconds);
-    $('#random_order').val(randomOrder);
+    var randomOrder = getReadOption('random_order')
+    $('input[name="random_order"][value="1"]').prop('checked', randomOrder);
 
+    //
+    // get the last read reverse setting and use it
+    //
+    var readReverse = getReadOption('read_reverse')
+    $('#read-reverse').prop('checked', readReverse);
+
+    //
+    // get the last read prompts setting and use it
+    //
+    var readPrompt = getReadOption('read_prompt');
+    $('#read-prompt').prop('checked', readPrompt);
+
+    //
+    // get the last "show translation" setting and use it
+    //
+    var showTranslation = getReadOption('show_translation');
+    $('#show-translation').prop('checked', showTranslation);
+
+	//console.log('read reverse: ' + readReverse);
+	//console.log('read prompt: ' + readPrompt);
 });
 
 $(window).on('unload', function() {
@@ -294,25 +312,46 @@ function deck() {
 	}
 
 	this.showSlide = function() {
+
         $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + max);
-        $(".slideDescription").text(deck.getText());
+
+        // show the slide text
+        $(".slideDescription").text(this.getText()); //sbw
+
+        // show the translation?
+        if (this.isShowTranslationChecked())
+        {
+            $("#slideTranslation").text(deck.getText(/* main text = */ false));
+            $("#slideTranslation").show();
+        }
+        else
+        {
+    		$('#slideTranslation').text('');
+            $("#slideTranslation").hide();
+        }
+
 		$('#selected-word').text('');
 		$('#selected-word-definition').text('');
 
-		$('#slideTranslaiton').text('');
-        $("#slideTranslation").hide();
-
 		if ($('#tab1').is(':visible'))
 			window.scroll(0, 0); // scroll to top
-
 	}
 
 	this.isFlipped = function() {
-		return $('#checkbox-flip').prop('checked');
+		return $('#read-reverse').prop('checked');
 	}
 
 	this.readPrompts = function() {
-		return ($('#checkbox-read-prompts').prop('checked'));
+		return ($('#read-prompt').prop('checked'));
+	}
+
+	this.isShowTranslationChecked = function() {
+		return ($('#show-translation').prop('checked')); //sbw
+	}
+
+	this.showTranslation = function() {
+        $("#slideTranslation").text(deck.getText(/* main text = */ false));
+        $("#slideTranslation").toggle();
 	}
 
     this.getText = function (mainText = true) {
@@ -329,11 +368,6 @@ function deck() {
         }
     }
 
-	this.showTranslation = function() {
-        $("#slideTranslation").text(deck.getText(/* main text = */ false));
-        $("#slideTranslation").toggle();
-	}
-
 	this.readSlideResume = function() {
 		read(deck.getText(), _lastCharIndex);
 	}
@@ -343,6 +377,15 @@ function deck() {
                 "Attempt to say the following phrases in Spanish: ",
                 "Try to say the following phrases in Spanish: ",
                 "Practice saying the following phrases in Spanish: ",
+                "Translate the following to Spanish: ",
+                "How do you say the following in Spanish: ",
+                "Say this in Spanish: ",
+                "Try to say this in Spanish: ",
+                "Can you say this in Spanish: ",
+                "Repeat this in Spanish: ",
+                "Attempt to say this in Spanish: ",
+                "How would this be said in Spanish: ",
+                "What would this be in Spanish: "
             ];
 
             const randomIndex = Math.floor(Math.random() * promptArray.length);
@@ -362,26 +405,8 @@ function deck() {
     	    // get the translated text to use as the prompt
             var prompt = deck.getText(false /* translated */);
 
-            if (false)
-            {
-                const promptArray = [
-                "Translate the following: ",
-                "How do you say the following: ",
-                "Say this in Spanish: ",
-                "Try to translate this: ",
-                "Try to say this in Spanish: ",
-                "Can you say this: ",
-                "Repeat this in Spanish: ",
-                "Attempt to say this: ",
-                "Attempt to say this in Spanish: ",
-                "How would this be said in Spanish: ",
-                "How would this be translated: ",
-                "What would this be in Spanish: "
-                ];
-
-                const randomIndex = Math.floor(Math.random() * promptArray.length);
-                prompt = promptArray[randomIndex] + prompt;
-            }
+            // sbw: show the prompt text
+            $(".slideDescription").text(prompt);
 
             // read the prompt
             readPrompt(prompt);
@@ -518,6 +543,7 @@ function loadData()
 		deck.contentType = container.data('contenttype');
 		deck.contentId = container.data('contentid');
 		deck.readLocationTag += deck.contentType + deck.contentId;
+        //console.log('contentType: ' + deck.contentType); // snippets, article, or ??
 
         // to save and reload read 'pause seconds'
 		deck.pauseSecondsId = container.data('pausesecondsid');
@@ -569,6 +595,13 @@ function getCurrentId()
     var index = (randomOrder == "1") ? deck.slideOrder[curr] : curr;
 
     return deck.slides[index].id;
+}
+
+// not used yet, plug in above
+function isRandomChecked()
+{
+    var randomOrder = $('input[name="random_order"]:checked').val();
+    return (randomOrder == "1");
 }
 
 function getCurrentSlide()
@@ -967,6 +1000,13 @@ function readPrompt(text, charIndex = 0)
 
 function read(text, charIndex, textId = '#slideDescription' /* used to highlight the current word */)
 {
+    // sbw: show the primary text
+    $(".slideDescription").text(deck.getText());
+
+    // show the translation?
+    if (deck.isShowTranslationChecked())
+        deck.showTranslation();
+
 	_cancelled = false;
 	clearTimeout(_speechTimerId);
 
@@ -1597,4 +1637,42 @@ function getTimeDisplay(seconds)
 function addHistory()
 {
     addHistoryRecord(deck.historyPath, deck.programName, deck.programId, deck.programType, deck.programSubType, deck.programAction, deck.sessionName, deck.sessionId, max, deck.historyRoute);
+}
+
+//not implemented yet
+function flipSettingStorage(settingId)
+{
+	localStorage[settingId] = !localStorage[settingId];
+}
+
+function setReadOption(settingId, value)
+{
+    //
+    // update the specified setting with value in local storage
+    //
+
+    // save different settings for 'Entry' and 'Snippets'
+    settingId = (deck.contentType == 'Entry') ? settingId + '_entry' : settingId + '_snippets';
+
+    if (value == 'undefined')
+        value = 0;
+    else
+	    value = value ? 1 : 0;
+
+    console.log('setLocal settingId: ' + settingId + ', value: ' + value);
+	localStorage[settingId] = value;
+}
+
+function getReadOption(settingId)
+{
+    //
+    // get the value of the specified setting from local storage
+    //
+
+    // get different settings for 'Entry' and 'Snippets'
+    settingId = (deck.contentType == 'Entry') ? settingId + '_entry' : settingId + '_snippets';
+
+    var value = localStorage[settingId];
+    console.log('getLocal settingId: ' + settingId + ', value: ' + value);
+    return value == 1;
 }

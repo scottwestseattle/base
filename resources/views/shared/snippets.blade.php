@@ -190,6 +190,7 @@
                         <tbody>
                             <tr>
                                 <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
+                                    <span style="font-size:.8em;">{{$loop->index + 1}}.</span>
                                 @if ($showForm)
                                     <a href="" onclick="copyToReader(event, '{{$record->id}}', '#textEdit', '#textEditTranslation', '.record-form');">{{Str::limit($record->title, 200)}}</a>
                                     <input id="{{$record->id}}" type="hidden" value="{{$record->title}}" />

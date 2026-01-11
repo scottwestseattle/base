@@ -108,7 +108,7 @@ class Event extends Model
 		else
 		{
 		    $link = route('events.delete', ['locale' => app()->getLocale()]);
-			$msg = 'error reading log file: ' . $path . ' (size: ' . $logFileSize . ')  <a href="$link">Delete</a>'; //route()
+			$msg = 'error reading log file: ' . $path . ' (size: ' . $logFileSize . ')  <a href="' . $link . '">Delete</a>'; //route()
             logError($msg, $msg);
 		}
 

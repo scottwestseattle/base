@@ -61,7 +61,9 @@ use App\Http\Controllers\Gen\ContactController;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Route::get('/language/{locale}', [Controller::class, 'language'])->name('language');
-Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
+Route::get('/', [HomeController::class, 'frontpageDefault'])->name('frontpageDefault');
+//Route::get('/', [HomeController::class, 'frontpage'])->name('frontpage');
+Route::get('/frontpage', [HomeController::class, 'frontpage'])->name('frontpage');
 
 // Global
 Route::get('/setlanguage/{languageId}', [Controller::class, 'setLanguage']);
@@ -89,6 +91,15 @@ Route::get('/clear-sessions', function () {
 })->name('flush');
 
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+
+// Entries AJAX
+Route::group(['prefix' => 'entries'], function () {
+    // custom
+    Route::get('/set-read-location/{entry}/{location}', [EntryController::class, 'setReadLocationAjax']);
+	Route::get('/get-definitions-user/{entry}', [EntryController::class, 'getDefinitionsUserAjax']);
+	Route::get('/remove-definition-user-ajax/{entry}/{defId}', [EntryController::class, 'removeDefinitionUserAjax']);
+	Route::get('/remove-definition-user/{entry}/{defId}', [EntryController::class, 'removeDefinitionUser']);
+});
 
 // articles AJAX
 Route::group(['prefix' => 'articles'], function () {
@@ -145,7 +156,9 @@ Route::group([
 
 ///////////////////////////////////////////////////////////////////////////////
 // Front Page
-Route::get('/', [HomeController::class, 'frontpage'])->name('home.frontpage');
+Route::get('/', [HomeController::class, 'frontpageDefault'])->name('frontpageDefault');
+//Route::get('/', [HomeController::class, 'frontpage'])->name('home.frontpagede');
+Route::get('/frontpage', [HomeController::class, 'frontpage'])->name('home.frontpage');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/about', [HomeController::class, 'about']);
 Route::get('/terms', [HomeController::class, 'terms']);
@@ -355,12 +368,6 @@ Route::group(['prefix' => 'entries'], function () {
 	// undelete
 	Route::get('/deleted', [EntryController::class, 'deleted']);
 	Route::get('/undelete/{id}', [EntryController::class, 'undelete']);
-
-    // custom
-    Route::get('/set-read-location/{entry}/{location}', [EntryController::class, 'setReadLocationAjax']);
-	Route::get('/get-definitions-user/{entry}', [EntryController::class, 'getDefinitionsUserAjax']);
-	Route::get('/remove-definition-user-ajax/{entry}/{defId}', [EntryController::class, 'removeDefinitionUserAjax']);
-	Route::get('/remove-definition-user/{entry}/{defId}', [EntryController::class, 'removeDefinitionUser']);
 
 	// permalink
 	Route::get('/{permalink}', [EntryController::class, 'permalink'])->name('entries.permalink');

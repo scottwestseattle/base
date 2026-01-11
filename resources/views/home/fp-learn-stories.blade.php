@@ -38,7 +38,6 @@
 @else
 <div style="width:100%; background-color: white;">
 @endif
-
 <!--------------------------------------------------------------------------------------->
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
@@ -207,6 +206,7 @@
 
     </div>
 @endif
+
 
 <!--------------------------------------------------------------------------------------->
 <!-- Big Shortcuts widget -->
@@ -384,6 +384,7 @@
 <!-- LIST OF THINGS TO DO DAILY -->
 <!--------------------------------------------------------------------------------------->
 @component('shared.todo', ['options' => $options])@endcomponent
+
 @if (isset($options['todo']))
     @php
     @endphp
@@ -467,7 +468,7 @@
 </h3>
 @endif
 
-<div style="SBW" id="tab-tab1">
+<div style="" id="tab-tab1">
     @component('shared.stories', ['records' => $options['articlesPublic'], 'options' => $options, 'release' => 'public'])@endcomponent
 </div>
 

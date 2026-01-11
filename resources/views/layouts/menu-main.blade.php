@@ -2,9 +2,10 @@
     // books options looks like: books-es
     $books = 'books-' . App\Site::getLanguage()['code'];
     $locale = app()->getLocale();
+    $iconSize = 24;
 @endphp
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top app-color-primary">
-	<a class="navbar-brand" href="{{route('home.frontpage', ['locale' => $locale])}}">
+	<a style="margin-right:10px;" class="navbar-brand" href="{{route('home.frontpage', ['locale' => $locale])}}">
 		<div class="brand logo middle">
 		    @if (Str::endsWith(domainName(), '.com'))
                 <img src="/img/logos/logo-{{domainName()}}.png" style="max-width:40px;"/>
@@ -18,26 +19,41 @@
 
 	<div class="mr-auto navbar-icon-shortcuts">
 @auth
-		<a class="navbar-item" href="{{lurl('dashboard')}}">
+		<a class="" href="{{lurl('dashboard')}}">
 			<div>
-				<svg class="" width="24" height="24" fill="currentColor" style="{{isAdmin() ? 'color:gold;' : ''}}" >
+				<svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="currentColor" style="{{isAdmin() ? 'color:gold;' : ''}}" >
 					<use xlink:href="/img/bootstrap-icons.svg#person-circle" />
 				</svg>
 			</div>
 		</a>
 @else
-		<a class="navbar-item" href="{{lurl('login')}}">
+		<a class="" href="{{lurl('login')}}">
 			<div>
-				<svg class="" width="24" height="24" fill="currentColor" style="color:LightGray;" >
+				<svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="currentColor" style="color:LightGray;" >
 					<use xlink:href="/img/bootstrap-icons.svg#person-circle" />
 				</svg>
 			</div>
 		</a>
 @endauth
-
-		<a id="menu-item-search" class="navbar-item" href="" onclick="event.preventDefault(); $('#popup-search').toggle(); $('#popup-search-text').focus();">
+		<a class="" href="{{lurl('practice')}}">
 			<div>
-				<svg class="" width="20" height="20" fill="currentColor" >
+				<svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="currentColor" style="color:white;" >
+					<use xlink:href="/img/bootstrap-icons.svg#chat-square-text" />
+				</svg>
+			</div>
+		</a>
+
+		<a class="" href="{{route('favorites', ['locale' => $locale])}}">
+			<div>
+				<svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="currentColor" >
+					<use xlink:href="/img/bootstrap-icons.svg#heart-fill" />
+				</svg>
+			</div>
+		</a>
+
+		<a id="menu-item-search" class="" href="" onclick="event.preventDefault(); $('#popup-search').toggle(); $('#popup-search-text').focus();">
+			<div>
+				<svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="currentColor" >
 					<use xlink:href="/img/bootstrap-icons.svg#search" />
 				</svg>
 			</div>
@@ -77,23 +93,6 @@
 <!--------------------------------------------------------------------------------------->
 <!-- End of Search form -->
 <!--------------------------------------------------------------------------------------->
-
-@if (false) // doesn't fit
-		<a class="navbar-item" href="/practice">
-			<div>
-				<svg class="" width="20" height="20" fill="currentColor" >
-					<use xlink:href="/img/bootstrap-icons.svg#list-check" />
-				</svg>
-			</div>
-		</a>
-@endif
-		<a class="navbar-item" href="{{route('favorites', ['locale' => $locale])}}">
-			<div>
-				<svg class="" width="20" height="20" fill="currentColor" >
-					<use xlink:href="/img/bootstrap-icons.svg#heart-fill" />
-				</svg>
-			</div>
-		</a>
 
 		<!-- Language Selector Dropdown -->
 		<div class="mt-1 middle dropdown">
