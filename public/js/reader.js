@@ -319,7 +319,7 @@ function deck() {
         $(".slideDescription").text(this.getText()); //sbw
 
         // show the translation?
-        if (this.isShowTranslationChecked())
+        if (!this.readPrompts() && this.isShowTranslationChecked())
         {
             $("#slideTranslation").text(deck.getText(/* main text = */ false));
             $("#slideTranslation").show();
@@ -349,6 +349,7 @@ function deck() {
 		return ($('#show-translation').prop('checked')); //sbw
 	}
 
+    // this is for use from the UI
 	this.showTranslation = function() {
         $("#slideTranslation").text(deck.getText(/* main text = */ false));
         $("#slideTranslation").toggle();
@@ -406,6 +407,7 @@ function deck() {
             var prompt = deck.getText(false /* translated */);
 
             // sbw: show the prompt text
+            $("#slideDescription").addClass('steelblue');
             $(".slideDescription").text(prompt);
 
             // read the prompt
@@ -1000,12 +1002,16 @@ function readPrompt(text, charIndex = 0)
 
 function read(text, charIndex, textId = '#slideDescription' /* used to highlight the current word */)
 {
-    // sbw: show the primary text
+    // show the primary text
     $(".slideDescription").text(deck.getText());
+    $("#slideDescription").removeClass('steelblue'); // remove color class in case prompt reading added it
 
-    // show the translation?
     if (deck.isShowTranslationChecked())
-        deck.showTranslation();
+    {
+        // sbw: show the translation
+        $("#slideTranslation").text(deck.getText(/* main text = */ false));
+        $("#slideTranslation").show();
+    }
 
 	_cancelled = false;
 	clearTimeout(_speechTimerId);
@@ -1464,7 +1470,7 @@ function setFontSize()
 {
 	$("#slideDescription").css("font-size", _readFontSize + "px");
 
-    var fontDiff = 5;
+    var fontDiff = 10;
 	var transFontSize = _readFontSize - fontDiff;
 	transFontSize = transFontSize >= (_minFontSize - fontDiff) ? transFontSize : _minFontSize;
 	$("#slideTranslation").css("font-size", transFontSize + "px");

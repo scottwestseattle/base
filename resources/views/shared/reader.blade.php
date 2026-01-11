@@ -181,9 +181,11 @@
 					<div class="" style="color: green;" id="selected-word"></div>
 					<div class="" style="color: green;" id="selected-word-definition"></div>
                     @if ($hasTranslation)
-                        <input type="checkbox" name="show-translation" id="show-translation" style="height:20px; position:static;" onchange="setReadOption('show_translation', $('#show-translation').prop('checked'));" />
                         <label for="show-translation" class="checkbox-sm steelblue">
-    					    <div style="font-size:.8em;"><a href="" onclick="event.preventDefault(); pause(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a></div>
+    					    <div style="font-size:.8em;">
+    					        <a href="" onclick="event.preventDefault(); pause(); deck.showTranslation();">{{trans_choice('ui.Show Translation', 1)}}</a>
+                                <input type="checkbox" name="show-translation" id="show-translation" class="ml-1 mt-2" style="position:static;" onclick="deck.showTranslation();" onchange="setReadOption('show_translation', $('#show-translation').prop('checked'));" />
+    					    </div>
                         </label>
                         <div id="slideTranslation" class="mt-2 steelblue hidden" style="font-size: 17px;" ></div>
 					@endif
