@@ -1,3 +1,6 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', __('base.Edit Site'))
 @section('menu-submenu')@component('sites.menu-submenu', ['record' => $record])@endcomponent @endsection
@@ -6,8 +9,7 @@
 
 	<h1>{{__('base.Edit Site')}}</h1>
 
-	<form method="POST" id="form-edit" action="/sites/update/{{$record->id}}">
-
+	<form method="POST" id="form-edit" action="{{route('sites.update', ['locale' => $locale, 'site' => $record->id])}}">
 		<div class="form-group">
 			<label for="title" class="control-label">@LANG('ui.URL'):</label>
 			<input type="text" name="title" class="form-control" value="{{$record->title}}"></input>

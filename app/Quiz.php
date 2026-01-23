@@ -167,8 +167,10 @@ class Quiz
 		$records = [];
 
         // split lines
-		$questions = preg_split('/\r\n/', $questions, -1, PREG_SPLIT_NO_EMPTY);
-		$answers = preg_split('/\r\n/', $answers, -1, PREG_SPLIT_NO_EMPTY);
+		//$questions = preg_split('/\r\n/', $questions, -1, PREG_SPLIT_NO_EMPTY);
+		//$answers = preg_split('/\r\n/', $answers, -1, PREG_SPLIT_NO_EMPTY);
+		$questions = Spanish::getSentences($questions);
+		$answers = Spanish::getSentences($answers);
 		$qna = [];
 		$cnt = 0;
 		foreach($questions as $record)

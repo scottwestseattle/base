@@ -1,4 +1,5 @@
 @php
+    $locale = app()->getLocale();
     $translation = isset($options['sentences_translation']) ? $options['sentences_translation'] : null;
     $translationMatches = true;
     if (isset($options['translation_matches']) && !$options['translation_matches'])
@@ -11,7 +12,29 @@
     // quizes
     $qnaPorPara = isset($options['qnaPorPara']) ? $options['qnaPorPara']['count'] : 0;
     $qnaEraFue = isset($options['qnaEraFue']) ? $options['qnaEraFue']['count'] : 0;
-    $locale = app()->getLocale();
+
+    // get/set view mode: paragraph, sentences, or side-by-side
+    $setSessionUrl = '/set-session?tag=articlesViewMode&value=';
+    $checked1 = $checked2 = $checked3 = '';
+    $hidden1 = $hidden2 = $hidden3 = 'hidden';
+    $viewMode = session('articlesViewMode');
+    if ($viewMode == '2')
+    {
+        $checked2 = 'checked';
+        $hidden2 = ''; // not hidden
+    }
+    elseif ($viewMode == '3')
+    {
+        $checked3 = 'checked';
+        $hidden3 = ''; // not hidden
+    }
+    else
+    {
+        // default to first item
+        $checked1 = 'checked';
+        $hidden1 = ''; // not hidden
+    }
+
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
@@ -54,8 +77,8 @@
 
     <div>
         <!-- Stats -->
-        <div class="mb-2">
-            <div class="mb-2">
+        <div class="mb-1">
+            <div class="mb-1">
                 <a type="button" class="btn btn-primary" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
                 @if (!$record->isArticle() && $options['lineCount'] > 25)
                     <a type="button" class="btn btn-primary mt-1" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" ><span style="font-size:.9em;">{{__('ui.Read')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
@@ -76,9 +99,8 @@
 
             <div class="small-text">
                 <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div>
-                <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                 <div style="margin-right:10px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
-                <div style="margin-right:10px; float:left;">{{$options['letterCount']}} {{trans_choice('ui.Letter', 2)}}</div>
+                <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true,  'ajax' => true, 'reload' => true])@endcomponent
                 </span>
@@ -91,12 +113,8 @@
                     </div>
                 @endif
                 @if (isset($translation))
-                    <div class="mr-2 float-left">
-                        <a href="" onclick="event.preventDefault(); $('#description').toggle(); $('#translation').toggle(); " class="btn btn-xs btn-success" role="button">
-                            <div class="middle mr-0" style="">{{trans_choice('ui.Translation', 2)}}</div>
-                        </a>
-                    </div>
-                    @if (isAdmin())
+
+                    @if (false && Auth::user())
                         <div class="mr-2 float-left">
                             <a href="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
                                 <div class="middle mr-0" style="">{{trans_choice('proj.Convert to Favorites', 2)}}</div>
@@ -106,17 +124,37 @@
                             <div class="middle mr-0" style="">{{__('proj.Convert Questions to Snippets')}}</div>
                         </a>
                     @endif
+
                     @if (!$translationMatches)
                         <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT ({{$cntSentences}}<>{{$cntTranslations}})</div>
                     @endif
+
+                    <div class="form-group mt-2" style="clear:both;">
+                        <div class="radio-group-item float-left mr-3">
+                            <input type="radio" name="radio_sample" value="1" class="form-control-inline" onclick="$('#description').hide(); $('#sentence-view').show(); $('#side-by-side').hide(); ajaxexec('{{$setSessionUrl . 1}}');" {{$checked1}}>
+                            <label for="radio_sample" class="radio-label">{{trans_choice('ui.Sentence', 2)}}</label>
+                        </div>
+                        <div class="radio-group-item float-left mr-3">
+                            <input type="radio" name="radio_sample" value="2" class="form-control-inline" onclick="$('#description').hide(); $('#sentence-view').hide(); $('#side-by-side').show(); ajaxexec('{{$setSessionUrl . 2}}');" {{$checked2}}>
+                            <label for="radio_sample" class="radio-label">{{__('ui.Side by Side')}}</label>
+                        </div>
+                        <div class="radio-group-item float-left mr-3">
+                            <input type="radio" name="radio_sample" value="3" class="form-control-inline"  onclick="$('#description').show(); $('#sentence-view').hide(); $('#side-by-side').hide(); ajaxexec('{{$setSessionUrl . 3}}');" {{$checked3}}>
+                            <label for="radio_sample" class="radio-label">{{trans_choice('ui.Paragraph', 2)}}</label>
+                        </div>
+                    </div>
                 @endif
             </div>
         </div>
 
+    <!------------------------------------>
+    <!-- The Entry						-->
+    <!------------------------------------>
+
         <div style="clear: both;" class="">
 
             <!-- Title -->
-            <h1 name="title">{{$record->title}}</h1>
+            <div style="font-size: 2.5em;" name="title">{{$record->title}}</div>
 
             <!-- Summary -->
             @if (strlen(trim($record->description_short)) > 0)
@@ -125,24 +163,51 @@
                 </div>
             @endif
 
-            <div class="entry-div" style="margin-top:20px; width:100%; font-size:1.1em;">
+            <div class="entry-div" style="width:100%; font-size:1.1em;">
                 <div class="entry" style="width:100%;">
-                    <span id="description" name="description" class="">{!! $record->description !!}</span>
                     @if (isset($translation))
-                        <span id="translation" name="translation" class="hidden">
-                            <table>
+                        <!------------------------------------>
+                        <!-- Sentence View					-->
+                        <!------------------------------------>
+                        <span id="sentence-view" name="sentence-view" class="{{$hidden1}}">
+                            <div style="font-size: .7em; color: green;"><i>Click or tap sentences for translation</i></div>
+                            @foreach($options['sentences'] as $s)
+                                @php
+                                    $trx = isset($options['sentences_translation'][$loop->index]) ? $options['sentences_translation'][$loop->index] : null;
+                                    $id = 'translation' . $loop->index;
+                                @endphp
+                                <div class="">
+                                    <div class="mt-3"><a href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none; color: black;">{{$s}}</a></div>
+                                    <div id="{{$id}}" class="mt-1 mb-3  hidden" style="font-size:.9em;"><a href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none;">{{$trx}}</a></div>
+                                </div>
+                            @endforeach
+                        </span>
+                    @endif
+                    @if (isset($translation))
+                        <!------------------------------------>
+                        <!-- Side-by-side View  			-->
+                        <!------------------------------------>
+                        <span id="side-by-side" name="side-by-side" class="{{$hidden2}}">
+                            <table class="table table-striped table-borderless">
                                 <tbody>
                                     @foreach($options['sentences'] as $s)
                                         <tr class="mb-3">
-                                            <td class="pb-4 pr-4" style="vertical-align:top; width:50%;"><span class="mr-2 fn">{{$loop->index + 1}}</span>{{$s}}</td>
-                                            @php $trx = isset($options['sentences_translation'][$loop->index]) ? $options['sentences_translation'][$loop->index] : null; @endphp
-                                            <td class="pb-4" style="vertical-align:top;"><span class="mr-2 fn">{{$loop->index + 1}}</span>{{$trx}}</td>
+                                            @php
+                                                $trx = isset($options['sentences_translation'][$loop->index]) ? $options['sentences_translation'][$loop->index] : null;
+                                                $i = $loop->index + 1;
+                                            @endphp
+                                            <td class="pb-4 pr-4" style="vertical-align:top; width:50%;"><!-- span class="mr-2 fn">{{$i}}</span -->{{$s}}</td>
+                                            <td class="pb-4" style="vertical-align:top;"><!-- span class="mr-2 fn">{{$i}}</span -->{{$trx}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </span>
                     @endif
+                    <!------------------------------------>
+                    <!-- Paragraph View       			-->
+                    <!------------------------------------>
+                    <span id="description" name="description" class="{{$hidden3}}">{!! $record->description !!}</span>
                 </div>
             </div>
 
@@ -168,7 +233,7 @@
 	<!-- Bottom Navigation Buttons -->
 	<!------------------------------------>
 
-	@if (false)
+	@if (true)
 
 	<div class="trim-text" style="max-width:100%; margin-top: 30px;">
 		@if (isset($prev))

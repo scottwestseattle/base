@@ -132,7 +132,7 @@ class SiteController extends Controller
 			]);
     }
 
-    public function update(Request $request, Site $site)
+    public function update(Request $request, $locale, Site $site)
     {
 		$record = $site;
 
@@ -162,7 +162,7 @@ class SiteController extends Controller
 			logInfo(LOG_CLASS, __('base.No changes made'), ['record_id' => $record->id]);
 		}
 
-		return redirect('/' . PREFIX . '/view/' . $record->id);
+		return redirect(route('sites.view', ['locale' => app()->getLocale(), 'site' => $record->id]));
 	}
 
     public function confirmDelete(Request $request, $locale, Site $site)

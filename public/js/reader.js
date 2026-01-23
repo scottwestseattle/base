@@ -316,10 +316,10 @@ function deck() {
         $("#slideCount").text((curr+1) + " " + deck.labelOf + " " + max);
 
         // show the slide text
-        $(".slideDescription").text(this.getText()); //sbw
+        $(".slideDescription").text(this.getText());
 
-        // show the translation?
-        if (!this.readPrompts() && this.isShowTranslationChecked())
+        // sbw: show the translation?
+        if (/* !this.readPrompts() && */ this.isShowTranslationChecked())
         {
             $("#slideTranslation").text(deck.getText(/* main text = */ false));
             $("#slideTranslation").show();
@@ -346,7 +346,7 @@ function deck() {
 	}
 
 	this.isShowTranslationChecked = function() {
-		return ($('#show-translation').prop('checked')); //sbw
+		return ($('#show-translation').prop('checked'));
 	}
 
     // this is for use from the UI
@@ -407,6 +407,7 @@ function deck() {
             var prompt = deck.getText(false /* translated */);
 
             // sbw: show the prompt text
+            $("#slideTranslation").hide();
             $("#slideDescription").addClass('steelblue');
             $(".slideDescription").text(prompt);
 
@@ -1019,8 +1020,11 @@ function read(text, charIndex, textId = '#slideDescription' /* used to highlight
 	_utter = new SpeechSynthesisUtterance();
 	_utter.volume = 1; // range is 0-1
 
-	//_utter.rate = .75;  // range is 0-1, todo: make setable
-   // _utter.rate = 1.0;
+	let rate = $('#read-rate').val();
+	console.log('rate = ' + rate);
+
+    _utter.rate = parseFloat(rate);
+	console.log('utter.rate = ' + _utter.rate);
 
 	if (deck.voice != null)
 	{

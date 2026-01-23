@@ -1,9 +1,3 @@
-@extends('layouts.app')
-@section('title', trans_choice('proj.Story', 2))
-@if (false)
-    @section('menu-submenu')@component('gen.articles.menu-submenu', ['index' => 'articles', 'isIndex' => true])@endcomponent @endsection
-@endif
-@section('content')
 @php
     $locale = app()->getLocale();
 
@@ -26,7 +20,7 @@
 @endphp
 <div class="container page-normal">
 
-	<h1>{{trans_choice('proj.Story', 2)}}<span class="title-count">({{count($records)}})</span></h1>
+	<h2 class="ml-0">@LANG('proj.More Stories')<span class="title-count">({{count($records)}})</span></h2>
 
     <div class="row mb-3">
         @foreach($records as $record)
@@ -34,10 +28,10 @@
             <div class="text-center mb-2 ml-2"
             style="min-width:100px; max-width:45%; border-radius:10px; background-color: {{$photo ? 'default' : $colors[$colorIndex % 10]}};
                 background-image:url('/img/books/pattern.png'); background-size:cover;">
-                @if (false)
-                <a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">
+                @if (true)
+                    <a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">
                 @else
-                <a href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}">
+                    <a href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}">
                 @endif
                     @if ($photo)
                         <img style="height:230px;" src="/img/backgrounds/covers/{{$record->id}}.png" />
@@ -54,5 +48,3 @@
         @endforeach
     </div>
 </div>
-
-@endsection

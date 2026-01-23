@@ -1,3 +1,6 @@
+@php
+    $locale = app()->getLocale();
+@endphp
 @extends('layouts.app')
 @section('title', trans_choice('ui.Site', 2))
 @section('menu-submenu')@component('sites.menu-submenu')@endcomponent @endsection
@@ -21,7 +24,7 @@
 		<tbody>
 		@foreach($records as $record)
 			<tr>
-				<td class="icon"><a href='/sites/edit/{{$record->id}}'>@component('components.icon-edit')@endcomponent</a></td>
+				<td class="icon"><a href='{{route('sites.edit', ['locale' => $locale, 'site' => $record->id])}}'>@component('components.icon-edit')@endcomponent</a></td>
 				<td class="icon"><a href='/sites/publishupdate/{{$record->id}}'>@component('components.icon', ['svg' => 'lightning'])@endcomponent</a></td>
 				<td class="index-button">@component('components.button-release-status', ['record' => $record, 'views' => 'sites'])@endcomponent</td>
 				<td><a href="/sites/view/{{ $record->id }}">{{$record->title}}</a></td>

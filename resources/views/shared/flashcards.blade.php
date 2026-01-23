@@ -1,3 +1,6 @@
+<!-------------------------------------------------------->
+<!-- Is this used or is shared.qna now used? -->
+<!-------------------------------------------------------->
 @extends('layouts.review')
 @section('title', __('proj.Flashcards'))
 @section('content')
@@ -185,6 +188,9 @@
 				<label for="checkbox-random" class="checkbox-xs" onclick="updateRandom();">@LANG('quiz.Random Order')</label>
 			</div>
 
+            <!----------------------------------------------------------------------------->
+            <!-- Row of Icons at the bottom -->
+            <!----------------------------------------------------------------------------->
             @php
                 $iconSize = 16;
                 $iconSizeBigger = $iconSize + 5;
@@ -192,11 +198,13 @@
             @endphp
 			<div class="small-thin-text">
                 <ul class="nav">
+                    @if (!$article)
                     <li class="nav-item">
                         <a class="nav-link" id="goToEntry" href="" target="_blank">
                             <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#pencil-square" /></svg>
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" id="readEntry" href="" onclick="event.preventDefault(); read($('#flashcard-answer').html())">
                             <svg class="" width="{{$iconSizeBigger}}" height="{{$iconSizeBigger}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#volume-up" /></svg>
@@ -213,6 +221,7 @@
                             <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}"><use xlink:href="/img/bootstrap-icons.svg#list-ol" /></svg>
                         </a>
                     </li>
+                    @if (!$article)
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="dropdown" role="button" href="" onclick="" tablindex="-1">
                             <svg class="" width="{{$iconSize}}" height="{{$iconSize}}" fill="{{$iconColor}}" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
@@ -237,6 +246,7 @@
                         </ul>
                         <span class="ml-2" id="heartStatus"></span>
 	                </li>
+	                @endif
 	            </ul>
 			</div>
 		</div>

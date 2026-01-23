@@ -222,11 +222,12 @@
                     <select class="" onchange="changePromptVoice();" name="selectPromptVoice" id="selectPromptVoice"></select>
                 </div>
             </div>
-            <div class="m-0" style="">
+            <div class="m-0 mb-2" style="">
                 <label for="read_flag" class="checkbox-big-label" style="margin:0;">@LANG('ui.Read'):</label>
                 <select name="read_flag" id="read_flag">
                     <option value="once">@LANG('proj.Once')</option>
                     <option value="1">1 {{trans_choice('ui.minute', 1)}}</option>
+                    <option value="2">2 {{trans_choice('ui.minute', 2)}}</option>
                     <option value="5">5 {{trans_choice('ui.minute', 2)}}</option>
                     <option value="10">10 {{trans_choice('ui.minute', 2)}}</option>
                     <option value="15">15 {{trans_choice('ui.minute', 2)}}</option>
@@ -236,7 +237,22 @@
                     <option value="continuous">@LANG('proj.Continuous')</option>
                 </select>
             </div>
-            <hr />
+            <div class="m-0 mb-2" style="">
+                <label for="read-rate" class="checkbox-big-label" style="margin:0;">@LANG('ui.Speed'):</label>
+                <select name="read-rate" id="read-rate">
+                    <option value=".2">1 (@LANG('ui.slowest'))</option>
+                    <option value=".4">2</option>
+                    <option value=".6">3</option>
+                    <option value=".8">4</option>
+                    <option value="1" selected>5 (@LANG('ui.normal'))</option>
+                    <option value="1.1">6</option>
+                    <option value="1.15">7</option>
+                    <option value="1.2">8</option>
+                    <option value="1.25">9</option>
+                    <option value="1.3">10 (@LANG('ui.fastest'))</option>
+                </select>
+            </div>
+            <hr/>
             <div class="m-0">
                 <div>@LANG('proj.Seconds to pause between lines'):</div>
                 <a onclick="inc(event, '{{$pauseSecondsIdPound}}', -1)" href=""><span class="glyphicon glyphCustom glyphicon-minus-sign"></span></a>

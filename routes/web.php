@@ -379,15 +379,15 @@ Route::group(['prefix' => 'entries'], function () {
 Route::group(['prefix' => 'sites'], function () {
 	Route::get('/', [SiteController::class, 'index']);
 	Route::get('/index', [SiteController::class, 'index']);
-	Route::get('/view/{site}', [SiteController::class, 'view']);
+	Route::get('/view/{site}', [SiteController::class, 'view'])->name('sites.view');
 
 	// add
 	Route::get('/add', [SiteController::class, 'add']);
 	Route::post('/create', [SiteController::class, 'create']);
 
 	// edit
-	Route::get('/edit/{site}', [SiteController::class, 'edit']);
-	Route::post('/update/{site}', [SiteController::class, 'update']);
+	Route::get('/edit/{site}', [SiteController::class, 'edit'])->name('sites.edit');
+	Route::post('/update/{site}', [SiteController::class, 'update'])->name('sites.update');
 
 	// publish
 	Route::get('/publish/{site}', [SiteController::class, 'publish']);

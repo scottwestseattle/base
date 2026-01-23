@@ -20,6 +20,7 @@ use App\Gen\Definition;
 use App\Gen\Exercise;
 use App\Gen\History;
 use App\Gen\Lesson;
+use App\Gen\Spanish;
 use App\Site;
 use App\Tag;
 use App\User;
@@ -61,11 +62,6 @@ class HomeController extends Controller
         // set default to frontpage
         session(['startPage' => 0]);
 
-    	//
-        // continue loading default frontpage
-        //
-	    $view = 'home.frontpage';
-
 	    //
 	    // Get the site info for the current domain
 	    //
@@ -84,7 +80,7 @@ class HomeController extends Controller
 
             $view = 'home.' . $frontpage;
 
-            //dump($record);
+            //dump($view);
 		}
 		catch (\Exception $e)
 		{
@@ -188,6 +184,7 @@ class HomeController extends Controller
         $options['todo'] = null;
 
         $showTopBoxes = false;
+        $showAotd = true;
 
         // show aotd, wotd, potd if they haven't been shown recently
         if (\App\Site::hasOption('fpShowOtd') && (!Auth::check() || null === Cookie::get('showTopBoxes'))) // TURNED OFF
@@ -284,14 +281,23 @@ class HomeController extends Controller
             $options['articlesOther'] = null; //isAdmin() ? Entry::getRecentList($parms)['records'] : null;
 
             // show aotd if it hasn't been shown recently
-            if ($showTopBoxes)
+            if ($showAotd || $showTopBoxes)
             {
-                $parms['orderBy'] = Auth::check() ? 'id DESC' : 'id ASC';
-                $options['aotd'] = Article::getFirst($parms);
+                $parms['orderBy'] = 'id DESC';
+                $count = Article::getCountStories();
+                $ordinalIx = DateTimeEx::getIndexByDay($count) + 1; // 1-based
+                $aotd = Article::getStoryOrdinal($ordinalIx);
+                if (isset($aotd))
+                {
+                    $options['aotd'] = $aotd;
+               		$options['aotd']['sentences'] = isset($aotd->description) ? Spanish::getSentences($aotd->description) : null;
+               		$options['aotd']['sentences-trx'] = isset($aotd->description_translation) ? Spanish::getSentences($aotd->description_translation) : null;
+                }
             }
 		}
 		catch (\Exception $e)
 		{
+		    //dump($e);
 			logException(LOG_CLASS, $e->getMessage(), __('proj.Error getting articles'));
 		}
 

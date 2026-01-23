@@ -77,6 +77,20 @@ class Article extends Model
         return $count;
     }
 
+    static public function getCountStories()
+    {
+		$count = Entry::select()
+				//->where('site_id', Site::getId())
+				->where('type_flag', ENTRY_TYPE_ARTICLE)
+				->where('sub_type_flag', ENTRY_SUB_TYPE_STORY)
+				->where('language_flag', getLanguageId())
+				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+				->count();
+				//->toSql();
+
+        return $count;
+    }
+
     static public function getRecord($parms = null)
     {
         $parms = crackParms($parms);
@@ -100,12 +114,27 @@ class Article extends Model
     static public function getFirst($parms)
     {
 		$record = Entry::select()
-				->where('site_id', Site::getId())
+				//->where('site_id', Site::getId())
 				->where('type_flag', ENTRY_TYPE_ARTICLE)
 				->where('language_flag', getLanguageId())
 				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
 				->orderByRaw($parms['orderBy'])
 				->first();
+
+        return $record;
+    }
+
+    static public function getStoryOrdinal($ordinalIx)
+    {
+		$record = Entry::select()
+				->where('type_flag', ENTRY_TYPE_ARTICLE)
+				->where('sub_type_flag', ENTRY_SUB_TYPE_STORY)
+				->where('language_flag', getLanguageId())
+				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+				->orderByRaw('id')
+                ->skip($ordinalIx)   // Skip the preceding records
+                ->take(1)               // Take only one record
+                ->first();
 
         return $record;
     }
