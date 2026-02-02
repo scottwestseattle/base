@@ -129,6 +129,12 @@
                             <label class="tiny">@LANG('ui.Summary'):</label>
                             <textarea id="description_short" name="description_short" class="form-control entry-description-text" onfocus="setFocus($(this), '#accent-chars')" >{{ $record->description_short }}</textarea>
                         </div>
+
+                        <div class="entry-title-div mb-3">
+                            <label class="tiny">@LANG('ui.Level'):</label>
+                            <input type="text" id="level_flag" name="level_flag" placeholder="1, 2, or 3" class="form-control" value="{{$record->level_flag}}" />
+                        </div>
+
                     </div>
                 </div>
 

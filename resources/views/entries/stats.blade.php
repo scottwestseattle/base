@@ -52,7 +52,7 @@
 
 		@else
 
-			<h3 class="mt-3">{{__('proj.Ordered by Number of uses')}}</h3>
+			<h3 class="mt-3">{{__('proj.Ordered by Frequency')}}</h3>
 			<?php $i = 0; $max = 20000; ?>
 			@foreach($stats['sortCount'] as $key => $value)
 				<span><a href="/definitions/find/{{$key}}">{{$key}}</a></span> <span style="font-size:11px; color:gray; margin-right:10px;">({{$value}}) </span>

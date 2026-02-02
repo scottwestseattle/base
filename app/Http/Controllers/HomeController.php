@@ -292,6 +292,7 @@ class HomeController extends Controller
                     $options['aotd'] = $aotd;
                		$options['aotd']['sentences'] = isset($aotd->description) ? Spanish::getSentences($aotd->description) : null;
                		$options['aotd']['sentences-trx'] = isset($aotd->description_translation) ? Spanish::getSentences($aotd->description_translation) : null;
+               		$options['aotd']['coverImage'] = Article::getCoverImage($aotd->id, $aotd->level_flag);
                 }
             }
 		}
@@ -391,54 +392,6 @@ class HomeController extends Controller
 		]);
 	}
 
-    static private function getHash($text)
-	{
-		$s = sha1(trim($text));
-		$s = str_ireplace('-', '', $s);
-		$s = strtolower($s);
-		$s = substr($s, 0, 8);
-		$final = '';
-
-		for ($i = 0; $i < 6; $i++)
-		{
-			$c = substr($s, $i, 1);
-
-			if ($i % 2 != 0)
-			{
-				if (ctype_digit($c))
-				{
-                    if ($i == 1)
-                    {
-                        $final .= "Q";
-                    }
-                    else if ($i == 3)
-                    {
-                        $final .= "Z";
-                    }
-                    else
-                    {
-                        $final .= $c;
-                    }
-				}
-				else
-				{
-					$final .= strtoupper($c);
-				}
-			}
-			else
-			{
-				$final .= $c;
-			}
-		}
-
-		// add last 2 chars
-		$final .= substr($s, 6, 2);
-
-		//echo $final;
-
-		return $final;
-	}
-
     public function search(Request $request)
     {
 		$isPost = $request->isMethod('post');
@@ -476,36 +429,141 @@ class HomeController extends Controller
     {
         $searchType = intval($searchType);
 		$isPost = $request->isMethod('post');
+		$options = $results = $hash = null;
 
-        // turn these on by default
-		$options['dictionary'] = ($searchType === SEARCHTYPE_DEFINITIONS || $searchType === SEARCHTYPE_DICTIONARY);
-		$options['snippets'] = ($searchType === SEARCHTYPE_SNIPPETS || $searchType === SEARCHTYPE_DICTIONARY);
-		$options['entries'] = ($searchType === SEARCHTYPE_ENTRIES);
-		$options['word'] = false;
-		$options['lessons'] = ($searchType === SEARCHTYPE_DICTIONARY);
-		$options['language'] = getLanguageId(); // not used but shows the current session language when it's dumped
-
-		$results = [];
-
-		if ($isPost)
+		if (Str::startsWith($searchText, '@'))
 		{
-			// do the search
-			$options['dictionary'] = isset($request->dictionary_flag);
-			$options['snippets'] = isset($request->snippets_flag);
-			$options['entries'] = isset($request->articles_flag);
-			$options['word'] = isset($request->word_flag);
+            $searchText = alphanum($searchText);
+			$hash = substr($searchText, 1);
+			$hash = self::doHash($hash, date("Y"));
+            $results['search'] = $searchText;
+            $results['count'] = 1;
 		}
+		else
+		{
+            $searchText = alphanum($searchText);
 
-        $searchText = alphanum($searchText);
-        $options['startsWith'] = (strlen($searchText) <= SEARCH_MIN_LENGTH);
+            // turn these on by default
+            $options['dictionary'] = ($searchType === SEARCHTYPE_DEFINITIONS || $searchType === SEARCHTYPE_DICTIONARY);
+            $options['snippets'] = ($searchType === SEARCHTYPE_SNIPPETS || $searchType === SEARCHTYPE_DICTIONARY);
+            $options['entries'] = ($searchType === SEARCHTYPE_ENTRIES);
+            $options['word'] = false;
+            $options['lessons'] = ($searchType === SEARCHTYPE_DICTIONARY);
+            $options['language'] = getLanguageId(); // not used but shows the current session language when it's dumped
 
-        $results = self::searchAll($searchText, $options);
+            $results = [];
+
+            if ($isPost)
+            {
+                // do the search
+                $options['dictionary'] = isset($request->dictionary_flag);
+                $options['snippets'] = isset($request->snippets_flag);
+                $options['entries'] = isset($request->articles_flag);
+                $options['word'] = isset($request->word_flag);
+            }
+
+            $options['startsWith'] = (strlen($searchText) <= SEARCH_MIN_LENGTH);
+
+            $results = self::searchAll($searchText, $options);
+		}
 
 		return view('shared.search-results-light', [
 			'isPost' => $isPost,
 		    'options' => $options,
 		    'results' => $results,
+		    'hash' => $hash,
 		]);
+	}
+
+	static private function doHash($hash, $year)
+	{
+		$hashed = self::getHash($hash . $year);		// pre-2024, 8 digits
+		$hashed2024 = self::getHash($hash . $year, 12); // 2024, made hashes 12 digits
+
+		if (Str::startsWith($hash, 'Fir')
+			|| Str::startsWith($hash, 'Go')
+			|| Str::startsWith($hash, 'Ya')
+			|| Str::startsWith($hash, 'All')
+		)
+		{
+			$hashed .= '!';
+			$hashed2024 .= '!';
+		}
+		else
+		{
+			$hashed .= '#';
+			$hashed2024 .= '#';
+		}
+
+		return [
+			'hashed' => $hashed,
+			'hashed2024' => $hashed2024,
+		];
+	}
+
+
+    static private function getHash($text, $length = 8) // pre-2024, length was 8
+	{
+		$s = sha1(trim($text));
+		$s = str_ireplace('-', '', $s);
+		$s = strtolower($s);
+		$s = substr($s, 0, $length);
+		$final = '';
+
+		for ($i = 0; $i < 6; $i++)
+		{
+			$c = substr($s, $i, 1);
+
+			if ($i % 2 != 0)
+			{
+				if (ctype_digit($c))
+				{
+                    if ($i == 1)
+                    {
+                        $final .= "Q";
+                    }
+                    else if ($i == 3)
+                    {
+                        $final .= "Z";
+                    }
+                    else
+                    {
+                        $final .= $c;
+                    }
+				}
+				else
+				{
+					$final .= strtoupper($c);
+				}
+			}
+			else
+			{
+				$final .= $c;
+			}
+		}
+
+		// add last 2 or 4 chars
+		$final .= substr($s, 6, $length - 6);
+
+		//
+		// some systems don't allow 9 numbers, check...
+		//
+		// Count all digits in the string
+
+		preg_match_all('/\d/', $final, $matches);
+
+		// $matches[0] contains all digits found
+		if (count($matches[0]) >= 9)
+		{
+			// too many, replace three of them with small case letters
+			$final = preg_replace('/\d/', 's', $final, 1);
+			$final = preg_replace('/\d/', 'b', $final, 1);
+			$final = preg_replace('/\d/', 'w', $final, 1);
+		}
+
+		///////////////////////////////////////
+
+		return $final;
 	}
 
 	static private function searchAll($searchText, $options)

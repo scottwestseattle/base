@@ -351,7 +351,7 @@ class DefinitionController extends Controller
 			// update the view timestamp so it will move to the back of the list
 			//todo: $record->updateLastViewedTime();
 
-    		return $this->view($record);
+    		return $this->view($request, app()->getLocale(), $record);
 		}
 		else
 		{

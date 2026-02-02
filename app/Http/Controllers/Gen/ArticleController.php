@@ -386,6 +386,7 @@ class ArticleController extends Controller
 		$record->sub_type_flag 			= isset($request->sub_type_flag) ? ENTRY_SUB_TYPE_STORY : null;
 		$record->permalink              = createPermalink($record->title, $record->created_at);
 		$record->options                = trimNull($options);
+		$record->level_flag             = isset($request->level_flag) ? $request->level_flag : null;
 
 		try
 		{

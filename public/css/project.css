@@ -1290,3 +1290,27 @@ Front Page Feature Boxes
 	font-size: 26px;
 	font-weight: 230;
 }
+
+/****************************************
+Put lable on an Image
+****************************************/
+
+.image-wrapper {
+  position: relative;   /* anchor for the label */
+  display: inline-block;
+}
+
+.image-wrapper img {
+  display: block;
+}
+
+.image-lable {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(128,0,128,1);
+  color: white;
+  padding: 2px 3px;
+  font-size: 10px;
+  font-weight: bold;
+}

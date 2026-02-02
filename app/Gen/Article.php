@@ -232,4 +232,39 @@ class Article extends Model
 		return $records;
 	}
 
+    static public function getCoverImage($id, $level)
+    {
+        //
+        // set up the cover image for story/article
+        //
+        $coverImage = null;
+        $imageUrl = '/img/backgrounds/covers/' . $id . '.png';
+        $imagePath = public_path() . $imageUrl;
+        $imageExists = file_exists($imagePath);
+        if ($imageExists)
+        {
+            //
+            // set the level lable: Beginner, Intermediate, Advanced
+            //
+            $lableColor = '#28c172'; // green
+            $lableText = __('ui.Beginner');
+            if ($level == 2)
+            {
+                $lableColor = '#0071f8';
+                $lableText = __('ui.Intermediate');
+            }
+            elseif ($level == 3)
+            {
+                $lableColor = '#bd37fb';
+                $lableText = __('ui.Advanced');
+            }
+
+            $coverImage['lable'] = $lableText;
+            $coverImage['lableColor'] = $lableColor;
+            $coverImage['url'] = $imageUrl;
+        }
+
+        return $coverImage;
+    }
+
 }

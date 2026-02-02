@@ -30,11 +30,21 @@
     }
     else
     {
-        // default to first item
-        $checked1 = 'checked';
-        $hidden1 = ''; // not hidden
+        if (isset($translation))
+        {
+            // default to Sentences
+            $checked1 = 'checked';
+            $hidden1 = ''; // not hidden
+        }
+        else
+        {
+            // default to Paragraphs
+            $checked3 = 'checked';
+            $hidden3 = ''; // not hidden
+        }
     }
 
+    $coverImage = \App\Gen\Article::getCoverImage($record->id, $record->level_flag);
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
@@ -72,7 +82,7 @@
     @endif
 
     <!------------------------------------>
-    <!-- The Entry						-->
+    <!-- Top Buttons and Controls		-->
     <!------------------------------------>
 
     <div>
@@ -97,6 +107,15 @@
                 @endif
             </div>
 
+            @if (isset($coverImage))
+                <div class="image-wrapper mt-2 mb-2">
+                    <img src="{{$coverImage['url']}}" style="width:90%; max-width: 333px" />
+                    <span class="image-lable" style="background: {{$coverImage['lableColor']}};">{{$coverImage['lable']}}</span>
+                </div>
+            @else
+                <h1 class="mt-2">{{$record->title}}</h1>
+            @endif
+
             <div class="small-text">
                 <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div>
                 <div style="margin-right:10px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
@@ -112,6 +131,7 @@
                         </a>
                     </div>
                 @endif
+
                 @if (isset($translation))
 
                     @if (false && Auth::user())
@@ -131,16 +151,22 @@
 
                     <div class="form-group mt-2" style="clear:both;">
                         <div class="radio-group-item float-left mr-3">
+                            <label>
                             <input type="radio" name="radio_sample" value="1" class="form-control-inline" onclick="$('#description').hide(); $('#sentence-view').show(); $('#side-by-side').hide(); ajaxexec('{{$setSessionUrl . 1}}');" {{$checked1}}>
-                            <label for="radio_sample" class="radio-label">{{trans_choice('ui.Sentence', 2)}}</label>
+                            {{trans_choice('ui.Sentence', 2)}}
+                            </label>
                         </div>
                         <div class="radio-group-item float-left mr-3">
+                            <label>
                             <input type="radio" name="radio_sample" value="2" class="form-control-inline" onclick="$('#description').hide(); $('#sentence-view').hide(); $('#side-by-side').show(); ajaxexec('{{$setSessionUrl . 2}}');" {{$checked2}}>
-                            <label for="radio_sample" class="radio-label">{{__('ui.Side by Side')}}</label>
+                            {{__('ui.Side by Side')}}
+                            </label>
                         </div>
                         <div class="radio-group-item float-left mr-3">
+                            <label>
                             <input type="radio" name="radio_sample" value="3" class="form-control-inline"  onclick="$('#description').show(); $('#sentence-view').hide(); $('#side-by-side').hide(); ajaxexec('{{$setSessionUrl . 3}}');" {{$checked3}}>
-                            <label for="radio_sample" class="radio-label">{{trans_choice('ui.Paragraph', 2)}}</label>
+                            {{trans_choice('ui.Paragraph', 2)}}
+                            </label>
                         </div>
                     </div>
                 @endif
@@ -153,16 +179,19 @@
 
         <div style="clear: both;" class="">
 
-            <!-- Title -->
-            <div style="font-size: 2.5em;" name="title">{{$record->title}}</div>
+            @if (!$record->isStory())
+            <div style="">
+                <!-- Title -->
+                <div style="font-size: 2.5em;" name="title">{{$record->title}}</div>
 
-            <!-- Summary -->
-            @if (strlen(trim($record->description_short)) > 0)
-                <div class="entry" style="margin-bottom:20px; font-size:1.3em;">
-                    <div><i>{{$record->description_short}}</i></div>
-                </div>
+                <!-- Summary -->
+                @if (strlen(trim($record->description_short)) > 0)
+                    <div class="entry" style="margin-bottom:20px; font-size:1.3em;">
+                        <div><i>{{$record->description_short}}</i></div>
+                    </div>
+                @endif
+            </div>
             @endif
-
             <div class="entry-div" style="width:100%; font-size:1.1em;">
                 <div class="entry" style="width:100%;">
                     @if (isset($translation))
@@ -170,7 +199,7 @@
                         <!-- Sentence View					-->
                         <!------------------------------------>
                         <span id="sentence-view" name="sentence-view" class="{{$hidden1}}">
-                            <div style="font-size: .7em; color: green;"><i>Click or tap sentences for translation</i></div>
+                            <div style="font-size: .8em; color: green;"><i>{{__('proj.Click or tap sentences for translation')}}</i></div>
                             @foreach($options['sentences'] as $s)
                                 @php
                                     $trx = isset($options['sentences_translation'][$loop->index]) ? $options['sentences_translation'][$loop->index] : null;
@@ -178,7 +207,7 @@
                                 @endphp
                                 <div class="">
                                     <div class="mt-3"><a href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none; color: black;">{{$s}}</a></div>
-                                    <div id="{{$id}}" class="mt-1 mb-3  hidden" style="font-size:.9em;"><a href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none;">{{$trx}}</a></div>
+                                    <div id="{{$id}}" class="mt-1 mb-3  hidden" style="font-size:.9em;"><a style="color: #0451af" href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none;">{{$trx}}</a></div>
                                 </div>
                             @endforeach
                         </span>
@@ -196,8 +225,8 @@
                                                 $trx = isset($options['sentences_translation'][$loop->index]) ? $options['sentences_translation'][$loop->index] : null;
                                                 $i = $loop->index + 1;
                                             @endphp
-                                            <td class="pb-4 pr-4" style="vertical-align:top; width:50%;"><!-- span class="mr-2 fn">{{$i}}</span -->{{$s}}</td>
-                                            <td class="pb-4" style="vertical-align:top;"><!-- span class="mr-2 fn">{{$i}}</span -->{{$trx}}</td>
+                                            <td class="pb-4 pr-4" style="vertical-align:top; width:50%;">{{$s}}</td>
+                                            <td class="pb-4" style="vertical-align:top; color: #0451af">{{$trx}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

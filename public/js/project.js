@@ -164,10 +164,12 @@ function clipboardCopy(event, idFlash, id, stripFormat = true, useHtml = false)
 	{
     //	$("#" + idFlash + ' p').fadeTo('fast', 0.1).fadeTo('slow', 1.0);
     //	$("#" + idFlash).fadeTo('fast', 0.1).fadeTo('slow', 1.0);
-        $("#" + idFlash).css("color", "red");
 	}
 
-    $("#copyStatus").text("copied");
+    if (text.length > 0)
+        $("#copyStatus").text("copied");
+    else
+        $("#copyStatus").text("nothing to copy");
 
     if (stripFormat)
     {

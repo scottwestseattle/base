@@ -16,6 +16,7 @@
     $showWidgets = isset($options['showWidgets']) && $options['showWidgets'];
     $showWidgets = true;
 
+    $aotdId = null;
     $articleText = null;
     $aotd = isset($options['aotd']) ? $options['aotd'] : null;
     //dump($aotd);
@@ -40,6 +41,8 @@
         {
             $articleText = 'no article.';
         }
+
+        $coverImage = isset($aotd['coverImage']) ? $aotd['coverImage'] : null;
     }
 @endphp
 @extends('layouts.app')
@@ -68,8 +71,49 @@
             <div class="truncate mt-1" style="">
                 <div class="">
                     <h1>@LANG('proj.Story of the Day')</h1>
-                    <div class="small-thin-text">{{date('M d, Y')}}</div>
+                    <!-- div class="small-thin-text">{{date('M d, Y')}}</div -->
                 </div>
+
+                <div>
+                @if (true)
+                    <!-------------------------------------------->
+                    <!-- Article preview of first two sentences -->
+                    <!-------------------------------------------->
+                    <div>
+                        @if (isset($coverImage))
+                        <div class="image-wrapper mb-3">
+                            <a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $aotd->permalink])}}">
+                                <img src="{{$coverImage['url']}}" style="height:350px;" />
+                                <span class="image-lable" style="background: {{$coverImage['lableColor']}};">{{$coverImage['lable']}}</span>
+                            </a>
+                        </div>
+                        @endif
+                        <!-- b><a id="" class="thin-text-18" style="font-size:2em; text-decoration: none;" href="{{route('articles.view', ['locale' => $locale, 'permalink' => $aotd->permalink])}}">{{$aotd->title}}</a></b -->
+                        <span id="sentence-view" name="sentence-view" class="">
+                            <div style="font-size: .8em; color: green;"><i>{{__('proj.Click or tap sentences for translation')}}</i></div>
+                            @php
+                                $showLines = 3 - 1;
+                            @endphp
+                            @foreach($options['aotd']['sentences'] as $s)
+                                @php
+                                    $trx = isset($options['aotd']['sentences'][$loop->index]) ? $options['aotd']['sentences-trx'][$loop->index] : null;
+                                    $id = 'translation' . $loop->index;
+                                @endphp
+                                <div class="">
+                                    <div class="mt-2"><a href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none; color: black;">{{$s}}</a></div>
+                                    <div id="{{$id}}" class="mt-1 mb-3  hidden" style="font-size:.9em;"><a href="" onclick="event.preventDefault(); $('#{{$id}}').toggle()" style="text-decoration:none;">{{$trx}}</a></div>
+                                </div>
+                                @if ($loop->index >= $showLines)
+                                    @break
+                                @endif
+                            @endforeach
+                        </span>
+                        <div class="mt-2"><a style="text-decoration:none; font-size:.9em; color: default;" href="{{route('articles.view', ['locale' => $locale, 'permalink' => $aotd->permalink])}}">@LANG('proj.Read All')...</a></div>
+                    </div>
+                @endif
+                </div>
+
+                @if (false)
                 <div class="">
                     <div>
                         <b><a id="" class="thin-text-18" style="font-size:2em; text-decoration: none;" href="{{route('articles.view', ['locale' => $locale, 'permalink' => $aotd->permalink])}}">{{$aotd->title}}</a></b>
@@ -81,6 +125,8 @@
                         <input type="hidden" id="aotd" value="{{$articleText}}" />
                     </div>
                 </div>
+                @endif
+
             </div>
 		</div>
 	</div>

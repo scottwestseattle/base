@@ -261,17 +261,16 @@
             </div>
             <hr />
             <div class="m-0">
-                <div>@LANG('proj.Line Order'):</div>
                 <input type="radio" id="random_order" name="random_order" value="0" onclick="setReadOption('random_order', false);" {{$randomOrder ? '' : 'checked'}}>
-                <label for="random_order">@LANG('ui.Default')</label><br>
+                <label for="random_order">@LANG('proj.Default Order')</label><br>
                 <input type="radio" id="random_order" name="random_order" value="1" onclick="setReadOption('random_order', true);" {{$randomOrder ? 'checked' : ''}}>
-                <label for="random_order">@LANG('ui.Random')</label><br>
+                <label for="random_order">@LANG('proj.Random Order')</label><br>
             </div>
 
             @if ($hasTranslation || $showTranslationControls)
                 <hr />
 
-                @if ($hasTranslation)
+                @if (false && $hasTranslation)
                     <div id="" class="mt-2 steelblue" style="">
                         <span class="glyphicon glyphCustom glyphicon-text-width mr-2"></span>
                     </div>
@@ -290,8 +289,6 @@
                 </div>
                 @endif
             @endif
-
-            <hr/>
             <div class="submit-button mb-2">
                 <button type="" onclick="$('#settings').toggle();" class="btn btn-primary btn-sm">@LANG('ui.Close')</button>
             </div>

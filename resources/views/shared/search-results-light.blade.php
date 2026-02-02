@@ -6,6 +6,7 @@
     $count = isset($results['count']) ? $results['count'] : null;
     $search = isset($results['search']) ? $results['search'] : null;
     $matches = strtolower(trans_choice('ui.Match', ($count > 1 || $count == 0) ? 2 : 1));
+    $hashed2024 = isset($hash['hashed2024']) ? $hash['hashed2024'] : null;
     $locale = app()->getLocale();
 @endphp
 <div class="table" style="" id="searchDefinitionsResultsTable">
@@ -20,6 +21,15 @@
     </table>
     <table class="table table-striped">
         <tbody>
+        @if (isset($hashed2024))
+            <tr><td><div id="flash" class="form-group">
+                <span id='entry2024'>{{$hashed2024}}</span>
+                <a href='#' onclick="javascript:clipboardCopy(event, 'entry2024', 'entry2024', true, true)";>
+                    <span id="" class="glyphCustom glyphicon glyphicon-copy" style="color:DarkGreen; font-size:1.1em; margin-left:5px; display:{{isset($hashed2024) && strlen($hashed2024) > 0 ? 'default' : 'none'}}"></span>
+                </a>
+                <div><span style="font-size: .8em;" id="copyStatus"></span></div>
+            </div></td></tr>
+        @endif
         @if (isset($definitions))
             @foreach($definitions as $record)
                 <tr>
