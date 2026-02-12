@@ -270,6 +270,7 @@ class HomeController extends Controller
 
             // get public articles
             $parms['release'] = 'public';
+            $parms['id'] = LANGUAGE_ALL; // show stories for all langauges
     		$options['articlesPublic'] = Entry::getRecentList($parms)['records'];
 
             // get private articles
@@ -285,20 +286,22 @@ class HomeController extends Controller
             {
                 $parms['orderBy'] = 'id DESC';
                 $count = Article::getCountStories();
-                $ordinalIx = DateTimeEx::getIndexByDay($count) + 1; // 1-based
+                $ordinalIx = DateTimeEx::getIndexByDay($count);
                 $aotd = Article::getStoryOrdinal($ordinalIx);
                 if (isset($aotd))
                 {
+                    $text = $aotd->getText();
+
                     $options['aotd'] = $aotd;
-               		$options['aotd']['sentences'] = isset($aotd->description) ? Spanish::getSentences($aotd->description) : null;
-               		$options['aotd']['sentences-trx'] = isset($aotd->description_translation) ? Spanish::getSentences($aotd->description_translation) : null;
+               		$options['aotd']['sentences'] = isset($text['text']) ? Spanish::getSentences($text['text']) : null;
+               		$options['aotd']['sentences-trx'] = isset($text['trx']) ? Spanish::getSentences($text['trx']) : null;
                		$options['aotd']['coverImage'] = Article::getCoverImage($aotd->id, $aotd->level_flag);
                 }
             }
 		}
 		catch (\Exception $e)
 		{
-		    //dump($e);
+		    dump($e);
 			logException(LOG_CLASS, $e->getMessage(), __('proj.Error getting articles'));
 		}
 
@@ -598,7 +601,7 @@ class HomeController extends Controller
                 $count += (isset($results['snippets']) ? count($results['snippets']) : 0);
             }
 
-            if ($options['entries'])
+            if ($options['entries']) // searches for articles and books (books is currently commented out in Article.php)
             {
                 $results['entries'] = Article::search($search, $options);
                 $count += (isset($results['entries']) ? count($results['entries']) : 0);

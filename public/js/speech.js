@@ -105,7 +105,7 @@ function loadVoicesGlobal()
 function loadVoices(language, languageLong, selectVoiceId)
 {
     //console.log('language: ' + language);
-    //console.log('loading voices...');
+    console.log('loading voices...');
 
 	if (_voices == null)
 	    _voices = window.speechSynthesis.getVoices();
@@ -117,15 +117,22 @@ function loadVoices(language, languageLong, selectVoiceId)
 
 	//tts('ready with ' + _voices.length + ' voices');
 
-	var voiceSelect = document.querySelector('#' + selectVoiceId);
-
     // un-hide the voice list
-    document.getElementById(selectVoiceId).style.display = 'inline-block';
+    var voiceList = document.getElementById(selectVoiceId);
+    //console.log('voiceList = ' + voiceList);
+    if (voiceList != null)
+        voiceList.style.display = 'inline-block';
 
-    // empty the voices from the select
-    var length = voiceSelect.options.length;
-    for (i = length-1; i >= 0; i--) {
-        voiceSelect.options[i] = null;
+    // get the list of voices
+	var voiceSelect = document.querySelector('#' + selectVoiceId);
+    //console.log('voiceSelect = ' + voiceSelect);
+    if (voiceSelect != null)
+    {
+        // empty the voices from the select
+        var length = voiceSelect.options.length;
+        for (i = length-1; i >= 0; i--) {
+            voiceSelect.options[i] = null;
+        }
     }
 
 	var found = 0;
@@ -188,7 +195,8 @@ function loadVoices(language, languageLong, selectVoiceId)
                     found++;
                 }
 
-                voiceSelect.appendChild(option);
+                if (voiceSelect != null)
+                    voiceSelect.appendChild(option);
             }
 		}
 	}
@@ -259,8 +267,6 @@ function saveSelectedVoice(voiceIndex, localStorageTag)
 
 function setSelectedVoice(selectVoiceId, localStorageTag)
 {
-	var voiceSelect = document.querySelector('#' + selectVoiceId);
-
 	var voiceIndex = localStorage[localStorageTag];
 	if (!voiceIndex)
 	{
@@ -268,8 +274,9 @@ function setSelectedVoice(selectVoiceId, localStorageTag)
 		voiceIndex = 0;
 	}
 
-	voiceSelect.selectedIndex = (voiceIndex < voiceSelect.options.length) ? voiceIndex : 0;
-	//debug("get: readVoiceIndex: " + voiceIndex, _debug);
+	var voiceSelect = document.querySelector('#' + selectVoiceId);
+    if (voiceSelect != null)
+    	voiceSelect.selectedIndex = (voiceIndex < voiceSelect.options.length) ? voiceIndex : 0;
 }
 
 function changeVoice()
@@ -298,16 +305,22 @@ function changePromptVoice()
 
 function _changeVoice(selectVoiceId, localStorageTag)
 {
-	var index = $(selectVoiceId)[0].selectedIndex;
-	saveSelectedVoice(index, localStorageTag);
+    var voice = null;
+    var index = -1;
+	var voiceSelect = document.querySelector(selectVoiceId);
+    if (voiceSelect != null)
+    {
+        index = $(selectVoiceId)[0].selectedIndex;
+        saveSelectedVoice(index, localStorageTag);
 
-	var voiceIndex = $(selectVoiceId).children("option:selected").val();
-	voice = _voices[voiceIndex];
+        var voiceIndex = $(selectVoiceId).children("option:selected").val();
+        voice = _voices[voiceIndex];
 
-	if (_utter != null)
-	{
-		_utter.voice = voice;
-	}
+        if (_utter != null)
+        {
+            _utter.voice = voice;
+        }
+    }
 
 	//$("#language").text("Language: " + deck.voice.lang + ", voice: " + deck.voice.name);
 	//console.log('voiceIndex: ' + voiceIndex);

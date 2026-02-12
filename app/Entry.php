@@ -133,6 +133,25 @@ class Entry extends Model
 		return $rc;
 	}
 
+    public function getText()
+    {
+        $text = $trx = null;
+        $language = getLanguageId();
+
+        if ($language == LANGUAGE_ES)
+        {
+            $text = $this->description;
+            $trx  = $this->description_translation;
+        }
+        else
+        {
+            $text = $this->description_translation;
+            $trx  = $this->description;
+        }
+
+		return ['text' => $text, 'trx' => $trx];
+    }
+
     public function hasTranslation()
     {
 		return (isset($this->description_translation) && strlen($this->description_translation) > 0);

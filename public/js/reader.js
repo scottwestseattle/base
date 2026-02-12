@@ -1020,11 +1020,20 @@ function read(text, charIndex, textId = '#slideDescription' /* used to highlight
 	_utter = new SpeechSynthesisUtterance();
 	_utter.volume = 1; // range is 0-1
 
-	let rate = $('#read-rate').val();
-	console.log('rate = ' + rate);
+    //
+    // set the read rate
+    //
+	var rate = 1;
+    if ($('#read-rate').length)
+    {
+      	rate = $('#read-rate').val();
+    	console.log('read rate found, val() = ' + rate);
+    	if (rate == 'undefined')
+    	    rate = 1;
+    }
 
+	//rate = 1;
     _utter.rate = parseFloat(rate);
-	console.log('utter.rate = ' + _utter.rate);
 
 	if (deck.voice != null)
 	{

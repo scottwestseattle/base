@@ -17,31 +17,41 @@
     $setSessionUrl = '/set-session?tag=articlesViewMode&value=';
     $checked1 = $checked2 = $checked3 = '';
     $hidden1 = $hidden2 = $hidden3 = 'hidden';
-    $viewMode = session('articlesViewMode');
-    if ($viewMode == '2')
+
+    if (isset($translation))
     {
-        $checked2 = 'checked';
-        $hidden2 = ''; // not hidden
-    }
-    elseif ($viewMode == '3')
-    {
-        $checked3 = 'checked';
-        $hidden3 = ''; // not hidden
-    }
-    else
-    {
-        if (isset($translation))
+        $viewMode = session('articlesViewMode');
+        if ($viewMode == '2')
         {
-            // default to Sentences
-            $checked1 = 'checked';
-            $hidden1 = ''; // not hidden
+            $checked2 = 'checked';
+            $hidden2 = ''; // not hidden
         }
-        else
+        elseif ($viewMode == '3')
         {
-            // default to Paragraphs
             $checked3 = 'checked';
             $hidden3 = ''; // not hidden
         }
+        else
+        {
+            if (isset($translation))
+            {
+                // default to Sentences
+                $checked1 = 'checked';
+                $hidden1 = ''; // not hidden
+            }
+            else
+            {
+                // default to Paragraphs
+                $checked3 = 'checked';
+                $hidden3 = ''; // not hidden
+            }
+        }
+    }
+    else
+    {
+        // default to Paragraphs
+        $checked3 = 'checked';
+        $hidden3 = ''; // not hidden
     }
 
     $coverImage = \App\Gen\Article::getCoverImage($record->id, $record->level_flag);
@@ -113,7 +123,7 @@
                     <span class="image-lable" style="background: {{$coverImage['lableColor']}};">{{$coverImage['lable']}}</span>
                 </div>
             @else
-                <h1 class="mt-2">{{$record->title}}</h1>
+                <h1 class="mt-2 large-thin-text" style="font-size: 2em;">{{$record->title}}</h1>
             @endif
 
             <div class="small-text">
@@ -165,9 +175,18 @@
                         <div class="radio-group-item float-left mr-3">
                             <label>
                             <input type="radio" name="radio_sample" value="3" class="form-control-inline"  onclick="$('#description').show(); $('#sentence-view').hide(); $('#side-by-side').hide(); ajaxexec('{{$setSessionUrl . 3}}');" {{$checked3}}>
-                            {{trans_choice('ui.Paragraph', 2)}}
+                            {{__('ui.Normal')}}
                             </label>
                         </div>
+                        @if (false)
+                        <div class="radio-group-item float-left mr-3">
+                            <label>
+                            <input type="radio" name="radio_sample" value="3" class="form-control-inline"  onclick="$('#description').show(); $('#sentence-view').hide(); $('#side-by-side').hide(); ajaxexec('{{$setSessionUrl . 3}}');" {{$checked3}}>
+                            {{__('ui.Vocabulary')}}
+                            </label>
+                        </div>
+                        @endif
+
                     </div>
                 @endif
             </div>
@@ -181,9 +200,6 @@
 
             @if (!$record->isStory())
             <div style="">
-                <!-- Title -->
-                <div style="font-size: 2.5em;" name="title">{{$record->title}}</div>
-
                 <!-- Summary -->
                 @if (strlen(trim($record->description_short)) > 0)
                     <div class="entry" style="margin-bottom:20px; font-size:1.3em;">
@@ -236,7 +252,12 @@
                     <!------------------------------------>
                     <!-- Paragraph View       			-->
                     <!------------------------------------>
-                    <span id="description" name="description" class="{{$hidden3}}">{!! $record->description !!}</span>
+                    @php
+                        $text = $record->getText();
+                        $text = (!empty($text['text'])) ? $text['text'] : $text['trx'];
+                        //dump($text);
+                    @endphp
+                    <span id="description" name="description" class="{{$hidden3}}">{!! $text !!}</span>
                 </div>
             </div>
 

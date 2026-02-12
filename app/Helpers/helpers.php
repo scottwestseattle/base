@@ -599,12 +599,8 @@ if (!function_exists('convertAccentChars')) {
 if (!function_exists('getLanguageId')) {
 	function getLanguageId()
 	{
-        $language = LANGUAGE_ES; //2025: force to ESP
-	    if (false) //2025: only offering ESP for the moment
-	    {
-            $language = Cookie::get('languageId');
-            $language = isset($language) ? $language : LANGUAGE_EN;
-	    }
+        $language = Cookie::get('languageId');
+        $language = isset($language) ? $language : LANGUAGE_ES;
 
         return intval($language);
     }
@@ -694,7 +690,7 @@ if (!function_exists('getLanguageOptions')) {
         $languages = [
             LANGUAGE_EN => 'English',
             LANGUAGE_ES => 'Spanish',
-            LANGUAGE_IT => 'Italian',
+//            LANGUAGE_IT => 'Italian',
 //            LANGUAGE_ZH => 'Chinese',
 //            LANGUAGE_RU => 'Russian',
 //            LANGUAGE_FR => 'French',

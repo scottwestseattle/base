@@ -83,7 +83,7 @@ class Article extends Model
 				//->where('site_id', Site::getId())
 				->where('type_flag', ENTRY_TYPE_ARTICLE)
 				->where('sub_type_flag', ENTRY_SUB_TYPE_STORY)
-				->where('language_flag', getLanguageId())
+				//->where('language_flag', getLanguageId())
 				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
 				->count();
 				//->toSql();
@@ -126,10 +126,12 @@ class Article extends Model
 
     static public function getStoryOrdinal($ordinalIx)
     {
+        //dump($ordinalIx);
+
 		$record = Entry::select()
 				->where('type_flag', ENTRY_TYPE_ARTICLE)
 				->where('sub_type_flag', ENTRY_SUB_TYPE_STORY)
-				->where('language_flag', getLanguageId())
+				//->where('language_flag', getLanguageId())
 				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
 				->orderByRaw('id')
                 ->skip($ordinalIx)   // Skip the preceding records
@@ -148,7 +150,7 @@ class Article extends Model
         $wholeWord = false; //getOrSet($options['wholeWord'], false); << doesn't work for array indexes
 
 		$records = $record = Entry::select()
-				->whereIn('type_flag', [ENTRY_TYPE_ARTICLE, ENTRY_TYPE_BOOK])
+				->whereIn('type_flag', [ENTRY_TYPE_ARTICLE /*, ENTRY_TYPE_BOOK */])
 				->where('language_flag', getLanguageId())
 				->where(function ($query) use($search) {$query
     				->where('release_flag', '>=', Status::getReleaseFlag())

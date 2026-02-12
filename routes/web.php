@@ -111,6 +111,17 @@ Route::group(['prefix' => 'definitions'], function () {
 	Route::get('/toggle-wip/{definition}',[DefinitionController::class, 'toggleWipAjax']);
 	Route::get('/wordexists/{text}', [DefinitionController::class, 'wordExistsAjax']);
 	Route::get('/find/{text}', [DefinitionController::class, 'find'])->name('definitions.find');
+	Route::get('/conjugationsgenajax/{text}', [DefinitionController::class, 'conjugationsGenAjax']);
+});
+
+// Practice AJAX
+Route::group(['prefix' => 'practice'], function () {
+	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
+});
+
+// Snippets AJAX
+Route::group(['prefix' => 'snippets'], function () {
+	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 });
 
 // history AJAX
@@ -521,7 +532,6 @@ Route::group(['prefix' => 'practice'], function () {
     Route::get('/show/{definition}', [DefinitionController::class, 'showSnippet']);
     Route::get('/edit/{definition}', [DefinitionController::class, 'editSnippet']);
     Route::post('/update/{definition}', [DefinitionController::class, 'updateSnippet']);
-	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 	Route::get('/filter/{parms}', [DefinitionController::class, 'filterSnippets']);
     Route::get('/{id?}', [DefinitionController::class, 'snippets']);
     Route::get('/', [DefinitionController::class, 'indexSnippets'])->name('practice');
@@ -538,7 +548,6 @@ Route::group(['prefix' => 'dictionary'], function () {
 // Snippets
 Route::group(['prefix' => 'snippets'], function () {
 	Route::get('/read', [DefinitionController::class, 'readSnippets'])->name('snippets.read');
-	Route::get('/cookie/{id}', [DefinitionController::class, 'setSnippetCookie']);
 
 	// flashcards / quiz have two routes
 	Route::get('/review', [DefinitionController::class, 'reviewSnippets'])->name('snippets.review');
@@ -636,7 +645,6 @@ Route::group(['prefix' => 'definitions'], function () {
 
 	// conjugations
 	Route::get('/conjugationsgen/{definition}', [DefinitionController::class, 'conjugationsGen']);
-	Route::get('/conjugationsgenajax/{text}', [DefinitionController::class, 'conjugationsGenAjax']);
 	Route::get('/conjugationscomponent/{definition}',[DefinitionController::class, 'conjugationsComponentAjax']);
 });
 

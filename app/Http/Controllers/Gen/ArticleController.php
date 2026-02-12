@@ -161,25 +161,21 @@ class ArticleController extends Controller
 
 			// count the lines
 			$options['lineCount'] = count($record->getSentences());
-			$options['sentences'] = Spanish::getSentences($record->description);
+
+			// get the text according to the selected language
+			$text = $record->getText();
+
+			$options['sentences'] = Spanish::getSentences($text['text']);
         	$options['qnaPorPara'] = Quiz::mineQna($options['sentences'], Quiz::getQnaParms('por'));
         	$options['qnaEraFue'] = Quiz::mineQna($options['sentences'], Quiz::getQnaParms('era'));
 
 			if (strlen($record->description_translation) > 0)
 			{
-	        	$options['sentences_translation'] = Spanish::getSentences($record->description_translation);
+	        	$options['sentences_translation'] = Spanish::getSentences($text['trx']);
 	        	$options['translation_matches'] = (count($options['sentences']) === count($options['sentences_translation']));
-
-                // 2025: new way doesn't needs makeFlashcards because sentences/trxs are already split correctly above
-                if (false)
-                {
-                if (count($options['sentences']) >= count($options['sentences_translation']))
-    	        	$options['translation'] = Quiz::makeFlashcards($record->description, $record->description_translation);
-    	        else
-    	        	$options['translation'] = Quiz::makeFlashcards($record->description_translation, $record->description);
-                }
 			}
 
+			$record->description_translation = nl2br($record->description_translation);
 			$record->description = nl2br($record->description);
 		}
 		else

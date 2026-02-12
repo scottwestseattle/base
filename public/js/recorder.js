@@ -287,20 +287,21 @@ window.onresize = function() {
 
 function loadRecorder()
 {
-    //console.log('loading recorder...');
-
     // record and play are optional
     record = document.querySelector('#buttonRecord');
+    if (record != null)
+    {
+        console.log('loading recorder...');
+        soundClips = document.querySelector('.sound-clips');
+        mainSection = document.querySelector('.main-controls');
 
-    soundClips = document.querySelector('.sound-clips');
-    mainSection = document.querySelector('.main-controls');
+        // the feedback canvas widget
+        canvas = document.querySelector('.visualizer');
+        canvasCtx = canvas.getContext("2d");
 
-    // the feedback canvas widget
-    canvas = document.querySelector('.visualizer');
-    canvasCtx = canvas.getContext("2d");
-
-    // size our window
-    window.onresize();
+        // size our window
+        window.onresize();
+    }
 }
 
 function playRecording()

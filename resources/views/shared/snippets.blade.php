@@ -106,7 +106,7 @@
     </form>
 
     <section class="main-controls">
-        <canvas id="feedback" class="visualizer hidden" height="40px"></canvas>
+        <canvas id="feedback" class="visualizer" height="40px"></canvas>
         <div id="record-buttons">
             <button id="buttonRecord" class="btn-primary" onclick="event.preventDefault(); startRecording()">@LANG('ui.Record')</button>
             <button id="buttonRead" class="bg-purple" onClick="event.preventDefault(); readPage($('#textEdit').val())">@LANG('ui.Robot')</button>

@@ -277,18 +277,19 @@ class DateTimeEx
 	static public function getIndexByDay($count, $sDate = null)
 	{
         $day = DateTimeEx::getDaysSinceZero($sDate);
+        $index = 0;
 
         // put day in our range of choices
-        $index = $day % $count;
-        if ($index >= 0 && $index < $count)
+        if ($count > 0)
         {
-            // expected range
+            $index = $day % $count;
+            if ($index >= 0 && $index < $count)
+            {
+                // expected range
+            }
         }
-        else
-        {
-            // unexpected, set to 0
-            $index = 0;
-        }
+
+        //dump($count . ', ' . $index . ', ' . $day);
 
         return $index;
     }
