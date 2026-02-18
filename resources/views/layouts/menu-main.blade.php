@@ -81,7 +81,7 @@
             <div id="popup-search-options" class="mb-1 hidden float-left mr-1">
                 <button id="popup-search-button-articles" type="button" class="btn btn-info btn-xs"
                 onclick="showSearchResult($('#popup-search-text').val(), {{SEARCHTYPE_ENTRIES}}, 'popup-search-text', 'popup-search-results'); $('#popup-search-options').hide();"
-                >Search Articles/Books</button>
+                >{{'proj.Search Stories'}}</button>
             </div>
             <button onclick="event.preventDefault(); $('#popup-search').hide();" class="btn btn-success btn-xs">Close</button>
 
@@ -120,7 +120,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         @if (isAdmin() || \App\Site::site()->hasOption('articles'))
-		    <li class="nav-item"><a class="nav-link" href="{{lurl('articles')}}">{{trans_choice('proj.Article', 2)}}</a></li>
+		    <li class="nav-item"><a class="nav-link" href="{{route('stories', ['locale' => $locale])}}">{{trans_choice('proj.Story', 2)}}</a></li>
+		@endif
+        @if (isAdmin())
+		    <li class="nav-item"><a class="nav-link" href="{{route('articles', ['locale' => $locale])}}">{{trans_choice('proj.Article', 2)}}</a></li>
 		@endif
         @if (isAdmin() || \App\Site::site()->hasOption($books))
     		<li class="nav-item"><a class="nav-link" href="{{lurl('books')}}">{{trans_choice('proj.Book', 2)}}</a></li>

@@ -63,6 +63,15 @@ class Definition extends Model
         DEFINITIONS_POS_OTHER       => 'base.other',
     ];
 
+    static private $_gender = [
+        DEFINITIONS_GENDER_NOTSET    => 'base.not set',
+        DEFINITIONS_GENDER_MASCULINE => 'ui.Masculine',
+        DEFINITIONS_GENDER_FEMININE  => 'ui.Feminine',
+        DEFINITIONS_GENDER_AMBIGUOUS => 'ui.Ambiguous',
+        DEFINITIONS_GENDER_NEUTRAL   => 'ui.Neutral',
+        DEFINITIONS_GENDER_OTHER     => 'ui.Other',
+    ];
+
     static public function getPosOptions()
     {
         return self::$_pos;

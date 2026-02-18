@@ -60,6 +60,17 @@
     </div>
 
     <div class="form-group">
+        <label for="gender_flag" class="control-label">@LANG('proj.Gender'):</label>
+        <select id="gender_flag" name="gender_flag">
+            <option value="1">Masculine</option>
+            <option value="2">Feminine</option>
+            <option value="3">Ambiguous</option>
+            <option value="4">Neutral</option>
+            <option value="10">Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="conjugations" class="control-label mr-3">{{trans_choice('proj.Conjugation', 2)}}:</label></label>
         <a onclick="event.preventDefault(); conjugationsGen('#title', '#conjugations');" href="" tabindex="-1" class="ml-2"><span id="button-increment-line" class="glyphicon glyphicon-plus-sign" ></span></a>
         <a onclick="event.preventDefault(); $('#conjugations').val(''); $('#conjugations').focus();" href="" tabindex="-1" class="ml-2"><span id="button-clear" class="glyphicon glyphicon-remove" ></span></a>
@@ -70,6 +81,13 @@
         <label for="rank" class="control-label">@LANG('proj.Rank'):</label>
         <input type="number" min="0" name="rank" id="rank" class="form-control" />
     </div>
+
+    @if (isAdmin())
+    <div class="form-group">
+        <label for="bulk_add" class="control-label">{{trans_choice('proj.Bulk Add', 1)}}:</label>
+        <textarea rows="5" name="bulk_add" id="bulk_add" class="form-control" autocomplete="off" ></textarea>
+    </div>
+    @endif
 
     <div class="form-group mt-2">
         <div class="submit-button">

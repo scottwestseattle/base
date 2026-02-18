@@ -61,7 +61,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function create(Request $request)
+    protected function create(Request $request, $locale)
     {
 		$request->validate([
 			'name' => 'required|string|min:5|max:25',
@@ -103,11 +103,11 @@ class RegisterController extends Controller
 		    }
 
 			$record->save();
-			logInfo($msg, 'New user added, please check you email for the verification link, and then log in');
+			logInfo($msg, __('base.New user added, please check you email for the verification link, and then log in'));
 		}
 		catch(\Exception $e)
 		{
-			$flash = 'new user not added';
+			$flash = __('base.new user not added');
 			logError($flash . ': ' . $record->email, $flash, ['exception' => $e->getMessage()]);
 			return back();
 		}
@@ -124,12 +124,12 @@ class RegisterController extends Controller
 			return redirect('/');
 		}
 
-		return redirect('/login');
+		return redirect(route('login', ['locale' => app()->getLocale()]));
 	}
 
 	public function register(Request $request)
     {
-		return redirect('/');
+		//return redirect('/');
 
         $min = 1;
         $max = 20;
@@ -142,5 +142,4 @@ class RegisterController extends Controller
 			'rand2' => $rand2,
 		]);
 	}
-
 }

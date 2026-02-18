@@ -96,29 +96,9 @@
     <!------------------------------------>
 
     <div>
-        <!-- Stats -->
         <div class="mb-1">
-            <div class="mb-1">
-                <a type="button" class="btn btn-primary" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
-                @if (!$record->isArticle() && $options['lineCount'] > 25)
-                    <a type="button" class="btn btn-primary mt-1" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" ><span style="font-size:.9em;">{{__('ui.Read')}}</span><span class="title-count">(20)</span><span style="font-size:14px;" class="glyphicon glyphicon-volume-up white ml-2"></span></a>
-                @endif
-                @if ($record->hasTranslation())
-				    <a href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}"><button class="btn btn-success mt-1">@LANG('proj.Flashcards') <span class="title-count">({{$options['lineCount']}})</span></button></a>
-                    @if ($options['lineCount'] > 25)
-                        <a type="button" class="btn btn-success mt-1" href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" >{{__('proj.Flashcards')}}<span class="title-count">(20)</span></a>
-                    @endif
-				@endif
-				@if ($qnaPorPara)
-				    <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'por'])}}"><button class="btn btn-success mt-1">@LANG('POR vs PARA') ({{$qnaPorPara}})</button></a>
-                @endif
-                @if ($qnaEraFue)
-				    <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'era'])}}"><button class="btn btn-success mt-1">@LANG('Pretérito vs Imperfecto') ({{$qnaEraFue}})</button></a>
-                @endif
-            </div>
-
             @if (isset($coverImage))
-                <div class="image-wrapper mt-2 mb-2">
+                <div class="image-wrapper mb-2">
                     <img src="{{$coverImage['url']}}" style="width:90%; max-width: 333px" />
                     <span class="image-lable" style="background: {{$coverImage['lableColor']}};">{{$coverImage['lable']}}</span>
                 </div>
@@ -127,9 +107,13 @@
             @endif
 
             <div class="small-text">
-                <div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div>
+                <!-- Stats -->
+                <!-- div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div -->
                 <div style="margin-right:10px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
                 <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
+                <div style="margin-right:10px; float:left;"><a type="button" class="btn btn-primary btn-xs" href="#practice-exercises" >{{trans_choice('ui.Exercise', 2)}}<span style="" class="glyphicon glyphicon-education white ml-1"></span></a></div>
+                <div style="margin-right:10px; float:left;"><a type="button" class="btn btn-primary btn-xs" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="" class="glyphicon glyphicon-volume-up white ml-1"></span></a></div>
+
                 <span style="margin-left:10px;">
                     @component('components.control-button-publish', ['record' => $record, 'prefix' => 'articles', 'showPublic' => true,  'ajax' => true, 'reload' => true])@endcomponent
                 </span>
@@ -144,6 +128,7 @@
 
                 @if (isset($translation))
 
+                    <!-- Convert text to Snippets -->
                     @if (false && Auth::user())
                         <div class="mr-2 float-left">
                             <a href="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
@@ -159,6 +144,7 @@
                         <div class="red" style="clear:both;">TRANSLATION DOES NOT MATCH TEXT ({{$cntSentences}}<>{{$cntTranslations}})</div>
                     @endif
 
+                    <!-- Read Style Options: Sentence, Side x Side, Normal (Paragraph) -->
                     <div class="form-group mt-2" style="clear:both;">
                         <div class="radio-group-item float-left mr-3">
                             <label>
@@ -263,7 +249,9 @@
 
         </div>
 
-        <div class="mt-4 small-thin-text">
+        <div class="mt-2 small-thin-text"><a type="button" class="btn btn-primary btn-xs" href="#top" >{{__('base.Back to Top')}}<span class="glyphicon glyphicon-circle-arrow-up white ml-1"></span></a></div>
+
+        <div class="mt-2 small-thin-text">
             @if (strlen($record->source) > 0)
                 <div class="mb-2">{{$record->source}}</div>
             @endif
@@ -280,11 +268,28 @@
     </div>
 
 	<!------------------------------------>
+	<!-- Quiz Options: Flashcards, Por v Para, etc -->
+	<!------------------------------------>
+    <div class="mb-1">
+        <h1 id="practice-exercises" class="mt-2 large-thin-text" style="font-size: 2em;">{{__('proj.Practice Exercises')}}</h1>
+
+        @if ($record->hasTranslation())
+            <a href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}"><button class="btn btn-success mt-1">@LANG('proj.Flashcards') <span class="title-count">({{$options['lineCount']}})</span></button></a>
+            @if ($options['lineCount'] > 25)
+                <a type="button" class="btn btn-success mt-1" href="{{route('articles.flashcards', ['locale' => $locale, 'entry' => $record->id])}}?count=20&random=1" >{{__('proj.Flashcards')}}<span class="title-count">(20)</span></a>
+            @endif
+        @endif
+        @if ($qnaPorPara)
+            <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'por'])}}"><button class="btn btn-success mt-1">@LANG('POR vs PARA') ({{$qnaPorPara}})</button></a>
+        @endif
+        @if ($qnaEraFue)
+            <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'era'])}}"><button class="btn btn-success mt-1">@LANG('Pretérito vs Imperfecto') ({{$qnaEraFue}})</button></a>
+        @endif
+    </div>
+
+	<!------------------------------------>
 	<!-- Bottom Navigation Buttons -->
 	<!------------------------------------>
-
-	@if (true)
-
 	<div class="trim-text" style="max-width:100%; margin-top: 30px;">
 		@if (isset($prev))
 			<div class="" style="float:left; margin: 0 5px 5px 0;" >
@@ -297,7 +302,5 @@
 			</div>
 		@endif
 	</div>
-
-	@endif
 
 @endsection

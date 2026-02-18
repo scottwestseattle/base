@@ -47,6 +47,14 @@ define('LANGUAGE_ZH', 7);
 define('LANGUAGE_KO', 8);
 define('LANGUAGE_ALL', 100);
 
+// gender
+define('DEFINITIONS_GENDER_NOTSET',     -1);
+define('DEFINITIONS_GENDER_MASCULINE',  1);
+define('DEFINITIONS_GENDER_FEMININE',   2);
+define('DEFINITIONS_GENDER_AMBIGUOUS',  3);
+define('DEFINITIONS_GENDER_NEUTRAL',    4);
+define('DEFINITIONS_GENDER_OTHER',     10);
+
 // release flag options
 define('RELEASEFLAG_NOTSET',    0);
 define('RELEASEFLAG_PRIVATE',   10);

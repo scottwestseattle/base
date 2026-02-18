@@ -78,12 +78,12 @@ class UserController extends Controller
 		return redirect(User::isAdmin() ? route('users', ['locale' => $locale]) : route('dashboard', ['locale' => $locale]));
     }
 
-    public function confirmdelete(User $user)
+    public function confirmdelete(Request $request, $locale, User $user)
     {
 		return view('users.confirmdelete', ['record' => $user]);
     }
 
-    public function delete(User $user)
+    public function delete(Request $request, $locale, User $user)
     {
 		try
 		{

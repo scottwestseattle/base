@@ -41,7 +41,8 @@ class ArticleController extends Controller
             'edit', 'update',
             'confirmDelete', 'delete',
             'read', 'flashcards', 'flashcardsView',
-            'quiz'
+            'quiz',
+            'stories',
         ]);
 
         $this->middleware('auth')->only([
@@ -76,6 +77,56 @@ class ArticleController extends Controller
 
         $parms = Site::getLanguage();
         $parms['type'] = ENTRY_TYPE_ARTICLE;
+        $parms['orderBy'] = $orderBy;
+        $parms['start'] = $start;
+        $parms['limit'] = $limit;
+
+		try
+		{
+            // get public articles
+            $parms['release'] = 'public';
+            $parms['public'] = Entry::getRecentList($parms);
+
+            // get private articles
+            $parms['release'] = 'private';
+            $parms['private'] = Entry::getRecentList($parms);
+
+            // get other peoples articles
+            $parms['release'] = 'other';
+            $parms['other'] = isAdmin() ? Entry::getRecentList($parms) : null;
+
+            $parms['activeTab'] = session('articlesTab');
+		}
+		catch (\Exception $e)
+		{
+    		$msg = $e->getMessage();
+	    	//dump($msg);
+			logException(LOG_CLASS, $msg, __('proj.Error getting articles'));
+		}
+
+		return view(VIEWS . '.index', [
+			'options' => $parms,
+		]);
+    }
+
+    public function stories(Request $request)
+    {
+        //
+        // get the url parameters
+        //
+        $orderBy = isset($request['sort']) ? $request['sort'] : null;
+        $orderBy = strtolower(alphanum($orderBy, false, '-')); // convert to alphanum and allow '-'
+
+        $start = isset($request['start']) ? intval($request['start']) : 0;
+
+        $limit = isset($request['count']) ? intval($request['count']) : DEFAULT_LIST_LIMIT;
+        $limit = intval($limit) < 0 ? PHP_INT_MAX : intval($limit);
+
+		//$this->saveVisitor(LOG_MODEL_ARTICLES, LOG_PAGE_INDEX);
+
+        $parms = Site::getLanguage();
+        $parms['type'] = ENTRY_TYPE_ARTICLE;
+        $parms['sub_type'] = ENTRY_SUB_TYPE_STORY;
         $parms['orderBy'] = $orderBy;
         $parms['start'] = $start;
         $parms['limit'] = $limit;

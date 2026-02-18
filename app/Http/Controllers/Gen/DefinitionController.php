@@ -153,66 +153,134 @@ class DefinitionController extends Controller
     {
         $f = __CLASS__ . ':' . __FUNCTION__;
 
-		$title = trim($request->title);
-		$record = Definition::get($title);
+        // bulk add supercedes all other form fields
+        if (isset($request->bulk_add))
+        {
+            $lines = preg_split('/\r\n|\r|\n/', trim($request->bulk_add));
+
+            foreach ($lines as $line)
+            {
+                $definition = $translation_en = $examples = $forms = $title = $gender = $pos = $conjugation = null;
+
+                if (trim($line) === '')
+                {
+                    continue; // skip empty lines
+                }
+
+                // Safely parse CSV line
+                $fields = str_getcsv($line);
+                if (isset($fields[0]))
+                    $title = trim($fields[0]);
+                elseif (isset($fields[1]))
+                    $pos = trim($fields[1]);
+                elseif (isset($fields[2]))
+                    $gender = trim($fields[2]);
+                elseif (isset($fields[3]))
+                    $forms = trim($fields[3]);
+                elseif (isset($fields[4]))
+                    $definition = trim($fields[4]);
+                elseif (isset($fields[5]))
+                    $translation_en = trim($fields[5]);
+
+                try
+                {
+                    self::createRecord([
+                        'title' => $title,
+                        'pos' => $pos,
+                        'gender' => $gender,
+                        'forms' => Spanish::formatForms($forms),
+                        'definition' => $definition,
+                        'translation_en' => $translation_en,
+                        'conjugations' => $conjugations,
+                        'rank' => $rank,
+                    ]);
+                }
+                catch (\Exception $e)
+                {
+                    $msg = __('proj.Record not added');
+                    logException($f, $e->getMessage(), $msg);
+                    break;
+                }
+
+                dump($fields);
+            }
+
+            dd('bulk add: ' . $request->bulk_add);
+        }
+        else // use regular form fields
+        {
+            try
+            {
+                self::createRecord([
+                    'title' => trim($request->title),
+                    'pos' => isset($request->pos_flag) ? $request->pos_flag : DEFINITIONS_POS_SNIPPET,
+                    'gender' => isset($request->gender_flag) ? $request->gender_flag : null,
+                    'forms' => Spanish::formatForms($request->forms),
+                    'definition' => $request->definition,
+                    'translation_en' => $request->translation_en,
+                    'conjugations' => isset($request->conjugations) ? $request->conjugations : null,
+                    'rank' => isset($request->rank) ? $request->rank : null,
+                    'examples' => isset($request->examples) ? $request->examples : null,
+                ]);
+            }
+            catch (\Exception $e)
+            {
+                $msg = __('proj.Record not added') . ': ' . $e->getMessage();
+                logException($f, $e->getMessage(), $msg);
+                return back();
+            }
+        }
+
+        //$url = route('dictionary', ['locale' => app()->getLocale()]) . '/search/3';
+		//return redirect($url);
+		return back();
+    }
+
+    public function createRecord($fields)
+    {
+        if (blank($fields['title']))
+			throw new \Exception('word not set');
+
+		$record = Definition::get($fields['title']);
 		if (isset($record))
 		{
-			flash('danger', __('base.record already exists'));
-			return redirect(route('definitions.edit', ['locale' => $locale, 'definition' => $record]));
+			throw new \Exception(__('base.record already exists'));
 		}
 
 		$record = new Definition();
 
+		$record->title 			= $fields['title'];
+		$record->forms 			= $fields['forms'];
+		$record->definition		= $fields['definition'];
+		$record->translation_en	= $fields['translation_en'];
+		$record->examples		= $fields['examples'];
+		$record->rank   		= $fields['rank'];
+		$record->pos_flag   	= $fields['pos'];
+        $record->conjugations   = $fields['conjugations'];
+        $record->gender_flag    = $fields['gender'];
+
 		$record->user_id 		= Auth::id();
-		$record->title 			= $title;
-		$record->forms 			= Spanish::formatForms($request->forms);
-		$record->definition		= $request->definition;
-		$record->translation_en	= $request->translation_en;
-		$record->examples		= $request->examples;
-		$record->permalink		= createPermalink($request->title);
-		$record->wip_flag		= WIP_DEFAULT;
-		$record->rank   		= $request->rank;
-
 		$record->language_flag  = getLanguageId();
-		$record->pos_flag   	= isset($request->pos_flag) ? $request->pos_flag : DEFINITIONS_POS_SNIPPET;
-		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+		$record->wip_flag		= WIP_DEFAULT;
 		$record->release_flag  = isAdmin() ? RELEASEFLAG_PUBLIC : RELEASEFLAG_PRIVATE;
+		$record->type_flag      = ($record->pos_flag == DEFINITIONS_POS_SNIPPET) ? DEFTYPE_SNIPPET : DEFTYPE_DICTIONARY;
+        $record->permalink		= createPermalink($record->title);
 
-		try
-		{
-			// format the forms and conjugations if it's a verb
-			$conj = Spanish::getConjugations($request->conjugations);
-			$record->conjugations = $conj['full'];
-			$record->conjugations_search = $conj['search'];
+        //
+        // for verbs: try to get the conjugations
+        //
+        $conj = Spanish::getConjugations($record->conjugations);
+        $record->conjugations = $conj['full'];
+        $record->conjugations_search = $conj['search'];
+        if ($record->isConjugated())
+            $record->pos_flag = DEFINITIONS_POS_VERB;
 
-			if ($record->isConjugated())
-    		    $record->pos_flag = DEFINITIONS_POS_VERB;
-		}
-		catch (\Exception $e)
-		{
-			$msg = __('proj.Record not added: error getting conjugations');
-			logException($f, $e->getMessage(), $msg);
-			return back();
-		}
+        // create the new record
+		$record->save();
 
-		try
-		{
-			$record->save();
-
-			$msg = __('base.New record has been added');
-			logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
-		}
-		catch (\Exception $e)
-		{
-			$msg = isset($msg) ? $msg : __('proj.Error adding new definition');
-			logException($f, $e->getMessage(), $msg, ['title' => $record->title]);
-
-			return back();
-		}
-
-        $url = route('dictionary', ['locale' => app()->getLocale()]) . '/search/3';
-
-		return redirect($url);
+		$msg = __('base.New record has been added');
+        $f = __CLASS__ . ':' . __FUNCTION__;
+		logInfo($f, $msg, ['title' => $record->title, 'definition' => $record->definition, 'id' => $record->id]);
     }
 
     public function createQuick(Request $request, $locale, $title = null)

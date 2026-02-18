@@ -588,8 +588,8 @@ class Entry extends Model
 	    $limit = isset($parms['limit']) ? intval($parms['limit']) : DEFAULT_LIST_LIMIT;
 
 		$type = intval($parms['type']);
-		$subType = isset($parms['sub_type']) ? intval($parms['sub_type']) : 0;
-		$subTypeCondition = isset($subType) && $subType > 0 ? '=' : '>=';
+		$subType = isset($parms['sub_type']) ? intval($parms['sub_type']) : ENTRY_SUB_TYPE_STORY;
+		$subTypeCondition = isset($parms['sub_type']) && $subType > 0 ? '=' : '<>';
 		$languageFlag = $parms['id'];
 		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
 		$records = [];

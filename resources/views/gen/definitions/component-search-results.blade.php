@@ -32,7 +32,7 @@
 						<div class="teal"><i>{!!nl2br($record->examples)!!}</i></div>
 
 						@if (isset($record->translation_en))
-							<div class="mt-2 steelblue">{{__('base.English')}}: {!!nl2br($record->translation_en)!!}</div>
+							<div class="mt-2 steelblue">{{trans_choice('base.Translation', 1)}}: {!!nl2br($record->translation_en)!!}</div>
 						@elseif (App\User::isSuperAdmin())
 							<a href="{{route('definitions.edit', ['locale' => $locale, 'definition' => $record->id])}}" class="small-thin-text danger">add translation</a>
 						@endif
