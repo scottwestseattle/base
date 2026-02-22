@@ -60,7 +60,7 @@
     </div>
 
     <div class="form-group">
-        <label for="gender_flag" class="control-label">@LANG('proj.Gender'):</label>
+        <label for="gender_flag" class="control-label">@LANG('ui.Gender'):</label>
         <select id="gender_flag" name="gender_flag">
             <option value="1">Masculine</option>
             <option value="2">Feminine</option>
@@ -82,18 +82,18 @@
         <input type="number" min="0" name="rank" id="rank" class="form-control" />
     </div>
 
-    @if (isAdmin())
-    <div class="form-group">
-        <label for="bulk_add" class="control-label">{{trans_choice('proj.Bulk Add', 1)}}:</label>
-        <textarea rows="5" name="bulk_add" id="bulk_add" class="form-control" autocomplete="off" ></textarea>
-    </div>
-    @endif
-
     <div class="form-group mt-2">
         <div class="submit-button">
             <button type="submit" name="update" class="btn btn-primary">@LANG('ui.Add')</button>
         </div>
     </div>
+
+    @if (isAdmin())
+    <div class="form-group">
+        <label for="bulk_add" class="control-label">{{trans_choice('proj.Bulk Add', 1)}}:</label>
+        <textarea rows="20" name="bulk_add" id="bulk_add" class="form-control" autocomplete="off" ></textarea>
+    </div>
+    @endif
 
     {{ csrf_field() }}
 

@@ -117,11 +117,11 @@ class LoginController extends Controller
 		{
 			if (User::isUserBlocked())
 			{
-				logWarning(__FUNCTION__, 'User is Blocked', ['email' => $data['email']]);
+				logWarning(__FUNCTION__, __('base.User is Blocked'), ['email' => $data['email']]);
 			}
         	if (!User::isConfirmed())
 			{
-				logError(__FUNCTION__, 'User email has not been confirmed', ['email' => $data['email']]);
+				logError(__FUNCTION__, __('base.User email has not been confirmed'), ['email' => $data['email']]);
 			}
 			else
 			{
@@ -131,7 +131,7 @@ class LoginController extends Controller
         }
 		else
 		{
-			logWarning(__FUNCTION__, 'Invalid credentials', ['email' => $data['email']]);
+			logWarning(__FUNCTION__, __('base.Invalid credentials'), ['email' => $data['email']]);
 		}
 
 		return redirect()->back();

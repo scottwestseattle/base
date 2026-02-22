@@ -3,8 +3,10 @@
     $records = isset($history['records']) ? $history['records'] : [];
     $counts = isset($history['counts']) ? $history['counts'] : [];
     $countDays = 0;
+    $count = count($records);
     $maxDays = isset($history['maxDays']) ? $history['maxDays'] : PHP_INT_MAX;
     $debug = Config::get('app.debug');
+    $locale = app()->getLocale();
 @endphp
 <div>
     <h1 class="mb-0">{{trans_choice('ui.History', 2)}}</h1>
@@ -62,6 +64,10 @@
         </tr>
     @endforeach
     </table>
-    <p class="mt-2"><a href="/history">{{__('ui.Show All')}}</a></p>
+
+    @if ($countDays > $maxDays)
+        <p class="mt-2"><a href="{{route('history', ['locale' => $locale])}}">{{__('ui.Show All')}}</a></p>
+    @endif
+
     </div>
 </div>

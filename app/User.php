@@ -161,6 +161,11 @@ class User extends Authenticatable
 		return (Auth::check() && Auth::user()->user_type >= USER_SITE_ADMIN);
 	}
 
+	static public function isMember()
+	{
+		return (Auth::check() && Auth::user()->user_type >= USER_MEMBER);
+	}
+
 	static public function isSuperAdmin()
 	{
 		return (Auth::check() && Auth::user()->user_type >= USER_SUPER_ADMIN);

@@ -141,17 +141,6 @@ Route::group(['prefix' => 'stats'], function () {
 	Route::get('/update-stats', [StatController::class, 'updateStats']);
 });
 
-// Translations
-Route::group(['prefix' => 'translations'], function () {
-	// index
-	Route::get('/', [TranslationController::class, 'index'])->name('translations')->middleware('auth');
-	Route::get('/view/{filename}', [TranslationController::class, 'view']);
-
-	// edit
-	Route::get('/edit/{filename}',[TranslationController::class, 'edit']);
-	Route::post('/update/{filename}',[TranslationController::class, 'update']);
-});
-
 // MVC
 Route::group(['prefix' => 'mvc'], function () {
 	Route::get('/', [MvcController::class, 'index']);
@@ -190,15 +179,20 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 
+// Translations
+Route::group(['prefix' => 'translations'], function () {
+	// index
+	Route::get('/', [TranslationController::class, 'index'])->name('translations')->middleware('auth');
+	Route::get('/view/{filename}', [TranslationController::class, 'view'])->name('translations.view');
+
+	// edit
+	Route::get('/edit/{filename}',[TranslationController::class, 'edit'])->name('translations.edit');
+	Route::post('/update/{filename}',[TranslationController::class, 'update'])->name('translations.update');
+});
+
 // Search
 Route::get('/search', [HomeController::class, 'search']);
 Route::post('/search', [HomeController::class, 'search']);
-
-// Stories
-Route::group(['prefix' => 'stories'], function () {
-    // index
-    Route::get('/', [ArticleController::class, 'stories'])->name('stories');
-});
 
 // Articles
 Route::group(['prefix' => 'articles'], function () {
@@ -283,11 +277,11 @@ Route::group(['prefix' => 'users'], function () {
 	Route::post('/update/{user}', [UserController::class, 'update'])->name('users.update');
 
 	// delete
-	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete']);
+	Route::get('/confirmdelete/{user}', [UserController::class, 'confirmDelete'])->name('users.confirmDelete');
 	Route::post('/delete/{user}', [UserController::class, 'delete'])->name('users.deletePost');
 	Route::get('/delete/{user}', [UserController::class, 'delete'])->name('users.delete');
-	Route::get('/deleted', [UserController::class, 'deleted']);
-	Route::get('/undelete/{user}', [UserController::class, 'undelete']);
+	Route::get('/deleted', [UserController::class, 'deleted'])->name('users.deleted');
+	Route::get('/undelete/{user}', [UserController::class, 'undelete'])->name('users.undelete');
 });
 
 // Password

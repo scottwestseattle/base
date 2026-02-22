@@ -2,6 +2,7 @@
 @section('title', __('base.Dashboard'))
 @section('content')
 @php
+    $locale = app()->getLocale();
     $sessionMinutes = intval(Config::get('session.lifetime'));
     $sessionDays = $sessionMinutes / (60 * 24);
 @endphp
@@ -77,7 +78,7 @@
         @endphp
         <div>
             <p class="xl-thin-text">@LANG('ui.Hello')&nbsp;{{Auth::user()->name}}
-                <a class="medium-thin-text" href="/users/edit/{{Auth::id()}}">({{strtolower(__('ui.Edit'))}})</a>
+                <a class="medium-thin-text" href="{{route('users.edit', ['locale' => $locale, 'user' => Auth::id()])}}">({{strtolower(__('ui.Edit'))}})</a>
             </p>
         </div>
         <hr />

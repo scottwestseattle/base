@@ -87,7 +87,8 @@ class UserController extends Controller
     {
 		try
 		{
-            $user->email = 'DELETED-' . $user->email;
+		    $milli = round(microtime(true) * 1000);
+            $user->email = 'DEL' . substr($milli, -4) . '-' . $user->email;
             $user->save();
 		}
 		catch (\Exception $e)
@@ -107,7 +108,7 @@ class UserController extends Controller
 			return back();
 		}
 
-		return redirect(User::isAdmin() ? '/users' : '/dashboard');
+		return redirect(route('users', ['locale' => $locale]));
     }
 
     public function undelete(Request $request, $id)

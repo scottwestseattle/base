@@ -25,11 +25,11 @@
 
         <div class="xl-thin-text">
             <h5>@LANG('ui.Email Address')</h5>
-            <p>{{Auth::user()->email}}
+            <p>{{$user->email}}
             <h5>@LANG('ui.Name')</h5>
-            <p>{{Auth::user()->name}}</p>
+            <p>{{$user->name}}</p>
             <h5>@LANG('ui.Joined')</h5>
-            <p>{{$date}}</p>
+            <p>{{$user->created_at}}</p>
 
             @if (isAdmin())
                 <h5>@LANG('ui.Type')</h5>
@@ -43,8 +43,8 @@
     @endif
 
     <div class="mt-3">
-        <a type="button" class="btn btn-primary" href="{{route('users.edit', ['locale' => $locale, 'user' => Auth::id()])}}">@LANG('ui.Edit')</a>
-        <a type="button" class="btn btn-primary" href="{{route('password.edit', ['locale' => $locale, 'user' => Auth::id()])}}">@LANG('base.Update Password')</a>
+        <a type="button" class="btn btn-primary" href="{{route('users.edit', ['locale' => $locale, 'user' => $user->id])}}">@LANG('ui.Edit')</a>
+        <a type="button" class="btn btn-primary" href="{{route('password.edit', ['locale' => $locale, 'user' => $user->id])}}">@LANG('base.Update Password')</a>
     </div>
 
 </div>

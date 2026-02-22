@@ -253,6 +253,9 @@ class ArticleController extends Controller
 
     public function add(Request $request, $locale)
     {
+        if (!isMember())
+            return back();
+
 		return view(VIEWS . '.add', [
 			'languageOptions' => getLanguageOptions(),
 			'selectedOption' => getLanguageId(),

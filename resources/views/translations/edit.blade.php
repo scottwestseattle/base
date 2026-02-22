@@ -1,6 +1,7 @@
 @php
 	$cnt = 0;
 	$recs = $records['en'];
+    $locale = app()->getLocale();
 @endphp
 @extends('layouts.app')
 @section('title', __('base.Edit Translations') . ' - ' . $filename)
@@ -10,10 +11,10 @@
 
 	<h1>@LANG('base.Edit Translations')</h1>
 
-	<form method="POST" action="/translations/update/{{$filename}}">
-					
-		<div class="form-group">		
-			
+	<form method="POST" action="{{route('translations.update', ['locale' => $locale, 'filename' => $filename])}}">
+
+		<div class="form-group">
+
 		@if (is_array($recs))
 		<table>
 			<tr><th></th><th>@LANG('base.Key')</th><th>@LANG('base.English')</th><th>@LANG('base.Spanish')</th><th>@LANG('base.Chinese')</th></tr>
@@ -28,9 +29,9 @@
 			@endforeach
 		</table>
 		@endif
-		
+
 		<h3>@LANG('base.Add')</h3>
-		
+
 		<table>
 			<tr><th>@LANG('base.Key')</th><th>@LANG('base.English')</th><th>@LANG('base.Spanish')</th><th>@LANG('base.Chinese')</th></tr>
 		@for($i = $cnt; $i < ($cnt + 5); $i++)
@@ -44,13 +45,13 @@
 		</table>
 
 		</div>
-			
+
 		<div class="submit-button">
 			<button type="submit" name="update" class="btn btn-primary">Update</button>
 		</div>
 
 		{{ csrf_field() }}
-		
+
 	</form>
 
 </div>

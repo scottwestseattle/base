@@ -2,6 +2,9 @@
 @section('title', trans_choice('ui.Translation', 2))
 @section('menu-submenu')@component('translations.menu-submenu')@endcomponent @endsection
 @section('content')
+@php
+    $locale = app()->getLocale();
+@endphp
 <div>
 	<h1>{{trans_choice('ui.Translation', 2)}} ({{ count($records) }})</h1>
 
@@ -10,8 +13,8 @@
 		<tbody>
 		@foreach($records as $record)
 			<tr>
-				<td class="icon"><a href='/translations/edit/{{$record}}'>@component('components.icon-edit')@endcomponent</a></td>
-				<td><a href="/translations/view/{{$record}}">{{$record}}</a></td>
+				<td class="icon"><a href="{{route('translations.edit', ['locale' => $locale, 'filename' => $record])}}">@component('components.icon-edit')@endcomponent</a></td>
+				<td><a href="{{route('translations.view', ['locale' => $locale, 'filename' => $record])}}">{{$record}}</a></td>
 				<td class="icon"><a href='/translations/delete/{{$record}}'>@component('components.icon-delete')@endcomponent</a></td>
 			</tr>
 		@endforeach

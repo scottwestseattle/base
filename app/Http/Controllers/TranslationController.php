@@ -32,7 +32,7 @@ class TranslationController extends Controller
 		parent::__construct();
 	}
 
-    public function index(Request $request)
+    public function index(Request $request, $locale)
     {
 		$records = [];
 		$files = [];
@@ -85,7 +85,7 @@ class TranslationController extends Controller
 		]);
 	}
 
-    public function view(Request $request, $filename)
+    public function view(Request $request, $locale, $filename)
     {
 		$filename = alpha($filename);
 
@@ -121,7 +121,7 @@ class TranslationController extends Controller
 		]);
     }
 
-    public function edit(Request $request, $filename)
+    public function edit(Request $request, $locale, $filename)
     {
 		$locale = App::getLocale();
 
@@ -162,7 +162,7 @@ class TranslationController extends Controller
 		]);
     }
 
-    public function update(Request $request, $filename)
+    public function update(Request $request, $locale, $filename)
     {
 		$lines = [];
 		$array = [];
@@ -209,7 +209,7 @@ class TranslationController extends Controller
 		Log::info('Translations updated', ['id' => Auth::id()]);
 		flash('success', __('base.Translation file has been updated'));
 
-		return redirect('/translations');
+		return redirect(route('translations', ['locale' => $locale]));
     }
 
     private function save($locale, $filename, $lines)

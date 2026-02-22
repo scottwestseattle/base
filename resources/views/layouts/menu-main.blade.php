@@ -119,12 +119,10 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-        @if (isAdmin() || \App\Site::site()->hasOption('articles'))
+        @if (false && (isAdmin() || \App\Site::site()->hasOption('articles')))
 		    <li class="nav-item"><a class="nav-link" href="{{route('stories', ['locale' => $locale])}}">{{trans_choice('proj.Story', 2)}}</a></li>
 		@endif
-        @if (isAdmin())
-		    <li class="nav-item"><a class="nav-link" href="{{route('articles', ['locale' => $locale])}}">{{trans_choice('proj.Article', 2)}}</a></li>
-		@endif
+		    <li class="nav-item"><a class="nav-link" href="{{route('articles', ['locale' => $locale])}}">{{trans_choice('proj.Story', 2)}}</a></li>
         @if (isAdmin() || \App\Site::site()->hasOption($books))
     		<li class="nav-item"><a class="nav-link" href="{{lurl('books')}}">{{trans_choice('proj.Book', 2)}}</a></li>
 		@endif

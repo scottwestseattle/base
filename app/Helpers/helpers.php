@@ -94,6 +94,13 @@ if (!function_exists('isAdmin')) {
     }
 }
 
+if (!function_exists('isMember')) {
+    function isMember()
+    {
+        return User::isMember();
+    }
+}
+
 if (!function_exists('flash')) {
     function flash($level, $content)
     {

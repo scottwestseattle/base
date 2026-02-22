@@ -39,9 +39,11 @@
         </a></li>
         @endif
 
+        @if (isMember())
         <li class="nav-item"><a class="nav-link" href="{{route('articles.add', ['locale' => $locale])}}">
             <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#file-earmark-plus" /></svg>
         </a></li>
+        @endif
 
         @isset($record)
             @if (false)
