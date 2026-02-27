@@ -2007,56 +2007,6 @@ class Spanish
 		return $rc;
     }
 
-	static public function getSentences($text)
-	{
-		$lines = [];
-
-        // split by separate lines
-		$paragraphs = explode("\r\n", strip_tags(html_entity_decode($text)));
-		foreach($paragraphs as $p)
-		{
-			$p = trim($p);
-
-			// doesn't work for: "Mr. Tambourine Man" / Mr. Miss. Sr. Mrs. Ms. St.
-			$p = str_replace(self::$_lineSplitters, self::$_lineSplittersSubs, $p);
-
-			// sentences end with: ". " or "'. " or "\". " or "? " or "! "
-			if (true) // split on more characters because the lines are too long
-			{
-			    // try to format embedded periods so lines don't get split on them, like 1. 100. or 200.
-			    $p = preg_replace('/[0-9.]\./', '$0::', $p); //new and lightly tested
-
-				$sentences = preg_split('/(\. |\.\' |\.\" |\? |\! )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
-			}
-			else
-				// the original to avoid splitting on conversation
-				$sentences = preg_split('/(\. |\.\' |\.\" )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
-
-			for($i = 0; $i < count($sentences); $i++)
-			{
-				// get the sentence text
-				$s = self::formatForReading($sentences[$i]);
-
-			    $s = str_replace('.::', '.', $s); //new and lightly tested
-
-				// get the delimiter which is stored in the next array entry
-				$i++;
-				if (count($sentences) > $i)
-				{
-					$s .= trim($sentences[$i]);
-				}
-
-				// save the sentence
-				if (strlen($s) > 0)
-				{
-					$lines[] = $s;
-				}
-			}
-		}
-
-		return $lines;
-	}
-
 	static public function formatForReading($text)
 	{
 		// change dash to long dash so it won't be read as 'minus'
@@ -2112,4 +2062,171 @@ class Spanish
 		return $stats;
 	}
 
+
+	///////////////////////////////
+	// AI version of getSentences
+	///////////////////////////////
+
+	static public function getSentences($text)
+	{
+        return Spanish::getSentencesOrig($text);
+        //return Spanish::splitSentences($text); // the new version
+    }
+
+    static private function splitSentences($text)
+    {
+        $eolMarker = '|';
+        $nonEolMarker = '@@@';
+
+        $textTest = "
+        The total was 1.2. Then he said, 'What is wrong?' He is from the U.S.A. The author is F. Scott Fitzgerald.
+        \"What's wrong with you?\" My name is Dr. Suess. Stop it! He said, 'stop it now!'  It's at the end of chapter 1.  Here and now.
+        I'm from the U.S.A.  I live on Fifth Ave. in O.K.C.  End of the text as we know it.
+        ";
+
+        ////////////////////////////////////////////////////////////
+        // STEP 1: REPLACE THE PERIOD FROM KNOWN ABBREVIATIONS
+        ////////////////////////////////////////////////////////////
+        $abbr = [
+            'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Sr.', 'Sra.', 'Srta.', 'Jr.', 'St.', 'Ave.',
+            'Blvd.', 'etc.', 'i.e.', 'eg.', 'Jan.', 'Feb.', 'Mar.', 'Ud.', 'Uds.', 'pág.'
+        ];
+
+        // make replacements
+        foreach($abbr as $record)
+        {
+            $abbrTags[] = str_replace('.', $nonEolMarker, $record);
+        }
+
+        // Perform the replacement
+        $text = str_replace($abbr, $abbrTags, $text);
+
+        ////////////////////////////////////////////////////////////
+        // STEP 2: REPLACE THE PERIOD IN ALL INITIALS
+        ////////////////////////////////////////////////////////////
+
+        $initialsTags = null;
+        $matches = null;
+        $pattern = '/\s([a-z])\./i';
+        if (preg_match_all($pattern, $text, $matches)) {
+        // $matches[0] contains the full match (e.g., " J.")
+        // $matches[1] contains just the letter (e.g., "J")
+
+            // make replacements
+            foreach($matches[0] as $record)
+            {
+                $initialsTags[] = str_replace('.', $nonEolMarker, $record);
+            }
+
+            // Perform the replacement
+            $text = str_replace($matches[0], $initialsTags, $text);
+        }
+
+        ////////////////////////////////////////////////////////////
+        // STEP 3: MARK ALL REAL LINE ENDINGS
+        ////////////////////////////////////////////////////////////
+
+        // Define the words to find and their respective replacements
+        $endings = [
+            ". ",
+            "? ",
+            "! ",
+            ".' ",
+            "?' ",
+            "!' ",
+            ".\" ",
+            "?\" ",
+            "!\" ",
+            "\n",
+        ];
+
+        // make replacements
+        foreach($endings as $record)
+        {
+            $tags[] = $record . $eolMarker;
+        }
+
+        // Perform the replacement
+        $text = str_replace($endings, $tags, $text);
+
+        ////////////////////////////////////////////////////////////
+        // STEP 4: PUT THE NON-EOL PERIODS BACK IN
+        ////////////////////////////////////////////////////////////
+        $text = str_replace($nonEolMarker, '.', $text);
+
+        ////////////////////////////////////////////////////////////
+        // STEP 5: SPLIT THE SENTENCES ON THE MARK WE PUT IN
+        ////////////////////////////////////////////////////////////
+        //PROBLEMS: $sentences = array_filter(array_map('trim', explode($eolMarker, $text)));
+        $sentences = explode($eolMarker, $text);
+
+        ////////////////////////////////////////////////////////////
+        // STEP 6: CLEAN EACH SENTENCE AND REMOVE EMPTIES
+        ////////////////////////////////////////////////////////////
+        $lines = [];
+        for($i = 0; $i < count($sentences); $i++)
+        {
+            // get the sentence text
+            $s = self::formatForReading($sentences[$i]);
+
+            // save the sentence
+            if (strlen($s) > 0)
+            {
+                $lines[] = $s;
+            }
+        }
+        //dump($lines);
+
+        return $lines;
+    }
+
+	static public function getSentencesOrig($text)
+	{
+		$lines = [];
+
+        // split by separate lines
+		$paragraphs = explode("\r\n", strip_tags(html_entity_decode($text)));
+		foreach($paragraphs as $p)
+		{
+			$p = trim($p);
+
+			// doesn't work for: "Mr. Tambourine Man" / Mr. Miss. Sr. Mrs. Ms. St.
+			$p = str_replace(self::$_lineSplitters, self::$_lineSplittersSubs, $p);
+
+			// sentences end with: ". " or "'. " or "\". " or "? " or "! "
+			if (true) // split on more characters because the lines are too long
+			{
+			    // try to format embedded periods so lines don't get split on them, like 1. 100. or 200.
+			    $p = preg_replace('/[0-9.]\./', '$0::', $p); //new and lightly tested
+
+				$sentences = preg_split('/(\. |\.\' |\.\" |\? |\! )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+			}
+			else
+				// the original to avoid splitting on conversation
+				$sentences = preg_split('/(\. |\.\' |\.\" )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+
+			for($i = 0; $i < count($sentences); $i++)
+			{
+				// get the sentence text
+				$s = self::formatForReading($sentences[$i]);
+
+			    $s = str_replace('.::', '.', $s); //new and lightly tested
+
+				// get the delimiter which is stored in the next array entry
+				$i++;
+				if (count($sentences) > $i)
+				{
+					$s .= trim($sentences[$i]);
+				}
+
+				// save the sentence
+				if (strlen($s) > 0)
+				{
+					$lines[] = $s;
+				}
+			}
+		}
+
+		return $lines;
+	}
 }

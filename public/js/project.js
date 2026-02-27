@@ -783,6 +783,13 @@ function onCategoryChange(id)
 	xhttp.send();
 }
 
+// set interface language using two-character language id ('es'/'en')
+function setLanguageInterface(languageId)
+{
+    var path = '/language/' + languageId;
+    ajaxexecreload(path);
+}
+
 function ajaxexecreload(url)
 {
     ajaxexec(url, '', false, null, /* reload = */ true)

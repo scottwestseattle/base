@@ -286,9 +286,7 @@ class HomeController extends Controller
             {
                 $parms['orderBy'] = 'id DESC';
                 $count = Article::getCountStories();
-                $ordinalIx = intval(date("z")); // day of the year: 0 - 364 (365 for leap year) this only works when there are less than 365 articles
-                $ordinalIx = ($ordinalIx < $count) ? $ordinalIx : $ordinalIx % $count; // 0 = first article; $count-1 = last article
-                //dump('count = ' . $count . ', ' . 'ordinalIx = ' . $ordinalIx);
+                $ordinalIx = DateTimeEx::getIndexByDay($count, null, /* dayOfTheYear = */ true); // DON'T use day of the year, USE days since zero
                 $aotd = Article::getStoryOrdinal($ordinalIx);
                 if (isset($aotd))
                 {
@@ -344,13 +342,16 @@ class HomeController extends Controller
 	{
 		$events = null;
 		$users = null;
-		$userNewest = null;
+		$userNewest = null; // only for admin
+		$usersConfirmed = $usersMembers = 0; // only for admin
         $site = null;
         $language = Site::getLanguage();
 
 		if (isAdmin())
 		{
 			$users = User::count();
+			$usersConfirmed = User::where('user_type', USER_CONFIRMED)->count();
+			$usersMembers = User::where('user_type', USER_MEMBER)->count();
 			$userNewest = User::get(1);
 			if (isset($userNewest) && count($userNewest) > 0)
 			{
@@ -370,6 +371,8 @@ class HomeController extends Controller
 		    'users' => $users,
 		    'history' => $history,
 		    'userNewest' => $userNewest,
+		    'usersConfirmed' => $usersConfirmed,
+		    'usersMembers' => $usersMembers,
 		    'language' => $language,
 		]);
 	}

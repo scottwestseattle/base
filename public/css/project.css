@@ -1193,10 +1193,9 @@ Front Page Feature Boxes
 
 .fpbox-header
 {
-  width:100%;
   height: auto;
   margin: 0 auto;
-  padding: 10px 10px 20px 10px;
+  padding: 10px;
   background: linear-gradient(180deg, #f6da8f, #f7c257);
 }
 

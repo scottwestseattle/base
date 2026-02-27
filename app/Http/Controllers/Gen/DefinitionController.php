@@ -1557,14 +1557,14 @@ class DefinitionController extends Controller
 		return redirect(route('definitions.listTag', ['locale' => $locale, 'tag' => $tag->id]));
     }
 
-    public function favoritesFlashcards(Request $request, Tag $tag)
+    public function favoritesFlashcards(Request $request, $locale, Tag $tag)
     {
-        return $this->review($request, $tag, 1);
+        return $this->review($request, $locale, $tag, 1);
     }
 
-    public function favoritesQuiz(Request $request, Tag $tag)
+    public function favoritesQuiz(Request $request, $locale, Tag $tag)
     {
-        return $this->review($request, $tag, 2);
+        return $this->review($request, $locale, $tag, 2);
     }
 
     public function review(Request $request, $locale, Tag $tag, $reviewType = null)
@@ -1784,7 +1784,7 @@ class DefinitionController extends Controller
 		    ? $this->readWords($parms)
 		    : $this->doList($parms);    }
 
-	public function snippetsFlashcards(Request $request)
+	public function snippetsFlashcards(Request $request, $locale, $id = 0)
     {
         return $this->reviewSnippets($request);
     }

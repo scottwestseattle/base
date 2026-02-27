@@ -3,13 +3,15 @@
 @section('content')
 @php
     $locale = app()->getLocale();
+    $localTime = \App\DateTimeEx::getLocalDateTime();
+    $dayOfYear = intval($localTime->format("z")) + 1;
     $sessionMinutes = intval(Config::get('session.lifetime'));
     $sessionDays = $sessionMinutes / (60 * 24);
 @endphp
 	@if (!App\User::isConfirmed())
 		<div class="">
-		<h3>You email address has not been confirmed</h3>
-		<p><a href="/email/send/{{Auth::id()}}">Click here to resend the confirmation email to {{Auth::user()->email}}</a></p>
+		<h3>Your email address has not been confirmed</h3>
+		<p><a href="/email/send/{{Auth::id()}}">{{__('proj.Resend the confirmation email')}}: {{Auth::user()->email}}</a></p>
 		</div>
 	@endif
 
@@ -19,13 +21,15 @@
 		<p class="xl-thin-text">{{domainName()}}</p>
         <table>
 			<tr><td><strong>Server Time:</strong>&nbsp;&nbsp;</td><td>{{date("M d, Y H:i:s")}}</td></tr>
+			<tr><td><strong>Client Time:</strong>&nbsp;&nbsp;</td><td>{{$localTime->format("M d, Y H:i:s")}}</td></tr>
+			<tr><td><strong>Day of Year:</strong>&nbsp;&nbsp;</td><td>{{$dayOfYear}}</td></tr>
 			<tr><td><strong>PHP Version:</strong>&nbsp;&nbsp;</td><td>{{phpversion()}}</td></tr>
 			<tr><td><strong>Language:</strong></td><td>{{$language['name']}} ({{$language['short'] . ', ' . $language['long']}})</td></tr>
             <tr><td><strong>Client:</strong></td><td>{{ipAddress()}}</td></tr>
 			<!-- tr><td><strong>Session:</strong></td><td>{{env('SESSION_LIFETIME', 0)}}</td></tr -->
 	        <tr><td><strong>Snippet:</strong></td><td>{{Cookie::get('snippetId')}}</td></tr>
             <tr><td><strong>Folder:</strong></td><td class="xs-text">{{base_path()}}</td></tr>
-    		<tr><td><strong><a href="/dashboard" type="button" class="btn btn-sm btn-warning">Debug</a></strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
+    		<tr><td><strong><a href="{{route('dashboard', ['locale' => $locale])}}" type="button" class="btn btn-sm btn-warning">Debug</a></strong></td><td>{{(NULL != env('APP_DEBUG')) ? 'ON' : 'OFF'}}</td></tr>
             <tr><td><strong><a href="/hash" type="button" class="btn btn-sm btn-primary">Hash</a></strong></td><td class="xs-text">{{getVisitorInfo()['hash']}}</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td><strong>Session Lifetime:&nbsp;&nbsp;</strong></td><td class="">{{$sessionDays}} days ({{$sessionMinutes}} minutes)</td></tr>
@@ -39,11 +43,13 @@
 
 		<h1>{{trans_choice('base.User', 2)}}<span class="title-count">({{$users}})</span></h1>
 		@if (intval($users) > 0 && isset($userNewest) /* && $userNewest->isUserConfirmed() */)
-		    <p class="medium-thin-text">
-		        <b>Newest:&nbsp;</b>{{$userNewest->name}} ({{$userNewest->getUserType()}}), {{$userNewest->email}}, {{translateDate($userNewest->created_at, true)}}
-		    </p>
+		<div class="medium-thin-text">
+		    <p><b>Members:&nbsp;</b>{{$usersMembers}}</p>
+		    <p><b>Confirmed:&nbsp;</b>{{$usersConfirmed}}</p>
+		    <p><b>Newest:&nbsp;</b>{{$userNewest->name}} ({{$userNewest->getUserType()}}), {{$userNewest->email}}, {{translateDate($userNewest->created_at, true)}}</p>
+		</div>
 		@endif
-		<p><a href="/users">{{__('base.Go to Users')}}</a></p>
+		<p><a href="{{route('users', ['locale' => $locale])}}">{{__('base.Go to Users')}}</a></p>
         <hr />
 
         @component('shared.history', ['history' => $history])@endcomponent
@@ -65,7 +71,7 @@
                 <h4>{{__('base.Error Events')}} ({{$errors}})</h4>
             </div>
 
-            <a href="/events">{{__('base.Go to Events')}}</a>
+            <a href="{{route('events', ['locale' => $locale])}}">{{__('base.Go to Events')}}</a>
         @endif
 
 	@else

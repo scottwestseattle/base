@@ -121,7 +121,11 @@ class LoginController extends Controller
 			}
         	if (!User::isConfirmed())
 			{
-				logError(__FUNCTION__, __('base.User email has not been confirmed'), ['email' => $data['email']]);
+			    $msg = __('base.User email has not been confirmed') . ': ';
+    			//$msg = '<a href="/email/send/{{Auth::id()}}">__("proj.Resend the confirmation email"): Auth::user()->email</a>';
+    			$msg .= "<a target='_blank' href='/email/send/" . Auth::id() . "'>" . __('proj.Resend the confirmation email') . "</a>";
+				flash('warning', $msg);
+				//logError(__FUNCTION__, $msg, ['email' => $data['email']]);
 			}
 			else
 			{

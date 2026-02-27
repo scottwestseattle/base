@@ -12,11 +12,12 @@
         @php
             $bg = App\DateTimeEx::getDayColor($record->created_at);
             $info = $record->getInfo();
+            //dd($record);
         @endphp
         <tr class="mb-3" style="">
             <td>
                 @if ($info['hasUrl'])
-                    <div><a class="" href="{{$info['url']}}">{{$info['actionName']}}: {{$info['programName']}}</a> ({{$info['stats']}})</div>
+                    <div><a class="" href="{{$info['url']}}">{{$info['actionName']}}: {{$info['programName']}}</a> ({{$record->name}})</div>
                 @else
                     <div>{{$info['actionName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
                 @endif

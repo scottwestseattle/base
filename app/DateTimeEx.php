@@ -274,10 +274,25 @@ class DateTimeEx
     }
 
     // Using days since zero, not day of the year
-	static public function getIndexByDay($count, $sDate = null)
+	static public function getIndexByDay($count, $sDate = null, $useDayOfYear = false)
 	{
-        $day = DateTimeEx::getDaysSinceZero($sDate);
         $index = 0;
+        $day = 0;
+        if ($useDayOfYear)
+        {
+            // orig: uses server time (GMT)
+            $day = intval(Date("z")); // day of the year: 0 - 364 (365 for leap year) this only works when there are less than 365 choices
+//dump($day);
+            // new: adjust for local time
+            $dt = DateTimeEx::getLocalDateTime();
+            $day = intval($dt->format("z")); // day of the year: 0 - 364 (365 for leap year) this only works when there are less than 365 choices
+//dump($day);
+            $day = ($day < $count) ? $day : $day % $count; // 0-based
+        }
+        else
+        {
+            $day = DateTimeEx::getDaysSinceZero($sDate); // zero is 1/1/1970 something like that
+        }
 
         // put day in our range of choices
         if ($count > 0)
@@ -289,7 +304,7 @@ class DateTimeEx
             }
         }
 
-        //dump($count . ', ' . $index . ', ' . $day);
+        //dump('count = ' . $count . ', index = ' . $index . ', day = ' . $day);
 
         return $index;
     }

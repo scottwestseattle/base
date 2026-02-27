@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Auth;
+use Str;
 use App\DateTimeEx;
 use App\Status;
+use App\User;
 
 class History extends Model
 {
@@ -30,7 +32,7 @@ class History extends Model
 
     static public function getAdmin()
     {
-        return self::get(PHP_INT_MAX, isAdmin());
+        return self::get(200, isAdmin());
     }
 
     static public function getToday()
@@ -64,24 +66,31 @@ class History extends Model
         {
             $userId = -1;
             $userIdCondition = '>=';
+            $userType = USER_MEMBER; // only look at CONFIRMED and below for now
         }
         else
         {
             $userId = Auth::id();
             $userIdCondition = '=';
+            $userType = USER_SUPER_ADMIN; // set to all so it's TRUE for this user
         }
 
 		try
 		{
 			$records = History::select()
-				->where('user_id', $userIdCondition, $userId)
-				->orderByRaw('id DESC')
+				->join('users', function($join) {
+                    $join->on('histories.user_id', '=', 'users.id');
+                    })
+				->where('histories.user_id', $userIdCondition, $userId)
+				->where('users.user_type', '<', $userType)
+				->orderByRaw('histories.id DESC')
 				->limit($limit)
 				->get();
 		}
 		catch (\Exception $e)
 		{
-			logException(LOG_CLASS, $e->getMessage(), __('base.Error getting record list'));
+		    $msg = $e->getMessage();
+			logException(LOG_CLASS, $msg, __('base.Error getting record list'));
 		}
 
         $counts = [];
@@ -177,12 +186,17 @@ class History extends Model
 
 	static public function getMoreInfo($actionType)
 	{
-	    $name = 'not set';
-	    $action = 'not set';
+	    $name = 'type not set';
+	    $action = 'action not set';
 	    $actionInt = 0;
 
 	    switch($actionType)
 	    {
+            case LESSON_TYPE_ARTICLE_OPEN:
+	            $name = __('ui.Open');
+	            $action = 'open';
+	            break;
+            case LESSON_TYPE_ARTICLE_QNA:
             case LESSON_TYPE_QUIZ_MC:
 	            $name = __('proj.Quiz');
 	            $action = 'quiz';
@@ -202,6 +216,7 @@ class History extends Model
 	            $action = 'slides';
 	            break;
 	        default:
+	            $name = 'not set (' . $actionType . ')';
 	            break;
 	    }
 
@@ -210,7 +225,7 @@ class History extends Model
 
 	public function getProgramName()
 	{
-	    $rc = 'not set';
+	    $rc = 'name not set';
 
 	    if (strlen($this->program_name) > 0)
 	    {
@@ -262,6 +277,9 @@ class History extends Model
             {
                 if ($this->program_id > 0)
                 {
+                	if (Str::StartsWith($action, 'open'))
+	                    $action = 'show';
+
                     $action .= '/' . $this->program_id;
                 }
                 else if ($this->count > 0)
@@ -283,6 +301,7 @@ class History extends Model
 	{
 	    $name = 'not found';
         $url = null;
+        $locale = app()->getLocale();
 
 	    switch($type)
 	    {
@@ -292,35 +311,38 @@ class History extends Model
 	            break;
             case HISTORY_TYPE_FAVORITES:
 	            $name = trans_choice('proj.Favorite', 2);
-	            $url = '/definitions/' . $action;
+	            $url = "/$locale/definitions/$action";
 	            break;
             case HISTORY_TYPE_ARTICLE:
-	            $name = trans_choice('proj.Article', 1);
-	            $url = '/articles/' . $action;
+	            {
+    	            $name = trans_choice('proj.Article', 1);
+	                $url = "/$locale/articles/$action";
+	            }
 	            break;
             case HISTORY_TYPE_BOOK:
 	            $name = trans_choice('proj.Book', 1);
-	            $url = '/books/' . $action;
+	            $url = "/$locale/books/$action";
 	            break;
 	        case HISTORY_TYPE_LESSON:
 	            $name = trans_choice('proj.Lesson', 2);
-	            $url = '/lessons/review/' . $action;
+	            $url = "/$locale/lessons/review/$action";
 	            break;
 	        case HISTORY_TYPE_EXERCISE:
 	            $name = trans_choice('proj.Exercise', 2);
 	            break;
 	        case HISTORY_TYPE_DICTIONARY:
 	            $name = __('proj.Dictionary');
-	            $url = '/definitions/' . $action;
+	            $url = "/$locale/definitions/$action";
 	            break;
 	        case HISTORY_TYPE_SNIPPETS:
 	            $name = __('proj.Practice Text');
-	            $url = '/snippets/' . $action;
+	            $url = "/$locale/snippets/$action";
 	            break;
 	        case HISTORY_TYPE_OTHER:
 	            $name = __('proj.Other');
 	            break;
 	        default:
+	            $name = 'type not found (' . $type . ')';
 	            break;
 	    }
 
@@ -365,7 +387,7 @@ class History extends Model
         return self::getArray(null, 0, $programType, $programSubType, $programAction, $count);
     }
 
-    static function getArray($programName, $programId, $programType, $programSubType, $programAction, $count, $options = null)
+    static function getArray($programName, $programId, $programType, $programSubType, $programAction, $count = 0, $options = null)
     {
         $rc =  [
             'historyPath' => HISTORY_URL,

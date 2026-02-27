@@ -591,6 +591,7 @@ class Entry extends Model
 		$subType = isset($parms['sub_type']) ? intval($parms['sub_type']) : 0; //to hide articles: ENTRY_SUB_TYPE_STORY;
 		$subTypeCondition = isset($parms['sub_type']) && $subType > 0 ? '=' : '>=';
 		$languageFlag = $parms['id'];
+		$languageFlag = LANGUAGE_ALL; // show all since they are all translated and REVERSABLE
 		$languageCondition = ($languageFlag == LANGUAGE_ALL) ? '<=' : '=';
 		$records = [];
 		$tag = self::getRecentTag();

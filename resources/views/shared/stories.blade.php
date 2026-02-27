@@ -43,7 +43,7 @@
                             </a>
                         </div>
                     @else
-                        <div style="height:230px; width:151px;">
+                        <div style="height:100%; width:155px;">
                             <div style="color: white; padding: 30% 20px; overflow-wrap:break-word; font-weight:bold; font-size:20px;">
                                 {{$record->title}}
                             </div>

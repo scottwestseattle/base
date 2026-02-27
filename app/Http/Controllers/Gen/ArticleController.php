@@ -157,7 +157,7 @@ class ArticleController extends Controller
 		]);
     }
 
-    public function permalink(Request $request, $lang, $permalink)
+    public function permalink(Request $request, $locale, $permalink)
     {
  		$record = null;
 		$permalink = alphanum($permalink);
@@ -184,10 +184,15 @@ class ArticleController extends Controller
     		return redirect($this->redirectTo);
 		}
 
-		return $this->view($request, $record);
+        // add it to users history when he views an article
+        $history = History::getArray($record->title, $record->id
+            , HISTORY_TYPE_ARTICLE, HISTORY_SUBTYPE_SPECIFIC, LESSON_TYPE_ARTICLE_OPEN);
+        History::add($history);
+
+		return $this->view($request, $locale, $record);
 	}
 
-    public function view(Request $request, Entry $entry)
+    public function view(Request $request, $locale, Entry $entry)
     {
         $record = $entry;
 		$next = null;
@@ -356,7 +361,6 @@ class ArticleController extends Controller
 	public function edit(Request $request, $locale, Entry $entry)
     {
 		$record = $entry;
-
         $dates = DateTimeEx::getDateControlDates();
 		$filter = DateTimeEx::getDateControlSelectedDate($record->display_date);
 
@@ -372,7 +376,6 @@ class ArticleController extends Controller
 			'filter' => $filter,
 			'sentences' => Spanish::getString($sentences),
 			'sentences_translation' => Spanish::getString($sentences_translation),
-			'flashcards' => $flashcards,
 			]);
     }
 

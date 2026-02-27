@@ -224,6 +224,8 @@ define('LEVEL_C2',      60);
 // Lesson/Content Type also used for History subtype_flag
 //
 define('LESSON_TYPE_NOTSET',                0);
+define('LESSON_TYPE_ARTICLE_OPEN',          1);
+define('LESSON_TYPE_ARTICLE_QNA',           2);
 define('LESSON_TYPE_TEXT',                  10);
 define('LESSON_TYPE_VOCAB',                 20);
 define('LESSON_TYPE_QUIZ_MC',               30);

@@ -42,6 +42,19 @@
 <!-- Sales Banner for Guests only -->
 <!--------------------------------------------------------------------------------------->
 @guest
+
+    <div class="fpbox-header">
+        <div class="row row-course">
+            @if (true || !isLanguageCookieSet())
+            <div class="col-xs-12 col-md-6 fpSelectorRight mb-3">
+                <h4>@LANG('proj.I want to learn:')</h4>
+                <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"><img height="40" src="/img/flags/en.png" class="mr-3" /></td><td>@LANG('geo.English')</td></tr></table></a></div>
+                <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"><img height="40" src="/img/flags/es.png" class="mr-3" /></td><td>@LANG('geo.Spanish')</td></tr></table></a></div>
+            </div>
+            @endif
+        </div>
+    </div>
+
     @if (false && \App\Site::hasOption('fpheader') && (!isLanguageCookieSet() /* || !isUserLevelCookieSet() */))
         <div class="fpbox-header">
             <div class="row row-course">

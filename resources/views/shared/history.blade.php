@@ -30,6 +30,7 @@
                 $day = App\DateTimeEx::getShortDateTime($record->created_at, 'm-d-Y');
                 $dayShow = App\DateTimeEx::isToday($record->created_at) ? __('dt.Today') : App\DateTimeEx::getShortDateTime($record->created_at, 'l, M d');
                 $count = isset($counts[$day]) ? $counts[$day] : 0;
+                $countStats = intval($info['stats']) > 0 ? '(' . $info['stats'] . ')' : '';
             @endphp
             <tr><td><span class="large-thin-text" style="line-height:50px;">{{$dayShow}} ({{$count}})</span></td></tr>
         @endif
@@ -38,9 +39,9 @@
                 <div class="text-center">
                     <div class="small-thin-text">{{App\DateTimeEx::getShortDateTime($record->created_at, 'M d, Y')}}</div>
                     @if ($info['hasUrl'])
-                        <div><a class="white" href="{{$info['url']}}">{{$info['actionName']}}: {{$info['programName']}}</a> ({{$info['stats']}})</div>
+                        <div><a class="white" href="{{$info['url']}}">{{$info['actionName']}}: {{$info['programName']}}</a> {{$countStats}}</div>
                     @else
-                        <div>{{$info['actionName']}}: {{$info['programName']}} ({{$info['stats']}})</div>
+                        <div>{{$info['actionName']}}: {{$info['programName']}} {{$countStats}}</div>
                     @endif
                     @if ($debug)
                     <div class="small-thin-text">

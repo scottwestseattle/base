@@ -131,8 +131,12 @@
                         </div>
 
                         <div class="entry-title-div mb-3">
-                            <label class="tiny">@LANG('ui.Level'):</label>
-                            <input type="text" id="level_flag" name="level_flag" placeholder="1, 2, or 3" class="form-control" value="{{$record->level_flag}}" />
+                            <label for="level_flag" class="tiny">@LANG('ui.Level'):</label>
+                            <select class="form-control" id="level_flag" name="level_flag">
+                                <option value="1" {{ $record->level_flag == 1 ? 'selected' : ''}}>@LANG('ui.Beginner')</option>
+                                <option value="2" {{ $record->level_flag == 2 ? 'selected' : ''}}>@LANG('ui.Intermediate')</option>
+                                <option value="3" {{ $record->level_flag == 3 ? 'selected' : ''}}>@LANG('ui.Advanced')</option>
+                            </select>
                         </div>
 
                     </div>

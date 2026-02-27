@@ -719,7 +719,7 @@ if (!function_exists('getLanguageName')) {
 
 	    $languageOptions = getLanguageOptions(isAdmin());
 
-	    return (isset($id) && $id >= 0)
+	    return (isset($id) && $id >= 0 && isset($languageOptions[$id]))
 	        ? $languageOptions[$id]
 	        : '';
 	}

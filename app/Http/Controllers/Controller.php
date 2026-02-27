@@ -51,6 +51,8 @@ class Controller extends BaseController
 			App::setLocale($locale);
 		}
 
+		$locale = App::getLocale();
+
 		return back();
 	}
 

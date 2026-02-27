@@ -16,11 +16,11 @@
             <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=date-asc&start=0&count={{DEFAULT_LIST_LIMIT}}">
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-up-alt" /></svg>
             </a></li>
-        @endif
 
-        <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=date-desc&start=0&count={{DEFAULT_LIST_LIMIT}}">
-            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-down-alt" /></svg>
-        </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=date-desc&start=0&count={{DEFAULT_LIST_LIMIT}}">
+                <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-down-alt" /></svg>
+            </a></li>
+        @endif
 
         @isset($record)
         @else

@@ -36,7 +36,7 @@
     $locale = app()->getLocale();
 @endphp
 @extends('layouts.app')
-@section('title', trans_choice('proj.Article', 2) )
+@section('title', trans_choice('proj.Story', 2) )
 @section('menu-submenu')@component('gen.articles.menu-submenu', ['locale' => $locale, 'prefix' => 'articles'])@endcomponent @endsection
 @section('content')
 

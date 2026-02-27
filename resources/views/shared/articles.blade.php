@@ -1,8 +1,9 @@
 @php
     $orderBy = isset($orderBy) ? $orderBy : 'default';
     $count = isset($options['count']) ? $options['count'] : DEFAULT_LIST_LIMIT;
+    $count = 99999;
     $start = isset($options['start']) ? $options['start'] + $count : 0;
-    $showingAll = count($records) == 0 && true; //count($records) < $count;
+    $showingAll = count($records) < $count;
     $class = 'ml-0 badge-dark badge-green badge-small';
     $style = 'margin-right:3px; font-size:10px; margin-top:5px; float:left;';
     $locale = app()->getLocale();

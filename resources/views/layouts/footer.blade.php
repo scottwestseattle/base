@@ -20,7 +20,9 @@
 			<a href="#top">@LANG('base.Back to Top')</a>&bull;
 			<a href="{{lurl('privacy')}}">@LANG('base.Privacy Policy')</a>&bull;
 			<a href="{{lurl('terms')}}">@LANG('base.Terms of Use')</a>&bull;
+			@if (false)
 			<a href="{{lurl('sitemap')}}">@LANG('base.Site Map')</a>&bull;
+			@endif
 			<a href="{{lurl('about')}}">@LANG('base.About')</a>
 		</span>
 	</div>

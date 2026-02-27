@@ -32,7 +32,7 @@ class UserController extends Controller
 	public function index(Request $request)
 	{
 		$records = User::select()
-			->orderByRaw('id DESC')
+			->orderByRaw('user_type DESC, id DESC')
 			->get();
 
 		return view('users.index', [

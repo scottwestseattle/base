@@ -151,8 +151,19 @@ Route::group(['prefix' => 'mvc'], function () {
 	Route::post('/delete', [MvcController::class, 'delete']);
 });
 
+// Email
+Route::group(['prefix' => 'email'], function () {
+	Route::get('/send/{user}', [EmailController::class, 'send']);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the Locale Prefix Handler; ex: name.com/es/artles << changes UI to ES; not CONTENT
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //todo:locale
 Route::group([
@@ -200,7 +211,7 @@ Route::group(['prefix' => 'articles'], function () {
     Route::get('/', [ArticleController::class, 'index'])->name('articles');
     Route::get('/index/', [ArticleController::class, 'index'])->name('articles.index');
     Route::get('/view/{permalink}', [ArticleController::class, 'permalink'])->name('articles.view');
-    Route::get('/show/{entry}', [ArticleController::class, 'view']);
+    Route::get('/show/{entry}', [ArticleController::class, 'view'])->name('articles.show');
 
     // add / (create done in entries)
 	Route::get('/add/', [ArticleController::class, 'add'])->name('articles.add');
@@ -224,11 +235,6 @@ Route::group(['prefix' => 'articles'], function () {
 	Route::get('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishUpdateGet'); // for ajax
 	Route::post('/publishupdate/{entry}', [ArticleController::class, 'updatePublish'])->name('articles.publishUpdate');
 	Route::get('/publish/{entry}', [ArticleController::class, 'publish'])->name('articles.publish');
-});
-
-// Email
-Route::group(['prefix' => 'email'], function () {
-	Route::get('/send/{user}', [EmailController::class, 'send']);
 });
 
 // Templates
@@ -553,7 +559,7 @@ Route::group(['prefix' => 'snippets'], function () {
 
 	// flashcards / quiz have two routes
 	Route::get('/review', [DefinitionController::class, 'reviewSnippets'])->name('snippets.review');
-	Route::get('/flashcards', [DefinitionController::class, 'snippetsFlashcards']);
+	Route::get('/flashcards/{id?}', [DefinitionController::class, 'snippetsFlashcards']);
 	Route::get('/quiz', [DefinitionController::class, 'snippetsQuiz']);
 });
 

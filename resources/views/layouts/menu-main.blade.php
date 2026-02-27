@@ -81,9 +81,9 @@
             <div id="popup-search-options" class="mb-1 hidden float-left mr-1">
                 <button id="popup-search-button-articles" type="button" class="btn btn-info btn-xs"
                 onclick="showSearchResult($('#popup-search-text').val(), {{SEARCHTYPE_ENTRIES}}, 'popup-search-text', 'popup-search-results'); $('#popup-search-options').hide();"
-                >{{'proj.Search Stories'}}</button>
+                >{{__('proj.Search Stories')}}</button>
             </div>
-            <button onclick="event.preventDefault(); $('#popup-search').hide();" class="btn btn-success btn-xs">Close</button>
+            <button onclick="event.preventDefault(); $('#popup-search').hide();" class="btn btn-success btn-xs">{{__('ui.Close')}}</button>
 
             <div id="popup-search-results" class=""></div>
             {{ csrf_field() }}
@@ -100,15 +100,22 @@
 				<img width="25" src="/img/flags/{{App::getLocale()}}.png" />
 			</a>
 			<ul style="float: left; background-color:transparent; border:0;"  class="dropdown-menu">
-			@if (false)
-				<li><a href="/language/en"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
-				<li><a href="/language/es"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
-				<li><a href="/language/zh"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
-            @else
+			    @if (true)
+			    <!-- this works but it takes them off of the current page which is no good -->
 				<li><a href="/en"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
 				<li><a href="/es"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
 				<li><a href="/zh"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
-            @endif
+                @elseif (false)
+                <!-- this is the correct way to do it BUT NOT WORKING or make it a button like below -->
+				<li><a href="/language/en" onclick="setLanguageInterface('en')"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
+				<li><a href="/language/es" onclick="setLanguageInterface('es')"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
+				<li><a href="/language/zh" onclick="setLanguageInterface('zh')"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
+                @else
+                <!-- this is the button version; plug it in like the "I want to learn" language dropdown is done
+				<li><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageInterface('en')"><img width="50" src="/img/flags/en.png" class="mb-2" /></a></li>
+				<li><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageInterface('es')"><img width="50" src="/img/flags/es.png" class="mb-2" /></a></li>
+				<li><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageInterface('zh')"><img width="50" src="/img/flags/zh.png" class="mb-2" /></a></li>
+				@endif
 			</ul>
 		</div>
 	</div>

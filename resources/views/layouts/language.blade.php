@@ -1,9 +1,16 @@
 <!--------------------------------------------------------------------------------------->
 <!-- Language -->
 <!--------------------------------------------------------------------------------------->
-<div class="bright-blue pt-2">
+<div class="pt-2" style="background: linear-gradient(180deg, #f6da8f, #f7c257);">
     <div class="container page-normal">
-        <span class='mini-menu'>
+        @if (!isLanguageCookieSet())
+        <div class="pb-2">
+            <h4>@LANG('proj.I want to learn'):</h4>
+            <div class="m-1"><button type="button" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(0)"><table><tr><td style="width:30"><img height="40" src="/img/flags/en.png" class="mr-3" /></td><td>@LANG('geo.English')</td></tr></table></div>
+            <div class="m-1"><button type="submit" class="btn btn-xl btn-light btn-language" onclick="setLanguageGlobal(1)"><table><tr><td style="width:30"><img height="40" src="/img/flags/es.png" class="mr-3" /></td><td>@LANG('geo.Spanish')</td></tr></table></div>
+        </div>
+        @else
+        <div class='mini-menu'>
           <form method="" action="" autocomplete="off">
             <div style="display:flex; align-items: center;">
                 <div class="float-left" style="">
@@ -28,9 +35,9 @@
                 @endif
             </div>
           </form>
-        </span>
+        </div>
+        @endif
         <div style="clear: both;"></div>
     </div>
 </div>
-
 
