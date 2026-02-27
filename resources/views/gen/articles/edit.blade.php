@@ -139,6 +139,11 @@
                             </select>
                         </div>
 
+                        <div class="form-group">
+                            <label for="display_order" class="control-label">@LANG('proj.Display Order'):</label>
+                            <input type="number"  min="0" max="1000" step="1" name="display_order" class="form-control form-control-100" value="{{$record->display_order}}"></input>
+                        </div>
+
                     </div>
                 </div>
 

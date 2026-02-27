@@ -4,7 +4,7 @@
 @php
     $locale = app()->getLocale();
     $localTime = \App\DateTimeEx::getLocalDateTime();
-    $dayOfYear = intval($localTime->format("z")) + 1;
+    $dayOfYear = intval($localTime->format("z")); // 0-based so it's actually one less than the real DOY
     $sessionMinutes = intval(Config::get('session.lifetime'));
     $sessionDays = $sessionMinutes / (60 * 24);
 @endphp

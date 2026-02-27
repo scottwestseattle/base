@@ -124,6 +124,27 @@ class Article extends Model
         return $record;
     }
 
+    static public function getStoryOfTheDay()
+    {
+        $record = null;
+        $count = self::getCountStories();
+        $ordinalIx = DateTimeEx::getIndexByDay($count, null, /* dayOfTheYear = */ true);
+
+		$record = Entry::select()
+				->where('type_flag', ENTRY_TYPE_ARTICLE)
+				->where('sub_type_flag', ENTRY_SUB_TYPE_STORY)
+				->where('release_flag', '>=', RELEASEFLAG_PUBLIC)
+				->where('display_order', '=', $ordinalIx)
+                ->first();
+
+        if (!isset($record))
+        {
+            $record = Article::getStoryOrdinal($ordinalIx);
+        }
+
+        return $record;
+    }
+
     static public function getStoryOrdinal($ordinalIx)
     {
         //dump($ordinalIx);

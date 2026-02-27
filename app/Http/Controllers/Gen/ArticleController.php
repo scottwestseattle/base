@@ -440,6 +440,7 @@ class ArticleController extends Controller
 		$record->permalink              = createPermalink($record->title, $record->created_at);
 		$record->options                = trimNull($options);
 		$record->level_flag             = isset($request->level_flag) ? $request->level_flag : null;
+		$record->display_order          = isset($request->display_order) ? $request->display_order : null;
 
 		try
 		{

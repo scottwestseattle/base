@@ -67,6 +67,10 @@
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#trash" /></svg>
                 </a></li>
 
+                @if (isAdmin())
+                    <li class="nav-item"><span class="small-thin-text" style="margin-top:22px;">({{$record->display_order}})</span></li>
+                @endif
+
                 @if (false)
                 <li class="nav-item"><a class="nav-link" href="{{route('articles.deleted', ['locale' => $locale])}}">
                     <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#bootstrap-reboot" /></svg>

@@ -65,11 +65,23 @@
 <!-- STORY OF THE DAY -->
 <!--------------------------------------------------------------------------------------->
 @if ((\App\Site::hasOption('fpShowOtd') && isset($aotd)))
+    @php
+        $index = '';
+    @endphp
+    @if (isAdmin())
+        @php
+            //dump($options['articlesPublic']);
+            $stories = isset($options['articlesPublic']) ? $options['articlesPublic'] : [];
+            $count = count($stories);
+            $aotdIndex = \App\DateTimeEx::getIndexByDay($count, null, /* $useDayOfYear = */ true);
+            $index = ' (' . $aotdIndex . ')';
+        @endphp
+    @endif
 	<div class="row row-course">
 		<div class="col-12 pb-2 px-3">
             <div class="truncate mt-1" style="">
                 <div class="">
-                    <h1>@LANG('proj.Story of the Day')</h1>
+                    <h1>@LANG('proj.Story of the Day')<span class="small-thin-text">{{$index}}</span></h1>
                     <!-- div class="small-thin-text">{{date('M d, Y')}}</div -->
                 </div>
 
@@ -87,6 +99,7 @@
                             </a>
                         </div>
                         @endif
+
                         <!-- b><a id="" class="thin-text-18" style="font-size:2em; text-decoration: none;" href="{{route('articles.view', ['locale' => $locale, 'permalink' => $aotd->permalink])}}">{{$aotd->title}}</a></b -->
                         <span id="sentence-view" name="sentence-view" class="">
                             <div style="font-size: .8em; color: green;"><i>{{__('proj.Click or tap sentences for translation')}}</i></div>

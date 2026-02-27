@@ -285,9 +285,7 @@ class HomeController extends Controller
             if ($showAotd || $showTopBoxes)
             {
                 $parms['orderBy'] = 'id DESC';
-                $count = Article::getCountStories();
-                $ordinalIx = DateTimeEx::getIndexByDay($count, null, /* dayOfTheYear = */ true); // DON'T use day of the year, USE days since zero
-                $aotd = Article::getStoryOrdinal($ordinalIx);
+                $aotd = Article::getStoryOfTheDay();
                 if (isset($aotd))
                 {
                     $text = $aotd->getText();
