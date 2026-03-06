@@ -20,14 +20,6 @@ define('DESCRIPTION_LIMIT_LENGTH', 30);
 define('TIMED_SLIDES_DEFAULT_BREAK_SECONDS', 20);
 define('TIMED_SLIDES_DEFAULT_SECONDS', 50);
 
-// user level
-define('LEVEL_A1', 1);
-define('LEVEL_A2', 2);
-define('LEVEL_B1', 3);
-define('LEVEL_B2', 4);
-define('LEVEL_C1', 5);
-define('LEVEL_C2', 6);
-
 // query sorting
 define('ORDERBY_APPROVED', 0);
 define('ORDERBY_TITLE', 1);
@@ -210,7 +202,16 @@ define('FREQUENCY_WEEKLY',      20);
 define('FREQUENCY_BIWEEKLY',    30);
 define('FREQUENCY_MONTHLY',     40);
 
+//
 // Content Level
+//
+
+// story/article level
+define('LEVEL_NOTSET',      -1);
+define('LEVEL_BEGINNER',     1);
+define('LEVEL_INTERMEDIATE', 2);
+define('LEVEL_ADVANCED',     3);
+
 define('LEVEL_NOTSET',  -1);
 define('LEVEL_NOTUSED', 0);
 define('LEVEL_A1',      10);
@@ -219,6 +220,14 @@ define('LEVEL_B1',      30);
 define('LEVEL_B2',      40);
 define('LEVEL_C1',      50);
 define('LEVEL_C2',      60);
+
+// user level
+define('LEVEL_A1', 1);
+define('LEVEL_A2', 2);
+define('LEVEL_B1', 3);
+define('LEVEL_B2', 4);
+define('LEVEL_C1', 5);
+define('LEVEL_C2', 6);
 
 //
 // Lesson/Content Type also used for History subtype_flag

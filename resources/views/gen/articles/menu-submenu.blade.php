@@ -20,10 +20,7 @@
             <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=date-desc&start=0&count={{DEFAULT_LIST_LIMIT}}">
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-numeric-down-alt" /></svg>
             </a></li>
-        @endif
 
-        @isset($record)
-        @else
             <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=title-asc&start=0&count={{DEFAULT_LIST_LIMIT}}">
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-alpha-up-alt" /></svg>
             </a></li>
@@ -31,11 +28,17 @@
             <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=title-desc&start=0&count={{DEFAULT_LIST_LIMIT}}">
                 <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#sort-alpha-down-alt" /></svg>
             </a></li>
+
+            @if (isAdmin())
+            <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}?sort=order&start=0&count={{DEFAULT_LIST_LIMIT}}">
+                <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#calendar-date" /></svg>
+            </a></li>
+            @endif
         @endif
 
-        @if (false)
-        <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}/default/-1">
-            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ol" /></svg>
+        @isset($record)
+        <li class="nav-item"><a class="nav-link" href="{{route('articles.index', ['locale' => $locale])}}">
+            <svg class="bi mt-1 gray" width="22" height="22" ><use xlink:href="/img/bootstrap-icons.svg#list-ul" /></svg>
         </a></li>
         @endif
 

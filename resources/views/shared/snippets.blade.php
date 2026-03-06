@@ -84,10 +84,10 @@
         </div>
 
         <span class='mini-menu'>
-            <a type="button" class="btn btn-primary btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEditTranslation').val(''); $('#div-trans').show(); $('#textEdit').focus();" class="ml-1">@LANG('ui.Add')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="copySnippet(event);" class="ml-1">@LANG('ui.Copy')<a/>
             <a type="button" class="btn btn-success btn-xs" href="" onclick="pasteSnippet(event);" class="ml-1">@LANG('ui.Paste')<a/>
-            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#div-trans').toggle(); $('#translation').focus()" class="ml-1">{{trans_choice('ui.Translation', 1)}}<a/>
+            <a type="button" class="btn btn-success btn-xs" href="" onclick="event.preventDefault(); $('#div-trans').toggle(); $('#translation').focus()" class="ml-1">{{trans_choice('proj.Show Translation', 1)}}<a/>
+            <a type="button" class="btn btn-primary btn-xs" href="" onclick="event.preventDefault(); $('#textEdit').val(''); $('#textEditTranslation').val(''); $('#div-trans').show(); $('#textEdit').focus();" class="ml-1">@LANG('ui.Clear')<a/>
         </span>
 
         @if (!isMobile())
@@ -125,7 +125,7 @@
 @if ($hasSnippets)
     <h3 class="mt-2"><span class="float-left mr-2">@LANG('proj.Practice Text')</span>
         <span class="float-left mr-3" style="font-size:.7em; margin-top:6px;">({{count($snippets)}})</span>
-        @component('components.icon-read', ['href' => route('snippets.read', ['locale' => $locale]) . "?count=$countRead&order=$order", 'float' => 'float-left'])@endcomponent
+        @component('components.icon-read', ['href' => route('snippets.read', ['locale' => $locale]) . "?count=$countRead&start=0&order=$order", 'float' => 'float-left'])@endcomponent
     </h3>
     <div style="clear:both;">
         <div class="medium-text" style="margin-bottom:3px;">

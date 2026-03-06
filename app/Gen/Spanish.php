@@ -44,22 +44,14 @@ class Spanish
 	static public $_lineSplitters = array('Mr.', 'Miss.', 'Sr.', 'Mrs.', 'Ms.', 'St.');
 	static public $_lineSplittersSubs = array('Mr:', 'Miss:', 'Sr:', 'Mrs:', 'Ms:', 'St:');
 	static public $_fixWords = array(
-		'Mr.', 'Sr.', 'Sr ', 'Mrs.', 'Miss.',
+		'Mr.', 'Mr ', 'Mrs.', 'Miss.',
+		'Sr.', 'Sr. ', 'Sra.', 'Srta.',
 		'Y,', 'Y;', 'y,', 'y:',
-//		'Jessica', 'Jéssica', 'Jess',
-//		'Max', 'Aspid', 'Áspid',
-//		'Mariel', 'MARIEL', 'Beaumont', 'BEAUMONT',
-//		'Dennis',
-//		'Geovanny', 'Giovanny', 'Geo', 'Gio',
 		);
 	static public $_fixWordsSubs = array(
-		'Señor', 'Señor', 'Señor ', 'Señora', 'Señorita',
+		'Mister', 'Mister ', 'Misses', 'Miss',
+		'Señor', 'Señor ', 'Señora', 'Señorita',
 		'Y ', 'Y ', 'y ', 'y ',
-//		'Sofía', 'Sofía', 'Sofía',
-//		'Pedro', 'Picapiedra', 'Picapiedra',
-//		'Gerarda', 'Gerarda', 'Gonzalez', 'Gonzalez',
-//		'Fernando',
-//		'Jorge', 'Jorge', 'Jorge', 'Jorge',
 		);
 
     static public function on()
@@ -2190,21 +2182,20 @@ class Spanish
 		{
 			$p = trim($p);
 
-			// doesn't work for: "Mr. Tambourine Man" / Mr. Miss. Sr. Mrs. Ms. St.
+            ////////////////////////////////////////////////////////////
+            // STEP : TRY TO FIX THE STANDARD LINE SPLITTERS
+            ////////////////////////////////////////////////////////////
 			$p = str_replace(self::$_lineSplitters, self::$_lineSplittersSubs, $p);
 
-			// sentences end with: ". " or "'. " or "\". " or "? " or "! "
-			if (true) // split on more characters because the lines are too long
-			{
-			    // try to format embedded periods so lines don't get split on them, like 1. 100. or 200.
-			    $p = preg_replace('/[0-9.]\./', '$0::', $p); //new and lightly tested
+            ////////////////////////////////////////////////////////////
+            // STEP : FIX EMBEDDED NON-EOL PERIODS LIKE "There 3.5 people per house."
+            ////////////////////////////////////////////////////////////
+            $p = preg_replace('/[0-9.]\./', '$0::', $p); //new and lightly tested
+            $sentences = preg_split('/(\. |\.\' |\.\" |\? |\! )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
 
-				$sentences = preg_split('/(\. |\.\' |\.\" |\? |\! )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
-			}
-			else
-				// the original to avoid splitting on conversation
-				$sentences = preg_split('/(\. |\.\' |\.\" )/', $p, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
-
+            ////////////////////////////////////////////////////////////
+            // STEP : FORMAT EACH SENTENCE FOR READING
+            ////////////////////////////////////////////////////////////
 			for($i = 0; $i < count($sentences); $i++)
 			{
 				// get the sentence text

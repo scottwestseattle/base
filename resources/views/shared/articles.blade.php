@@ -16,9 +16,20 @@
     <div style="display: inline-block; width:100%">
         <table style="width:100%;">
         @foreach($records as $record)
+        @php
+            $photo = file_exists($imgPath . '/' . $record->id . '.png');
+       		$coverImage = \App\Gen\Article::getCoverImage($record->id, $record->level_flag);
+            $levelStyle = isset($coverImage['lableColor']) ? 'background-color: ' . $coverImage['lableColor'] . ';' : null;
+            $level = isset($coverImage['lable']) ? $coverImage['lable'] : '';
+            //$level = \App\Entry::getLevelName($record->level_flag);
+            $order = '';
+            if (isAdmin() && isset($record->display_order))
+            {
+                $order = "<span class='title-count'>($record->display_order)</span>";
+            }
+        @endphp
         <tr class="drop-box-ghost-small" style="vertical-align:middle;">
             <td style="color:default; text-align:left; padding:0; width:10px;">
-                @php $photo = file_exists($imgPath . '/' . $record->id . '.png'); @endphp
                 <a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">
                     @if ($photo)
                         <img style="height:{{$imgHeight}};" src="{{$imgUrl}}/{{$record->id}}.png" />
@@ -31,7 +42,9 @@
                 <table>
                 <tbody>
                     <tr>
-                        <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;"><a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">{{$record->title}}</a></td>
+                        <td style="padding-bottom:5px; font-size: 14px; font-weight:normal;">
+                            <a href="{{route('articles.view', ['locale' => $locale, 'permalink' => $record->permalink])}}">{{$record->title}}{!!$order!!}</a>
+                        </td>
                     </tr>
                     <tr>
                         <td class="small-thin-text">
@@ -52,12 +65,17 @@
                     </tr>
                     <tr>
                         <td style="font-weight:100;">
-                            <div class="float-left mr-3">
-                                <img width="25" src="/img/flags/{{getSpeechLanguage($record->language_flag)['code']}}.png" />
-                            </div>
+
+                            @if (false)
+                                <!-- they are all only es/en now -->
+                                <div class="float-left mr-3">
+                                    <img width="25" src="/img/flags/{{getSpeechLanguage($record->language_flag)['code']}}.png" />
+                                </div>
+                            @endif
+
+                            <div class="" style="{{$style}}">@component('components.badge', ['class' => $class, 'style' => $levelStyle, 'text' => $level])@endcomponent</div>
                             <div class="" style="{{$style}}">@component('components.badge', ['class' => $class, 'text' => $record->view_count . ' ' . trans_choice('ui.view', 2)])@endcomponent</div>
                             <div class="" style="{{$style}}"><a href="/entries/stats/{{$record->id}}">@component('components.badge', ['class' => $class, 'text' => str_word_count($record->description) . ' ' . strtolower(trans_choice('ui.Word', 2))])@endcomponent</div></a>
-                            <div class="" style="{{$style}}">@component('components.badge', ['class' => $class, 'text' => countLetters($record->description) . ' ' . strtolower(trans_choice('ui.Letter', 2))])@endcomponent</div>
 
                             @if (isAdmin() || App\User::isOwner($record->user_id))
                                 @if (isAdmin())

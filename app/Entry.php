@@ -41,6 +41,13 @@ class Entry extends Model
 	//
 	//////////////////////////////////////////////////////////////////////
 
+	static private $levelNames = [
+		LEVEL_NOTSET        => 'proj.not set',
+		LEVEL_BEGINNER      => 'ui.Beginner',
+		LEVEL_INTERMEDIATE  => 'ui.Intermediate',
+		LEVEL_ADVANCED      => 'ui.Advanced',
+	];
+
 	static private $entryTypes = [
 		ENTRY_TYPE_NOTSET => 'Not Set',
 		ENTRY_TYPE_NOTUSED => 'Not Used',
@@ -70,6 +77,12 @@ class Entry extends Model
             $url['view'] = route("$root.view", ['locale' => $locale, 'entry' => $this->id]);
 
 		return $url;
+	}
+
+	static public function getLevelName($level_flag)
+	{
+	    $levelName = isset(self::$levelNames[$level_flag]) ? self::$levelNames[$level_flag] : 'proj.not set';
+		return __($levelName);
 	}
 
 	public function getTypeName()
@@ -622,6 +635,10 @@ class Entry extends Model
                 break;
             case 'title-desc':
                 $orderBy = 'entries.title DESC';
+                break;
+            case 'order':
+                $orderBy = 'entries.display_order IS NULL, entries.display_order ASC';
+
                 break;
             default:
                 $orderBy = Auth::check()

@@ -55,6 +55,7 @@
     }
 
     $coverImage = \App\Gen\Article::getCoverImage($record->id, $record->level_flag);
+    $hasExercises = $record->hasTranslation() || $qnaPorPara || $qnaEraFue;
 @endphp
 @extends('layouts.app')
 @section('title', $options['page_title'] )
@@ -103,7 +104,7 @@
                     <span class="image-lable" style="background: {{$coverImage['lableColor']}};">{{$coverImage['lable']}}</span>
                 </div>
             @else
-                <h1 class="mt-2 large-thin-text" style="font-size: 2em;">{{$record->title}}</h1>
+                <h1 class="large-thin-text" style="margin-top: 0px; margin-bottom: 2px; font-size: 2em;">{{$record->title}}</h1>
             @endif
 
             <div class="small-text">
@@ -111,7 +112,14 @@
                 <!-- div style="margin-right:10px; float:left;">{{App\DateTimeEx::getShortDateTime($record->display_date, 'M d, Y', false)}}</div -->
                 <div style="margin-right:10px; float:left;"><a href="{{route('entries.stats', ['locale' => $locale, 'entry' => $record->id])}}">{{$options['lineCount']}} {{trans_choice('ui.Line', 2)}}</a></div>
                 <div style="margin-right:10px; float:left;">{{$record->view_count}} {{trans_choice('ui.view', 2)}}</div>
-                <div style="margin-right:10px; float:left;"><a type="button" class="btn btn-primary btn-xs" href="#practice-exercises" >{{trans_choice('ui.Exercise', 2)}}<span style="" class="glyphicon glyphicon-education white ml-1"></span></a></div>
+
+                @if (isMember())
+                    <div class="" style="clear:both;"></div>
+                @endif
+
+                @if ($hasExercises)
+                    <div style="margin-right:10px; float:left;"><a type="button" class="btn btn-primary btn-xs" href="#practice-exercises" >{{trans_choice('ui.Exercise', 2)}}<span style="" class="glyphicon glyphicon-education white ml-1"></span></a></div>
+                @endif
                 <div style="margin-right:10px; float:left;"><a type="button" class="btn btn-primary btn-xs" href="{{route('articles.read', ['locale' => $locale, 'entry' => $record->id])}}" >{{__('ui.Read')}}<span style="" class="glyphicon glyphicon-volume-up white ml-1"></span></a></div>
 
                 <span style="margin-left:10px;">
@@ -129,12 +137,15 @@
                 @if (isset($translation))
 
                     <!-- Convert text to Snippets -->
-                    @if (false && Auth::user())
+                    @if (isMember())
                         <div class="mr-2 float-left">
                             <a href="{{route('definitions.convertTextToFavorites', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
                                 <div class="middle mr-0" style="">{{trans_choice('proj.Convert to Favorites', 2)}}</div>
                             </a>
                         </div>
+                    @endif
+
+                    @if (false)
                         <a href="{{route('definitions.convertQuestionsToSnippets', ['locale' => $locale, 'entry' => $record->id])}}" class="btn btn-xs btn-primary" role="button">
                             <div class="middle mr-0" style="">{{__('proj.Convert Questions to Snippets')}}</div>
                         </a>
@@ -267,9 +278,10 @@
 
     </div>
 
-	<!------------------------------------>
+	<!----------------------------------------------->
 	<!-- Quiz Options: Flashcards, Por v Para, etc -->
-	<!------------------------------------>
+	<!----------------------------------------------->
+	@if ($hasExercises)
     <div class="mb-1">
         <h1 id="practice-exercises" class="mt-2 large-thin-text" style="font-size: 2em;">{{__('proj.Practice Exercises')}}</h1>
 
@@ -286,6 +298,7 @@
             <a href="{{route('articles.quiz', ['locale' => $locale, 'entry' => $record->id, 'qnaType' => 'era'])}}"><button class="btn btn-success mt-1">@LANG('Pretérito vs Imperfecto') ({{$qnaEraFue}})</button></a>
         @endif
     </div>
+    @endif
 
 	<!------------------------------------>
 	<!-- Bottom Navigation Buttons -->

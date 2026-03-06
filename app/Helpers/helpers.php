@@ -378,7 +378,7 @@ if (!function_exists('alphanumHarsh')) {
 		    //$clean = str_replace(']', ')', $clean);
 
 			// replace all chars except alphanums, some punctuation, accent chars, and whitespace
-            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\[\]\=\%\/\&\-\+\r\n]/u", '', $clean); //todo: added '[' and ']' for quiz conversion
+            $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\[\]\=\%\/\&\-\+\x{2014}\r\n]/u", '', $clean); //todo: added '[' and ']' for quiz conversion
             //orig: $clean = preg_replace("/[^[:alnum:] '’“”\",.()?¿¡!@;:»«\=\%\/\&\-\+\r\n]/u", '', $clean);
             $chino = '\。\，';
 
