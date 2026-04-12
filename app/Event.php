@@ -115,11 +115,12 @@ class Event extends Model
 		return $rc;
 	}
 
-	static public function deleteEvents($filter = null)
+	static public function deleteEvents($locale, $filter = null)
 	{
 		$path = storage_path('logs/laravel.log');
 
 		$filter = alpha($filter);
+
 		if (isset($filter))
 		{
 			$emergency = ($filter == 'emergency');
